@@ -1467,7 +1467,7 @@ if ($type == Categorie::TYPE_ORDER) {
 
 		if (count($objects) > 0) {
 			$i = 0;
-			foreach ($objects as $key => $rder) {
+			foreach ($objects as $key => $order) {
 				$i++;
 				if ($i > $limit) {
 					break;
