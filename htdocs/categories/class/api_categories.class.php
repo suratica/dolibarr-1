@@ -63,7 +63,7 @@ class Categories extends DolibarrApi
 		11 => 'website_page',
 		12 => 'ticket',
 		13 => 'knowledgemanagement',
-		14 => 'order',
+		16 => 'order'
 	);
 
 	/**

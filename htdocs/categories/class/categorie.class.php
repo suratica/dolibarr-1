@@ -90,7 +90,7 @@ class Categorie extends CommonObject
 		'ticket'              => 12,
 		'knowledgemanagement' => 13,
 		'fichinter'           => 14,
-		'order'               => 14,
+		'order'               => 16,
 	);
 
 	/**
@@ -114,7 +114,7 @@ class Categorie extends CommonObject
 		12 => 'ticket',
 		13 => 'knowledgemanagement',
 		14 => 'fichinter',
-		14 => 'order',
+		16 => 'order',
 	);
 
 	/**
