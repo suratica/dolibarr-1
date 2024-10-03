@@ -57,6 +57,8 @@ class Target extends CommonObject
 
 	const STATUS_DRAFT = 0;
 	const STATUS_VALIDATED = 1;
+	const STATUS_AUTOMATIC_TRIGGER = 1;
+	const STATUS_MANUAL_TRIGGER = 2;
 	const STATUS_CANCELED = 9;
 
 
@@ -106,7 +108,7 @@ class Target extends CommonObject
 		'fk_user_creat' => array('type' => 'integer:User:user/class/user.class.php', 'label' => 'UserAuthor', 'enabled' => 1, 'position' => 510, 'notnull' => 1, 'visible' => -2, 'foreignkey' => 'user.rowid',),
 		'fk_user_modif' => array('type' => 'integer:User:user/class/user.class.php', 'label' => 'UserModif', 'enabled' => 1, 'position' => 511, 'notnull' => -1, 'visible' => -2,),
 		'import_key' => array('type' => 'varchar(14)', 'label' => 'ImportId', 'enabled' => 1, 'position' => 1000, 'notnull' => -1, 'visible' => -2,),
-		'status' => array('type' => 'integer', 'label' => 'Status', 'enabled' => 1, 'position' => 2000, 'notnull' => 1, 'default' => '1', 'visible' => 1, 'index' => 1, 'arrayofkeyval' => array('0' => 'Disabled', '1' => 'Enabled'), 'validate' => 1,),
+		'status' => array('type' => 'integer', 'label' => 'Status', 'enabled' => 1, 'position' => 2000, 'notnull' => 1, 'default' => '1', 'visible' => 1, 'index' => 1, 'arrayofkeyval' => array('0' => 'Disabled', '1' => 'AutomaticTrigger', '2' => 'ManualTrigger'), 'validate' => 1,),
 	);
 	public $rowid;
 	public $ref;
@@ -524,7 +526,7 @@ class Target extends CommonObject
 		$error = 0;
 
 		// Protection
-		if ($this->status == self::STATUS_VALIDATED) {
+		if ($this->status == self::STATUS_AUTOMATIC_TRIGGER) {
 			dol_syslog(get_class($this)."::validate action abandoned: already validated", LOG_WARNING);
 			return 0;
 		}
@@ -545,7 +547,7 @@ class Target extends CommonObject
 			// Validate
 			$sql = "UPDATE ".MAIN_DB_PREFIX.$this->table_element;
 			$sql .= " SET ref = '".$this->db->escape($num)."',";
-			$sql .= " status = ".self::STATUS_VALIDATED;
+			$sql .= " status = ".self::STATUS_AUTOMATIC_TRIGGER;
 			if (!empty($this->fields['date_validation'])) {
 				$sql .= ", date_validation = '".$this->db->idate($now)."'";
 			}
@@ -620,7 +622,7 @@ class Target extends CommonObject
 		// Set new ref and current status
 		if (!$error) {
 			$this->ref = $num;
-			$this->status = self::STATUS_VALIDATED;
+			$this->status = self::STATUS_AUTOMATIC_TRIGGER;
 		}
 
 		if (!$error) {
@@ -660,7 +662,7 @@ class Target extends CommonObject
 	public function cancel($user, $notrigger = 0)
 	{
 		// Protection
-		if ($this->status != self::STATUS_VALIDATED) {
+		if ($this->status != self::STATUS_AUTOMATIC_TRIGGER) {
 			return 0;
 		}
 
@@ -681,7 +683,7 @@ class Target extends CommonObject
 			return 0;
 		}
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'TARGET_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_AUTOMATIC_TRIGGER, $notrigger, 'TARGET_REOPEN');
 	}
 
 	/**
@@ -835,16 +837,21 @@ class Target extends CommonObject
 		if (empty($this->labelStatus) || empty($this->labelStatusShort)) {
 			global $langs;
 
-			$this->labelStatus[self::STATUS_DRAFT] = $langs->transnoentitiesnoconv('Draft');
-			$this->labelStatus[self::STATUS_VALIDATED] = $langs->transnoentitiesnoconv('Enabled');
+			$this->labelStatus[self::STATUS_DRAFT] = $langs->transnoentitiesnoconv('Disabled');
+			$this->labelStatus[self::STATUS_AUTOMATIC_TRIGGER] = $langs->transnoentitiesnoconv('AutomaticTrigger');
+			$this->labelStatus[self::STATUS_MANUAL_TRIGGER] = $langs->transnoentitiesnoconv('ManualTrigger');
 			$this->labelStatus[self::STATUS_CANCELED] = $langs->transnoentitiesnoconv('Disabled');
-			$this->labelStatusShort[self::STATUS_DRAFT] = $langs->transnoentitiesnoconv('Draft');
-			$this->labelStatusShort[self::STATUS_VALIDATED] = $langs->transnoentitiesnoconv('Enabled');
+			$this->labelStatusShort[self::STATUS_DRAFT] = $langs->transnoentitiesnoconv('Disabled');
+			$this->labelStatusShort[self::STATUS_AUTOMATIC_TRIGGER] = $langs->transnoentitiesnoconv('AutomaticTrigger');
+			$this->labelStatusShort[self::STATUS_MANUAL_TRIGGER] = $langs->transnoentitiesnoconv('ManualTrigger');
 			$this->labelStatusShort[self::STATUS_CANCELED] = $langs->transnoentitiesnoconv('Disabled');
 		}
 
 		$statusType = 'status'.$status;
-		if ($status == self::STATUS_VALIDATED) {
+		if ($status == self::STATUS_AUTOMATIC_TRIGGER) {
+			$statusType = 'status4';
+		}
+		if ($status == self::STATUS_MANUAL_TRIGGER) {
 			$statusType = 'status4';
 		}
 		if ($status == self::STATUS_CANCELED) {

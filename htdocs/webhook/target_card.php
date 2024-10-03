@@ -530,7 +530,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			}
 
 			// Disable
-			if ($object->status == $object::STATUS_VALIDATED) {
+			if (in_array($object->status, array($object::STATUS_AUTOMATIC_TRIGGER, $object::STATUS_MANUAL_TRIGGER))) {
 				print dolGetButtonAction('', $langs->trans('Disable'), 'delete', $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=confirm_setdraft&confirm=yes&token='.newToken(), '', $permissiontoadd);
 			}
 
