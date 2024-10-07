@@ -188,6 +188,9 @@ if (empty($reshook)) {
 			setEventMessages($langs->trans($errormsg), null, 'errors');
 		}
 	}
+	if ($action == 'confirm_statusmanual' && $confirm == "yes" &&$permissiontoadd) {
+		$object->setStatusCommon($user, $object::STATUS_MANUAL_TRIGGER, 0, 'TARGET_REOPEN');
+	}
 
 	// Actions to send emails
 	$triggersendname = 'WEBHOOK_TARGET_SENTBYMAIL';
@@ -526,7 +529,22 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 			// Enable
 			if ($object->status == $object::STATUS_DRAFT) {
-				print dolGetButtonAction('', $langs->trans('Enable'), 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=confirm_validate&confirm=yes&token='.newToken(), '', $permissiontoadd);
+				$arrayforbutactivate = array();
+				$arrayforbutactivate[] = array(
+					'url' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=confirm_validate&confirm=yes&token='.newToken(),
+					'label' => $langs->trans('AutomaticTrigger'),
+					'lang' => 'admin',
+					'perm' => 1,
+					'enabled' => true,
+				);
+				$arrayforbutactivate[] = array(
+					'url' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=confirm_statusmanual&confirm=yes&token='.newToken(),
+					'label' => $langs->trans('ManualTrigger'),
+					'lang' => 'admin',
+					'perm' => 1,
+					'enabled' => true,
+				);
+				print dolGetButtonAction('', $langs->trans('Enable'), 'default', $arrayforbutactivate, '', $permissiontoadd);
 			}
 
 			// Disable
