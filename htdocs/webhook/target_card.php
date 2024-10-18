@@ -155,7 +155,12 @@ if (empty($reshook)) {
 	if ($action == 'classin' && $permissiontoadd) {
 		$object->setProject(GETPOSTINT('projectid'));
 	}
-
+	if ($action == 'confirm_statusmanual' && $confirm == "yes" &&$permissiontoadd) {
+		$object->setStatusCommon($user, $object::STATUS_MANUAL_TRIGGER, 0, 'TARGET_REOPEN');
+	}
+	if ($action == 'confirm_statusautomatic' && $confirm == "yes" &&$permissiontoadd) {
+		$object->setStatusCommon($user, $object::STATUS_AUTOMATIC_TRIGGER, 0, 'TARGET_REOPEN');
+	}
 	if ($action == 'testsendtourl' && $permissiontoadd) {
 		$triggercode = GETPOST("triggercode");
 		$url = GETPOST("url");
@@ -188,8 +193,70 @@ if (empty($reshook)) {
 			setEventMessages($langs->trans($errormsg), null, 'errors');
 		}
 	}
-	if ($action == 'confirm_statusmanual' && $confirm == "yes" &&$permissiontoadd) {
-		$object->setStatusCommon($user, $object::STATUS_MANUAL_TRIGGER, 0, 'TARGET_REOPEN');
+
+	if ($action == 'confirm_triggersend') {
+		$db->begin();
+		if (empty($id)) {
+			$error++;
+			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Id")), null, 'errors');
+		}
+		if (empty($lineid)) {
+			$error++;
+			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Lineid")), null, 'errors');
+		}
+
+		if (!$error) {
+			$arraytriggerstack=array();
+			$sql = "SELECT t.trigger_stack FROM ".MAIN_DB_PREFIX."webhook_target as t";
+			$sql .= " WHERE t.rowid = ".((int) $object->id);
+			$sql .= " AND t.status = 2";
+			$resql = $db->query($sql);
+			if (!$resql) {
+				dol_print_error($db);
+				$error;
+			}
+
+			if (!$error) {
+				$num = $db->num_rows($resql);
+				if ($num > 0) {
+					$obj = $db->fetch_object($resql);
+					if (!empty($obj->trigger_stack)) {
+						$json = $obj->trigger_stack;
+						$arraytriggerstack = json_decode($json);
+					}
+				}
+
+				if (!empty($arraytriggerstack[$lineid])) {
+					$obj = $arraytriggerstack[$lineid];
+					array_splice($arraytriggerstack, $lineid, 1);
+					$objecttosend = fetchObjectByElement($obj->element_id, dol_strtolower($obj->element_type));
+					$objecttosend->context["actiontrigger"] = "sendtrigger";
+					$res = $objecttosend->call_trigger($obj->trigger_code, $user);
+					if ($res <= 0) {
+						$error++;
+						setEventMessages(null, $objecttosend->errors, 'errors');
+					} else {
+						$json = json_encode($arraytriggerstack);
+						$sql = "UPDATE ".MAIN_DB_PREFIX."webhook_target as t";
+						$sql .= " SET t.trigger_stack = '".$db->escape($json)."'";
+						$sql .= " WHERE t.rowid = ".((int) $object->id);
+						$sql .= " AND t.status = ".((int) Target::STATUS_MANUAL_TRIGGER);
+						$resql = $db->query($sql);
+						if (!$resql) {
+							dol_print_error($db);
+							$error++;
+						}
+					}
+				}
+			}
+		}
+
+		if (!$error) {
+			$db->commit();
+			setEventMessages($langs->trans("WebhookSucessfullySent"), null);
+		} else {
+			$db->rollback();
+		}
 	}
 
 	// Actions to send emails
@@ -327,28 +394,10 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	}
 
 	// Confirmation of action xxxx (You can use it for xxx = 'close', xxx = 'reopen', ...)
-	if ($action == 'xxx') {
-		$text = $langs->trans('ConfirmActionTarget', $object->ref);
-		/*if (isModEnabled('notification'))
-		{
-			require_once DOL_DOCUMENT_ROOT . '/core/class/notify.class.php';
-			$notify = new Notify($db);
-			$text .= '<br>';
-			$text .= $notify->confirmMessage('TARGET_CLOSE', $object->socid, $object);
-		}*/
-
+	if ($action == 'triggersend') {
+		$text = $langs->trans('ConfirmTriggerSendQuestion');
 		$formquestion = array();
-		/*
-		$forcecombo=0;
-		if ($conf->browser->name == 'ie') $forcecombo = 1;	// There is a bug in IE10 that make combo inside popup crazy
-		$formquestion = array(
-			// 'text' => $langs->trans("ConfirmClone"),
-			// array('type' => 'checkbox', 'name' => 'clone_content', 'label' => $langs->trans("CloneMainAttributes"), 'value' => 1),
-			// array('type' => 'checkbox', 'name' => 'update_prices', 'label' => $langs->trans("PuttingPricesUpToDate"), 'value' => 1),
-			// array('type' => 'other',    'name' => 'idwarehouse',   'label' => $langs->trans("SelectWarehouseForStockDecrease"), 'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1, 0, 0, '', 0, $forcecombo))
-		);
-		*/
-		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('XXX'), $text, 'confirm_xxx', $formquestion, 0, 1, 220);
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id.'&lineid='.$lineid.'&token='.newToken(), $langs->trans('ConfirmTriggerSend'), $text, 'confirm_triggersend', $formquestion, 0, 1, 220);
 	}
 
 	// Call Hook formConfirm
@@ -531,7 +580,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			if ($object->status == $object::STATUS_DRAFT) {
 				$arrayforbutactivate = array();
 				$arrayforbutactivate[] = array(
-					'url' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=confirm_validate&confirm=yes&token='.newToken(),
+					'url' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=confirm_statusautomatic&confirm=yes&token='.newToken(),
 					'label' => $langs->trans('AutomaticTrigger'),
 					'lang' => 'admin',
 					'perm' => 1,
@@ -649,6 +698,52 @@ if ($action == "test") {
 	}
 
 	print "\n".'<!-- END form test target -->';
+} elseif ($object->status == $object::STATUS_MANUAL_TRIGGER) {
+	$arraytriggerstack = array();
+	print load_fiche_titre($langs->trans("TriggersToConfirmValidation"));
+	print dol_get_fiche_head(array(), '', '', -1);
+
+	$sql = "SELECT t.trigger_stack FROM ".MAIN_DB_PREFIX."webhook_target as t";
+	$sql .= " WHERE t.rowid = ".((int) $object->id);
+	$sql .= " AND t.status = 2";
+	$resql = $db->query($sql);
+	if (!$resql) {
+		dol_print_error($db);
+		exit;
+	}
+
+	$num = $db->num_rows($resql);
+	if ($num > 0) {
+		$obj = $db->fetch_object($resql);
+		if (!empty($obj->trigger_stack)) {
+			$json = $obj->trigger_stack;
+			$arraytriggerstack = json_decode($json);
+		}
+	}
+
+	print '<table class="tagtable nobottomiftotal liste">';
+	print '<tr class="liste_titre"><td class="liste_titre">';
+	print $langs->trans("TriggerCodes");
+	print '</td><td class="liste_titre">';
+	print $langs->trans("Id");
+	print '</td><td class="liste_titre">';
+	print $langs->trans("ElementType");
+	print '</td><td>';
+	print '</td></tr>';
+
+	foreach ($arraytriggerstack as $key => $value) {
+		print '<tr data-id="'.$key.'" class="oddeven">';
+		print '<td>'.$value->trigger_code.'</td>';
+		print '<td>'.$value->element_id.'</td>';
+		print '<td>'.$value->element_type.'</td>';
+		// Action column
+		print '<td class="center">';
+		print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=triggersend&lineid='.$key.'&token='.newToken().'">'.img_picto($langs->trans("TriggerSendValidation"), "play").'</a>';
+		print '</td>';
+		print '</tr>';
+	}
+
+	print '</table>';
 }
 
 // End of page

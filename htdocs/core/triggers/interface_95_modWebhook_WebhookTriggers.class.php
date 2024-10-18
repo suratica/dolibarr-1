@@ -78,7 +78,7 @@ class InterfaceWebhookTriggers extends DolibarrTriggers
 		$target_url = $static_object->fetchAll();
 		foreach ($target_url as $key => $tmpobject) {
 			$actionarray = explode(",", $tmpobject->trigger_codes);
-			if ($tmpobject->status == Target::STATUS_AUTOMATIC_TRIGGER && is_array($actionarray) && in_array($action, $actionarray)) {
+			if ((in_array($object->context["actiontrigger"], array("sendtrigger", "testsend")) || $tmpobject->status == Target::STATUS_AUTOMATIC_TRIGGER) && is_array($actionarray) && in_array($action, $actionarray)) {
 				// Build the answer object
 				$resobject = new stdClass();
 				$resobject->triggercode = $action;
@@ -119,6 +119,53 @@ class InterfaceWebhookTriggers extends DolibarrTriggers
 						$this->errors[] = dol_trunc($response['content'], 200);
 					}*/
 					dol_syslog($errormsg, LOG_ERR);
+				}
+			} elseif ($tmpobject->status == Target::STATUS_MANUAL_TRIGGER && is_array($actionarray) && in_array($action, $actionarray)) {
+				$this->db->begin();
+				$arraytriggerstack = array();
+				$objtostore = new stdClass($this->db);
+				$objtostore->trigger_code = $action;
+				$objtostore->element_type = $object->element;
+				$objtostore->element_id = $object->id;
+
+				$sql = "SELECT t.trigger_stack FROM ".MAIN_DB_PREFIX."webhook_target as t";
+				$sql .= " WHERE t.rowid = ".((int) $tmpobject->id);
+				$sql .= " AND t.status = ".((int) Target::STATUS_MANUAL_TRIGGER);
+				$resql = $this->db->query($sql);
+				if (!$resql) {
+					$this->errors[] = "The Webhook failed to fetch data from database";
+					dol_print_error($this->db);
+					$errors;
+				}
+
+				if (!$errors) {
+					$num = $this->db->num_rows($resql);
+					if ($num > 0) {
+						$obj = $this->db->fetch_object($resql);
+						if (!empty($obj->trigger_stack)) {
+							$json = $obj->trigger_stack;
+							$arraytriggerstack = json_decode($json);
+						}
+						$arraytriggerstack[] = $objtostore;
+						$json = json_encode($arraytriggerstack);
+						$sql = "UPDATE ".MAIN_DB_PREFIX."webhook_target as t";
+						$sql .= " SET t.trigger_stack = '".$this->db->escape($json)."'";
+						$sql .= " WHERE t.rowid = ".((int) $tmpobject->id);
+						$sql .= " AND t.status = ".((int) Target::STATUS_MANUAL_TRIGGER);
+						$resql = $this->db->query($sql);
+						if (!$resql) {
+							$this->errors[] = "The Webhook failed to save data to database";
+							dol_print_error($this->db);
+							$errors++;
+						}
+					}
+				}
+
+				if (!$errors) {
+					$this->db->commit();
+				} else {
+					dol_syslog("InterfaceWebhook.class.php: ".implode(',', $this->errors), LOG_ERR);
+					$this->db->rollback();
 				}
 			}
 		}
