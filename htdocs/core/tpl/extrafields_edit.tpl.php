@@ -27,6 +27,7 @@
  /**
  * @var CommonObject $object
  * @var Conf $conf
+ * @var HookManager $hookmanager
  * @var Translate $langs
  * @var string $action
  * @var array<string,mixed> $parameters
@@ -61,8 +62,7 @@ if (!isset($parameters)) {
 @phan-var-force Translate $conf
 @phan-var-force array<string,mixed> $parameters
 ';
-/** @var CommonObject $object */
-/** @var HookManager $hookmanager */
+
 $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 print $hookmanager->resPrint;
 if (empty($reshook)) {
