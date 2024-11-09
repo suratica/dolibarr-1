@@ -63,6 +63,15 @@ if (isModEnabled('variants')) {
 	require_once DOL_DOCUMENT_ROOT.'/variants/class/ProductCombination.class.php';
 }
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Societe $mysoc
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'propal', 'compta', 'bills', 'orders', 'products', 'deliveries', 'sendings', 'other'));
 if (isModEnabled('incoterm')) {
@@ -420,7 +429,7 @@ if (empty($reshook)) {
 		}
 	} elseif ($action == 'set_incoterms' && isModEnabled('incoterm') && $usercancreate) {
 		// Set incoterm
-		$result = $object->setIncoterms(GETPOSTINT('incoterm_id'), GETPOSTINT('location_incoterms'));
+		$result = $object->setIncoterms(GETPOSTINT('incoterm_id'), GETPOST('location_incoterms'));
 	} elseif ($action == 'add' && $usercancreate) {
 		// Create proposal
 		$object->socid = $socid;
@@ -1395,8 +1404,8 @@ if (empty($reshook)) {
 			}
 
 			// Local Taxes
-			$localtax1_tx = get_localtax($tva_tx, 1, $object->thirdparty, $tva_npr);
-			$localtax2_tx = get_localtax($tva_tx, 2, $object->thirdparty, $tva_npr);
+			$localtax1_tx = get_localtax($tva_tx, 1, $object->thirdparty, $mysoc, $tva_npr);
+			$localtax2_tx = get_localtax($tva_tx, 2, $object->thirdparty, $mysoc, $tva_npr);
 
 			// Margin
 			$fournprice = price2num(GETPOST('fournprice'.$predef) ? GETPOST('fournprice'.$predef) : '');

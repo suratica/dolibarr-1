@@ -52,6 +52,15 @@ if (isModEnabled('project')) {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
 }
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Societe $mysoc
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array('companies', 'supplier_proposal', 'compta', 'bills', 'propal', 'orders', 'products', 'deliveries', 'sendings'));
 if (isModEnabled('margin')) {
@@ -294,9 +303,11 @@ if (empty($reshook)) {
 					$object->fk_project = GETPOSTINT('projectid');
 					$object->model_pdf = GETPOST('model');
 					$object->author = $user->id; // deprecated
+					$object->user_creation_id = $user->id;
 					$object->note = GETPOST('note', 'restricthtml');
 					$object->note_private = GETPOST('note', 'restricthtml');
 					$object->statut = SupplierProposal::STATUS_DRAFT;
+					$object->status = SupplierProposal::STATUS_DRAFT;
 				} else {
 					setEventMessages($langs->trans("ErrorFailedToCopyProposal", GETPOST('copie_supplier_proposal')), null, 'errors');
 				}
@@ -311,6 +322,7 @@ if (empty($reshook)) {
 				$object->fk_project = GETPOSTINT('projectid');
 				$object->model_pdf = GETPOST('model');
 				$object->author = $user->id; // deprecated
+				$object->user_creation_id = $user->id;
 				$object->note = GETPOST('note', 'restricthtml');
 				$object->note_private = GETPOST('note', 'restricthtml');
 
@@ -1014,7 +1026,7 @@ if (empty($reshook)) {
 		$productid = GETPOSTINT('productid');
 		if (!empty($productid)) {
 			$productsupplier = new ProductFournisseur($db);
-			if (getDolGlobalString('SUPPLIER_PROPOSAL_WITH_PREDEFINED_PRICES_ONLY')) {
+			if (getDolGlobalInt('SUPPLIER_PROPOSAL_WITH_PREDEFINED_PRICES_ONLY') == 1) {	// Not the common case
 				if ($productid > 0 && $productsupplier->get_buyprice(0, price2num(GETPOST('qty')), $productid, 'none', GETPOSTINT('socid')) < 0) {
 					setEventMessages($langs->trans("ErrorQtyTooLowForThisSupplier"), null, 'warnings');
 				}
@@ -1206,6 +1218,7 @@ if ($action == 'create') {
 	// Load objectsrc
 	if (!empty($origin) && !empty($originid)) {
 		$element = $subelement = GETPOST('origin');
+		$regs = array();
 		if (preg_match('/^([^_]+)_([^_]+)/i', GETPOST('origin'), $regs)) {
 			$element = $regs[1];
 			$subelement = $regs[2];
@@ -1895,8 +1908,8 @@ if ($action == 'create') {
 		$dateSelector = 0;
 		$inputalsopricewithtax = 1;
 		$senderissupplier = 2; // $senderissupplier=2 is same than 1 but disable test on minimum qty.
-		if (getDolGlobalString('SUPPLIER_PROPOSAL_WITH_PREDEFINED_PRICES_ONLY')) {
-			$senderissupplier = 1;
+		if (getDolGlobalInt('SUPPLIER_PROPOSAL_WITH_PREDEFINED_PRICES_ONLY')) {
+			$senderissupplier = getDolGlobalInt('SUPPLIER_PROPOSAL_WITH_PREDEFINED_PRICES_ONLY');
 		}
 
 		if (!empty($object->lines)) {

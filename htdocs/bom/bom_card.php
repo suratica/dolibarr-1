@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2017-2023  Laurent Destailleur     <eldy@users.sourceforge.net>
- * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2019-2024  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2023       Charlene Benke          <charlene@patas-monkey.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
@@ -32,6 +32,15 @@ require_once DOL_DOCUMENT_ROOT.'/bom/class/bom.class.php';
 require_once DOL_DOCUMENT_ROOT.'/bom/lib/bom.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/mrp/lib/mrp.lib.php';
 
+
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Societe $mysoc
+ * @var Translate $langs
+ * @var User $user
+ */
 
 // Load translation files required by the page
 $langs->loadLangs(array('mrp', 'other'));
@@ -207,7 +216,7 @@ if (empty($reshook)) {
 		// We check if we're allowed to add this bom
 		$TParentBom = array();
 		$object->getParentBomTreeRecursive($TParentBom);
-		if ($bom_child_id > 0 && !empty($TParentBom) && in_array($bom_child_id, $TParentBom)) {
+		if ($bom_child_id > 0 && in_array($bom_child_id, $TParentBom)) {
 			$n_child = new BOM($db);
 			$n_child->fetch($bom_child_id);
 			setEventMessages($langs->transnoentities('BomCantAddChildBom', $n_child->getNomUrl(1), $object->getNomUrl(1)), null, 'errors');
@@ -372,7 +381,7 @@ if (($id || $ref) && $action == 'edit') {
 
 	print dol_get_fiche_end();
 
-	print $form->buttonsSaveCancel("Create");
+	print $form->buttonsSaveCancel("Update");
 
 	print '</form>';
 }

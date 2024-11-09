@@ -52,6 +52,10 @@ require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/security2.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 
+/**
+ * @var DoliDB $db
+ * @var Translate $langs
+ */
 
 dol_syslog("Call User webservices interfaces");
 
@@ -685,7 +689,7 @@ function createUserFromThirdparty($authentication, $thirdpartywithuser)
  * Set password of an user
  *
  * @param	array{login:string,password:string,entity:?int,dolibarrkey:string}	$authentication		Array of authentication information
- * @param	array		$shortuser			Array of login/password info
+ * @param	array{login:string,password:string}		$shortuser			Array of login/password info
  * @return	mixed
  */
 function setUserPassword($authentication, $shortuser)
