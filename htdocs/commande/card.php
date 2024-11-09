@@ -65,6 +65,15 @@ if (isModEnabled('variants')) {
 }
 
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Societe $mysoc
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array('orders', 'sendings', 'companies', 'bills', 'propal', 'deliveries', 'products', 'other'));
 
@@ -652,7 +661,7 @@ if (empty($reshook)) {
 		}
 	} elseif ($action == 'set_incoterms' && isModEnabled('incoterm') && $usercancreate) {
 		// Set incoterm
-		$result = $object->setIncoterms(GETPOSTINT('incoterm_id'), GETPOSTFLOAT('location_incoterms'));
+		$result = $object->setIncoterms(GETPOSTINT('incoterm_id'), GETPOST('location_incoterms'));
 		if ($result < 0) {
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
@@ -1329,6 +1338,15 @@ if (empty($reshook)) {
 			setEventMessages($langs->trans('FieldCannotBeNegative', $langs->transnoentitiesnoconv('Qty')), null, 'errors');
 			$error++;
 			$action = 'editline';
+		}
+
+		$object->loadExpeditions();
+		if (isset($object->expeditions[GETPOST('lineid', 'int')])) {
+			if ($qty < $object->expeditions[GETPOST('lineid', 'int')]) {
+				setEventMessages($langs->trans('ErrorQtyOrderedLessQtyShipped'), null, 'errors');
+				$error++;
+				$action = 'editline';
+			}
 		}
 
 		if (!$error) {
@@ -3015,7 +3033,7 @@ if ($action == 'create' && $usercancreate) {
 					}
 				}
 				// Edit
-				if ($object->statut == Commande::STATUS_VALIDATED && $usercancreate) {
+				if (($object->statut == Commande::STATUS_VALIDATED || ($object->statut == Commande::STATUS_SHIPMENTONPROCESS && getDolGlobalString('EDIT_ORDER_SHIPMENT_ON_PROCESS'))) && $usercancreate) {
 					print dolGetButtonAction('', $langs->trans('Modify'), 'default', $_SERVER["PHP_SELF"].'?action=modif&amp;token='.newToken().'&amp;id='.$object->id, '');
 				}
 
