@@ -1887,10 +1887,11 @@ function dol_init_file_process($pathtoscan = '', $trackid = '')
  * @param   string		$trackid			Track id (used to prefix name of session vars to avoid conflict)
  * @param	int<0,1>	$generatethumbs		1=Generate also thumbs for uploaded image files
  * @param   ?Object		$object				Object used to set 'src_object_*' fields
+ * @param	string		$forceFullTestIndexation		'1'=Force full text storage in database even if global option not set (consume a high level of data)
  * @return	int                             Return integer <=0 if KO, >0 if OK
  * @see dol_remove_file_process()
  */
-function dol_add_file_process($upload_dir, $allowoverwrite = 0, $updatesessionordb = 0, $varfiles = 'addedfile', $savingdocmask = '', $link = null, $trackid = '', $generatethumbs = 1, $object = null)
+function dol_add_file_process($upload_dir, $allowoverwrite = 0, $updatesessionordb = 0, $varfiles = 'addedfile', $savingdocmask = '', $link = null, $trackid = '', $generatethumbs = 1, $object = null, $forceFullTestIndexation = '')
 {
 	global $db, $user, $conf, $langs;
 
@@ -2127,17 +2128,19 @@ function dol_remove_file_process($filenb, $donotupdatesession = 0, $donotdeletef
  *  @param		string	$mode			How file was created ('uploaded', 'generated', ...)
  *  @param		int		$setsharekey	Set also the share key
  *  @param      Object  $object         Object used to set 'src_object_*' fields
+ *  @param		string	$forceFullTextIndexation		'1'=Force full text indexation even if global option not set
  *	@return		int						Return integer <0 if KO, 0 if nothing done, >0 if OK
  */
-function addFileIntoDatabaseIndex($dir, $file, $fullpathorig = '', $mode = 'uploaded', $setsharekey = 0, $object = null)
+function addFileIntoDatabaseIndex($dir, $file, $fullpathorig = '', $mode = 'uploaded', $setsharekey = 0, $object = null, $forceFullTextIndexation = '')
 {
 	global $db, $user, $conf;
 
 	$result = 0;
+	$error = 0;
 
 	$rel_dir = preg_replace('/^'.preg_quote(DOL_DATA_ROOT, '/').'/', '', $dir);
 
-	if (!preg_match('/[\\/]temp[\\/]|[\\/]thumbs|\.meta$/', $rel_dir)) {     // If not a tmp dir
+	if (!preg_match('/[\\/]temp[\\/]|[\\/]thumbs|\.meta$/', $rel_dir)) {     // If not a temporary directory. TODO Does this test work ?
 		$filename = basename(preg_replace('/\.noexe$/', '', $file));
 		$rel_dir = preg_replace('/[\\/]$/', '', $rel_dir);
 		$rel_dir = preg_replace('/^[\\/]/', '', $rel_dir);
@@ -2179,6 +2182,14 @@ function addFileIntoDatabaseIndex($dir, $file, $fullpathorig = '', $mode = 'uplo
 
 		// Use a convertisser Doc to Text
 		$useFullTextIndexation = getDolGlobalString('MAIN_USE_FULL_TEXT_INDEXATION');
+		if (empty($useFullTextIndexation) && $forceFullTextIndexation == '1') {
+			if (getDolGlobalString('MAIN_USE_FULL_TEXT_INDEXATION_PDFTOTEXT')) {
+				$useFullTextIndexation = 'pdftotext';
+			} elseif (getDolGlobalString('MAIN_USE_FULL_TEXT_INDEXATION_DOCLING')) {
+				$useFullTextIndexation = 'docling';
+			}
+		}
+
 		//$useFullTextIndexation = 1;
 		if ($useFullTextIndexation) {
 			$ecmfile->filepath = $rel_dir;
@@ -2188,6 +2199,7 @@ function addFileIntoDatabaseIndex($dir, $file, $fullpathorig = '', $mode = 'uplo
 
 			$textforfulltextindex = '';
 			$keywords = '';
+			$cmd = '';
 			if (preg_match('/\.pdf/i', $filename)) {
 				// TODO Move this into external submodule files
 
@@ -2202,17 +2214,20 @@ function addFileIntoDatabaseIndex($dir, $file, $fullpathorig = '', $mode = 'uplo
 					// We also exclude '/temp/' dir and 'documents/admin/documents'
 					// We make escapement here and call executeCLI without escapement because we don't want to have the '*.log' escaped.
 					$cmd = getDolGlobalString('MAIN_USE_FULL_TEXT_INDEXATION_PDFTOTEXT', 'pdftotext')." -htmlmeta '".escapeshellcmd($filetoprocess)."' - ";
-					$result = $utils->executeCLI($cmd, $outputfile, 0, null, 1);
+					$resultexec = $utils->executeCLI($cmd, $outputfile, 0, null, 1);
 
-					if (!$result['error']) {
-						$txt = $result['output'];
+					if (!$resultexec['error']) {
+						$txt = $resultexec['output'];
 						$matches = array();
 						if (preg_match('/<meta name="Keywords" content="([^\/]+)"\s*\/>/i', $txt, $matches)) {
 							$keywords = $matches[1];
 						}
 						if (preg_match('/<pre>(.*)<\/pre>/si', $txt, $matches)) {
-							$textforfulltextindex = dol_string_nospecial($matches[1]);
+							$textforfulltextindex = dol_string_nounprintableascii($matches[1], 0);
 						}
+					} else {
+						dol_syslog($resultexec['error']);
+						$error++;
 					}
 				}
 
@@ -2224,30 +2239,38 @@ function addFileIntoDatabaseIndex($dir, $file, $fullpathorig = '', $mode = 'uplo
 
 					// We also exclude '/temp/' dir and 'documents/admin/documents'
 					// We make escapement here and call executeCLI without escapement because we don't want to have the '*.log' escaped.
-					$cmd = getDolGlobalString('MAIN_USE_FULL_TEXT_INDEXATION_DOCLING', 'docling')." '".escapeshellcmd($filetoprocess)."' --to text ";
-					$result = $utils->executeCLI($cmd, $outputfile, 0, null, 1);
+					$cmd = getDolGlobalString('MAIN_USE_FULL_TEXT_INDEXATION_DOCLING', 'docling')." --from pdf --to text '".escapeshellcmd($filetoprocess)."'";
+					$resultexec = $utils->executeCLI($cmd, $outputfile, 0, null, 1);
 
-					if (!$result['error']) {
-						$txt = $result['output'];
+					if (!$resultexec['error']) {
+						$txt = $resultexec['output'];
 						//$matches = array();
 						//if (preg_match('/<meta name="Keywords" content="([^\/]+)"\s*\/>/i', $txt, $matches)) {
 						//	$keywords = $matches[1];
 						//}
 						//if (preg_match('/<pre>(.*)<\/pre>/si', $txt, $matches)) {
-						//	$textforfulltextindex = dol_string_nospecial($matches[1]);
+						//	$textforfulltextindex = dol_string_nounprintableascii($matches[1], 0);
 						//}
 						$textforfulltextindex = $txt;
+					} else {
+						dol_syslog($resultexec['error']);
+						$error++;
 					}
 				}
 			}
 
-			$ecmfile->description = $textforfulltextindex;
+			if ($cmd) {
+				$ecmfile->description = 'File content generated by '.$cmd;
+			}
+			$ecmfile->content = $textforfulltextindex;
 			$ecmfile->keywords = $keywords;
 		}
 
-		$result = $ecmfile->create($user);
-		if ($result < 0) {
-			dol_syslog($ecmfile->error);
+		if (!$error) {
+			$result = $ecmfile->create($user);
+			if ($result < 0) {
+				dol_syslog($ecmfile->error);
+			}
 		}
 	}
 
