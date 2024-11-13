@@ -1555,7 +1555,7 @@ function dol_get_object_properties($obj, $properties = [])
  *  @see https://php.net/manual/language.oop5.cloning.php
  *  @phan-suppress PhanTypeExpectedObjectPropAccess
  */
-function dol_clone($object, $native = 0)
+function dol_clone($object, $native = 2)
 {
 	if ($native == 0) {
 		// deprecated method, use the method with native = 2 instead
@@ -1641,7 +1641,7 @@ function dol_sanitizeFileName($str, $newstr = '_', $unaccent = 1)
 
 /**
  *	Clean a string to use it as a path name. Similar to dol_sanitizeFileName but accept / and \ chars.
- *  Replace also '--' and ' -' strings, they are used for parameters separation (Note: ' - ' is allowed).
+ *  Replace also '--' and ' -' strings, they are used for parameters separation (Note: ' - ' and 'x-y' is allowed).
  *
  *	@param	string	$str            String to clean
  * 	@param	string	$newstr			String to replace bad chars with
