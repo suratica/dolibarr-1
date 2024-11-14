@@ -284,6 +284,37 @@ class Target extends CommonObject
 	}
 
 	/**
+	 * Init the list of available triggers;
+	 * @param  string 	$triggercode TriggerCode to test
+	 * @return int             Return integer <0 if KO, >0 if OK
+	 */
+	public function isTriggerCodeManualTarget($triggercode)
+	{
+		$res = 0;
+		$error = 0;
+		$sql = "SELECT COUNT(wt.rowid) as nbtarget";
+		$sql .= " FROM ".MAIN_DB_PREFIX."webhook_target as wt";
+		$sql .= " WHERE wt.status = ".$this::STATUS_MANUAL_TRIGGER;
+		$sql .= " AND wt.trigger_codes LIKE '%".$this->db->escape($triggercode)."%'";
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			$num = $this->db->num_rows($resql);
+			if ($num > 0) {
+				$obj = $this->db->fetch_object($resql);
+				$res = $obj->nbtarget;
+			}
+		} else {
+			$this->errors[] = 'Error '.$this->db->lasterror();
+			dol_syslog(__METHOD__.' '.implode(',', $this->errors), LOG_ERR);
+			$error++;
+		}
+		if ($error) {
+			$res = $error * -1;
+		}
+		return $res;
+	}
+
+	/**
 	 * Create object into database
 	 *
 	 * @param  User $user      User that creates

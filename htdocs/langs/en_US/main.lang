@@ -1339,3 +1339,4 @@ addToFilter=Add
 FilterAssistance=Filter editor
 Operator=Operator
 AllFieldsRequired=All fields are required.
+QuestionSendManualTrigger=Send all manual webhook targets for this triggercode ?

@@ -74,11 +74,15 @@ class InterfaceWebhookTriggers extends DolibarrTriggers
 		// Or you can execute some code here
 		$nbPosts = 0;
 		$errors = 0;
+		$sendmanualtriggers = GETPOST("manual_trigger_send");
 		$static_object = new Target($this->db);
 		$target_url = $static_object->fetchAll();
 		foreach ($target_url as $key => $tmpobject) {
 			$actionarray = explode(",", $tmpobject->trigger_codes);
-			if ((in_array($object->context["actiontrigger"], array("sendtrigger", "testsend")) || $tmpobject->status == Target::STATUS_AUTOMATIC_TRIGGER) && is_array($actionarray) && in_array($action, $actionarray)) {
+
+			// Test on Target status
+			$testontargetstatus = $tmpobject->status == Target::STATUS_AUTOMATIC_TRIGGER || (Target::STATUS_MANUAL_TRIGGER && !empty($sendmanualtriggers));
+			if (((!empty($object->context["actiontrigger"]) && in_array($object->context["actiontrigger"], array("sendtrigger", "testsend"))) || $testontargetstatus) && is_array($actionarray) && in_array($action, $actionarray)) {
 				// Build the answer object
 				$resobject = new stdClass();
 				$resobject->triggercode = $action;
