@@ -194,71 +194,6 @@ if (empty($reshook)) {
 		}
 	}
 
-	if ($action == 'confirm_triggersend') {
-		$db->begin();
-		if (empty($id)) {
-			$error++;
-			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Id")), null, 'errors');
-		}
-		if (empty($lineid)) {
-			$error++;
-			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Lineid")), null, 'errors');
-		}
-
-		if (!$error) {
-			$arraytriggerstack=array();
-			$sql = "SELECT t.trigger_stack FROM ".MAIN_DB_PREFIX."webhook_target as t";
-			$sql .= " WHERE t.rowid = ".((int) $object->id);
-			$sql .= " AND t.status = 2";
-			$resql = $db->query($sql);
-			if (!$resql) {
-				dol_print_error($db);
-				$error;
-			}
-
-			if (!$error) {
-				$num = $db->num_rows($resql);
-				if ($num > 0) {
-					$obj = $db->fetch_object($resql);
-					if (!empty($obj->trigger_stack)) {
-						$json = $obj->trigger_stack;
-						$arraytriggerstack = json_decode($json);
-					}
-				}
-
-				if (!empty($arraytriggerstack[$lineid])) {
-					$obj = $arraytriggerstack[$lineid];
-					array_splice($arraytriggerstack, $lineid, 1);
-					$objecttosend = fetchObjectByElement($obj->element_id, dol_strtolower($obj->element_type));
-					$objecttosend->context["actiontrigger"] = "sendtrigger";
-					$res = $objecttosend->call_trigger($obj->trigger_code, $user);
-					if ($res <= 0) {
-						$error++;
-						setEventMessages(null, $objecttosend->errors, 'errors');
-					} else {
-						$json = json_encode($arraytriggerstack);
-						$sql = "UPDATE ".MAIN_DB_PREFIX."webhook_target as t";
-						$sql .= " SET t.trigger_stack = '".$db->escape($json)."'";
-						$sql .= " WHERE t.rowid = ".((int) $object->id);
-						$sql .= " AND t.status = ".((int) Target::STATUS_MANUAL_TRIGGER);
-						$resql = $db->query($sql);
-						if (!$resql) {
-							dol_print_error($db);
-							$error++;
-						}
-					}
-				}
-			}
-		}
-
-		if (!$error) {
-			$db->commit();
-			setEventMessages($langs->trans("WebhookSucessfullySent"), null);
-		} else {
-			$db->rollback();
-		}
-	}
-
 	// Actions to send emails
 	$triggersendname = 'WEBHOOK_TARGET_SENTBYMAIL';
 	$autocopy = 'MAIN_MAIL_AUTOCOPY_TARGET_TO';
@@ -394,11 +329,6 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	}
 
 	// Confirmation of action xxxx (You can use it for xxx = 'close', xxx = 'reopen', ...)
-	if ($action == 'triggersend') {
-		$text = $langs->trans('ConfirmTriggerSendQuestion');
-		$formquestion = array();
-		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id.'&lineid='.$lineid.'&token='.newToken(), $langs->trans('ConfirmTriggerSend'), $text, 'confirm_triggersend', $formquestion, 0, 1, 220);
-	}
 
 	// Call Hook formConfirm
 	$parameters = array('formConfirm' => $formconfirm, 'lineid' => $lineid);
@@ -698,52 +628,6 @@ if ($action == "test") {
 	}
 
 	print "\n".'<!-- END form test target -->';
-} elseif ($object->status == $object::STATUS_MANUAL_TRIGGER) {
-	$arraytriggerstack = array();
-	print load_fiche_titre($langs->trans("TriggersToConfirmValidation"));
-	print dol_get_fiche_head(array(), '', '', -1);
-
-	$sql = "SELECT t.trigger_stack FROM ".MAIN_DB_PREFIX."webhook_target as t";
-	$sql .= " WHERE t.rowid = ".((int) $object->id);
-	$sql .= " AND t.status = 2";
-	$resql = $db->query($sql);
-	if (!$resql) {
-		dol_print_error($db);
-		exit;
-	}
-
-	$num = $db->num_rows($resql);
-	if ($num > 0) {
-		$obj = $db->fetch_object($resql);
-		if (!empty($obj->trigger_stack)) {
-			$json = $obj->trigger_stack;
-			$arraytriggerstack = json_decode($json);
-		}
-	}
-
-	print '<table class="tagtable nobottomiftotal liste">';
-	print '<tr class="liste_titre"><td class="liste_titre">';
-	print $langs->trans("TriggerCodes");
-	print '</td><td class="liste_titre">';
-	print $langs->trans("Id");
-	print '</td><td class="liste_titre">';
-	print $langs->trans("ElementType");
-	print '</td><td>';
-	print '</td></tr>';
-
-	foreach ($arraytriggerstack as $key => $value) {
-		print '<tr data-id="'.$key.'" class="oddeven">';
-		print '<td>'.$value->trigger_code.'</td>';
-		print '<td>'.$value->element_id.'</td>';
-		print '<td>'.$value->element_type.'</td>';
-		// Action column
-		print '<td class="center">';
-		print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=triggersend&lineid='.$key.'&token='.newToken().'">'.img_picto($langs->trans("TriggerSendValidation"), "play").'</a>';
-		print '</td>';
-		print '</tr>';
-	}
-
-	print '</table>';
 }
 
 // End of page
