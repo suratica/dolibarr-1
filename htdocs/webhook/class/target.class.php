@@ -284,9 +284,9 @@ class Target extends CommonObject
 	}
 
 	/**
-	 * Init the list of available triggers;
+	 * Test if a TriggerCode is inside a Target with status to Manual
 	 * @param  string 	$triggercode TriggerCode to test
-	 * @return int             Return integer <0 if KO, >0 if OK
+	 * @return int             		 Return integer <0 if KO, >0 if OK, =0 No data found
 	 */
 	public function isTriggerCodeManualTarget($triggercode)
 	{
