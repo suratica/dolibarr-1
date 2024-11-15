@@ -518,16 +518,16 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				$arrayforbutactivate = array();
 				$arrayforbutactivate[] = array(
 					'url' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=confirm_statusautomatic&confirm=yes&token='.newToken(),
-					'label' => $langs->trans('AutomaticTrigger'),
+					'label' => 'AutomaticTrigger',
 					'lang' => 'admin',
-					'perm' => 1,
+					'perm' => true,
 					'enabled' => true,
 				);
 				$arrayforbutactivate[] = array(
 					'url' => $_SERVER["PHP_SELF"].'?id='.$object->id.'&action=confirm_statusmanual&confirm=yes&token='.newToken(),
-					'label' => $langs->trans('ManualTrigger'),
+					'label' => 'ManualTrigger',
 					'lang' => 'admin',
-					'perm' => 1,
+					'perm' => true,
 					'enabled' => true,
 				);
 				print dolGetButtonAction('', $langs->trans('Enable'), 'default', $arrayforbutactivate, '', $permissiontoadd);
