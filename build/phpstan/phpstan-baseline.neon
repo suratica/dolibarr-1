@@ -9559,6 +9559,30 @@ parameters:
 			path: ../../htdocs/core/ajax/ajaxdirtree.php
 
 		-
+			message: '#^Call to function is_array\(\) with list\<string\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 3
+			path: ../../htdocs/core/ajax/ajaxextrafield.php
+
+		-
+			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: ../../htdocs/core/ajax/ajaxextrafield.php
+
+		-
+			message: '#^Variable \$mode might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../htdocs/core/ajax/ajaxextrafield.php
+
+		-
+			message: '#^Variable \$value might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: ../../htdocs/core/ajax/ajaxextrafield.php
+
+		-
 			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -31885,30 +31909,6 @@ parameters:
 			path: ../../htdocs/public/test/test_arrays.php
 
 		-
-			message: '#^Variable \$conf might not be defined\.$#'
-			identifier: variable.undefined
-			count: 3
-			path: ../../htdocs/public/test/test_badges.php
-
-		-
-			message: '#^Variable \$dolibarr_main_prod might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../htdocs/public/test/test_badges.php
-
-		-
-			message: '#^Parameter \#7 \$params of function dolGetButtonAction expects array\{confirm\?\: array\{url\?\: string, title\?\: string, content\?\: string, action\-btn\-label\?\: string, cancel\-btn\-label\?\: string, modal\?\: bool\}, attr\?\: array\<string, mixed\>, areDropdownButtons\?\: bool, backtopage\?\: string, lang\?\: string, enabled\?\: bool, perm\?\: int\<0, 1\>, label\?\: string, \.\.\.\}, array\{confirm\: true\} given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../htdocs/public/test/test_buttons.php
-
-		-
-			message: '#^Variable \$dolibarr_main_prod might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../htdocs/public/test/test_buttons.php
-
-		-
 			message: '#^Variable \$dolibarr_main_prod might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -31919,18 +31919,6 @@ parameters:
 			identifier: variable.undefined
 			count: 1
 			path: ../../htdocs/public/test/test_exec.php
-
-		-
-			message: '#^Variable \$db might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../htdocs/public/test/test_forms.php
-
-		-
-			message: '#^Variable \$dolibarr_main_prod might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../htdocs/public/test/test_forms.php
 
 		-
 			message: '#^Variable \$dolibarr_main_prod might not be defined\.$#'

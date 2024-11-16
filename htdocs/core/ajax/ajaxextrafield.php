@@ -41,7 +41,12 @@ if (!defined('NOHEADERNOFOOTER')) {
 
 include '../../main.inc.php';
 include_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
-/** @var DoliDB $db */
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var Translate $langs
+ * @var User $user
+ */
 
 // object id
 $id = GETPOST('id', 'aZ09');
@@ -97,6 +102,7 @@ if ($page == 1) {
 		'text' => '&nbsp;',
 	];
 }
+$i = 0;
 if (is_object($object)) {
 	$extrafields = new ExtraFields($db);
 	$extrafields->fetch_name_optionals_label($element);
