@@ -36295,12 +36295,6 @@ parameters:
 			path: ../../htdocs/webhook/target_card.php
 
 		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 6
-			path: ../../htdocs/webhook/target_card.php
-
-		-
 			message: '#^Variable \$permissiontoadd in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
 			count: 1
