@@ -1097,7 +1097,7 @@ if (empty($reshook)) {
 
 	if ($action == 'confirm_commande' && $confirm == 'yes' && $usercanorder) {
 		$db->begin();
-
+		$object->context["sendmanualtriggers"] = GETPOST("manual_trigger_send");
 		$result = $object->commande($user, GETPOST("datecommande"), GETPOSTINT("methode"), GETPOSTINT('comment'));
 		if ($result > 0) {
 			if (!getDolGlobalString('MAIN_DISABLE_PDF_AUTOUPDATE')) {
