@@ -77,6 +77,9 @@ class InterfaceWebhookTriggers extends DolibarrTriggers
 		$sendmanualtriggers = GETPOST("manual_trigger_send");
 		$static_object = new Target($this->db);
 		$target_url = $static_object->fetchAll();
+		if (!is_array($target_url)) {
+			return 0;
+		}
 		foreach ($target_url as $key => $tmpobject) {
 			$actionarray = explode(",", $tmpobject->trigger_codes);
 
