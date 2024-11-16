@@ -59,6 +59,7 @@ if ($mode == 'searchkey') {
 	$transvalue = GETPOST('transvalue', 'restricthtml');
 }
 
+$entity = $conf->entity;
 if (isModEnabled('multicompany') && !$user->entity) {
 	$entity = GETPOST('entity', 'int');
 }
