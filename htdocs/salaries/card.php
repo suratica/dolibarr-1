@@ -800,7 +800,7 @@ if ($id > 0) {
 
 			$('#start_curr_week').click(function(){
 				var now = new Date();
-				var startCurrWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1)); 
+				var startCurrWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1));
 				setStartDate(startCurrWeek);
 			});
 
