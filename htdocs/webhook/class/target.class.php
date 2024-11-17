@@ -294,7 +294,7 @@ class Target extends CommonObject
 		$error = 0;
 		$sql = "SELECT COUNT(wt.rowid) as nbtarget";
 		$sql .= " FROM ".MAIN_DB_PREFIX."webhook_target as wt";
-		$sql .= " WHERE wt.status = ".$this::STATUS_MANUAL_TRIGGER;
+		$sql .= " WHERE wt.status = ".((int) $this::STATUS_MANUAL_TRIGGER);
 		$sql .= " AND wt.trigger_codes LIKE '%".$this->db->escape($triggercode)."%'";
 		$resql = $this->db->query($sql);
 		if ($resql) {
@@ -612,7 +612,7 @@ class Target extends CommonObject
 			// Validate
 			$sql = "UPDATE ".MAIN_DB_PREFIX.$this->table_element;
 			$sql .= " SET ref = '".$this->db->escape($num)."',";
-			$sql .= " status = ".self::STATUS_AUTOMATIC_TRIGGER;
+			$sql .= " status = ".((int) self::STATUS_AUTOMATIC_TRIGGER);
 			if (!empty($this->fields['date_validation'])) {
 				$sql .= ", date_validation = '".$this->db->idate($now)."'";
 			}
@@ -646,7 +646,7 @@ class Target extends CommonObject
 			if (preg_match('/^[\(]?PROV/i', $this->ref)) {
 				// Now we rename also files into index
 				$sql = 'UPDATE '.MAIN_DB_PREFIX."ecm_files set filename = CONCAT('".$this->db->escape($this->newref)."', SUBSTR(filename, ".(strlen($this->ref) + 1).")), filepath = 'target/".$this->db->escape($this->newref)."'";
-				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'target/".$this->db->escape($this->ref)."' and entity = ".$conf->entity;
+				$sql .= " WHERE filename LIKE '".$this->db->escape($this->ref)."%' AND filepath = 'target/".$this->db->escape($this->ref)."' and entity = ".((int) $conf->entity);
 				$resql = $this->db->query($sql);
 				if (!$resql) {
 					$error++;
