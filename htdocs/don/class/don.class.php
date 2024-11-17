@@ -862,7 +862,7 @@ class Don extends CommonObject
 		if ($this->status != self::STATUS_CANCELED && $this->status != self::STATUS_PAID) {
 			return 0;
 		}
-		if($this->statut == self::STATUS_PAID) {
+		if ($this->statut == self::STATUS_PAID) {
 			$sql = "UPDATE " . MAIN_DB_PREFIX . "don SET paid = 0 WHERE rowid = " . ((int)$this->id);
 
 			$resql = $this->db->query($sql);
