@@ -863,7 +863,7 @@ class Don extends CommonObject
 			return 0;
 		}
 		if ($this->statut == self::STATUS_PAID) {
-			$sql = "UPDATE " . MAIN_DB_PREFIX . "don SET paid = 0 WHERE rowid = " . ((int)$this->id);
+			$sql = "UPDATE " . MAIN_DB_PREFIX . "don SET paid = 0 WHERE rowid = " . ((int) $this->id);
 
 			$resql = $this->db->query($sql);
 			if ($resql) {
