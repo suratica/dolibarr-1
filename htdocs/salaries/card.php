@@ -773,10 +773,10 @@ if ($id > 0) {
 		$formconfirm .= "<script>
 			// Buttons for start date: previous month, current month, previous week, current week
 			$('#clone_date_start').after(
-				$('<button id=\"start_prev_month\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('PreviousMonth')."</button>')
-				.add('<button id=\"start_curr_month\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('CurrentMonth')."</button>')
-				.add('<button id=\"start_prev_week\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('PreviousWeek')."</button>')
-				.add('<button id=\"start_curr_week\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('CurrentWeek')."</button>')
+				$('<button id=\"start_prev_month\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('PreviousMonthShort')."</button>')
+				.add('<button id=\"start_curr_month\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('CurrentMonthShort')."</button>')
+				.add('<button id=\"start_prev_week\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('PreviousWeekShort')."</button>')
+				.add('<button id=\"start_curr_week\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('CurrentWeekShort')."</button>')
 			);
 
 			$('#start_prev_month').click(function(){
