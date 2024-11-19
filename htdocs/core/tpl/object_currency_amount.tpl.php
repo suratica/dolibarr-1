@@ -24,8 +24,13 @@
  * $langs
  */
 /**
+ * @var CommonObject $object
+ * @var Conf $conf
  * @var Form $form
  * @var Translate $langs
+ *
+ * @var string $action
+ * @var int $usercancreate
  */
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {

@@ -17527,24 +17527,6 @@ parameters:
 			path: ../../htdocs/core/tpl/list_print_total.tpl.php
 
 		-
-			message: '#^Variable \$action might not be defined\.$#'
-			identifier: variable.undefined
-			count: 5
-			path: ../../htdocs/core/tpl/object_currency_amount.tpl.php
-
-		-
-			message: '#^Variable \$object might not be defined\.$#'
-			identifier: variable.undefined
-			count: 3
-			path: ../../htdocs/core/tpl/object_currency_amount.tpl.php
-
-		-
-			message: '#^Variable \$usercancreate might not be defined\.$#'
-			identifier: variable.undefined
-			count: 4
-			path: ../../htdocs/core/tpl/object_currency_amount.tpl.php
-
-		-
 			message: '#^Left side of && is always true\.$#'
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1
