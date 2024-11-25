@@ -17,9 +17,9 @@
  */
 
 /**
- *      \file       htdocs/core/ajax/ajaxtooltip.php
- *      \ingroup    tooltip
- *      \brief      This script returns content of tooltip
+ *      \file       htdocs/core/ajax/ajaxextrafield.php
+ *      \ingroup    extrafield
+ *      \brief      This script returns content of extrafield
  */
 
 if (!defined('NOTOKENRENEWAL')) {
