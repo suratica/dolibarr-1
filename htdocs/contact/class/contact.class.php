@@ -1531,7 +1531,7 @@ class Contact extends CommonObject
 	 *  @param  	string  	$morecss            		Add more css on link
 	 *	@return		string									String with URL
 	 */
-	public function getNomUrl($withpicto = 0, $option = '', $maxlen = 0, $moreparam = '', $save_lastsearch_value = -1, $notooltip = 0, $morecss = '')
+	public function getNomUrl($withpicto = 0, $option = '', $maxlen = 0, $moreparam = '', $save_lastsearch_value = -1, $notooltip = 0, $morecss = 'valignmiddle')
 	{
 		global $conf, $langs, $hookmanager;
 
