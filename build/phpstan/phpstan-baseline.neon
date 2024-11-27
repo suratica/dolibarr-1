@@ -8719,30 +8719,6 @@ parameters:
 			path: ../../htdocs/core/ajax/ajaxdirtree.php
 
 		-
-			message: '#^Call to function is_array\(\) with list\<string\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 3
-			path: ../../htdocs/core/ajax/ajaxextrafield.php
-
-		-
-			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../htdocs/core/ajax/ajaxextrafield.php
-
-		-
-			message: '#^Variable \$mode might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../htdocs/core/ajax/ajaxextrafield.php
-
-		-
-			message: '#^Variable \$value might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../htdocs/core/ajax/ajaxextrafield.php
-
-		-
 			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1

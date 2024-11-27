@@ -49,25 +49,27 @@ include_once DOL_DOCUMENT_ROOT . '/core/class/html.form.class.php';
  */
 
 // object id
-$id = GETPOST('id', 'aZ09');
+$objectid = GETPOST('objectid', 'aZ09');
 // 'module' or 'myobject@mymodule', 'mymodule_myobject'
 $objecttype = GETPOST('objecttype', 'aZ09arobase');
 $objectkey = GETPOST('objectkey', 'restricthtml');
 $search = GETPOST('search', 'restricthtml');
 $page = GETPOSTINT('page');
+$mode = GETPOSTINT('mode');
+$value = GETPOST('value', 'alphanohtml');
 $limit = 10;
 $offset = (($page - 1) * $limit);
 $element_ref = '';
-if (is_numeric($id)) {
-	$id = (int) $id;
+if (is_numeric($objectid)) {
+	$objectid = (int) $objectid;
 } else {
-	$element_ref = $id;
-	$id = 0;
+	$element_ref = $objectid;
+	$objectid = 0;
 }
 // Load object according to $element
-$object = fetchObjectByElement($id, $objecttype, $element_ref);
+$object = fetchObjectByElement($objectid, $objecttype, $element_ref);
 if (empty($object->element)) {
-	httponly_accessforbidden('Failed to get object with fetchObjectByElement(id=' . $id . ', objecttype=' . $objecttype . ')');
+	httponly_accessforbidden('Failed to get object with fetchObjectByElement(id=' . $objectid . ', objecttype=' . $objecttype . ')');
 }
 
 $module = $object->module;
@@ -103,7 +105,7 @@ if ($page == 1) {
 	];
 }
 $i = 0;
-if (is_object($object)) {
+if ($object instanceof CommonObject) {
 	$extrafields = new ExtraFields($db);
 	$extrafields->fetch_name_optionals_label($element);
 	$options = $extrafields->attributes[$element]['param'][$objectkey]['options'];
@@ -177,7 +179,7 @@ if (is_object($object)) {
 
 		if (!$filter_categorie) {
 			$fields_label = explode('|', $InfoFieldList[1]);
-			if (is_array($fields_label)) {
+			if (count($fields_label) > 0) {
 				$keyList .= ', ';
 				$keyList .= implode(', ', $fields_label);
 			}
@@ -188,16 +190,14 @@ if (is_object($object)) {
 
 			// Add filter from 4th field
 			if (!empty($InfoFieldList[4])) {
-				if (is_object($object)) {
-					$tags = [];
-					preg_match_all('/\$(.*?)\$/', $InfoFieldList[4], $tags);
-					foreach ($tags[0] as $keytag => $valuetag) {
-						$property = strtolower($tags[1][$keytag]);
-						if (strpos($InfoFieldList[4], $valuetag) !== false && property_exists($object, $property) && !empty($object->$property)) {
-							$InfoFieldList[4] = str_replace($valuetag, (string) $object->$property, $InfoFieldList[4]);
-						} else {
-							$InfoFieldList[4] = str_replace($valuetag, '0', $InfoFieldList[4]);
-						}
+				$tags = [];
+				preg_match_all('/\$(.*?)\$/', $InfoFieldList[4], $tags);
+				foreach ($tags[0] as $keytag => $valuetag) {
+					$property = strtolower($tags[1][$keytag]);
+					if (strpos($InfoFieldList[4], $valuetag) !== false && property_exists($object, $property) && !empty($object->$property)) {
+						$InfoFieldList[4] = str_replace($valuetag, (string) $object->$property, $InfoFieldList[4]);
+					} else {
+						$InfoFieldList[4] = str_replace($valuetag, '0', $InfoFieldList[4]);
 					}
 				}
 				// can use current entity filter
@@ -245,7 +245,7 @@ if (is_object($object)) {
 			$sql .= $sqlwhere;
 			$orderfields = explode('|', $InfoFieldList[1]);
 			$keyList = $InfoFieldList[1];
-			if (is_array($orderfields)) {
+			if (count($orderfields)) {
 				$keyList = implode(', ', $orderfields);
 			}
 			$sql .= $db->order($keyList);
@@ -265,7 +265,7 @@ if (is_object($object)) {
 					// Several field into label (eq table:code|label:rowid)
 					$notrans = false;
 					$fields_label = explode('|', $InfoFieldList[1]);
-					if (is_array($fields_label) && count($fields_label) > 1) {
+					if (count($fields_label) > 1) {
 						$notrans = true;
 						foreach ($fields_label as $field_toshow) {
 							$labeltoshow .= $obj->$field_toshow . ' ';

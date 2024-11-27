@@ -1376,8 +1376,10 @@ class ExtraFields
 										search: params.term,
 										page: params.page || 1,
 										objecttype: '".$extrafieldsobjectkey."',
-										id: '".$object->id."',
-										objectkey: '".$key."'
+										objectid: '".$object->id."',
+										objectkey: '".$key."',
+										mode: '".$mode."',
+										value: '".$value."'
 									}
 									return query;
 								}
