@@ -1203,7 +1203,7 @@ class FormTicket
 					print ' selected="selected"';
 				} elseif ($arrayseverities['use_default'] == "1" && empty($selected)) {
 					print ' selected="selected"';
-				} elseif (count($conf->cache['severity_tickets']) == 1 && (!$empty || $empty == 'ifone')) {	// If only 1 choice, we autoselect it
+				} elseif (count($ticketstat->cache_severity_tickets) == 1 && (!$empty || $empty == 'ifone')) {	// If only 1 choice, we autoselect it
 					print ' selected="selected"';
 				}
 
