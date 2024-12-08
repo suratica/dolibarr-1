@@ -1527,16 +1527,16 @@ class ExtraFields
 
 						// Add Usf filter on second line
 						/*
-						if ($Usf) {
-						$errorstr = '';
-						$sqlusf .= forgeSQLFromUniversalSearchCriteria($Usf, $errorstr);
-						if (!$errorstr) {
-						$sqlwhere .= $sqlusf;
-						} else {
-						$sqlwhere .= " AND invalid_usf_filter_of_extrafield";
-						}
-						}
-						*/
+						 if ($Usf) {
+						 $errorstr = '';
+						 $sqlusf .= forgeSQLFromUniversalSearchCriteria($Usf, $errorstr);
+						 if (!$errorstr) {
+						 $sqlwhere .= $sqlusf;
+						 } else {
+						 $sqlwhere .= " AND invalid_usf_filter_of_extrafield";
+						 }
+						 }
+						 */
 
 						// Some tables may have field, some other not. For the moment we disable it.
 						if (in_array($InfoFieldList[0], array('tablewithentity'))) {
