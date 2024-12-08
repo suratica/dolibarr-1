@@ -177,7 +177,7 @@ abstract class CommonObject
 	private $linkedObjectsFullLoaded = array();
 
 	/**
-	 * @var static|null		To store a cloned copy of the object before editing it (to keep track of its former properties)
+	 * @var ?static		To store a cloned copy of the object before editing it (to keep track of its former properties)
 	 */
 	public $oldcopy;
 
@@ -546,7 +546,7 @@ abstract class CommonObject
 	public $multicurrency_total_localtax2;	// not in database
 
 	/**
-	 * @var string
+	 * @var ?string
 	 * @see SetDocModel()
 	 */
 	public $model_pdf;

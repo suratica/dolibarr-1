@@ -247,15 +247,9 @@ class Ticket extends CommonObject
 	public $ip;
 
 	/**
-	 * @var static 	Save the ticket before an update operation (for triggers)
-	 */
-	public $oldcopy;
-
-	/**
 	 * @var Ticket[] Array of Tickets
 	 */
 	public $lines;
-
 
 	/**
 	 * @var string Regex pour les images
@@ -516,7 +510,8 @@ class Ticket extends CommonObject
 		$result = $this->verify();
 
 		if ($result >= 0) {
-			$this->entity = ((isset($this->entity) && is_numeric($this->entity)) ? $this->entity : $conf->entity);
+			// setEntity will set entity with the right value if empty or change it for the right value if multicompany module is active
+			$this->entity = setEntity($this);
 
 			// Insert request
 			$sql = "INSERT INTO ".MAIN_DB_PREFIX."ticket(";
