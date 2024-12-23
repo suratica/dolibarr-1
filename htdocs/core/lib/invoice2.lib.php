@@ -231,6 +231,7 @@ function rebuild_merge_pdf($db, $langs, $conf, $diroutputpdf, $newlangid, $filte
 			while ($cpt < $num) {
 				$obj = $db->fetch_object($resql);
 
+				$fac = null;
 				if ($mode == 'invoice') {
 					$fac = new Facture($db);
 				} elseif ($mode == 'order') {
@@ -241,37 +242,39 @@ function rebuild_merge_pdf($db, $langs, $conf, $diroutputpdf, $newlangid, $filte
 					$fac = new Expedition($db);
 				}
 
-				$result = $fac->fetch($obj->rowid);
-				if ($result > 0) {
-					$outputlangs = $langs;
-					if (!empty($newlangid)) {
-						if ($outputlangs->defaultlang != $newlangid) {
-							$outputlangs = new Translate("", $conf);
-							$outputlangs->setDefaultLang($newlangid);
+				if ($fac) {
+					$result = $fac->fetch($obj->rowid);
+					if ($result > 0) {
+						$outputlangs = $langs;
+						if (!empty($newlangid)) {
+							if ($outputlangs->defaultlang != $newlangid) {
+								$outputlangs = new Translate("", $conf);
+								$outputlangs->setDefaultLang($newlangid);
+							}
 						}
-					}
-					$filename = $dir_output.'/'.$fac->ref.'/'.$fac->ref.'.pdf';
-					if ($regenerate || !dol_is_file($filename)) {
-						if ($usestdout) {
-							print "Build PDF for document ".$obj->ref." - Lang = ".$outputlangs->defaultlang."\n";
+						$filename = $dir_output.'/'.$fac->ref.'/'.$fac->ref.'.pdf';
+						if ($regenerate || !dol_is_file($filename)) {
+							if ($usestdout) {
+								print "Build PDF for document ".$obj->ref." - Lang = ".$outputlangs->defaultlang."\n";
+							}
+							$result = $fac->generateDocument($regenerate ? $regenerate : $fac->model_pdf, $outputlangs);
+						} else {
+							if ($usestdout) {
+								print "PDF for document ".$obj->ref." already exists\n";
+							}
 						}
-						$result = $fac->generateDocument($regenerate ? $regenerate : $fac->model_pdf, $outputlangs);
-					} else {
-						if ($usestdout) {
-							print "PDF for document ".$obj->ref." already exists\n";
-						}
+
+						// Add file into files array
+						$files[] = $filename;
 					}
 
-					// Add file into files array
-					$files[] = $filename;
-				}
-
-				if ($result <= 0) {
-					$error++;
-					if ($usestdout) {
-						print "Error: Failed to build PDF for document ".($fac->ref ? $fac->ref : ' id '.$obj->rowid)."\n";
-					} else {
-						dol_syslog("Failed to build PDF for document ".($fac->ref ? $fac->ref : ' id '.$obj->rowid), LOG_ERR);
+					if ($result <= 0) {
+						$error++;
+						if ($usestdout) {
+							print "Error: Failed to build PDF for document ".($fac->ref ? $fac->ref : ' id '.$obj->rowid)."\n";
+						} else {
+							dol_syslog("Failed to build PDF for document ".($fac->ref ? $fac->ref : ' id '.$obj->rowid), LOG_ERR);
+						}
 					}
 				}
 
