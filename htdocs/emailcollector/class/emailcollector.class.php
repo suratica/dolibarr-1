@@ -1165,6 +1165,7 @@ class EmailCollector extends CommonObject
 		$arrayofemail = array();
 
 		$now = dol_now();
+		$datelastok = $now;
 
 		if (empty($this->host)) {
 			$this->error = $langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('EMailHost'));
@@ -1690,7 +1691,7 @@ class EmailCollector extends CommonObject
 				if ($mode > 0) {
 					$Query->leaveUnread();
 				}
-				$arrayofemail = $Query->limit($this->maxemailpercollect)->setFetchOrder("asc")->get();
+				$arrayofemail = $Query->limit($this->maxemailpercollect)->setFetchOrder("desc")->get();
 				dol_syslog("EmailCollector::doCollectOneCollector nb arrayofemail ".(is_array($arrayofemail) ? count($arrayofemail) : 'Not array'));	// @phpstan-ignore-line
 				//var_dump($arrayofemail);
 			} catch (Exception $e) {
@@ -3635,6 +3636,7 @@ class EmailCollector extends CommonObject
 					// Stop the loop to process email if we reach maximum collected per collect
 					if ($this->maxemailpercollect > 0 && $nbemailok >= $this->maxemailpercollect) {
 						dol_syslog("EmailCollect::doCollectOneCollector We reach maximum of ".$nbemailok." collected with success, so we stop this collector now.");
+						$datelastok = strtotime($headers['Date']); // Set datetime
 						break;
 					}
 				} else {
@@ -3736,7 +3738,7 @@ class EmailCollector extends CommonObject
 		}
 
 		if (empty($error) && empty($mode)) {
-			$this->datelastok = $now;
+			$this->datelastok = $datelastok;
 		}
 
 		if (!empty($this->errors)) {
