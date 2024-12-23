@@ -16909,18 +16909,6 @@ parameters:
 			path: ../../htdocs/core/tpl/objectline_view.tpl.php
 
 		-
-			message: '#^Variable \$action might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../htdocs/core/tpl/objectline_view.tpl.php
-
-		-
-			message: '#^Variable \$i might not be defined\.$#'
-			identifier: variable.undefined
-			count: 5
-			path: ../../htdocs/core/tpl/objectline_view.tpl.php
-
-		-
 			message: '#^Variable \$objp might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2

@@ -119,7 +119,7 @@ $search_accountancy_code_buy_intra = GETPOST("search_accountancy_code_buy_intra"
 $search_accountancy_code_buy_export = GETPOST("search_accountancy_code_buy_export", 'alpha');
 $search_import_key = GETPOST("search_import_key", 'alpha');
 $search_finished = GETPOST("search_finished");
-$search_units = GETPOST('search_units', 'alpha');
+$search_units = GETPOST('search_units', 'int');
 $type = GETPOST("type", 'alpha');
 
 // Show/hide child product variants
