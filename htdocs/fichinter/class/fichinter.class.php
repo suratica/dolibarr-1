@@ -200,10 +200,17 @@ class Fichinter extends CommonObject
 	const STATUS_CLOSED = 3;
 
 	/**
-	 * Date delivery
-	 * @var null|int|''		Delivery int
+	 * Date of delivery of receipt
+	 * @var null|int|''		Date the intervention receipt has been delivered
+	 * @deprecated Use $delivery_date_receipt
 	 */
 	public $date_delivery;
+
+	/**
+	 * Date of delivery of receipt
+	 * @var null|int|''		Date the intervention receipt has been delivered
+	 */
+	public $delivery_date_receipt;
 
 	/**
 	 * Author Id
@@ -295,6 +302,7 @@ class Fichinter extends CommonObject
 			dol_syslog(get_class($this)."::create ".$this->error, LOG_ERR);
 			return -1;
 		}
+		$this->entity = setEntity($this);
 
 		$soc = new Societe($this->db);
 		$result = $soc->fetch($this->socid);
@@ -325,7 +333,7 @@ class Fichinter extends CommonObject
 		$sql .= ", '".$this->db->idate($now)."'";
 		$sql .= ", '".$this->db->escape($this->ref)."'";
 		$sql .= ", ".($this->ref_client ? "'".$this->db->escape($this->ref_client)."'" : "null");
-		$sql .= ", ".((int) $conf->entity);
+		$sql .= ", ".((int) $this->entity);
 		$sql .= ", ".((int) $user->id);
 		$sql .= ", ".((int) $user->id);
 		$sql .= ", ".($this->description ? "'".$this->db->escape($this->description)."'" : "null");
@@ -1195,23 +1203,24 @@ class Fichinter extends CommonObject
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 	/**
-	 *  Defines a delivery date of intervention
+	 *  Defines a delivery date of the receipt of intervention
 	 *
-	 *  @param      User	$user				Object user who define
-	 *  @param      integer	$date_delivery   	date of delivery
-	 *  @return     int							Return integer <0 if KO, >0 if OK
+	 *  @param      User	$user						Object user who define
+	 *  @param      integer	$delivery_date_receipt   	Date of delivery of receipt
+	 *  @return     int									Return integer <0 if KO, >0 if OK
 	 */
-	public function set_date_delivery($user, $date_delivery)
+	public function set_date_delivery($user, $delivery_date_receipt)
 	{
 		// phpcs:enable
 		if ($user->hasRight('ficheinter', 'creer')) {
-			$sql = "UPDATE ".MAIN_DB_PREFIX."fichinter ";
-			$sql .= " SET datei = '".$this->db->idate($date_delivery)."'";
+			$sql = "UPDATE ".MAIN_DB_PREFIX."fichinter";
+			$sql .= " SET datei = '".$this->db->idate($delivery_date_receipt)."'";
 			$sql .= " WHERE rowid = ".((int) $this->id);
 			$sql .= " AND fk_statut = 0";
 
 			if ($this->db->query($sql)) {
-				$this->date_delivery = $date_delivery;
+				$this->date_delivery = $delivery_date_receipt;
+				$this->delivery_date_receipt = $delivery_date_receipt;
 				return 1;
 			} else {
 				$this->error = $this->db->error();
