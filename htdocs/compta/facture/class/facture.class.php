@@ -21,7 +21,7 @@
  * Copyright (C) 2023      	Gauthier VERDOL       	<gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2023		Nick Fragoulis
  * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
- * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024-2025  Frédéric France         <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -249,11 +249,6 @@ class Facture extends CommonInvoice
 	public $tab_next_situation_invoice = array();
 
 	/**
-	 * @var static object oldcopy
-	 */
-	public $oldcopy;
-
-	/**
 	 * @var float percentage of retainage
 	 */
 	public $retained_warranty;
@@ -322,7 +317,7 @@ class Facture extends CommonInvoice
 
 	// BEGIN MODULEBUILDER PROPERTIES
 	/**
-	 * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-2,5>|string,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,2>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,comment?:string,validate?:int<0,1>}>	Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
+	 * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-5,5>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}>	Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
 	 */
 	public $fields = array(
 		'rowid' => array('type' => 'integer', 'label' => 'TechnicalID', 'enabled' => 1, 'visible' => -1, 'notnull' => 1, 'position' => 1),
@@ -491,7 +486,8 @@ class Facture extends CommonInvoice
 			$this->type = self::TYPE_STANDARD;
 		}
 
-		$this->ref_client = trim($this->ref_client);
+		$this->ref_client = trim($this->ref_client); // deprecated
+		$this->ref_customer = trim($this->ref_customer);
 
 		$this->note_private = (isset($this->note_private) ? trim($this->note_private) : '');
 		$this->note = (isset($this->note) ? trim($this->note) : $this->note_private); // deprecated
@@ -523,6 +519,7 @@ class Facture extends CommonInvoice
 			$this->fk_multicurrency = 0;
 			$this->multicurrency_tx = 1;
 		}
+		$this->entity = setEntity($this);
 
 		dol_syslog(get_class($this)."::create user=".$user->id." date=".$this->date);
 
@@ -718,7 +715,7 @@ class Facture extends CommonInvoice
 		$sql .= ")";
 		$sql .= " VALUES (";
 		$sql .= "'(PROV)'";
-		$sql .= ", ".setEntity($this);
+		$sql .= ", ".(int) $this->entity;
 		$sql .= ", ".($this->ref_ext ? "'".$this->db->escape($this->ref_ext)."'" : "null");
 		$sql .= ", '".$this->db->escape($this->type)."'";
 		$sql .= ", ".($this->subtype ? "'".$this->db->escape($this->subtype)."'" : "null");
@@ -910,16 +907,17 @@ class Facture extends CommonInvoice
 							1
 						);
 
+						if ($result < 0) {
+							$this->error = $newinvoiceline->error;
+							$this->errors = array_merge($this->errors, $newinvoiceline->errors);
+							$error++;
+							break;
+						}
+
 						// Defined the new fk_parent_line
 						if ($result > 0 && $newinvoiceline->product_type == 9) {
 							$fk_parent_line = $result;
 						}
-					}
-					if ($result < 0) {
-						$this->error = $newinvoiceline->error;
-						$this->errors = $newinvoiceline->errors;
-						$error++;
-						break;
 					}
 				}
 			} elseif (!$error && empty($this->fac_rec)) { 		// If this->lines is an array of invoice line arrays
@@ -1472,6 +1470,8 @@ class Facture extends CommonInvoice
 		$this->fk_account = $object->fk_account;
 		$this->cond_reglement_id    = $object->cond_reglement_id;
 		$this->mode_reglement_id    = $object->mode_reglement_id;
+		$this->fk_incoterms    		= $object->fk_incoterms;
+		$this->location_incoterms	= $object->location_incoterms;
 		$this->availability_id      = $object->availability_id;
 		$this->demand_reason_id     = $object->demand_reason_id;
 		$this->delivery_date        = $object->delivery_date;
@@ -2109,9 +2109,9 @@ class Facture extends CommonInvoice
 		if (empty($notooltip) && $user->hasRight("facture", "read")) {
 			if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
 				$label = $langs->trans("Invoice");
-				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
+				$linkclose .= ' alt="'.dolPrintHTMLForAttribute($label).'"';
 			}
-			$linkclose .= ($label ? ' title="'.dol_escape_htmltag($label, 1).'"' : ' title="tocomplete"');
+			$linkclose .= ($label ? ' title="'.dolPrintHTMLForAttribute($label).'"' : ' title="tocomplete"');
 			$linkclose .= $dataparams.' class="'.$classfortooltip.'"';
 		}
 
@@ -2516,8 +2516,12 @@ class Facture extends CommonInvoice
 		if (isset($this->ref_ext)) {
 			$this->ref_ext = trim($this->ref_ext);
 		}
-		if (isset($this->ref_client)) {
+		// deprecated
+		if (!empty($this->ref_client)) {
 			$this->ref_client = trim($this->ref_client);
+		}
+		if (!empty($this->ref_customer)) {
+			$this->ref_customer = trim($this->ref_customer);
 		}
 		if (isset($this->increment)) {
 			$this->increment = trim($this->increment);
@@ -2547,7 +2551,6 @@ class Facture extends CommonInvoice
 			$this->retained_warranty = (float) $this->retained_warranty;
 		}
 
-
 		// Check parameters
 		// Put here code to add control on parameters values
 
@@ -2557,7 +2560,7 @@ class Facture extends CommonInvoice
 		$sql .= " ref_ext=".(isset($this->ref_ext) ? "'".$this->db->escape($this->ref_ext)."'" : "null").",";
 		$sql .= " type=".(isset($this->type) ? $this->db->escape($this->type) : "null").",";
 		$sql .= " subtype=".(isset($this->subtype) ? $this->db->escape($this->subtype) : "null").",";
-		$sql .= " ref_client=".(isset($this->ref_client) ? "'".$this->db->escape($this->ref_client)."'" : "null").",";
+		$sql .= " ref_client=".(!empty($this->ref_customer) ? "'".$this->db->escape($this->ref_customer)."'" : (isset($this->ref_client) ? "'".$this->db->escape($this->ref_client)."'" : "null")).",";
 		$sql .= " increment=".(isset($this->increment) ? "'".$this->db->escape($this->increment)."'" : "null").",";
 		$sql .= " fk_soc=".(isset($this->socid) ? $this->db->escape($this->socid) : "null").",";
 		$sql .= " datec=".(strval($this->date_creation) != '' ? "'".$this->db->idate($this->date_creation)."'" : 'null').",";
@@ -2572,7 +2575,7 @@ class Facture extends CommonInvoice
 		$sql .= " localtax2=".(isset($this->total_localtax2) ? (float) $this->total_localtax2 : "null").",";
 		$sql .= " total_ht=".(isset($this->total_ht) ? (float) $this->total_ht : "null").",";
 		$sql .= " total_ttc=".(isset($this->total_ttc) ? (float) $this->total_ttc : "null").",";
-		$sql .= " revenuestamp=".((isset($this->revenuestamp) && $this->revenuestamp != '') ? (int) $this->revenuestamp : "null").",";
+		$sql .= " revenuestamp=".((isset($this->revenuestamp) && $this->revenuestamp != '') ? (float) $this->revenuestamp : "null").",";
 		$sql .= " fk_statut=".(isset($this->status) ? (int) $this->status : "null").",";
 		$sql .= " fk_user_valid=".(isset($this->fk_user_valid) ? (int) $this->fk_user_valid : "null").",";
 		$sql .= " fk_facture_source=".(isset($this->fk_facture_source) ? (int) $this->fk_facture_source : "null").",";
@@ -2762,7 +2765,8 @@ class Facture extends CommonInvoice
 		}
 
 		if (!$error) {
-			$this->ref_client = $ref_client;
+			$this->ref_client = $ref_client; //deprecated
+			$this->ref_customer = $ref_client;
 		}
 
 		if (!$notrigger && empty($error)) {
@@ -2775,7 +2779,8 @@ class Facture extends CommonInvoice
 		}
 
 		if (!$error) {
-			$this->ref_client = $ref_client;
+			$this->ref_client = $ref_client; //deprecated
+			$this->ref_customer = $ref_client;
 
 			$this->db->commit();
 			return 1;
@@ -3634,7 +3639,7 @@ class Facture extends CommonInvoice
 				$this->date_validation = $now;
 				$i = 0;
 
-				if (getDolGlobalString('INVOICE_USE_SITUATION')) {
+				if (getDolGlobalInt('INVOICE_USE_SITUATION')) {
 					$final = true;
 					$nboflines = count($this->lines);
 					while (($i < $nboflines) && $final) {
@@ -3941,16 +3946,18 @@ class Facture extends CommonInvoice
 			}
 
 			$remise_percent = (float) price2num($remise_percent);
-			$qty = price2num($qty);
-			$pu_ht = price2num($pu_ht);
-			$pu_ht_devise = price2num($pu_ht_devise);
-			$pu_ttc = price2num($pu_ttc);
-			$pa_ht = price2num($pa_ht);
+
+			$qty = (float) price2num($qty);
+			$pu_ht = (float) price2num($pu_ht);
+			$pu_ht_devise = (float) price2num($pu_ht_devise);
+			$pu_ttc = (float) price2num($pu_ttc);
+			$pa_ht = price2num($pa_ht); // do not convert to float here, it breaks the functioning of $pa_ht_isemptystring
+
 			if (!preg_match('/\((.*)\)/', (string) $txtva)) {
 				$txtva = price2num($txtva); // $txtva can have format '5.0(XXX)' or '5'
 			}
-			$txlocaltax1 = price2num($txlocaltax1);
-			$txlocaltax2 = price2num($txlocaltax2);
+			$txlocaltax1 = (float) price2num($txlocaltax1);
+			$txlocaltax2 = (float) price2num($txlocaltax2);
 
 			if ($price_base_type == 'HT') {
 				$pu = $pu_ht;
@@ -4140,7 +4147,7 @@ class Facture extends CommonInvoice
 	 * 	@param	int			$fk_parent_line		Id of parent line (0 in most cases, used by modules adding sublevels into lines).
 	 * 	@param	int			$skip_update_total	Keep fields total_xxx to 0 (used for special lines by some modules)
 	 * 	@param	int			$fk_fournprice		Id of origin supplier price
-	 * 	@param	int			$pa_ht				Price (without tax) of product when it was bought
+	 * 	@param	float		$pa_ht				Price (without tax) of product when it was bought
 	 * 	@param	string		$label				Label of the line (deprecated, do not use)
 	 * 	@param	int			$special_code		Special code (also used by externals modules!)
 	 *  @param	array<string,mixed>	$array_options	extrafields array
@@ -4203,15 +4210,17 @@ class Facture extends CommonInvoice
 			}
 
 			$remise_percent = (float) price2num($remise_percent);
-			$qty			= price2num($qty);
-			$pu 			= price2num($pu);
-			$pu_ht_devise = price2num($pu_ht_devise);
-			$pa_ht = price2num($pa_ht);
+
+			$qty = (float) price2num($qty);
+			$pu = (float) price2num($pu);
+			$pu_ht_devise = (float) price2num($pu_ht_devise);
+			$pa_ht = price2num($pa_ht); // do not convert to float here, it breaks the functioning of $pa_ht_isemptystring
+
 			if (!preg_match('/\((.*)\)/', (string) $txtva)) {
 				$txtva = price2num($txtva); // $txtva can have format '5.0(XXX)' or '5'
 			}
-			$txlocaltax1	= (float) price2num($txlocaltax1);
-			$txlocaltax2	= (float) price2num($txlocaltax2);
+			$txlocaltax1 = (float) price2num($txlocaltax1);
+			$txlocaltax2 = (float) price2num($txlocaltax2);
 
 			// Check parameters
 			if ($type < 0) {
@@ -5156,7 +5165,7 @@ class Facture extends CommonInvoice
 
 		if (empty($option) || $option != 'nolines') {
 			// Lines
-			$nbp = 5;
+			$nbp = min(1000, GETPOSTINT('nblines') ? GETPOSTINT('nblines') : 5);	// We can force the nb of lines to test from command line (but not more than 1000)
 			$xnbp = 0;
 			while ($xnbp < $nbp) {
 				$line = new FactureLigne($this->db);

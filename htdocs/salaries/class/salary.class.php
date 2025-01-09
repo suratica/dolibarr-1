@@ -120,6 +120,7 @@ class Salary extends CommonObject
 
 	/**
 	 * @var int
+	 * @deprecated see $accountid
 	 * @see $accountid
 	 */
 	public $fk_account;
@@ -154,7 +155,7 @@ class Salary extends CommonObject
 	const STATUS_PAID = 1;
 
 	/**
-	 * @var string
+	 * @var float amount remain to pay
 	 */
 	public $resteapayer;
 
@@ -613,9 +614,9 @@ class Salary extends CommonObject
 		if (empty($notooltip)) {
 			if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
 				$label = $langs->trans("ShowMyObject");
-				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
+				$linkclose .= ' alt="'.dolPrintHTMLForAttribute($label).'"';
 			}
-			$linkclose .= ($label ? ' title="'.dol_escape_htmltag($label, 1).'"' : ' title="tocomplete"');
+			$linkclose .= ($label ? ' title="'.dolPrintHTMLForAttribute($label).'"' : ' title="tocomplete"');
 			$linkclose .= $dataparams.' class="'.$classfortooltip.($morecss ? ' '.$morecss : '').'"';
 		} else {
 			$linkclose = ($morecss ? ' class="'.$morecss.'"' : '');

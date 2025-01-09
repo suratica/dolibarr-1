@@ -290,7 +290,6 @@ BankCode=Código bancário
 BankAccountNumber=Número da conta
 BankAccountNumberKey=Soma de verificação
 Residence=Endereço
-IBAN=Agencia
 CustomerIBAN=IBAN do cliente
 SupplierIBAN=IBAN do fornecedor
 BICNumber=Código BIC/SWIFT

@@ -99,10 +99,6 @@ class Reception extends CommonObject
 	 * @var int<0,1>
 	 */
 	public $billed;
-	/**
-	 * @var string
-	 */
-	public $model_pdf;
 
 	/**
 	 * @var int|float
@@ -651,8 +647,7 @@ class Reception extends CommonObject
 
 						if (intval($result) < 0) {
 							$error++;
-							$this->errors[] = $mouvS->error;
-							$this->errors = array_merge($this->errors, $mouvS->errors);
+							$this->setErrorsFromObject($mouvS);
 							break;
 						}
 					} else {
@@ -665,8 +660,7 @@ class Reception extends CommonObject
 
 						if (intval($result) < 0) {
 							$error++;
-							$this->errors[] = $mouvS->error;
-							$this->errors = array_merge($this->errors, $mouvS->errors);
+							$this->setErrorsFromObject($mouvS);
 							break;
 						}
 					}
@@ -791,11 +785,13 @@ class Reception extends CommonObject
 				$this->fetch_origin();
 				if ($this->origin_object instanceof CommonObject && empty($this->origin_object->lines)) {
 					$res = $this->origin_object->fetch_lines();
-					if ($this->origin_object instanceof CommandeFournisseur) {
-						$this->commandeFournisseur = $this->origin_object;	// deprecated
-					} else {
-						$this->commandeFournisseur = null;	// deprecated
+					$this->commandeFournisseur = null;	// deprecated
+					if ($res < 0) {
+						return $res;
 					}
+				} elseif ($this->origin_object instanceof CommandeFournisseur && empty($this->origin_object->lines)) {
+					$res = $this->origin_object->fetch_lines();
+					$this->commandeFournisseur = $this->origin_object;	// deprecated
 					if ($res < 0) {
 						return $res;
 					}
@@ -813,8 +809,7 @@ class Reception extends CommonObject
 
 			$ret = $supplierorderdispatch->fetchAll('', '', 0, 0, $filter);
 			if ($ret < 0) {
-				$this->error = $supplierorderdispatch->error;
-				$this->errors = $supplierorderdispatch->errors;
+				$this->setErrorsFromObject($supplierorderdispatch);
 				return $ret;
 			} else {
 				// build array with quantity received by product in all supplier orders (origin)
@@ -899,8 +894,7 @@ class Reception extends CommonObject
 		$supplierorderline = new CommandeFournisseurLigne($this->db);
 		$result = $supplierorderline->fetch($id);
 		if ($result <= 0) {
-			$this->error = $supplierorderline->error;
-			$this->errors = $supplierorderline->errors;
+			$this->setErrorsFromObject($supplierorderline);
 			return -1;
 		}
 
@@ -1120,7 +1114,9 @@ class Reception extends CommonObject
 		$this->db->begin();
 
 		// Stock control
-		if (isModEnabled('stock') && !getDolGlobalInt('STOCK_CALCULATE_ON_RECEPTION') && $this->statut > 0) {
+		if (isModEnabled('stock') && ((getDolGlobalInt('STOCK_CALCULATE_ON_RECEPTION') && $this->status > Reception::STATUS_DRAFT)
+				|| (getDolGlobalInt('STOCK_CALCULATE_ON_RECEPTION_CLOSE') && $this->status == Reception::STATUS_CLOSED))
+		) {
 			require_once DOL_DOCUMENT_ROOT."/product/stock/class/mouvementstock.class.php";
 
 			$langs->load("agenda");
@@ -1144,7 +1140,7 @@ class Reception extends CommonObject
 					// we do not log origin because it will be deleted
 					$mouvS->origin = null;
 
-					$result = $mouvS->livraison($user, $obj->fk_product, $obj->fk_entrepot, $obj->qty, 0, $langs->trans("ReceptionDeletedInDolibarr", $this->ref), '', $obj->eatby, $obj->sellby, $obj->batch); // Price is set to 0, because we don't want to see WAP changed
+					$result = $mouvS->livraison($user, $obj->fk_product, $obj->fk_entrepot, $obj->qty, 0, $langs->trans("ReceptionDeletedInDolibarr", $this->ref), '', $obj->eatby ? $this->db->jdate($obj->eatby) : null, $obj->sellby ? $this->db->jdate($obj->sellby) : null, $obj->batch); // Price is set to 0, because we don't want to see WAP changed
 					if ($result < 0) {
 						$error++;
 						$this->error = $mouvS->error;
@@ -1356,9 +1352,9 @@ class Reception extends CommonObject
 		if (empty($notooltip)) {
 			if (getDolGlobalInt('MAIN_OPTIMIZEFORTEXTBROWSER')) {
 				$label = $langs->trans("Reception");
-				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
+				$linkclose .= ' alt="'.dolPrintHTMLForAttribute($label).'"';
 			}
-			$linkclose .= ' title="'.dol_escape_htmltag($label, 1).'"';
+			$linkclose .= ' title="'.dolPrintHTMLForAttribute($label).'"';
 			$linkclose .= ' class="classfortooltip"';
 		}
 
@@ -1528,7 +1524,7 @@ class Reception extends CommonObject
 
 		$this->fk_incoterms = 1;
 
-		$nbp = 5;
+		$nbp = min(1000, GETPOSTINT('nblines') ? GETPOSTINT('nblines') : 5);	// We can force the nb of lines to test from command line (but not more than 1000)
 		$xnbp = 0;
 		while ($xnbp < $nbp) {
 			$line = new CommandeFournisseurDispatch($this->db);

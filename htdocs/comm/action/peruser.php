@@ -492,7 +492,7 @@ $viewmode .= '<span class="marginrightonly"></span>';
 $newparam = '';
 $newcardbutton = '';
 if ($user->hasRight('agenda', 'myactions', 'create') || $user->hasRight('agenda', 'allactions', 'create')) {
-	$tmpforcreatebutton = dol_getdate(dol_now(), true);
+	$tmpforcreatebutton = dol_getdate(dol_now('tzuserrel'), true);
 
 	$newparam .= '&month='.urlencode(str_pad((string) $month, 2, "0", STR_PAD_LEFT)).'&year='.((int) $tmpforcreatebutton['year']);
 	if ($begin_h !== '') {
@@ -1435,7 +1435,7 @@ function show_day_events2($username, $day, $month, $year, $monthshown, $style, &
 									$tmpcontact->fetch($event->contact_id);
 									$cachecontacts[$event->contact_id] = $tmpcontact;
 								}
-								$cases2[$h][$event->id]['string'] .= ', '.$cachecontacts[$event->contact_id]->getFullName($langs);
+								$cases3[$h][$event->id]['string'] .= ', '.$cachecontacts[$event->contact_id]->getFullName($langs);
 							}
 						}
 						if ($event->date_start_in_calendar < $c && $dateendtouse > $b2) {
