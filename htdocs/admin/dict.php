@@ -2445,7 +2445,7 @@ function fieldList($fieldlist, $obj = '', $tabname = '', $context = '')
 		}
 
 		if (in_array($value, array('code', 'libelle', 'type')) && $tabname == "c_actioncomm" && isset($obj->$value) && in_array($obj->type, array('system', 'systemauto'))) {
-			$hidden = (!empty($obj->{$value}) ? $obj->{$value}:'');
+			$hidden = (isset($obj->{$value}) ? $obj->{$value}:'');
 			print '<td>';
 			print '<input type="hidden" name="'. $value .'" value="'.$hidden.'">';
 			print $langs->trans($hidden);
@@ -2558,7 +2558,7 @@ function fieldList($fieldlist, $obj = '', $tabname = '', $context = '')
 		} elseif ($value == 'price' || preg_match('/^amount/i', $value)) {
 			print '<td><input type="text" class="flat minwidth75" value="'.price((!empty($obj->{$value}) ? $obj->{$value}:'')).'" name="'. $value .'"></td>';
 		} elseif ($value == 'code' && isset($obj->{$value})) {
-			print '<td><input type="text" class="flat minwidth75 maxwidth100" value="'.(!empty($obj->{$value}) ? $obj->{$value}:'').'" name="'. $value .'"></td>';
+			print '<td><input type="text" class="flat minwidth75 maxwidth100" value="'.(isset($obj->{$value}) ? $obj->{$value}:'').'" name="'. $value .'"></td>';
 		} elseif ($value == 'unit') {
 			print '<td>';
 			$units = array(
