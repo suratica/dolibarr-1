@@ -32,6 +32,7 @@ endif;
 
 // Includes
 dol_include_once('admin/tools/ui/class/documentation.class.php');
+require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 
 // Load documentation translations
 $langs->load('uxdocumentation');
@@ -155,7 +156,7 @@ $documentation->showSidebar(); ?>
 			echo $documentation->showCode($lines); ?>
 		</div>
 
-		<!-- Radio input -->
+		<!-- Checkbox input -->
 		<div class="documentation-section" id="setinputssection-basicusage">
 			<h2 class="documentation-title"><?php echo $langs->trans('DocCheckboxInputUsage'); ?></h2>
 			<p class="documentation-text"><?php echo $langs->trans('DocCheckboxInputDescription'); ?></p>
@@ -181,9 +182,97 @@ $documentation->showSidebar(); ?>
 			echo $documentation->showCode($lines); ?>
 		</div>
 
+		<!-- Radio input -->
+		<div class="documentation-section" id="setinputssection-basicusage">
+			<h2 class="documentation-title"><?php echo $langs->trans('DocCheckboxInputUsage'); ?></h2>
+			<p class="documentation-text"><?php echo $langs->trans('DocCheckboxInputDescription'); ?></p>
+			<div class="documentation-example">
 
+			</div>
+			<?php
+			$lines = array(
+			);
+			echo $documentation->showCode($lines); ?>
+		</div>
 
+		<!-- Multiselect input -->
+		<div class="documentation-section" id="setinputssection-basicusage">
+			<h2 class="documentation-title"><?php echo $langs->trans('DocMultiSelectInputUsage'); ?></h2>
+			<p class="documentation-text"><?php echo $langs->trans('DocMultiSelectInputDescription'); ?></p>
+			<div class="documentation-example">
+				<td>Multiselect</td>
+				<?php
+				$values = ['1' => 'value 1', '2' => 'value 2', '3' => 'value 3'];
+				$form = new Form($db);
+				print $form->multiselectarray('categories', $values, GETPOST('categories', 'array'), 0, 0, 'minwidth200', 0, 0);
+				?>
+			</div>
+			<?php
+			$lines = array(
+				'<?php',
+				'/**',
+				' * Show a multiselect form from an array. WARNING: Use this only for short lists.',
+				' *',
+				' * @param 	string 		$htmlname 		Name of select',
+				' * @param 	array<string,string|array{id:string,label:string,color:string,picto:string,labelhtml:string}>	$array 			Array(key=>value) or Array(key=>array(\'id\'=>key, \'label\'=>value, \'color\'=> , \'picto\'=> , \'labelhtml\'=> ))',
+				' * @param 	string[]	$selected 		Array of keys preselected',
+				' * @param 	int<0,1>	$key_in_label 	1 to show key like in "[key] value"',
+				' * @param 	int<0,1>	$value_as_key 	1 to use value as key',
+				' * @param 	string 		$morecss 		Add more css style',
+				' * @param 	int<0,1> 	$translate 		Translate and encode value',
+				' * @param 	int|string 	$width 			Force width of select box. May be used only when using jquery couch. Example: 250, \'95%\'',
+				' * @param 	string 		$moreattrib 	Add more options on select component. Example: \'disabled\'',
+				' * @param 	string 		$elemtype 		Type of element we show (\'category\', ...). Will execute a formatting function on it. To use in readonly mode if js component support HTML formatting.',
+				' * @param 	string 		$placeholder 	String to use as placeholder',
+				' * @param 	int<-1,1> 	$addjscombo 	Add js combo',
+				' * @return 	string                      HTML multiselect string',
+				' * @see selectarray(), selectArrayAjax(), selectArrayFilter()',
+				' */',
+				'',
+				'<td>Multiselect</td>',
+				'print $form->multiselectarray(\'categories\', $values, GETPOST(\'categories\', \'array\'), 0, 0, \'minwidth200\', 0, 0);'
+			);
+			echo $documentation->showCode($lines); ?>
+		</div>
 
+		<!-- Multiselect input -->
+		<div class="documentation-section" id="setinputssection-basicusage">
+			<h2 class="documentation-title"><?php echo $langs->trans('DocEditorInputUsage'); ?></h2>
+			<p class="documentation-text"><?php echo $langs->trans('DocEditorInputDescription'); ?></p>
+			<div class="documentation-example">
+				<?php
+				$doleditor = new DolEditor('desc', GETPOST('desc', 'restricthtml'), '', 160, 'dolibarr_details', '', false, true, getDolGlobalString('FCKEDITOR_ENABLE_DETAILS'), ROWS_4, '90%');
+				$doleditor->Create();
+				?>
+			</div>
+			<?php
+			$lines = array(
+				'<?php',
+				'/**',
+				' * Create an object to build an HTML area to edit a large string content',
+				' *',
+				' *  @param 	string				$htmlname		        		HTML name of WYSIWYG field',
+				' *  @param 	string				$content		        		Content of WYSIWYG field',
+				' *  @param	int|string			$width							Width in pixel of edit area (auto by default)',
+				' *  @param 	int					$height			       		 	Height in pixel of edit area (200px by default)',
+				' *  @param 	string				$toolbarname	       		 	Name of bar set to use (\'Full\', \'dolibarr_notes[_encoded]\', \'dolibarr_details[_encoded]\'=the less featured, \'dolibarr_mailings[_encoded]\', \'dolibarr_readonly\')',
+				' *  @param  string				$toolbarlocation       			Deprecated. Not used',
+				' *  @param  bool				$toolbarstartexpanded  			Bar is visible or not at start',
+				' *  @param	bool|int			$uselocalbrowser				Enabled to add links to local object with local browser. If false, only external images can be added in content.',
+				' *  @param  bool|int|string		$okforextendededitor    		1 or True=Allow usage of extended editor tool if qualified (like ckeditor). If \'textarea\', force use of simple textarea. If \'ace\', force use of Ace.',
+				' *                          	                        		Warning: If you use \'ace\', don\'t forget to also include ace.js in page header. Also, the button "save" must have class="buttonforacesave"',
+				' *  @param  int					$rows                   		Size of rows for textarea tool',
+				' *  @param  string				$cols                   		Size of cols for textarea tool (textarea number of cols \'70\' or percent \'x%\')',
+				' *  @param	int<0,1>			$readonly						0=Read/Edit, 1=Read only',
+				' *  @param	array{x?:string,y?:string,find?:string}	$poscursor	Array for initial cursor position array(\'x\'=>x, \'y\'=>y).',
+				' *                      	                       				array(\'find\'=> \'word\')  can be used to go to line were the word has been found',
+				' */',
+				'',
+				'$doleditor = new DolEditor(\'desc\', GETPOST(\'desc\', \'restricthtml\'), \'\', 160, \'dolibarr_details\', \'\', false, true, getDolGlobalString(\'FCKEDITOR_ENABLE_DETAILS\'), ROWS_4, \'90%\');',
+				'print $form->multiselectarray(\'categories\', $values, GETPOST(\'categories\', \'array\'), 0, 0, \'minwidth200\', 0, 0);'
+			);
+			echo $documentation->showCode($lines); ?>
+		</div>
 	</div>
 
 </div>
