@@ -2076,7 +2076,7 @@ if ($id > 0) {
 							//var_dump($fieldlist);
 							$class = '';
 							$showfield = 1;
-							$valuetoshow = empty($obj->$value) ? '' : $obj->$value;
+							$valuetoshow = !isset($obj->$value) ? '' : $obj->$value;
 							$titletoshow = '';
 
 							if ($value == 'entity') {
