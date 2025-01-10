@@ -91,34 +91,130 @@ $documentation->showSidebar(); ?>
 			</div>
 			<?php
 			$lines = array(
-				'<td>Input label</td>',
+				'<td>Available Input</td>',
 				'<td><input id="label" name="label" class="minwidth200" maxlength="255" value=""></td>',
 				'',
 				'<td>Disabled Input</td>',
 				'<td><input id="label" name="label" class="minwidth200" maxlength="255" value="" disabled></td>',
 			);
 			echo $documentation->showCode($lines); ?>
+		</div>
 
-			<!-- Basic usage -->
-			<div class="documentation-section" id="setinputssection-basicusage">
-				<h2 class="documentation-title"><?php echo $langs->trans('DocBasicUsage'); ?></h2>
-				<p class="documentation-text"><?php echo $langs->trans('DocinputsDescription'); ?></p>
-				<div class="documentation-example">
-					<td class="fieldrequired">Available Input</td>
-					<td><input id="label" name="label" class="minwidth200" maxlength="255" value=""></td>
-					<td class="fieldrequired">Disabled Input</td>
-					<td><input id="label" name="label" class="minwidth200 disabled" maxlength="255" value=""></td>
-				</div>
+
+		<!-- Select input -->
+		<div class="documentation-section" id="setinputssection-basicusage">
+			<h2 class="documentation-title"><?php echo $langs->trans('DocSelectInputUsage'); ?></h2>
+			<p class="documentation-text"><?php echo $langs->trans('DocinputsDescription'); ?></p>
+			<div class="documentation-example">
+				<td>Select with empty value</td>
 				<?php
-				$lines = array(
-					'<td class="fieldrequired">Input label</td>',
-					'<td><input type="text" id="label" name="label" class="minwidth200" maxlength="255" value=""></td>',
-				);
-				echo $documentation->showCode($lines); ?>
-		<!--  -->
+				$values = ['1' => 'value 1', '2' => 'value 2', '3' => 'value 3'];
+				$form = new Form($db);
+				print $form->selectarray('htmlnameselectwithemptyvalue', $values, 'idselectwithemptyvalue', 1, 0, 0, '', 0, 0, 0, '', 'minwidth200');
+				?>
+				<br><br>
+				<td>Select within empty value</td>
+				<?php
+				$values = ['1' => 'value 1', '2' => 'value 2', '3' => 'value 3'];
+				$form = new Form($db);
+				print $form->selectarray('htmlnameselectwithinemptyvalue', $values, 'idnameselectwithinemptyvalue', 0, 0, 0, '', 0, 0, 0, '', 'minwidth200');
+				?>
+			</div>
+			<?php
+			$lines = array(
+				'<?php',
+				'/**',
+				' * Function selectarray',
+				' *',
+				' * @param string 				$htmlname           Name of html select area. Try to start name with "multi" or "search_multi" if this is a multiselect,',
+				' * @param array            	$array              Array like array(key => value) or array(key=>array(\'label\'=>..., \'data-...\'=>..., \'disabled\'=>..., \'css\'=>...)),',
+				' * @param string|string[]|int 	$id                 Preselected key or array of preselected keys for multiselect. Use \'ifone\' to autoselect record if there is only one record.,',
+				' * @param int<0,1>|string 		$show_empty         0 no empty value allowed, 1 or string to add an empty value into list (If 1: key is -1 and value is \'\' or "&nbsp;", If \'Placeholder string\': key is -1 and value is the string), <0 to add an empty value with key that is this value.,',
+				' * @param int<0,1>				$key_in_label       1 to show key into label with format "[key] value",',
+				' * @param int<0,1>				$value_as_key       1 to use value as key,',
+				' * @param string 				$moreparam          Add more parameters onto the select tag. For example "style=\"width: 95%\"" to avoid select2 component to go over parent container,',
+				' * @param int<0,1>				$translate          1=Translate and encode value,',
+				' * @param int 					$maxlen             Length maximum for labels,',
+				' * @param int<0,1>				$disabled           Html select box is disabled,',
+				' * @param string 				$sort               \'ASC\' or \'DESC\' = Sort on label, \'\' or \'NONE\' or \'POS\' = Do not sort, we keep original order,',
+				' * @param string 				$morecss            Add more class to css styles,',
+				' * @param int 					$addjscombo         Add js combo,',
+				' * @param string 				$moreparamonempty   Add more param on the empty option line. Not used if show_empty not set,',
+				' * @param int 					$disablebademail    1=Check if a not valid email, 2=Check string \'---\', and if found into value, disable and colorize entry,',
+				' * @param int 					$nohtmlescape       No html escaping (not recommended, use \'data-html\' if you need to use label with HTML content).,',
+				' * @return string                                  HTML select string.,',
+				' */',
+				'',
+				'<td>Select with empty value</td>',
+				'print $form->selectarray(\'htmlnameselectwithemptyvalue\', $values, \'idselectwithemptyvalue\', 1, 0, 0, \'\', 0, 0, 0, \'\', \'minwidth200\');',
+				'',
+				'<td>Select within empty value</td>',
+				'print $form->selectarray(\'htmlnameselectwithinemptyvalue\', $values, \'idnameselectwithinemptyvalue\', 0,0, 0, \'\', 0, 0, 0, \'\', \'minwidth200\');',
+
+			);
+			echo $documentation->showCode($lines); ?>
+		</div>
+
+		<!-- Radio input -->
+		<div class="documentation-section" id="setinputssection-basicusage">
+			<h2 class="documentation-title"><?php echo $langs->trans('DocCheckboxInputUsage'); ?></h2>
+			<p class="documentation-text"><?php echo $langs->trans('DocCheckboxInputDescription'); ?></p>
+			<div class="documentation-example">
+				<span id="spannature1" class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>
+				<span id="spannature2" class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>
+				<span id="spannature3" class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>
+				<br><br>
+				<span id="spannature4" class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
+				<span id="spannature5" class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
+				<span id="spannature6" class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
+			</div>
+			<?php
+			$lines = array(
+				'<span id="spannature1" class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>',
+				'<span id="spannature2" class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>',
+				'<span id="spannature3" class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>',
+				' ',
+				'<span id="spannature1" class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
+				'<span id="spannature2" class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
+				'<span id="spannature3" class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
+			);
+			echo $documentation->showCode($lines); ?>
+		</div>
+
+
+
+
 	</div>
 
 </div>
+
+<script>
+	function refreshNatureCss() {
+		jQuery(".spannature").each(function( index ) {
+			id = $(this).attr("id").split("spannature")[1];
+			console.log(jQuery("#spannature"+(id)+" .checkforselect").is(":checked"));
+			if (jQuery("#spannature"+(id)+" .checkforselect").is(":checked")) {
+				if (id == 1) {
+					jQuery("#spannature"+(id)).addClass("prospect-back").removeClass("nonature-back");
+				}
+				if (id == 2) {
+					jQuery("#spannature"+(id)).addClass("customer-back").removeClass("nonature-back");
+				}
+				if (id == 3) {
+					jQuery("#spannature"+(id)).addClass("vendor-back").removeClass("nonature-back");
+				}
+			} else {
+				jQuery("#spannature"+(id)).removeClass("prospect-back").removeClass("customer-back").removeClass("vendor-back").addClass("nonature-back");
+			}
+		});
+	}
+
+	jQuery(".spannature").click(function(){
+		console.log("hey");
+		refreshNatureCss();
+	});
+	refreshNatureCss();
+</script>';
 
 <?php
 // Output close body + html
