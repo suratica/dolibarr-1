@@ -1291,8 +1291,7 @@ if (!$error && ($action == 'updateprice' && $confirm == 'yes') && $permissiontoa
 								$newprice = $object->multiprices[$level] * (100 + $pricepercentage) / 100;
 								$minprice = $object->multiprices_min[$level];
 							}
-							$ret = $object->updatePrice($newprice, $object->price_base_type, $user, $object->tva_tx, $minprice, $level, $object->tva_npr, 0, 0, array(), $object->default_vat_code);
-
+							$res = $object->updatePrice($newprice, $object->price_base_type, $user, $object->tva_tx, $minprice, $level, $object->tva_npr, 0, 0, array(), $object->default_vat_code);
 							if ($res > 0) {
 								$nbok++;
 							} else {

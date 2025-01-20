@@ -112,7 +112,12 @@ if ($massaction == 'preupdateprice') {
 				'value' => $valuefield
 			);
 
-	print $form->formconfirm($_SERVER["PHP_SELF"], $langs->trans("ConfirmUpdatePrice"), $langs->trans("ConfirmUpdatePriceQuestion", count($toselect)), "updateprice", $formquestion, 1, 0, 200, 500, 1);
+	$descConfirmPreUpdatePrice=$langs->trans("ConfirmUpdatePriceQuestion", count($toselect));
+	if (getDolGlobalString('PRODUIT_MULTIPRICES')) {
+		$descConfirmPreUpdatePrice=$langs->trans("ConfirmUpdatePriceQuestion", count($toselect)*getDolGlobalInt('PRODUIT_MULTIPRICES_LIMIT') .' ('.$langs->transnoentities('PricingRule').', '.$langs->transnoentities('MultiPricesNumPrices').')');
+	}
+
+	print $form->formconfirm($_SERVER["PHP_SELF"], $langs->trans("ConfirmUpdatePrice"), $descConfirmPreUpdatePrice, "updateprice", $formquestion, 1, 0, 200, 500, 1);
 }
 
 if ($massaction == 'presetsupervisor') {
