@@ -1283,7 +1283,6 @@ if (!$error && ($action == 'updateprice' && $confirm == 'yes') && $permissiontoa
 				if ($result > 0) {
 					if (getDolGlobalString('PRODUIT_MULTIPRICES')) {
 						for ($level = 1; $level <= getDolGlobalInt('PRODUIT_MULTIPRICES_LIMIT'); $level++) {
-							// Force the update of the price of the product using the new VAT
 							if ($object->price_base_type == 'TTC') {
 								$newprice = $object->multiprices_ttc[$level] * (100 + $pricepercentage) / 100;
 								$minprice = $object->multiprices_min_ttc[$level];
