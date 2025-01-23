@@ -5,7 +5,7 @@
  * Copyright (C) 2021-2023	Waël Almoman			<info@almoman.com>
  * Copyright (C) 2021		Maxime Demarest			<maxime@indelog.fr>
  * Copyright (C) 2021		Dorian Vabre			<dorian.vabre@gmail.com>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+ * Copyright (C) 2024-2025  Frédéric France         <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,10 @@ if (!defined('NOIPCHECK')) {
 }
 if (!defined('NOBROWSERNOTIF')) {
 	define('NOBROWSERNOTIF', '1');
+}
+
+if (!defined('XFRAMEOPTIONS_ALLOWALL')) {
+		define('XFRAMEOPTIONS_ALLOWALL', '1');
 }
 
 // For MultiCompany module.
@@ -170,6 +174,7 @@ $error = 0;
 
 // Check if we have redirtodomain to do.
 $ws_virtuelhost = null;
+$doactionsthenredirect = 0;
 if ($ws) {
 	$doactionsthenredirect = 1;
 	include_once DOL_DOCUMENT_ROOT.'/website/class/website.class.php';
@@ -1952,8 +1957,16 @@ if ($ispaymentok) {
 
 	// Send an email to the admins
 	if ($sendemail) {
+		// Get default language to use for the company for supervision emails
+		$myCompanyDefaultLang = $mysoc->default_lang;
+		if (empty($myCompanyDefaultLang) || $myCompanyDefaultLang === 'auto') {
+			// We must guess the language from the company country. We must not use the language of the visitor. This is a technical email for supervision
+			// so it must always be into the same language.
+			$myCompanyDefaultLang = getLanguageCodeFromCountryCode($mysoc->country_code);
+		}
+
 		$companylangs = new Translate('', $conf);
-		$companylangs->setDefaultLang($mysoc->default_lang);
+		$companylangs->setDefaultLang($myCompanyDefaultLang);
 		$companylangs->loadLangs(array('main', 'members', 'bills', 'paypal', 'paybox', 'stripe'));
 
 		$sendto = $sendemail;
@@ -2135,7 +2148,7 @@ if (!empty($doactionsthenredirect)) {
 		} else {
 			$ext_urlok = DOL_URL_ROOT.'/public/website/index.php?website='.urlencode($ws).'&pageref=paymentok&fulltag='.$FULLTAG;
 		}
-		print "<script>window.top.location.href = '".dol_escape_js($ext_urlok) ."';</script>";
+		print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlok) ."';</script></html>";
 	} else {
 		// Redirect to an error page
 		// Paymentko page must be created for the specific website
@@ -2144,6 +2157,6 @@ if (!empty($doactionsthenredirect)) {
 		} else {
 			$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
 		}
-		print "<script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script>";
+		print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script></html>";
 	}
 }

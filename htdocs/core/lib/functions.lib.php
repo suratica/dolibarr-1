@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (C) 2000-2007	Rodolphe Quiedeville		<rodolphe@quiedeville.org>
  * Copyright (C) 2003		Jean-Louis Bergamo			<jlb@j1b.org>
  * Copyright (C) 2004-2024	Laurent Destailleur			<eldy@users.sourceforge.net>
@@ -20,8 +21,8 @@
  * Copyright (C) 2022       Anthony Berton	         	<anthony.berton@bb2a.fr>
  * Copyright (C) 2022       Ferran Marcet           	<fmarcet@2byte.es>
  * Copyright (C) 2022       Charlene Benke           	<charlene@patas-monkey.com>
- * Copyright (C) 2023       Joachim Kueter              <git-jk@bloxera.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2023-2024  Joachim Kueter              <git-jk@bloxera.com>
  * Copyright (C) 2024		Lenin Rivas					<lenin.rivas777@gmail.com>
  * Copyright (C) 2024		Josep Lluís Amador Teruel	<joseplluis@lliuretic.cat>
  * Copyright (C) 2024		Benoît PASCAL				<contact@p-ben.com>
@@ -1064,7 +1065,8 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
 	// Check type of variable and make sanitization according to this
 	if (preg_match('/^array/', $check)) {	// If 'array' or 'array:restricthtml' or 'array:aZ09' or 'array:intcomma'
 		if (!is_array($out) || empty($out)) {
-			$out = array();
+			$out = explode(',', $out);
+			$tmpcheck = 'alphanohtml';
 		} else {
 			$tmparray = explode(':', $check);
 			if (!empty($tmparray[1])) {
@@ -1072,9 +1074,9 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
 			} else {
 				$tmpcheck = 'alphanohtml';
 			}
-			foreach ($out as $outkey => $outval) {
-				$out[$outkey] = sanitizeVal($outval, $tmpcheck, $filter, $options);
-			}
+		}
+		foreach ($out as $outkey => $outval) {
+			$out[$outkey] = sanitizeVal($outval, $tmpcheck, $filter, $options);
 		}
 	} else {
 		// If field name is 'search_xxx' then we force the add of space after each < and > (when following char is numeric) because it means
@@ -1316,6 +1318,7 @@ function sanitizeVal($out = '', $check = 'alphanohtml', $filter = null, $options
 		case 'restricthtmlnolink':
 		case 'restricthtml':		// Recommended for most html textarea
 		case 'restricthtmlallowclass':
+		case 'restricthtmlallowiframe':
 		case 'restricthtmlallowlinkscript':	// Allow link and script tag for head section.
 		case 'restricthtmlallowunvalid':
 			$out = dol_htmlwithnojs($out, 1, $check);
@@ -2038,6 +2041,22 @@ function dolPrintHTMLForAttribute($s)
 }
 
 /**
+ * Return a string ready to be output on a href attribute (this one need a special because we need content is HTML with no way to detect it is HTML).
+ * With dolPrintHTMLForAttribute(), the content is HTML encode, even if it is already HTML content.
+ *
+ * @param	string	$s		String to print
+ * @return	string			String ready for HTML output
+ * @see dolPrintHTML(), dolPrintHTMLFortextArea()
+ */
+function dolPrintHTMLForAttributeUrl($s)
+{
+	// The dol_htmlentitiesbr has been removed compared to dolPrintHTMLForAttribute because we know content is a HTML URL string (even if we have no way to detect it automatically)
+	// The dol_escape_htmltag will escape html chars.
+	$escapeonlyhtmltags = 1;
+	return dol_escape_htmltag(dol_string_onlythesehtmltags($s, 1, 1, 1, 0, array()), 0, 0, '', $escapeonlyhtmltags, 1);
+}
+
+/**
  * Return a string ready to be output on input textarea.
  * Differs from dolPrintHTML because all tags are escape. With dolPrintHTML, all tags except common one are escaped.
  *
@@ -2100,7 +2119,7 @@ function dol_escape_htmltag($stringtoescape, $keepb = 0, $keepn = 0, $noescapeta
 		// In a future, we should not need this
 
 		$tmp = (string) $stringtoescape;
-		/*
+
 		// We protect the 6 special entities that we don't want to decode.
 		$tmp = str_ireplace('&lt', '__DONOTDECODELT', $tmp);
 		$tmp = str_ireplace('&gt', '__DONOTDECODEGT', $tmp);
@@ -2118,7 +2137,7 @@ function dol_escape_htmltag($stringtoescape, $keepb = 0, $keepn = 0, $noescapeta
 		$tmp = str_ireplace('__DONOTDECODEQUOT', '&quot', $tmp);
 		$tmp = str_ireplace('__DONOTDECODEAPOS', '&apos', $tmp);
 		$tmp = str_ireplace('__DONOTDECODE39', '&#39', $tmp);
-		*/
+
 		$tmp = str_ireplace('&#39;', '__SIMPLEQUOTE', $tmp);	// HTML 4
 	}
 	if (!$keepb) {
@@ -2176,19 +2195,12 @@ function dol_escape_htmltag($stringtoescape, $keepb = 0, $keepn = 0, $noescapeta
 				} while ($diff);
 			}
 
+			$tmp = str_ireplace('&quot', '__DOUBLEQUOT', $tmp);
 			$tmp = str_ireplace('&lt', '__LESSTAN', $tmp);
 			$tmp = str_ireplace('&gt', '__GREATERTHAN', $tmp);
-		} else {
-			//	var_dump($tmp);
-			//$tmp = str_ireplace('&lt', '__LESSTHAN', $tmp);
-			//$tmp = str_ireplace('&gt', '__GREATERTHAN', $tmp);
 		}
-		// Warning: htmlentities encode HTML tags like <abc>, but forget &lt; &gt; &quotes; &apos; &#39; &amp;
-		// So we do it ourself afterfor &lt; at &gt;
-		//$tmp = str_ireplace('&lt', '&amp;lt', $tmp);
-		//$tmp = str_ireplace('&gt', '&amp;gt', $tmp);
-		//var_dump("eeeeeeeeeeeeeeeeeeeee");
-		//var_dump($tmp);
+
+		// Warning: htmlentities encode HTML tags like <abc>, but not &lt; &gt; &quotes; &apos; &#39; &amp; that remains untouched.
 		$result = htmlentities($tmp, ENT_COMPAT, 'UTF-8');	// Convert & into &amp; and more...
 
 		//print $result;
@@ -2211,6 +2223,7 @@ function dol_escape_htmltag($stringtoescape, $keepb = 0, $keepn = 0, $noescapeta
 
 		$result = str_ireplace('__SIMPLEQUOTE', '&#39;', $result);
 
+		$result = str_ireplace('__DOUBLEQUOT', '&quot', $result);
 		$result = str_ireplace('__LESSTAN', '&lt', $result);
 		$result = str_ireplace('__GREATERTHAN', '&gt', $result);
 
@@ -8471,7 +8484,7 @@ function dol_nl2br($stringtoencode, $nl2brmode = 0, $forxml = false)
  *
  * @param	string	$stringtoencode				String to encode
  * @param	int     $nouseofiframesandbox		0=Default, 1=Allow use of option MAIN_SECURITY_USE_SANDBOX_FOR_HTMLWITHNOJS for html sanitizing (not yet working)
- * @param	string	$check						'restricthtmlnolink' or 'restricthtml' or 'restricthtmlallowclass' or 'restricthtmlallowlinkscript' or 'restricthtmlallowunvalid'
+ * @param	string	$check						'restricthtmlnolink' or 'restricthtml' or 'restricthtmlallowclass' or 'restricthtmlallowiframe' or 'restricthtmlallowlinkscript' or 'restricthtmlallowunvalid'
  * @return	string								HTML sanitized
  */
 function dol_htmlwithnojs($stringtoencode, $nouseofiframesandbox = 0, $check = 'restricthtml')
@@ -8534,7 +8547,8 @@ function dol_htmlwithnojs($stringtoencode, $nouseofiframesandbox = 0, $check = '
 						// See options at https://tidy.sourceforge.net/docs/quickref.html
 						$config = array(
 							'clean' => false,
-							'quote-marks' => false,		// do not replace " that are used for real text content (not a string symbol for html attribute) into &quot;
+							// Best will be to set 'quote-marks' to false to not replace " that are used for real text content (not a string symbol for html attribute) into &quot;
+							'quote-marks' => false,
 							'doctype'     => 'strict',
 							'show-body-only' => true,
 							"indent-attributes" => false,
@@ -8574,17 +8588,19 @@ function dol_htmlwithnojs($stringtoencode, $nouseofiframesandbox = 0, $check = '
 			// We replace chars from a/A to z/Z encoded with numeric HTML entities with the real char so we won't loose the chars at the next step (preg_replace).
 			// No need to use a loop here, this step is not to sanitize (this is done at next step, this is to try to save chars, even if they are
 			// using a non conventionnal way to be encoded, to not have them sanitized just after)
-			$out = preg_replace_callback(
-				'/&#(x?[0-9][0-9a-f]+;?)/i',
-				/**
-				 * @param string[] $m
-				 * @return string
-				 */
-				static function ($m) {
-					return realCharForNumericEntities($m);
-				},
-				$out
-			);
+			if (function_exists('realCharForNumericEntities')) {	// May not exist when main.inc.php not loaded, for example in a CLI context
+				$out = preg_replace_callback(
+					'/&#(x?[0-9][0-9a-f]+;?)/i',
+					/**
+					 * @param string[] $m
+					 * @return string
+					 */
+					static function ($m) {
+						return realCharForNumericEntities($m);
+					},
+					$out
+				);
+			}
 
 			// Now we remove all remaining HTML entities starting with a number. We don't want such entities.
 			$out = preg_replace('/&#x?[0-9]+/i', '', $out);	// For example if we have j&#x61vascript with an entities without the ; to hide the 'a' of 'javascript'.
@@ -8594,6 +8610,8 @@ function dol_htmlwithnojs($stringtoencode, $nouseofiframesandbox = 0, $check = '
 				$out = dol_string_onlythesehtmltags($out, 0, 1, 0, 0, array(), 1, 1, 1, getDolGlobalInt("UNSECURED_restricthtmlallowlinkscript_ALLOW_PHP"));
 			} elseif ($check == 'restricthtmlallowclass' || $check == 'restricthtmlallowunvalid') {
 				$out = dol_string_onlythesehtmltags($out, 0, 0, 1);
+			} elseif ($check == 'restricthtmlallowiframe') {
+				$out = dol_string_onlythesehtmltags($out, 0, 0, 1, 1);
 			} else {
 				$out = dol_string_onlythesehtmltags($out, 0, 1, 1);
 			}
@@ -8692,9 +8710,9 @@ function dol_htmlentitiesbr($stringtoencode, $nl2brmode = 0, $pagecodefrom = 'UT
 			$newstring = preg_replace('/<br>$/i', '', $newstring); // Remove last <br> (remove only last one)
 		}
 		$newstring = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', ' ', $newstring);
-		$newstring = strtr($newstring, array('&' => '__and__', '<' => '__lt__', '>' => '__gt__', '"' => '__dquot__'));
+		$newstring = strtr($newstring, array('&' => '__PROTECTand__', '<' => '__PROTECTlt__', '>' => '__PROTECTgt__', '"' => '__PROTECTdquot__'));
 		$newstring = dol_htmlentities($newstring, ENT_COMPAT, $pagecodefrom); // Make entity encoding
-		$newstring = strtr($newstring, array('__and__' => '&', '__lt__' => '<', '__gt__' => '>', '__dquot__' => '"'));
+		$newstring = strtr($newstring, array('__PROTECTand__' => '&', '__PROTECTlt__' => '<', '__PROTECTgt__' => '>', '__PROTECTdquot__' => '"'));
 	} else {
 		if ($removelasteolbr) {
 			$newstring = preg_replace('/(\r\n|\r|\n)$/i', '', $newstring); // Remove last \n (may remove several)
@@ -9160,23 +9178,33 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
 			$substitutionarray['__REF_SUPPLIER__'] = (isset($object->ref_supplier) ? $object->ref_supplier : null);
 			$substitutionarray['__NOTE_PUBLIC__'] = (isset($object->note_public) ? $object->note_public : null);
 			$substitutionarray['__NOTE_PRIVATE__'] = (isset($object->note_private) ? $object->note_private : null);
+
 			$substitutionarray['__DATE_CREATION__'] = (isset($object->date_creation) ? dol_print_date($object->date_creation, 'day', false, $outputlangs) : '');
 			$substitutionarray['__DATE_MODIFICATION__'] = (isset($object->date_modification) ? dol_print_date($object->date_modification, 'day', false, $outputlangs) : '');
 			$substitutionarray['__DATE_VALIDATION__'] = (isset($object->date_validation) ? dol_print_date($object->date_validation, 'day', false, $outputlangs) : '');
-			$substitutionarray['__DATE_DELIVERY__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, 'day', false, $outputlangs) : '');
-			$substitutionarray['__DATE_DELIVERY_DAY__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, "%d") : '');
-			$substitutionarray['__DATE_DELIVERY_DAY_TEXT__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, "%A") : '');
-			$substitutionarray['__DATE_DELIVERY_MON__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, "%m") : '');
-			$substitutionarray['__DATE_DELIVERY_MON_TEXT__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, "%b") : '');
-			$substitutionarray['__DATE_DELIVERY_YEAR__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, "%Y") : '');
-			$substitutionarray['__DATE_DELIVERY_HH__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, "%H") : '');
-			$substitutionarray['__DATE_DELIVERY_MM__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, "%M") : '');
-			$substitutionarray['__DATE_DELIVERY_SS__'] = (isset($object->date_delivery) ? dol_print_date($object->date_delivery, "%S") : '');
+
+			// handle date_delivery: in customer order/supplier order, the property name is delivery_date, in shipment/reception it is date_delivery
+			$date_delivery = null;
+			if (property_exists($object, 'date_delivery')) {
+				$date_delivery =  $object->date_delivery;
+			} elseif (property_exists($object, 'delivery_date')) {
+				$date_delivery =  $object->delivery_date;
+			}
+			$substitutionarray['__DATE_DELIVERY__'] = (isset($date_delivery) ? dol_print_date($date_delivery, 'day', false, $outputlangs) : '');
+			$substitutionarray['__DATE_DELIVERY_DAY__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%d") : '');
+			$substitutionarray['__DATE_DELIVERY_DAY_TEXT__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%A") : '');
+			$substitutionarray['__DATE_DELIVERY_MON__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%m") : '');
+			$substitutionarray['__DATE_DELIVERY_MON_TEXT__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%b") : '');
+			$substitutionarray['__DATE_DELIVERY_YEAR__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%Y") : '');
+			$substitutionarray['__DATE_DELIVERY_HH__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%H") : '');
+			$substitutionarray['__DATE_DELIVERY_MM__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%M") : '');
+			$substitutionarray['__DATE_DELIVERY_SS__'] = (isset($date_delivery) ? dol_print_date($date_delivery, "%S") : '');
 
 			// For backward compatibility (deprecated)
 			$substitutionarray['__REFCLIENT__'] = (isset($object->ref_client) ? $object->ref_client : (isset($object->ref_customer) ? $object->ref_customer : null));
 			$substitutionarray['__REFSUPPLIER__'] = (isset($object->ref_supplier) ? $object->ref_supplier : null);
-			$substitutionarray['__SUPPLIER_ORDER_DATE_DELIVERY__'] = (isset($object->delivery_date) ? dol_print_date($object->delivery_date, 'day', false, $outputlangs) : '');
+
+			$substitutionarray['__SUPPLIER_ORDER_DATE_DELIVERY__'] = (isset($date_delivery) ? dol_print_date($date_delivery, 'day', false, $outputlangs) : '');
 			$substitutionarray['__SUPPLIER_ORDER_DELAY_DELIVERY__'] = (isset($object->availability_code) ? ($outputlangs->transnoentities("AvailabilityType".$object->availability_code) != 'AvailabilityType'.$object->availability_code ? $outputlangs->transnoentities("AvailabilityType".$object->availability_code) : $outputlangs->convToOutputCharset(isset($object->availability) ? $object->availability : '')) : '');
 			$substitutionarray['__EXPIRATION_DATE__'] = (isset($object->fin_validite) ? dol_print_date($object->fin_validite, 'daytext') : '');
 
@@ -9675,9 +9703,9 @@ function getCommonSubstitutionArray($outputlangs, $onlykey = 0, $exclude = null,
  *  $mesg = make_substitutions($mesg, $substitutionarray, $langs);
  *
  *  @param	string		$text	      					Source string in which we must do substitution
- *  @param  array<string,string>	$substitutionarray	Array with key->val to substitute. Example: array('__MYKEY__' => 'MyVal', ...)
+ *  @param  array<string,null|string|float|int>	$substitutionarray	Array with key->val to substitute. Example: array('__MYKEY__' => 'MyVal', ...)
  *  @param	?Translate	$outputlangs					Output language
- *  @param	int			$converttextinhtmlifnecessary	0=Convert only value into HTML if text is already in HTML
+ *  @param	int<0,1>	$converttextinhtmlifnecessary	0=Convert only value into HTML if text is already in HTML
  *  													1=Will also convert initial $text into HTML if we try to insert one value that is HTML
  * 	@return string  		    						Output string after substitutions
  *  @see	complete_substitutions_array(), getCommonSubstitutionArray()
@@ -9725,7 +9753,7 @@ function make_substitutions($text, $substitutionarray, $outputlangs = null, $con
 						$msgishtml = 1;
 					}
 				} else {
-					$value = dol_nl2br("$value");
+					$value = dol_nl2br((string) $value);
 				}
 
 				$text = preg_replace('/__\('.preg_quote($reg[1], '/').'\)__/', $value, $text);
@@ -9756,7 +9784,7 @@ function make_substitutions($text, $substitutionarray, $outputlangs = null, $con
 					$msgishtml = 1;
 				}
 			} else {
-				$value = dol_nl2br("$value");
+				$value = dol_nl2br((string) $value);
 			}
 
 			$text = preg_replace('/__\['.preg_quote($keyfound, '/').'\]__/', $value, $text);
@@ -9774,7 +9802,7 @@ function make_substitutions($text, $substitutionarray, $outputlangs = null, $con
 		}
 
 		if (empty($converttextinhtmlifnecessary)) {
-			$text = str_replace("$key", "$value", $text); // We must keep the " to work when value is 123.5 for example
+			$text = str_replace((string) $key, (string) $value, $text); // Cast to string is needed when value is 123.5 for example
 		} else {
 			if (! $msgishtml) {
 				$valueishtml = dol_textishtml($value, 1);
@@ -9784,9 +9812,9 @@ function make_substitutions($text, $substitutionarray, $outputlangs = null, $con
 					$msgishtml = 1;
 				}
 			} else {
-				$value = dol_nl2br("$value");
+				$value = dol_nl2br((string) $value);
 			}
-			$text = str_replace("$key", "$value", $text); // We must keep the " to work when value is 123.5 for example
+			$text = str_replace((string) $key, (string) $value, $text); // Cast to string is needed 123.5 for example
 		}
 	}
 
@@ -9809,7 +9837,7 @@ function make_substitutions($text, $substitutionarray, $outputlangs = null, $con
 			if (isset($lazy_load_arr[1]) && !empty($lazy_load_arr[1])) {
 				$key_to_substitute = $lazy_load_arr[1];
 				if (preg_match('/' . preg_quote($key_to_substitute, '/') . '/', $text)) {
-					$param_arr = explode(':', $value);
+					$param_arr = explode(':', (string) $value);
 					// path:class:method:id
 					if (count($param_arr) == 4) {
 						$path = $param_arr[0];
@@ -9844,7 +9872,7 @@ function make_substitutions($text, $substitutionarray, $outputlangs = null, $con
 									$valuetouseforsubstitution = $tmpobj->$method($id, $key_to_substitute, true);
 								}
 
-								$text = str_replace("$key_to_substitute", "$valuetouseforsubstitution", $text); // We must keep the " to work when value is 123.5 for example
+								$text = str_replace((string) $key_to_substitute, (string) $valuetouseforsubstitution, $text); // Cast to string in case value is 123.5 for example
 							}
 						}
 					}
@@ -10486,10 +10514,11 @@ function dol_osencode($str)
  * 		@param	string				$fieldid		Field to get
  *      @param  int					$entityfilter	Filter by entity
  *      @param	string				$filters		Filters to add. WARNING: string must be escaped for SQL and not coming from user input.
+ *      @param	bool    			$useCache       If true (default), cache will be queried and updated.
  *      @return int<-1,max>|string					ID of code if OK, 0 if key empty, -1 if KO
  *      @see $langs->getLabelFromKey
  */
-function dol_getIdFromCode($db, $key, $tablename, $fieldkey = 'code', $fieldid = 'id', $entityfilter = 0, $filters = '')
+function dol_getIdFromCode($db, $key, $tablename, $fieldkey = 'code', $fieldid = 'id', $entityfilter = 0, $filters = '', $useCache = true)
 {
 	global $conf;
 
@@ -10499,7 +10528,7 @@ function dol_getIdFromCode($db, $key, $tablename, $fieldkey = 'code', $fieldid =
 	}
 
 	// Check in cache
-	if (isset($conf->cache['codeid'][$tablename][$key][$fieldid])) {	// Can be defined to 0 or ''
+	if ($useCache && isset($conf->cache['codeid'][$tablename][$key][$fieldid])) {	// Can be defined to 0 or ''
 		return $conf->cache['codeid'][$tablename][$key][$fieldid]; // Found in cache
 	}
 
@@ -10522,14 +10551,16 @@ function dol_getIdFromCode($db, $key, $tablename, $fieldkey = 'code', $fieldid =
 	$resql = $db->query($sql);
 	if ($resql) {
 		$obj = $db->fetch_object($resql);
+		$valuetoget = '';
 		if ($obj) {
-			$conf->cache['codeid'][$tablename][$key][$fieldid] = $obj->valuetoget;
+			$valuetoget = $obj->valuetoget;
+			$conf->cache['codeid'][$tablename][$key][$fieldid] = $valuetoget;
 		} else {
 			$conf->cache['codeid'][$tablename][$key][$fieldid] = '';
 		}
 		$db->free($resql);
 
-		return $conf->cache['codeid'][$tablename][$key][$fieldid];
+		return $valuetoget;
 	} else {
 		return -1;
 	}
@@ -10654,9 +10685,9 @@ function dol_eval($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring = '1'
 			// Check if there is dynamic call (first we use black list patterns)
 			if (preg_match('/\$[\w]*\s*\(/', $s)) {
 				if ($returnvalue) {
-					return 'Bad string syntax to evaluate (mode '.$onlysimplestring.', found a call using of "$abc(" or "$abc (" instead of using the direct name of the function): '.$s;
+					return 'Bad string syntax to evaluate (mode '.$onlysimplestring.', found a call using "$abc(" or "$abc (" instead of using the direct name of the function): '.$s;
 				} else {
-					dol_syslog('Bad string syntax to evaluate (mode '.$onlysimplestring.', found a call using of "$abc(" or "$abc (" instead of using the direct name of the function): '.$s, LOG_WARNING);
+					dol_syslog('Bad string syntax to evaluate (mode '.$onlysimplestring.', found a call using "$abc(" or "$abc (" instead of using the direct name of the function): '.$s, LOG_WARNING);
 					return '';
 				}
 			}
@@ -11695,7 +11726,7 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 					if ($newcrit != '') {
 						$numnewcrit = price2num($newcrit);
 						if (is_numeric($numnewcrit)) {
-							$newres .= $field.' '.$operator.' '.((float) $numnewcrit); // should be a numeric
+							$newres .= $db->sanitize($field).' '.$operator.' '.((float) $numnewcrit); // should be a numeric
 						} else {
 							$newres .= '1 = 2'; // force false, we received a corrupted data
 						}
@@ -11705,10 +11736,10 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 				$i2++; // a criteria for 1 more field was added to string
 			} elseif ($mode == 2 || $mode == -2) {
 				$crit = preg_replace('/[^0-9,]/', '', $crit); // ID are always integer
-				$newres .= ($i2 > 0 ? ' OR ' : '').$field." ".($mode == -2 ? 'NOT ' : '');
+				$newres .= ($i2 > 0 ? ' OR ' : '').$db->sanitize($field)." ".($mode == -2 ? 'NOT ' : '');
 				$newres .= $crit ? "IN (".$db->sanitize($db->escape($crit)).")" : "IN (0)";
 				if ($mode == -2) {
-					$newres .= ' OR '.$field.' IS NULL';
+					$newres .= ' OR '.$db->sanitize($field).' IS NULL';
 				}
 				$i2++; // a criteria for 1 more field was added to string
 			} elseif ($mode == 3 || $mode == -3) {
@@ -11722,11 +11753,11 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 							$listofcodes .= "'".$db->escape($val)."'";
 						}
 					}
-					$newres .= ($i2 > 0 ? ' OR ' : '').$field." ".($mode == -3 ? 'NOT ' : '')."IN (".$db->sanitize($listofcodes, 1).")";
+					$newres .= ($i2 > 0 ? ' OR ' : '').$db->sanitize($field)." ".($mode == -3 ? 'NOT ' : '')."IN (".$db->sanitize($listofcodes, 1).")";
 					$i2++; // a criteria for 1 more field was added to string
 				}
 				if ($mode == -3) {
-					$newres .= ' OR '.$field.' IS NULL';
+					$newres .= ' OR '.$db->sanitize($field).' IS NULL';
 				}
 			} elseif ($mode == 4) {
 				$tmparray = explode(',', $crit);
@@ -11735,10 +11766,10 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 					foreach ($tmparray as $val) {
 						$val = trim($val);
 						if ($val) {
-							$newres .= ($i2 > 0 ? " OR (" : "(").$field." LIKE '".$db->escape($val).",%'";
-							$newres .= ' OR '.$field." = '".$db->escape($val)."'";
-							$newres .= ' OR '.$field." LIKE '%,".$db->escape($val)."'";
-							$newres .= ' OR '.$field." LIKE '%,".$db->escape($val).",%'";
+							$newres .= ($i2 > 0 ? " OR (" : "(").$db->sanitize($field)." LIKE '".$db->escape($val).",%'";
+							$newres .= ' OR '.$db->sanitize($field)." = '".$db->escape($val)."'";
+							$newres .= ' OR '.$db->sanitize($field)." LIKE '%,".$db->escape($val)."'";
+							$newres .= ' OR '.$db->sanitize($field)." LIKE '%,".$db->escape($val).",%'";
 							$newres .= ')';
 							$i2++; // a criteria for 1 more field was added to string (we can add several criteria for the same field as it is a multiselect search criteria)
 						}
@@ -11760,7 +11791,7 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 					}
 
 					if (preg_match('/\.(id|rowid)$/', $field)) {	// Special case for rowid that is sometimes a ref so used as a search field
-						$newres .= $field." = ".(is_numeric($tmpcrit) ? ((float) $tmpcrit) : '0');
+						$newres .= $db->sanitize($field)." = ".(is_numeric($tmpcrit) ? ((float) $tmpcrit) : '0');
 					} else {
 						$tmpcrit2 = $tmpcrit;
 						$tmpbefore = '%';
@@ -11768,10 +11799,10 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 						$tmps = '';
 
 						if (preg_match('/^!/', $tmpcrit)) {
-							$tmps .= $field." NOT LIKE "; // ! as exclude character
+							$tmps .= $db->sanitize($field)." NOT LIKE "; // ! as exclude character
 							$tmpcrit2 = preg_replace('/^!/', '', $tmpcrit2);
 						} else {
-							$tmps .= $field." LIKE ";
+							$tmps .= $db->sanitize($field)." LIKE ";
 						}
 						$tmps .= "'";
 
@@ -12833,12 +12864,16 @@ function dolGetButtonAction($label, $text = '', $actionType = 'default', $url = 
 		unset($attr['href']);
 	}
 
-	// escape all attribute
-	$attr = array_map('dol_escape_htmltag', $attr);
-
+	// escape all attributes
 	$TCompiledAttr = array();
 	foreach ($attr as $key => $value) {
-		$TCompiledAttr[] = $key.'= "'.$value.'"';
+		if ($key == 'href') {
+			$value = dolPrintHTMLForAttributeUrl($value);
+		} else {
+			$value = dolPrintHTMLForAttribute($value);
+		}
+
+		$TCompiledAttr[] = $key.'="'.$value.'"';	// $value has been escaped by the dolPrintHTMLForAttribute... just before
 	}
 
 	$compiledAttributes = empty($TCompiledAttr) ? '' : implode(' ', $TCompiledAttr);
