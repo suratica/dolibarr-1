@@ -64,7 +64,7 @@ class SupplierOrders extends DolibarrApi
 	public function get($id)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "lire")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 
 		$result = $this->order->fetch($id);
@@ -73,7 +73,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		$this->order->fetchObjectLinked();
@@ -94,15 +94,16 @@ class SupplierOrders extends DolibarrApi
 	 * @param string	$status			  Filter by order status : draft | validated | approved | running | received_start | received_end | cancelled | refused
 	 * @param string    $sqlfilters       Other criteria to filter answers separated by a comma. Syntax example "(t.ref:like:'SO-%') and (t.datec:<:'20160101')"
 	 * @param string    $sqlfilterlines   Other criteria to filter answers separated by a comma. Syntax example "(tl.fk_product:=:'17') and (tl.price:<:'250')"
-	 * @param string    $properties		  Restrict the data returned to theses properties. Ignored if empty. Comma separated list of properties names
+	 * @param string    $properties		  Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
+	 * @param bool      $pagination_data  If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0*
 	 * @return array                      Array of order objects
 	 *
 	 * @throws RestException
 	 */
-	public function index($sortfield = "t.rowid", $sortorder = 'ASC', $limit = 100, $page = 0, $thirdparty_ids = '', $product_ids = '', $status = '', $sqlfilters = '', $sqlfilterlines = '', $properties = '')
+	public function index($sortfield = "t.rowid", $sortorder = 'ASC', $limit = 100, $page = 0, $thirdparty_ids = '', $product_ids = '', $status = '', $sqlfilters = '', $sqlfilterlines = '', $properties = '', $pagination_data = false)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "lire")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 
 		$obj_ret = array();
@@ -117,30 +118,18 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		$sql = "SELECT t.rowid";
-		if ((!DolibarrApiAccess::$user->hasRight("societe", "client", "voir")) || $search_sale > 0) {
-			$sql .= ", sc.fk_soc, sc.fk_user"; // We need these fields in order to filter by sale (including the case where the user can only see his prospects)
-		}
-		$sql .= " FROM ".MAIN_DB_PREFIX."commande_fournisseur AS t LEFT JOIN ".MAIN_DB_PREFIX."commande_fournisseur_extrafields AS ef ON (ef.fk_object = t.rowid)"; // Modification VMR Global Solutions to include extrafields as search parameters in the API GET call, so we will be able to filter on extrafields
-
-		if ((!DolibarrApiAccess::$user->hasRight("societe", "client", "voir")) || $search_sale > 0) {
-			$sql .= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc"; // We need this table joined to the select in order to filter by sale
-		}
-
+		$sql .= " FROM ".MAIN_DB_PREFIX."commande_fournisseur AS t";
+		$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."commande_fournisseur_extrafields AS ef ON (ef.fk_object = t.rowid)"; // Modification VMR Global Solutions to include extrafields as search parameters in the API GET call, so we will be able to filter on extrafields
 		if (!empty($product_ids)) {
 			$sql .= ", ".MAIN_DB_PREFIX."commande_fournisseurdet as cd"; // We need this table joined to the select in order to filter by product
 		}
-
 		$sql .= ' WHERE t.entity IN ('.getEntity('supplier_order').')';
-		if ((!DolibarrApiAccess::$user->hasRight("societe", "client", "voir")) || $search_sale > 0) {
-			$sql .= " AND t.fk_soc = sc.fk_soc";
-		}
 		if (!empty($product_ids)) {
 			$sql .= " AND cd.fk_commande = t.rowid AND cd.fk_product IN (".$this->db->sanitize($product_ids).")";
 		}
 		if ($socids) {
 			$sql .= " AND t.fk_soc IN (".$this->db->sanitize($socids).")";
 		}
-
 		// Filter by status
 		if ($status == 'draft') {
 			$sql .= " AND t.fk_statut IN (0)";
@@ -166,9 +155,13 @@ class SupplierOrders extends DolibarrApi
 		if ($status == 'refused') {
 			$sql .= " AND t.fk_statut IN (9)";
 		}
-		// Insert sale filter
-		if ($search_sale > 0) {
-			$sql .= " AND sc.fk_user = ".((int) $search_sale);
+		// Search on sale representative
+		if ($search_sale && $search_sale != '-1') {
+			if ($search_sale == -2) {
+				$sql .= " AND NOT EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = t.fk_soc)";
+			} elseif ($search_sale > 0) {
+				$sql .= " AND EXISTS (SELECT sc.fk_soc FROM ".MAIN_DB_PREFIX."societe_commerciaux as sc WHERE sc.fk_soc = t.fk_soc AND sc.fk_user = ".((int) $search_sale).")";
+			}
 		}
 		// Add sql filters
 		if ($sqlfilters) {
@@ -188,6 +181,9 @@ class SupplierOrders extends DolibarrApi
 				throw new RestException(400, 'Error when validating parameter sqlfilterlines -> '.$errormessage);
 			}
 		}
+
+		//this query will return total supplier orders with the filters given
+		$sqlTotals = str_replace('SELECT t.rowid', 'SELECT count(t.rowid) as total', $sql);
 
 		$sql .= $this->db->order($sortfield, $sortorder);
 		if ($limit) {
@@ -216,6 +212,23 @@ class SupplierOrders extends DolibarrApi
 			throw new RestException(503, 'Error when retrieve supplier order list : '.$this->db->lasterror());
 		}
 
+		//if $pagination_data is true the response will contain element data with all values and element pagination with pagination data(total,page,limit)
+		if ($pagination_data) {
+			$totalsResult = $this->db->query($sqlTotals);
+			$total = $this->db->fetch_object($totalsResult)->total;
+
+			$tmp = $obj_ret;
+			$obj_ret = [];
+
+			$obj_ret['data'] = $tmp;
+			$obj_ret['pagination'] = [
+				'total' => (int) $total,
+				'page' => $page, //count starts from 0
+				'page_count' => ceil((int) $total / $limit),
+				'limit' => $limit
+			];
+		}
+
 		return $obj_ret;
 	}
 
@@ -230,15 +243,15 @@ class SupplierOrders extends DolibarrApi
 	public function post($request_data = null)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "creer") && !DolibarrApiAccess::$user->hasRight("supplier_order", "creer")) {
-			throw new RestException(401, "Insuffisant rights");
+			throw new RestException(403, "Insuffisant rights");
 		}
 		// Check mandatory fields
 		$result = $this->_validate($request_data);
 
 		foreach ($request_data as $field => $value) {
 			if ($field === 'caller') {
-				// Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again whith the caller
-				$this->order->context['caller'] = $request_data['caller'];
+				// Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again with the caller
+				$this->order->context['caller'] = sanitizeVal($request_data['caller'], 'aZ09');
 				continue;
 			}
 
@@ -265,14 +278,14 @@ class SupplierOrders extends DolibarrApi
 	/**
 	 * Update supplier order
 	 *
-	 * @param int   $id             Id of supplier order to update
-	 * @param array $request_data   Datas
-	 * @return int
+	 * @param 	int   	$id             	Id of supplier order to update
+	 * @param 	array 	$request_data   	Datas
+	 * @return 	Object|false				Updated object
 	 */
 	public function put($id, $request_data = null)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "creer") && !DolibarrApiAccess::$user->hasRight("supplier_order", "creer")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 
 		$result = $this->order->fetch($id);
@@ -281,7 +294,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		foreach ($request_data as $field => $value) {
@@ -289,11 +302,10 @@ class SupplierOrders extends DolibarrApi
 				continue;
 			}
 			if ($field === 'caller') {
-				// Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again whith the caller
-				$this->order->context['caller'] = $request_data['caller'];
+				// Add a mention of caller so on trigger called after action, we can filter to avoid a loop if we try to sync back again with the caller
+				$this->order->context['caller'] = sanitizeVal($request_data['caller'], 'aZ09');
 				continue;
 			}
-
 			if ($field == 'array_options' && is_array($value)) {
 				foreach ($value as $index => $val) {
 					$this->order->array_options[$index] = $this->_checkValForAPI($field, $val, $this->order);
@@ -314,7 +326,7 @@ class SupplierOrders extends DolibarrApi
 	/**
 	 * Get contacts of given supplier order
 	 *
-	 * Return an array with contact informations
+	 * Return an array with contact information
 	 *
 	 * @param	int		$id			ID of supplier order
 	 * @param	string	$source		Source of the contact (internal, external, all).
@@ -328,7 +340,7 @@ class SupplierOrders extends DolibarrApi
 	public function getContacts($id, $source, $type = '')
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "lire")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 
 		$result = $this->order->fetch($id);
@@ -337,7 +349,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 		$contacts = array();
 
@@ -371,7 +383,7 @@ class SupplierOrders extends DolibarrApi
 	public function postContact($id, $contactid, $type, $source)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "creer")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 
 		$result = $this->order->fetch($id);
@@ -380,7 +392,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		$result = $this->order->add_contact($contactid, $type, $source);
@@ -420,7 +432,7 @@ class SupplierOrders extends DolibarrApi
 	public function deleteContact($id, $contactid, $type, $source)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "creer")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 
 		$result = $this->order->fetch($id);
@@ -429,7 +441,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		$contacts = $this->order->liste_contact(-1, $source, 0, $type);
@@ -469,7 +481,7 @@ class SupplierOrders extends DolibarrApi
 	public function delete($id)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "supprimer")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 		$result = $this->order->fetch($id);
 		if (!$result) {
@@ -477,7 +489,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		if ($this->order->delete(DolibarrApiAccess::$user) < 0) {
@@ -514,7 +526,7 @@ class SupplierOrders extends DolibarrApi
 	public function validate($id, $idwarehouse = 0, $notrigger = 0)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "creer") && !DolibarrApiAccess::$user->hasRight("supplier_order", "creer")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 		$result = $this->order->fetch($id);
 		if (!$result) {
@@ -522,7 +534,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		$result = $this->order->valid(DolibarrApiAccess::$user, $idwarehouse, $notrigger);
@@ -562,7 +574,7 @@ class SupplierOrders extends DolibarrApi
 	public function approve($id, $idwarehouse = 0, $secondlevel = 0)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "creer") && !DolibarrApiAccess::$user->hasRight("supplier_order", "creer")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 		$result = $this->order->fetch($id);
 		if (!$result) {
@@ -570,7 +582,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		$result = $this->order->approve(DolibarrApiAccess::$user, $idwarehouse, $secondlevel);
@@ -613,7 +625,7 @@ class SupplierOrders extends DolibarrApi
 	public function makeOrder($id, $date, $method, $comment = '')
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "creer") && !DolibarrApiAccess::$user->hasRight("supplier_order", "creer")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 		$result = $this->order->fetch($id);
 		if (!$result) {
@@ -621,7 +633,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		$result = $this->order->commande(DolibarrApiAccess::$user, $date, $method, $comment);
@@ -676,7 +688,7 @@ class SupplierOrders extends DolibarrApi
 	public function receiveOrder($id, $closeopenorder, $comment, $lines)
 	{
 		if (!DolibarrApiAccess::$user->hasRight("fournisseur", "commande", "creer") && !DolibarrApiAccess::$user->hasRight("supplier_order", "creer")) {
-			throw new RestException(401);
+			throw new RestException(403);
 		}
 		$result = $this->order->fetch($id);
 		if (!$result) {
@@ -684,7 +696,7 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		if (!DolibarrApi::_checkAccessToResource('fournisseur', $this->order->id, 'commande_fournisseur', 'commande')) {
-			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
 		foreach ($lines as $line) {

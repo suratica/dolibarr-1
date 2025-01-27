@@ -1,8 +1,10 @@
 <?php
 /*
  * Copyright (C) 2014-2016  Jean-François Ferry	<hello@librethic.io>
- * 				 2016       Christophe Battarel <christophe@altairis.fr>
+ * Copyright (C) 2016       Christophe Battarel <christophe@altairis.fr>
  * Copyright (C) 2023		Benjamin Falière	<benjamin.faliere@altairis.fr>
+ * Copyright (C) 2024-2025	MDW					<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2025       Frédéric France     <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,12 +45,12 @@ class InterfaceTicketEmail extends DolibarrTriggers
 		$this->name = preg_replace('/^Interface/i', '', get_class($this));
 		$this->family = "ticket";
 		$this->description = "Triggers of the module ticket to send notifications to internal users and to third-parties";
-		$this->version = self::VERSION_DOLIBARR; // 'development', 'experimental', 'dolibarr' or version
+		$this->version = self::VERSIONS['prod'];
 		$this->picto = 'ticket';
 	}
 
 	/**
-	 *      Function called when a Dolibarrr business event is done.
+	 *      Function called when a Dolibarr business event is done.
 	 *      All functions "runTrigger" are triggered if file is inside directory htdocs/core/triggers
 	 *
 	 *      @param  string    $action Event action code
@@ -79,13 +81,6 @@ class InterfaceTicketEmail extends DolibarrTriggers
 						if ($res > 0) {
 							// Send email to notification email
 							if (!getDolGlobalString('TICKET_DISABLE_ALL_MAILS')) {
-								// Init to avoid errors
-								$filepath = array();
-								$filename = array();
-								$mimetype = array();
-
-								$appli = $mysoc->name;
-
 								// Send email to assigned user
 								$sendto = $userstat->email;
 								$subject_assignee = 'TicketAssignedToYou';
@@ -93,7 +88,7 @@ class InterfaceTicketEmail extends DolibarrTriggers
 								$see_ticket_assignee = 'SeeThisTicketIntomanagementInterface';
 
 								if (getDolGlobalString('TICKET_DISABLE_MAIL_AUTOCOPY_TO')) {
-									$old_MAIN_MAIL_AUTOCOPY_TO = $conf->global->MAIN_MAIL_AUTOCOPY_TO;
+									$old_MAIN_MAIL_AUTOCOPY_TO = getDolGlobalString('MAIN_MAIL_AUTOCOPY_TO');
 									$conf->global->MAIN_MAIL_AUTOCOPY_TO = '';
 								}
 								if (!empty($sendto)) {
@@ -166,10 +161,41 @@ class InterfaceTicketEmail extends DolibarrTriggers
 				$see_ticket_assignee = 'SeeThisTicketIntomanagementInterface';
 
 				// Send email to notification email
+				// Note: $object->context['disableticketemail'] is set to 1 by public interface at creation because email sending is already managed by page
+				// $object->context['createdfrompublicinterface'] may also be defined when creation done from public interface
 				if (getDolGlobalString('TICKET_NOTIFICATION_EMAIL_TO') && empty($object->context['disableticketemail'])) {
-					$sendto = !getDolGlobalString('TICKET_NOTIFICATION_EMAIL_TO') ? '' : $conf->global->TICKET_NOTIFICATION_EMAIL_TO;
-					if ($sendto) {
-						$this->composeAndSendAdminMessage($sendto, $subject_admin, $body_admin, $object, $langs);
+					$sendto = getDolGlobalString('TICKET_NOTIFICATION_EMAIL_TO');
+					// if ($sendto) { // already test, can't be empty
+					$this->composeAndSendAdminMessage($sendto, $subject_admin, $body_admin, $object, $langs);
+					// }
+				}
+
+				// Send email to assignee if an assignee was set at creation
+				if ($object->fk_user_assign > 0 && $object->fk_user_assign != $user->id && empty($object->context['disableticketemail'])) {
+					$userstat = new User($this->db);
+					$res = $userstat->fetch($object->fk_user_assign);
+					if ($res > 0) {
+						// Send email to notification email
+						if (!getDolGlobalString('TICKET_DISABLE_ALL_MAILS')) {
+							// Send email to assigned user
+							$sendto = $userstat->email;
+
+							$old_MAIN_MAIL_AUTOCOPY_TO = '';
+							if (!getDolGlobalString('TICKET_DISABLE_MAIL_AUTOCOPY_TO')) {
+								$old_MAIN_MAIL_AUTOCOPY_TO = $conf->global->MAIN_MAIL_AUTOCOPY_TO;
+								$conf->global->MAIN_MAIL_AUTOCOPY_TO = '';
+							}
+
+							if (!empty($sendto)) {
+								$this->composeAndSendAssigneeMessage($sendto, $subject_assignee, $body_assignee, $see_ticket_assignee, $object, $langs);
+							}
+
+							if (!getDolUserString('TICKET_DISABLE_MAIL_AUTOCOPY_TO')) {
+								$conf->global->MAIN_MAIL_AUTOCOPY_TO = $old_MAIN_MAIL_AUTOCOPY_TO;
+							}
+						}
+					} else {
+						$this->setErrorsFromObject($userstat);
 					}
 				}
 
@@ -182,6 +208,7 @@ class InterfaceTicketEmail extends DolibarrTriggers
 						if (!getDolGlobalString('TICKET_DISABLE_ALL_MAILS')) {
 							// Send email to assigned user
 							$sendto = $userstat->email;
+							$old_MAIN_MAIL_AUTOCOPY_TO = null;
 							if (!getDolGlobalString('TICKET_DISABLE_MAIL_AUTOCOPY_TO')) {
 								$old_MAIN_MAIL_AUTOCOPY_TO = $conf->global->MAIN_MAIL_AUTOCOPY_TO;
 								$conf->global->MAIN_MAIL_AUTOCOPY_TO = '';
@@ -202,21 +229,24 @@ class InterfaceTicketEmail extends DolibarrTriggers
 				}
 
 				// Send email to customer
-				if (!getDolGlobalString('TICKET_DISABLE_CUSTOMER_MAILS') && empty($object->context['disableticketemail']) && $object->notify_tiers_at_create) {
+				// Note: $object->context['disableticketemail'] is set to 1 by public interface at creation because email sending is already managed by page
+				// $object->context['createdfrompublicinterface'] may also be defined when creation done from public interface
+				if (empty($object->context['disableticketemail']) && $object->notify_tiers_at_create) {
 					$sendto = '';
 
-					//if contact selected send to email's contact else send to email's thirdparty
+					// if contact selected send to email's contact else send to email's thirdparty
 
-					$contactid = GETPOST('contactid', 'alpha');
+					$contactid = empty($object->context['contactid']) ? 0 : $object->context['contactid'];
 					$res = 0;
+					$contactObj = null;
 
 					if (!empty($contactid)) {
-						$contact = new Contact($this->db);
-						$res = $contact->fetch($contactid);
+						$contactObj = new Contact($this->db);
+						$res = $contactObj->fetch($contactid);
 					}
 
-					if ($res > 0 && !empty($contact->email) && !empty($contact->statut)) {
-						$sendto = $contact->email;
+					if ($contactObj !== null && !empty($contactObj->email) && !empty($contactObj->statut)) {
+						$sendto = $contactObj->email;
 					} elseif (!empty($object->fk_soc)) {
 						$object->fetch_thirdparty();
 						$sendto = $object->thirdparty->email;
@@ -249,15 +279,17 @@ class InterfaceTicketEmail extends DolibarrTriggers
 				$see_ticket_customer = 'TicketCloseEmailBodyInfosTrackUrlCustomer';
 
 				// Send email to notification email
+				// Note: $object->context['disableticketemail'] is set to 1 by public interface at creation but not at closing
 				if (getDolGlobalString('TICKET_NOTIFICATION_EMAIL_TO') && empty($object->context['disableticketemail'])) {
-					$sendto = !getDolGlobalString('TICKET_NOTIFICATION_EMAIL_TO') ? '' : $conf->global->TICKET_NOTIFICATION_EMAIL_TO;
-					if ($sendto) {
-						$this->composeAndSendAdminMessage($sendto, $subject_admin, $body_admin, $object, $langs);
-					}
+					$sendto = getDolGlobalString('TICKET_NOTIFICATION_EMAIL_TO');
+					// if ($sendto) { // already test, can't be empty
+					$this->composeAndSendAdminMessage($sendto, $subject_admin, $body_admin, $object, $langs);
+					// }
 				}
 
 				// Send email to customer.
-				if (!getDolGlobalString('TICKET_DISABLE_CUSTOMER_MAILS') && empty($object->context['disableticketemail'])) {
+				// Note: $object->context['disableticketemail'] is set to 1 by public interface at creation but not at closing
+				if (empty($object->context['disableticketemail'])) {
 					$linked_contacts = $object->listeContact(-1, 'thirdparty');
 					$linked_contacts = array_merge($linked_contacts, $object->listeContact(-1, 'internal'));
 					if (empty($linked_contacts) && getDolGlobalString('TICKET_NOTIFY_AT_CLOSING') && !empty($object->fk_soc)) {
@@ -265,15 +297,16 @@ class InterfaceTicketEmail extends DolibarrTriggers
 						$linked_contacts[]['email'] = $object->thirdparty->email;
 					}
 
-					$contactid = GETPOST('contactid', 'int');
+					$contactid = empty($object->context['contactid']) ? 0 : $object->context['contactid'];
 					$res = 0;
+					$contactObj = null;
 
 					if ($contactid > 0) {
 						// TODO This security test has no sens. We must check that $contactid is inside $linked_contacts[]['id'] when $linked_contacts[]['source'] = 'external' or 'thirdparty'
 						// Refuse email if not
-						$contact = new Contact($this->db);
-						$res = $contact->fetch($contactid);
-						if (! in_array($contact, $linked_contacts)) {
+						$contactObj = new Contact($this->db);
+						$res = $contactObj->fetch($contactid);
+						if (! in_array($contactObj, $linked_contacts)) {
 							$error_msg = $langs->trans('Error'). ': ';
 							$error_msg .= $langs->transnoentities('TicketWrongContact');
 							setEventMessages($error_msg, [], 'errors');
@@ -283,8 +316,8 @@ class InterfaceTicketEmail extends DolibarrTriggers
 					}
 
 					$sendto = '';
-					if ($res > 0 && !empty($contact->email) && !empty($contact->statut)) {
-						$sendto = $contact->email;
+					if ($contactObj !== null && $res > 0 && !empty($contactObj->email) && !empty($contactObj->statut)) {
+						$sendto = $contactObj->email;
 					} elseif (!empty($linked_contacts) && ($contactid == -2 || (GETPOST('massaction', 'alpha') == 'close' && GETPOST('confirm', 'alpha') == 'yes'))) {
 						// if sending to all contacts or sending to contacts while mass closing
 						$temp_emails = [];
@@ -357,12 +390,13 @@ class InterfaceTicketEmail extends DolibarrTriggers
 		$message_admin .= '<p>'.$langs->trans('Message').' : <br><br>'.$message.'</p><br>';
 		$message_admin .= '<p><a href="'.dol_buildpath('/ticket/card.php', 2).'?track_id='.$object->track_id.'">'.$langs->trans('SeeThisTicketIntomanagementInterface').'</a></p>';
 
-		$from = getDolGlobalString('MAIN_INFO_SOCIETE_NOM') . '<' . getDolGlobalString('TICKET_NOTIFICATION_EMAIL_FROM').'>';
+		$from = (getDolGlobalString('MAIN_INFO_SOCIETE_NOM') ? getDolGlobalString('MAIN_INFO_SOCIETE_NOM') . ' ' : '') . '<' . getDolGlobalString('TICKET_NOTIFICATION_EMAIL_FROM').'>';
 
 		$trackid = 'tic'.$object->id;
 
+		$old_MAIN_MAIL_AUTOCOPY_TO = null;
 		if (getDolGlobalString('TICKET_DISABLE_MAIL_AUTOCOPY_TO')) {
-			$old_MAIN_MAIL_AUTOCOPY_TO = $conf->global->MAIN_MAIL_AUTOCOPY_TO;
+			$old_MAIN_MAIL_AUTOCOPY_TO = getDolGlobalString('MAIN_MAIL_AUTOCOPY_TO');
 			$conf->global->MAIN_MAIL_AUTOCOPY_TO = '';
 		}
 		include_once DOL_DOCUMENT_ROOT.'/core/class/CMailFile.class.php';
@@ -411,11 +445,11 @@ class InterfaceTicketEmail extends DolibarrTriggers
 			foreach ($extrafields->attributes[$object->table_element]['label'] as $key => $value) {
 				$enabled = 1;
 				if ($enabled && isset($extrafields->attributes[$object->table_element]['list'][$key])) {
-					$enabled = dol_eval($extrafields->attributes[$object->table_element]['list'][$key], 1);
+					$enabled = (int) dol_eval($extrafields->attributes[$object->table_element]['list'][$key], 1);
 				}
 				$perms = 1;
 				if ($perms && isset($extrafields->attributes[$object->table_element]['perms'][$key])) {
-					$perms = dol_eval($extrafields->attributes[$object->table_element]['perms'][$key], 1);
+					$perms = (int) dol_eval($extrafields->attributes[$object->table_element]['perms'][$key], 1);
 				}
 
 				$qualified = true;
@@ -445,13 +479,13 @@ class InterfaceTicketEmail extends DolibarrTriggers
 		$message_customer .= '<p>'.$langs->trans($see_ticket).' : <a href="'.$url_public_ticket.'">'.$url_public_ticket.'</a></p>';
 		$message_customer .= '<p>'.$langs->trans('TicketEmailPleaseDoNotReplyToThisEmail').'</p>';
 
-		$from = (!getDolGlobalString('MAIN_INFO_SOCIETE_NOM') ? '' : getDolGlobalString('MAIN_INFO_SOCIETE_NOM') . ' ').'<' . getDolGlobalString('TICKET_NOTIFICATION_EMAIL_FROM').'>';
+		$from = (getDolGlobalString('MAIN_INFO_SOCIETE_NOM') ? getDolGlobalString('MAIN_INFO_SOCIETE_NOM') . ' ' : '').'<' . getDolGlobalString('TICKET_NOTIFICATION_EMAIL_FROM').'>';
 
 		$trackid = 'tic'.$object->id;
 
-		$old_MAIN_MAIL_AUTOCOPY_TO = getDolGlobalString('MAIN_MAIL_AUTOCOPY_TO');
-
+		$old_MAIN_MAIL_AUTOCOPY_TO = null;
 		if (getDolGlobalString('TICKET_DISABLE_MAIL_AUTOCOPY_TO')) {
+			$old_MAIN_MAIL_AUTOCOPY_TO = getDolGlobalString('MAIN_MAIL_AUTOCOPY_TO');
 			$conf->global->MAIN_MAIL_AUTOCOPY_TO = '';
 		}
 
