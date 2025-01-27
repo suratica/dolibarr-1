@@ -518,7 +518,7 @@ NEW: Upgrade in module builder in menu section
 NEW: use account address in sepa mandate (#23642)
 NEW: VAT rate - Add entity
 NEW: When an user unset the batch management of products, transformation of each batch stock mouvement in global stock mouvement
-NEW: PDF Generation for each Human Resource Evaluations. 
+NEW: PDF Generation for each Human Resource Evaluations.
 
 SEC: #25512 applicative anti bruteforce - security on too many login attempts (#25520)
 SEC: Add action confirm_... as sensitive to need a CSRF token
@@ -592,7 +592,7 @@ The following changes may create regressions for some external modules, but were
 * The property ->user_creation to store ID of user of creation has been renamed into ->user_creation_id.
 * The property ->user_modification to store ID of user of modification has been renamed into ->user_modification_id.
 * The private array ->status_short, ->statuts and ->status_long are now array ->labelStatusShort and ->labelStatus everywhere.
-* The duplicate property ->user_creat, ->date_creat, ->date_valid have been removed (use instead user_creation, date_creation, date_validation). 
+* The duplicate property ->user_creat, ->date_creat, ->date_valid have been removed (use instead user_creation, date_creation, date_validation).
 * The method get_substitutionarray_shipment_lines() has been removed. Use the generic get_substitutionarray_lines() instead.
 * The method ProductcustomerPrice->fetch_all_log() has been renamed into camel case ->fetchAllLog()
 * It was possible to use a variable $soc or $right inside a PHP code condition of some extrafields properties, this is no more true (this 2 variables are no more global variables).
@@ -602,7 +602,7 @@ The following changes may create regressions for some external modules, but were
 * The delete() method of AdherentType, Contact, Delivery, MultiCurrency, CurrencyRate now need $user as first parameter.
 * A very high number of class properties (with old name in french) are now deprecated in favor of the property name in english.
 * The load of hook context productdao has been removed before calling loadvirtualstock. Modules must use the context of main parent page or 'all' for all cases.
-
+* booking.class.php was removed, please have a look at calendar.class.php
 
 ***** ChangeLog for 18.0.6 compared to 18.0.5 *****
 FIX: 16.0 - parent company gets emptied when updating a third party from the card in edit mode (#28269)
@@ -1009,7 +1009,7 @@ NEW: Accountancy - Quadratus export with attachments in accountancy export
 NEW: Accountancy - Can filter on a custom group of accounts. Perf or ledger list.
 NEW: Accountancy - Can select the export format during export of journals
 NEW: Accountancy - sort of column of custom group of account
-NEW: Can upload a file with drag and drop on purchase invoice, vats, salaries and social contributions 
+NEW: Can upload a file with drag and drop on purchase invoice, vats, salaries and social contributions
 NEW: Authentication: #22740 add OpenID Connect impl
 NEW: Authentication: add experimental support for Google OAuth2 connexion
 NEW: Authentication: can now edit service name for OAuth token
