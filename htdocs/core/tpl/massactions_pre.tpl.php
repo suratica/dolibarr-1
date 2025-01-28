@@ -98,7 +98,11 @@ if ($massaction == 'preaffecttag' && isModEnabled('category')) {
 	}
 }
 
-if ($massaction == 'preupdateprice') {
+if ($massaction == 'preupdateprice'
+ && (getDolGlobalString('PRODUCT_PRICE_UNIQ')
+		|| getDolGlobalString('PRODUIT_CUSTOMER_PRICES')
+		|| getDolGlobalString('PRODUIT_MULTIPRICES')
+	)) {
 	$formquestion = array();
 
 	$valuefield = '<div style="display: flex; align-items: center; justify-content: flex-end; padding-right: 150px">';
