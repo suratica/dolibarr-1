@@ -40,6 +40,7 @@ if (!defined('DISABLE_JS_GRAHP')) {
 // Load Dolibarr environment
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/website/lib/website.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/website.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/website2.lib.php';
@@ -1939,6 +1940,47 @@ if ($action == 'updatecss' && $usercanedit) {
 	}
 }
 
+if ($action == "updatesecurity" && $usercanedit) {
+	$db->begin();
+	$res1 = $res2 = $res3 = $res4 = 0;
+	$securityrp = GETPOST('WEBSITE_'.$object->id.'_SECURITY_FORCERP', 'alpha');
+	$securitysts = GETPOST('WEBSITE_'.$object->id.'_SECURITY_FORCESTS', 'alpha');
+	$securitypp = GETPOST('WEBSITE_'.$object->id.'_SECURITY_FORCEPP', 'alpha');
+	$securitysp = GETPOST('WEBSITE_'.$object->id.'_SECURITY_FORCECSP', 'alpha');
+
+	if (!empty($securityrp)) {
+		$res1 = dolibarr_set_const($db, 'WEBSITE_'.$object->id.'_SECURITY_FORCERP', $securityrp, 'chaine', 0, '', $conf->entity);
+	}
+	if (!empty($securitysts)) {
+		$res2 = dolibarr_set_const($db, 'WEBSITE_'.$object->id.'_SECURITY_FORCESTS', $securitysts, 'chaine', 0, '', $conf->entity);
+	}
+	if (!empty($securitypp)) {
+		$res3 = dolibarr_set_const($db, 'WEBSITE_'.$object->id.'_SECURITY_FORCEPP', $securitypp, 'chaine', 0, '', $conf->entity);
+	}
+	if (!empty($securitysp)) {
+		$res4 = dolibarr_set_const($db, 'WEBSITE_'.$object->id.'_SECURITY_FORCECSP', $securitysp, 'chaine', 0, '', $conf->entity);
+	}
+
+	if ($res1 >= 0 && $res2 >= 0 && $res3 >= 0 && $res4 >= 0 ) {
+		$db->commit();
+		setEventMessages($langs->trans("Saved"), null, 'mesgs');
+	} else {
+		$db->rollback();
+		setEventMessages($langs->trans("ErrorSavingChanges"), null, 'errors');
+	}
+
+	if (!GETPOSTISSET('updateandstay')) {	// If we click on "Save And Stay", we don not make the redirect
+		$action = 'preview';
+		if ($backtopage) {
+			$backtopage = preg_replace('/searchstring=[^&]*/', '', $backtopage);	// Clean backtopage url
+			header("Location: ".$backtopage);
+			exit;
+		}
+	} else {
+		$action = 'editsecurity';
+	}
+}
+
 // Update page
 if ($action == 'setashome' && $usercanedit) {
 	$db->begin();
@@ -2946,6 +2988,9 @@ if ($action == 'file_manager') {
 if ($mode) {
 	print '<input type="hidden" name="mode" value="'.$mode.'">';
 }
+if ($action == 'editsecurity') {
+	print '<input type="hidden" name="action" value="updatesecurity">';
+}
 
 print '<div>'."\n";
 
@@ -3258,8 +3303,8 @@ if (!GETPOST('hide_websitemenu')) {
 		print '</span>';
 	}
 
-	if (in_array($action, array('editcss', 'editmenu', 'file_manager', 'replacesiteconfirm')) || in_array($mode, array('replacesite'))) {
-		if ($action == 'editcss') {
+	if (in_array($action, array('editcss', 'editmenu', 'file_manager', 'replacesiteconfirm', 'editsecurity')) || in_array($mode, array('replacesite'))) {
+		if ($action == 'editcss' || $action == 'editsecurity') {
 			// accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
 			// accesskey is for Mac:               CTRL + key for all browsers
 			$stringforfirstkey = $langs->trans("KeyboardShortcut");
@@ -3290,8 +3335,8 @@ if (!GETPOST('hide_websitemenu')) {
 	// Toolbar for pages
 	//
 
-	if ($websitekey && $websitekey != '-1' && (!in_array($action, array('editcss', 'editmenu', 'importsite', 'file_manager', 'replacesite', 'replacesiteconfirm'))) && (!in_array($mode, array('replacesite'))) && !$file_manager) {
-		print '</div>'."\n"; // Close current websitebar to open a new one
+	if ($websitekey && $websitekey != '-1' && (!in_array($action, array('editcss', 'editmenu', 'importsite', 'file_manager', 'replacesite', 'replacesiteconfirm', 'editsecurity'))) && (!in_array($mode, array('replacesite'))) && !$file_manager) {
+		print '</div>'; // Close current websitebar to open a new one
 
 		print '<!-- Toolbar for websitepage -->';
 		print '<div class="centpercent websitebar"'.($style ? ' style="'.$style.'"' : '').'>'."\n";
@@ -3754,7 +3799,7 @@ if (!GETPOST('hide_websitemenu')) {
 
 			// TODO Add js to save alias like we save virtual host name and use dynamic virtual host for url of id=previewpageext
 		}
-		if (!in_array($mode, array('replacesite')) && !in_array($action, array('editcss', 'editmenu', 'file_manager', 'replacesiteconfirm', 'createsite', 'createcontainer', 'createfromclone', 'createpagefromclone', 'deletesite'))) {
+		if (!in_array($mode, array('replacesite')) && !in_array($action, array('editcss', 'editmenu', 'file_manager', 'replacesiteconfirm', 'createsite', 'createcontainer', 'createfromclone', 'createpagefromclone', 'deletesite', 'editsecurity'))) {
 			if ($action == 'editsource' || $action == 'editmeta') {
 				// accesskey is for Windows or Linux:  ALT + key for chrome, ALT + SHIFT + KEY for firefox
 				// accesskey is for Mac:               CTRL + key for all browsers
@@ -3964,7 +4009,8 @@ if ($action == 'editcss') {
 	//$readmecontent.="";
 	//}
 
-	print dol_get_fiche_head();
+	$head = websiteconfigPrepareHead($object);
+	print dol_get_fiche_head($head, 'general', $langs->trans("General"), 0, 'website');
 
 	print '<!-- Edit Website properties -->'."\n";
 	print '<table class="border centpercent">';
@@ -4159,6 +4205,146 @@ if ($action == 'editcss') {
 	print '</div>';
 
 	print '<br>';
+}
+
+if ($action == 'editsecurity') {
+	$selectarraySP = websiteGetContentPolicyDirectives();
+	$selectarraySPlevel2 = websiteGetContentPolicySources();
+	print '<div class="fiche">';
+	print '<br>';
+
+	$head = websiteconfigPrepareHead($object);
+	print dol_get_fiche_head($head, 'security', $langs->trans("General"), 0, 'website');
+
+	print '<div class="div-table-responsive-no-min">';
+	print '<table class="noborder centpercent">';
+	print '<tr class="liste_titre">';
+	print '<td>'.$langs->trans("Parameter").'</td>';
+	print '<td></td>'."\n";
+	print '</tr>';
+
+	// Force RP
+	print '<tr class="oddeven">';
+	print '<td>'.$langs->trans('WebsiteSecurityForceRP').'</td>';
+	print '<td><input class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCERP" id="WEBSITE_'.$object->id.'_SECURITY_FORCERP" value="'.getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCERP").'"></td>';
+	print '</tr>';
+	// Force STS
+	print '<tr class="oddeven">';
+	print '<td>'.$langs->trans('WebsiteSecurityForceSTS').'</td>';
+	print '<td><input class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCESTS" id="WEBSITE_'.$object->id.'_SECURITY_FORCESTS" value="'.getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCESTS").'"></td>';
+	print '</tr>';
+	// Force PP
+	print '<tr class="oddeven">';
+	print '<td>'.$langs->trans('WebsiteSecurityForcePP').'</td>';
+	print '<td><input class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCEPP" id="WEBSITE_'.$object->id.'_SECURITY_FORCEPP" value="'.getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCEPP").'"></td>';
+	print '</tr>';
+	print '</table>';
+	print '</div>';
+
+	// Security Policy
+	print '<div class="div-table-responsive-no-min">';
+	print '<table class="centpercent">';
+	print '<tr><td>'.$langs->trans("SecurityPolicy").'</td></tr>';
+	print '<tr><td>'.$langs->trans("Value").':</span></td><td colspan=2><input style="width:90%;" class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" value="'.getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCECSP").'"></td></tr>';
+	print '<tr><td></td></tr>';
+	print '<tr><td></td>';
+	print '<td>'.$form->selectarray("select_identifier_WEBSITE_SECURITY_FORCECSP", $selectarraySP, "select_identifier_WEBSITE_SECURITY_FORCECSP", 1, 0, 0, '', 0, 0, 0, '', 'minwidth300').'</td>';
+	print '<td>';
+	foreach ($selectarraySPlevel2 as $key => $values) {
+		print '<div class="div_WEBSITE_SECURITY_FORCECSP hidden" id="div_'.$key.'_WEBSITE_SECURITY_FORCECSP">';
+		print $form->selectarray("select_".$key."_WEBSITE_SECURITY_FORCECSP", $values, "select_".$key."_WEBSITE_SECURITY_FORCECSP", 1, 0, 1, '', 0, 0, 0, '', 'minwidth300 select_WEBSITE_SECURITY_FORCECSP');
+		print '</div>';
+	}
+	print '</td>';
+	print '<td><input id="input_data_WEBSITE_SECURITY_FORCECSP" name="input_data_WEBSITE_SECURITY_FORCECSP"></td>';
+	print '<td><div class="btn_class_WEBSITE_SECURITY_FORCECSP"><input type="button" id="btn_WEBSITE_SECURITY_FORCECSP" name="btn_WEBSITE_SECURITY_FORCECSP" class="butAction" value="'.$langs->trans("Add").'"></div></td>';
+	print '</tr>';
+	print '</table>';
+	print '</div>';
+
+
+	// TODO: liste sous page identifier pour supprimer
+	print '<script>
+		$(document).ready(function() {
+			function getObjectForceSP(forcesp) {
+				var forcespobj = {};
+				securitypolicies = forcesp.split(";");
+				securitypolicies.forEach((element) => {
+					if (element == "") {
+						return ;
+					}
+					securitypolicy = element.split(" ");
+					directive = securitypolicy.shift();
+					while (directive == ""){
+						directive = securitypolicy.shift();
+					}
+					sources = securitypolicy;
+					sources.forEach((source) => {
+						if (forcespobj[directive] == undefined) {
+							forcespobj[directive] = [source];
+						} else {
+							forcespobj[directive].push(source);
+						}
+					});
+				});
+				return forcespobj;
+			}
+
+			function fillInputWebsiteSecurityForceSP(element){
+				console.log("We fill Website Security SP input");
+
+				objid = '.$object->id.';
+				securitysp = getObjectForceSP($("#WEBSITE_"+ objid +"_SECURITY_FORCECSP").val());
+				directivetype = $("#select_identifier_WEBSITE_SECURITY_FORCECSP").find(":selected").data("directivetype");
+				directive = $("#select_identifier_WEBSITE_SECURITY_FORCECSP").val();
+				source = $("#select_"+directivetype+"_WEBSITE_SECURITY_FORCECSP").val();
+				data = $("#input_data_WEBSITE_SECURITY_FORCECSP").val();
+
+				if (directive != -1 && source != undefined && source != -1){
+					if ( source == "data") {
+						source = source + ": ";
+						securitydata = source + " " + data
+					} else {
+						if (source != "*"){
+							securitydata = "\'" + source + "\'";
+						} else {
+							securitydata = source;
+						}
+					}
+					if (securitysp[directive] == undefined) {
+						securitysp[directive] = [securitydata];
+					} else {
+						securitysp[directive].push(securitydata);
+					}
+				}
+				securityspstring = "";
+				for (const [key, val] of Object.entries(securitysp)) {
+					securityspstring = securityspstring + key + " " + val.join(" ") + "; "
+				}
+				
+				$("#WEBSITE_"+ objid +"_SECURITY_FORCECSP").val(securityspstring);
+
+				console.log("We clean data used");
+				$(".select_identifier_WEBSITE_SECURITY_FORCECSP").val(null).trigger("change");
+			}
+
+			$("#select_identifier_WEBSITE_SECURITY_FORCECSP").on("change", function() {
+				key = $(this).find(":selected").data("directivetype");
+				console.log("We hide all select div");
+				$(".div_WEBSITE_SECURITY_FORCECSP").hide();
+				$(".select_WEBSITE_SECURITY_FORCECSP").val(null).trigger("change");
+				console.log("We show div select with key "+key);
+				$("#div_"+key+"_WEBSITE_SECURITY_FORCECSP").show();
+			});
+
+			$("#btn_WEBSITE_SECURITY_FORCECSP").on("click", function(){
+				fillInputWebsiteSecurityForceSP($(this));
+			})
+		});
+	</script>';
+
+	print dol_get_fiche_end();
+	print '</div>';
 }
 
 
