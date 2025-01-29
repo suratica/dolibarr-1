@@ -96,7 +96,6 @@ function websiteconfigPrepareHead($object)
  *
  * @return 	array					Array of tabs
  */
-
 function websiteGetContentPolicyDirectives()
 {
 	return array(
@@ -139,7 +138,6 @@ function websiteGetContentPolicyDirectives()
  *
  * @return 	array					Array of tabs
  */
-
 function websiteGetContentPolicySources()
 {
 	return array(
