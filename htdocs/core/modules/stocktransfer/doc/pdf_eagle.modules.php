@@ -1,11 +1,12 @@
 <?php
+
 /* Copyright (C) 2005      Rodolphe Quiedeville <rodolphe@quiedeville.org>
  * Copyright (C) 2005-2012 Laurent Destailleur	<eldy@users.sourceforge.net>
  * Copyright (C) 2005-2012 Regis Houssin		<regis.houssin@inodbox.com>
  * Copyright (C) 2014-2015 Marcos García        <marcosgdf@gmail.com>
- * Copyright (C) 2018-2024 Frédéric France      <frederic.france@free.fr>
+ * Copyright (C) 2018-2025  Frédéric France      <frederic.france@free.fr>
  * Copyright (C) 2021 	   Gauthier VERDOL 	    <gauthier.verdol@atm-consulting.fr>
- * Copyright (C) 2024	   MDW					<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW					<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024	   Nick Fragoulis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -128,7 +129,7 @@ class pdf_eagle extends ModelePDFStockTransfer
 		$this->posxwarehousedestination = $this->page_largeur - $this->marge_droite - 35;
 		$this->posxpuht = $this->page_largeur - $this->marge_droite;
 
-		/*if (!empty($conf->global->STOCKTRANSFER_PDF_DISPLAY_AMOUNT_HT)) {	// Show also the prices
+		/*if (getDolGlobalString('STOCKTRANSFER_PDF_DISPLAY_AMOUNT_HT')) {	// Show also the prices
 			$this->posxqty = $this->page_largeur - $this->marge_droite - 118;
 			$this->posxwarehousesource = $this->page_largeur - $this->marge_droite - 96;
 			$this->posxwarehousedestination = $this->page_largeur - $this->marge_droite - 68;
@@ -151,7 +152,7 @@ class pdf_eagle extends ModelePDFStockTransfer
 			$this->posxwarehousedestination -= 20;
 		}
 
-		/*if (!empty($conf->global->STOCKTRANSFER_PDF_HIDE_ORDERED)) {
+		/*if (getDolGlobalString('STOCKTRANSFER_PDF_HIDE_ORDERED')) {
 			$this->posxqty += ($this->posxwarehousedestination - $this->posxwarehousesource);
 			$this->posxpicture += ($this->posxwarehousedestination - $this->posxwarehousesource);
 			$this->posxwarehousesource = $this->posxwarehousedestination;
@@ -774,12 +775,12 @@ class pdf_eagle extends ModelePDFStockTransfer
 	 *
 	 *	@param	TCPDF			$pdf            Object PDF
 	 *	@param  StockTransfer	$object         Object StockTransfer
-	 *	@param  int				$deja_regle     Amount already paid
-	 *	@param	int				$posy			Start Position
+	 *	@param  float			$already_paid   Amount already paid / not used
+	 *	@param	float			$posy			Start Position
 	 *	@param	Translate		$outputlangs	Object langs
-	 *	@return int								Position for suite
+	 *	@return float							Position for suite
 	 */
-	protected function _tableau_tot(&$pdf, $object, $deja_regle, $posy, $outputlangs)
+	protected function _tableau_tot(&$pdf, $object, $already_paid, $posy, $outputlangs)
 	{
 		// phpcs:enable
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
@@ -960,7 +961,7 @@ class pdf_eagle extends ModelePDFStockTransfer
 			$pdf->MultiCell(($this->posxpuht - $this->posxwarehousedestination + 4), 2, $outputlangs->transnoentities("WarehouseTarget"), '', 'C');
 		}
 
-		/*if (!empty($conf->global->STOCKTRANSFER_PDF_DISPLAY_AMOUNT_HT)) {
+		/*if (getDolGlobalString('STOCKTRANSFER_PDF_DISPLAY_AMOUNT_HT')) {
 			$pdf->line($this->posxpuht - 1, $tab_top, $this->posxpuht - 1, $tab_top + $tab_height);
 			if (empty($hidetop))
 			{
@@ -1167,6 +1168,8 @@ class pdf_eagle extends ModelePDFStockTransfer
 
 			if (!empty($thirdparty)) {
 				$carac_emetteur_name = pdfBuildThirdpartyName($thirdparty, $outputlangs);
+			} else {
+				$carac_emetteur_name = '';
 			}
 
 			if ($usecontact) {

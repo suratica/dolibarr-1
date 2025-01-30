@@ -881,7 +881,7 @@ class Productlot extends CommonObject
 			// Virtual products can't be used with kits (see langs with key ErrorNoteAlsoThatSubProductCantBeFollowedByLot)
 
 			// if it's a virtual product, maybe it is in invoice by extension
-			//          if (!empty($conf->global->PRODUCT_STATS_WITH_PARENT_PROD_IF_INCDEC)) {
+			//          if (getDolGlobalString('PRODUCT_STATS_WITH_PARENT_PROD_IF_INCDEC')) {
 			//              $TFather = $this->getFather();
 			//              if (is_array($TFather) && !empty($TFather)) {
 			//                  foreach ($TFather as &$fatherData) {
@@ -955,7 +955,7 @@ class Productlot extends CommonObject
 			// Virtual products can't be used with kits (see langs with key ErrorNoteAlsoThatSubProductCantBeFollowedByLot)
 
 			// if it's a virtual product, maybe it is in invoice by extension
-			//          if (!empty($conf->global->PRODUCT_STATS_WITH_PARENT_PROD_IF_INCDEC)) {
+			//          if (getDolGlobalString('PRODUCT_STATS_WITH_PARENT_PROD_IF_INCDEC')) {
 			//              $TFather = $this->getFather();
 			//              if (is_array($TFather) && !empty($TFather)) {
 			//                  foreach ($TFather as &$fatherData) {
@@ -1028,7 +1028,7 @@ class Productlot extends CommonObject
 			// Virtual products can't be used with kits (see langs with key ErrorNoteAlsoThatSubProductCantBeFollowedByLot)
 
 			// if it's a virtual product, maybe it is in invoice by extension
-			//          if (!empty($conf->global->PRODUCT_STATS_WITH_PARENT_PROD_IF_INCDEC)) {
+			//          if (getDolGlobalString('PRODUCT_STATS_WITH_PARENT_PROD_IF_INCDEC')) {
 			//              $TFather = $this->getFather();
 			//              if (is_array($TFather) && !empty($TFather)) {
 			//                  foreach ($TFather as &$fatherData) {
@@ -1228,9 +1228,9 @@ class Productlot extends CommonObject
 		if (empty($notooltip)) {
 			if (getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) {
 				$label = $langs->trans("ShowMyObject");
-				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
+				$linkclose .= ' alt="'.dolPrintHTMLForAttribute($label).'"';
 			}
-			$linkclose .= ($label ? ' title="'.dol_escape_htmltag($label, 1).'"' : ' title="tocomplete"');
+			$linkclose .= ($label ? ' title="'.dolPrintHTMLForAttribute($label).'"' : ' title="tocomplete"');
 			$linkclose .= $dataparams.' class="'.$classfortooltip.($morecss ? ' '.$morecss : '').'"';
 		} else {
 			$linkclose = ($morecss ? ' class="'.$morecss.'"' : '');
