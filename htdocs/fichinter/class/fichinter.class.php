@@ -1298,6 +1298,8 @@ class Fichinter extends CommonObject
 	 *
 	 *  @param	    User	$user		    User making the clone
 	 *	@param		int		$socid			Id of thirdparty
+	 *	@param		bool	$clone_contacts	Clone contacts from origin
+	 *	@param		bool	$clone_notes	Clone notes from origin
 	 *	@return		int						New id of clone
 	 */
 	public function createFromClone(User $user, $socid = 0, $clone_contacts = false, $clone_notes = false)
