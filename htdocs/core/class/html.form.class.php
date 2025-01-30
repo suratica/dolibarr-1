@@ -2968,7 +2968,7 @@ class Form
 		if (count($warehouseStatusArray)) {
 			$selectFieldsGrouped = ", sum(" . $this->db->ifsql("e.statut IS NULL", "0", "ps.reel") . ") as stock"; // e.statut is null if there is no record in stock
 		} else {
-			$selectFieldsGrouped = ", " . $this->db->ifsql("p.stock IS NULL", 0, "p.stock") . " AS stock";
+			$selectFieldsGrouped = ", " . $this->db->ifsql("p.stock IS NULL", '0', "p.stock") . " AS stock";
 		}
 
 		$sql = "SELECT ";
@@ -3262,7 +3262,7 @@ class Form
 				} else {
 					if (isModEnabled('dynamicprices') && !empty($objp->fk_price_expression)) {
 						$price_product = new Product($this->db);
-						$price_product->fetch($objp->rowid, '', '', 1);
+						$price_product->fetch($objp->rowid, '', '', '1');
 
 						require_once DOL_DOCUMENT_ROOT . '/product/dynamic_price/class/price_parser.class.php';
 						$priceparser = new PriceParser($this->db);
@@ -3341,7 +3341,7 @@ class Form
 		$outtva_tx = '';
 		$outdefault_vat_code = '';
 		$outqty = 1;
-		$outdiscount = 0;
+		$outdiscount = '0';
 
 		$maxlengtharticle = (!getDolGlobalString('PRODUCT_MAX_LENGTH_COMBO') ? 48 : $conf->global->PRODUCT_MAX_LENGTH_COMBO);
 
@@ -3711,7 +3711,7 @@ class Form
 			if ($selected > 0) {
 				require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 				$producttmpselect = new Product($this->db);
-				$producttmpselect->fetch($selected);
+				$producttmpselect->fetch((int) $selected);
 				$selected_input_value = $producttmpselect->ref;
 				unset($producttmpselect);
 			}
@@ -5172,14 +5172,14 @@ class Form
 	 *
 	 * @param int|''	 	$selected 		Id account preselected
 	 * @param string 		$htmlname 		Name of select zone
-	 * @param int 			$status 		Status of searched accounts (0=open, 1=closed, 2=both)
+	 * @param int<0,2>		$status 		Status of searched accounts (0=open, 1=closed, 2=both)
 	 * @param string 		$filtre 		To filter the list. This parameter must not come from input of users
-	 * @param int|string	$useempty 		1=Add an empty value in list, 2=Add an empty value in list only if there is more than 2 entries.
+	 * @param int<0,2>|string	$useempty 	1=Add an empty value in list, 2=Add an empty value in list only if there is more than 2 entries.
 	 * @param string 		$moreattrib 	To add more attribute on select
-	 * @param int 			$showcurrency 	Show currency in label
+	 * @param int<0,1>		$showcurrency 	Show currency in label
 	 * @param string 		$morecss 		More CSS
 	 * @param int<0,1>		$nooutput 		1=Return string, do not send to output
-	 * @return int|string   	           	If noouput=0: Return integer <0 if error, Num of bank account found if OK (0, 1, 2, ...), If nooutput=1: Return a HTML select string.
+	 * @return int|string   	           	If nooutput=0: Return integer <0 if error, Num of bank account found if OK (0, 1, 2, ...), If nooutput=1: Return a HTML select string.
 	 */
 	public function select_comptes($selected = '', $htmlname = 'accountid', $status = 0, $filtre = '', $useempty = 0, $moreattrib = '', $showcurrency = 0, $morecss = '', $nooutput = 0)
 	{
@@ -5418,7 +5418,7 @@ class Form
 	 * @param string 	$page 		Page
 	 * @param string 	$selected 	Id of bank account
 	 * @param string 	$htmlname 	Name of select html field
-	 * @param int 		$addempty 	1=Add an empty value in list, 2=Add an empty value in list only if there is more than 2 entries.
+	 * @param int<0,2>	$addempty 	1=Add an empty value in list, 2=Add an empty value in list only if there is more than 2 entries.
 	 * @return    					void
 	 */
 	public function formSelectAccount($page, $selected = '', $htmlname = 'fk_account', $addempty = 0)
@@ -5440,7 +5440,7 @@ class Form
 			if ($selected) {
 				require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 				$bankstatic = new Account($this->db);
-				$result = $bankstatic->fetch($selected);
+				$result = $bankstatic->fetch((int) $selected);
 				if ($result) {
 					print $bankstatic->getNomUrl(1);
 				}
@@ -5479,7 +5479,7 @@ class Form
 			if ($selected) {
 				require_once DOL_DOCUMENT_ROOT . '/societe/class/companybankaccount.class.php';
 				$bankstatic = new CompanyBankAccount($this->db);
-				$result = $bankstatic->fetch($selected);
+				$result = $bankstatic->fetch((int) $selected);
 				if ($result) {
 					print $bankstatic->label;
 					if ($showibanbic) {
@@ -6100,7 +6100,7 @@ class Form
 			$out .= '<span class="project_head_block">';
 			if ($selected) {
 				$projet = new Project($this->db);
-				$projet->fetch($selected);
+				$projet->fetch((int) $selected);
 				$out .= $projet->getNomUrl(0, '', 1);
 			} else {
 				$out .= '<span class="opacitymedium">' . $textifnoproject . '</span>';
@@ -6123,8 +6123,8 @@ class Form
 	 * @param string 	$page 				Page
 	 * @param string 	$selected 			Id condition pre-selectionne
 	 * @param string 	$htmlname 			Name of select html field
-	 * @param int 		$addempty 			Add empty entry
-	 * @param string 	$type 				Type ('direct-debit' or 'bank-transfer')
+	 * @param int<0,1> 	$addempty 			Add empty entry
+	 * @param ''|'direct-debit'|'bank-transfer'	$type 	Type ('direct-debit' or 'bank-transfer')
 	 * @param int 		$filtertype 		If > 0, include payment terms with deposit percentage (for objects other than invoices and invoice templates)
 	 * @param int	 	$deposit_percent 	< 0 : deposit_percent input makes no sense (for example, in list filters)
 	 *                                		0 : use default deposit percentage from entry
@@ -6146,7 +6146,7 @@ class Form
 			if ($type) {
 				$out .= '<input type="hidden" name="type" value="' . dol_escape_htmltag($type) . '">';
 			}
-			$out .= $this->getSelectConditionsPaiements($selected, $htmlname, $filtertype, $addempty, 0, '', $deposit_percent);
+			$out .= $this->getSelectConditionsPaiements((int) $selected, $htmlname, $filtertype, $addempty, 0, '', $deposit_percent);
 			$out .= '<input type="submit" class="button valignmiddle smallpaddingimp" value="' . $langs->trans("Modify") . '">';
 			$out .= '</form>';
 		} else {
@@ -6184,7 +6184,7 @@ class Form
 	 * @param 	string 		$page 		Page
 	 * @param 	string 		$selected 	Id condition pre-selectionne
 	 * @param 	string 		$htmlname 	Name of select html field
-	 * @param 	int 		$addempty 	Add an empty entry
+	 * @param 	int<0,1> 	$addempty 	Add an empty entry
 	 * @return  void
 	 */
 	public function form_availability($page, $selected = '', $htmlname = 'availability', $addempty = 0)
@@ -6322,7 +6322,7 @@ class Form
 			if ($selected) {
 				require_once DOL_DOCUMENT_ROOT . '/user/class/user.class.php';
 				$theuser = new User($this->db);
-				$theuser->fetch($selected);
+				$theuser->fetch((int) $selected);
 				print $theuser->getNomUrl(1);
 			} else {
 				print "&nbsp;";
@@ -6340,8 +6340,8 @@ class Form
 	 * @param string $selected Id mode pre-selectionne
 	 * @param string $htmlname Name of select html field
 	 * @param string $filtertype To filter on field type in llx_c_paiement ('CRDT' or 'DBIT' or array('code'=>xx,'label'=>zz))
-	 * @param int $active Active or not, -1 = all
-	 * @param int $addempty 1=Add empty entry
+	 * @param int<-1,1> $active Active or not, -1 = all
+	 * @param int<0,1> $addempty 1=Add empty entry
 	 * @param string $type Type ('direct-debit' or 'bank-transfer')
 	 * @param int<0,1> $nooutput 1=Return string, no output
 	 * @return    string                    HTML output or ''
@@ -6613,7 +6613,7 @@ class Form
 			if ($selected) {
 				require_once DOL_DOCUMENT_ROOT . '/contact/class/contact.class.php';
 				$contact = new Contact($this->db);
-				$contact->fetch($selected);
+				$contact->fetch((int) $selected);
 				print $contact->getFullName($langs);
 			} else {
 				print "&nbsp;";
@@ -6656,7 +6656,7 @@ class Form
 			if ($selected) {
 				require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 				$soc = new Societe($this->db);
-				$soc->fetch($selected);
+				$soc->fetch((int) $selected);
 				$out .= $soc->getNomUrl(0, '');
 			} else {
 				$out .= '<span class="opacitymedium">' . $textifnothirdparty . '</span>';
@@ -6982,7 +6982,7 @@ class Form
 			// If SERVICE_ARE_ECOMMERCE_200238EC=1 combo list vat rate of purchaser and seller countries
 			// If SERVICE_ARE_ECOMMERCE_200238EC=2 combo list only the vat rate of the purchaser country
 			$selectVatComboMode = getDolGlobalString('SERVICE_ARE_ECOMMERCE_200238EC');
-			if (isInEEC($societe_vendeuse) && isInEEC($societe_acheteuse) && !$societe_acheteuse->isACompany()) {
+			if (is_object($societe_vendeuse) && isInEEC($societe_vendeuse) && isInEEC($societe_acheteuse) && !$societe_acheteuse->isACompany()) {
 				// We also add the buyer country code
 				if (is_numeric($type)) {
 					if ($type == 1) { // We know product is a service
@@ -7029,7 +7029,7 @@ class Form
 
 		if ($num > 0) {
 			// Definition du taux a pre-selectionner (si defaulttx non force et donc vaut -1 ou '')
-			if ($defaulttx < 0 || dol_strlen($defaulttx) == 0) {
+			if (($defaulttx < 0 || dol_strlen($defaulttx) == 0) && is_object($societe_vendeuse)) {
 				$tmpthirdparty = new Societe($this->db);
 
 				$defaulttx = get_default_tva($societe_vendeuse, (is_object($societe_acheteuse) ? $societe_acheteuse : $tmpthirdparty), $idprod);
@@ -7835,7 +7835,7 @@ class Form
 			if ($selected && empty($selected_input_value)) {
 				require_once DOL_DOCUMENT_ROOT . '/ticket/class/ticket.class.php';
 				$tickettmpselect = new Ticket($this->db);
-				$tickettmpselect->fetch($selected);
+				$tickettmpselect->fetch((int) $selected);
 				$selected_input_value = $tickettmpselect->ref;
 				unset($tickettmpselect);
 			}
@@ -8031,7 +8031,7 @@ class Form
 	 * @param 	string 		$selected 				Preselected tickets
 	 * @param 	string 		$htmlname 				Name of HTML select field (must be unique in page).
 	 * @param 	string 		$filtertype				To add a filter
-	 * @param 	int 		$limit 					Limit on number of returned lines
+	 * @param 	int<0,max>	$limit 					Limit on number of returned lines
 	 * @param 	int 		$status 				Not used
 	 * @param 	string 		$selected_input_value 	Value of preselected input text (for use with ajax)
 	 * @param 	int<0,3>	$hidelabel 				Hide label (0=no, 1=yes, 2=show search icon (before) and placeholder, 3 search icon after)
@@ -8061,7 +8061,7 @@ class Form
 			if ($selected && empty($selected_input_value)) {
 				require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 				$projecttmpselect = new Project($this->db);
-				$projecttmpselect->fetch($selected);
+				$projecttmpselect->fetch((int) $selected);
 				$selected_input_value = $projecttmpselect->ref;
 				unset($projecttmpselect);
 			}
@@ -8222,7 +8222,9 @@ class Form
 	 *
 	 * @param stdClass 	$objp 		Result set of fetch
 	 * @param string 	$opt 		Option (var used for returned value in string option format)
-	 * @param array{key:string,value:string,type:string}	$optJson 	Option (var used for returned value in json format)
+	 * @param array{}	$optJson 	Option (var used for returned value in json format) @phan-output-reference
+	 * @phan-param array{key:string,value:string,type:string}	$optJson 	Option (var used for returned value in json format) @phan-output-reference
+	 * @phpstan-param-out array{key:string,value:string,type:string}	$optJson
 	 * @param string 	$selected 	Preselected value
 	 * @param string 	$filterkey 	Filter key to highlight
 	 * @return    void
@@ -8290,7 +8292,7 @@ class Form
 			if ($selected && empty($selected_input_value)) {
 				require_once DOL_DOCUMENT_ROOT . '/adherents/class/adherent.class.php';
 				$adherenttmpselect = new Adherent($this->db);
-				$adherenttmpselect->fetch($selected);
+				$adherenttmpselect->fetch((int) $selected);
 				$selected_input_value = $adherenttmpselect->ref;
 				unset($adherenttmpselect);
 			}
@@ -8396,7 +8398,7 @@ class Form
 
 			if (!$forcecombo) {
 				include_once DOL_DOCUMENT_ROOT . '/core/lib/ajax.lib.php';
-				$out .= ajax_combobox($htmlname, $events, getDolGlobalString('PROJECT_USE_SEARCH_TO_SELECT') ? $conf->global->PROJECT_USE_SEARCH_TO_SELECT : '');
+				$out .= ajax_combobox($htmlname, $events, getDolGlobalInt('PROJECT_USE_SEARCH_TO_SELECT'));
 			}
 
 			$out .= '<select class="flat' . ($morecss ? ' ' . $morecss : '') . '" name="' . $htmlname . '" id="' . $htmlname . '">';
@@ -8915,14 +8917,14 @@ class Form
 	 * @param int<0,1>				$value_as_key 		1 to use value as key
 	 * @param string 				$moreparam 			Add more parameters onto the select tag. For example 'style="width: 95%"' to avoid select2 component to go over parent container
 	 * @param int<0,1>				$translate 			1=Translate and encode value
-	 * @param int 					$maxlen 			Length maximum for labels
+	 * @param int<0,max> 			$maxlen 			Length maximum for labels
 	 * @param int<0,1>				$disabled 			Html select box is disabled
-	 * @param string 				$sort 				'ASC' or 'DESC' = Sort on label, '' or 'NONE' or 'POS' = Do not sort, we keep original order
+	 * @param ''|'ASC'|'DESC'|'NONE'|'POS'	$sort 		'ASC' or 'DESC' = Sort on label, '' or 'NONE' or 'POS' = Do not sort, we keep original order
 	 * @param string 				$morecss 			Add more class to css styles
-	 * @param int 					$addjscombo 		Add js combo
+	 * @param int<0,1>				$addjscombo 		Add js combo
 	 * @param string 				$moreparamonempty 	Add more param on the empty option line. Not used if show_empty not set
 	 * @param int 					$disablebademail 	1=Check if a not valid email, 2=Check string '---', and if found into value, disable and colorize entry
-	 * @param int 					$nohtmlescape 		No html escaping (not recommended, use 'data-html' if you need to use label with HTML content).
+	 * @param int<0,1> 				$nohtmlescape 		No html escaping (not recommended, use 'data-html' if you need to use label with HTML content).
 	 * @return string									HTML select string.
 	 * @see multiselectarray(), selectArrayAjax(), selectArrayFilter()
 	 */
@@ -9447,7 +9449,7 @@ class Form
 	 * If a saved selection of fields exists for user (into $user->conf->MAIN_SELECTEDFIELDS_contextofpage), we use this one instead of default.
 	 *
 	 * @param string 	$htmlname 	Name of HTML field
-	 * @param array<string,array{label:string,checked:string,enabled?:string,type?:string,langfile?:string,position?:int,help?:string}> 	$array 	Array with array of fields we could show. This array may be modified according to setup of user.
+	 * @param array<string,array{label:string,checked?:string,enabled?:string,type?:string,langfile?:string,position?:int,help?:string}> 	$array 	Array with array of fields we could show. This array may be modified according to setup of user.
 	 * @param string 	$varpage 	Id of context for page. Can be set by caller with $varpage=(empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage);
 	 * @param string 	$pos 		Position colon on liste value 'left' or '' (meaning 'right').
 	 * @return string            	HTML multiselect string
@@ -10313,7 +10315,7 @@ class Form
 
 		// For thirdparty, contact, user, member, the ref is the id, so we show something else
 		if ($object->element == 'societe') {
-			$ret .= dol_htmlentities($object->name);
+			$ret .= dol_htmlentities((string) $object->name);
 
 			// List of extra languages
 			$arrayoflangcode = array();
@@ -10350,14 +10352,14 @@ class Form
 			$ret .= $object->ref . '<br>';
 			$fullname = $object->getFullName($langs);
 			if ($object->morphy == 'mor' && $object->societe) {
-				$ret .= dol_htmlentities($object->societe) . ((!empty($fullname) && $object->societe != $fullname) ? ' (' . dol_htmlentities($fullname) . $addgendertxt . ')' : '');
+				$ret .= dol_htmlentities((string) $object->societe) . ((!empty($fullname) && $object->societe != $fullname) ? ' (' . dol_htmlentities($fullname) . $addgendertxt . ')' : '');
 			} else {
-				$ret .= dol_htmlentities($fullname) . $addgendertxt . ((!empty($object->societe) && $object->societe != $fullname) ? ' (' . dol_htmlentities($object->societe) . ')' : '');
+				$ret .= dol_htmlentities($fullname) . $addgendertxt . ((!empty($object->societe) && $object->societe != $fullname) ? ' (' . dol_htmlentities((string) $object->societe) . ')' : '');
 			}
 		} elseif (in_array($object->element, array('contact', 'user'))) {
 			$ret .= '<span class="valignmiddle">'.dol_htmlentities($object->getFullName($langs)).'</span>'.$addgendertxt;
 		} elseif ($object->element == 'usergroup') {
-			$ret .= dol_htmlentities($object->name);
+			$ret .= dol_htmlentities((string) $object->name);
 		} elseif (in_array($object->element, array('action', 'agenda'))) {
 			'@phan-var-force ActionComm $object';
 			$ret .= $object->ref . '<br>' . $object->label;

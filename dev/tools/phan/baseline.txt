@@ -11,11 +11,11 @@ return [
     // # Issue statistics:
     // PhanUndeclaredProperty : 540+ occurrences
     // PhanPossiblyUndeclaredGlobalVariable : 210+ occurrences
-    // PhanUndeclaredGlobalVariable : 210+ occurrences
+    // PhanUndeclaredGlobalVariable : 200+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 180+ occurrences
     // PhanTypeMismatchArgumentProbablyReal : 160+ occurrences
     // PhanTypeMismatchProperty : 140+ occurrences
-    // PhanPluginUnknownArrayMethodParamType : 120+ occurrences
+    // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
     // PhanRedefineFunction : 45+ occurrences
     // PhanPluginUndeclaredVariableIsset : 40+ occurrences
     // PhanTypeExpectedObjectPropAccess : 40+ occurrences
@@ -225,13 +225,7 @@ return [
         'htdocs/fourn/class/api_supplier_invoices.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType'],
         'htdocs/fourn/class/api_supplier_orders.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgumentProbablyReal'],
         'htdocs/fourn/class/fournisseur.commande.class.php' => ['PhanUndeclaredProperty'],
-        'htdocs/fourn/commande/card.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchDimAssignment', 'PhanTypeMismatchProperty', 'PhanTypeSuspiciousStringExpression', 'PhanUndeclaredProperty'],
-        'htdocs/fourn/commande/contact.php' => ['PhanUndeclaredGlobalVariable'],
-        'htdocs/fourn/commande/document.php' => ['PhanUndeclaredGlobalVariable'],
-        'htdocs/fourn/commande/info.php' => ['PhanUndeclaredGlobalVariable'],
-        'htdocs/fourn/commande/list.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/fourn/commande/note.php' => ['PhanUndeclaredGlobalVariable'],
-        'htdocs/fourn/contact.php' => ['PhanUndeclaredGlobalVariable'],
+        'htdocs/fourn/commande/card.php' => ['PhanTypeMismatchDimAssignment', 'PhanTypeSuspiciousStringExpression', 'PhanUndeclaredProperty'],
         'htdocs/fourn/facture/card-rec.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/fourn/facture/card.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchProperty'],
         'htdocs/fourn/facture/list.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgumentProbablyReal'],

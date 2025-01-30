@@ -3009,15 +3009,15 @@ class Societe extends CommonObject
 	/**
 	 *    	Return a link on thirdparty (with picto)
 	 *
-	 *		@param	int		$withpicto		          	Add picto into link (0=No picto, 1=Include picto with link, 2=Picto only)
-	 *		@param	string	$option			          	Target of link (''=auto, 'nolink'=no link, 'customer', 'prospect', 'supplier', 'project', 'agenda', ...)
-	 *		@param	int		$maxlen			          	Max length of name
-	 *      @param	int  	$notooltip		          	1=Disable tooltip
-	 *      @param  int     $save_lastsearch_value    	-1=Auto, 0=No save of lastsearch_values when clicking, 1=Save lastsearch_values whenclicking
-	 *      @param	int		$noaliasinname			  	1=Do not add alias into the link ref
-	 *      @param	string	$target			  		  	add attribute target
-	 *      @param	string	$morecss					More CSS
-	 *		@return	string					          	String with URL
+	 *		@param	int<0,2>	$withpicto		          	Add picto into link (0=No picto, 1=Include picto with link, 2=Picto only)
+	 *		@param	string		$option			          	Target of link (''=auto, 'nolink'=no link, 'customer', 'prospect', 'supplier', 'project', 'agenda', ...)
+	 *		@param	int<0,max>	$maxlen			          	Max length of name
+	 *      @param	int<0,1> 	$notooltip		          	1=Disable tooltip
+	 *      @param  int<-1,1>	$save_lastsearch_value    	-1=Auto, 0=No save of lastsearch_values when clicking, 1=Save lastsearch_values whenclicking
+	 *      @param	int<0,1>	$noaliasinname			  	1=Do not add alias into the link ref
+	 *      @param	string		$target			  		  	add attribute target
+	 *      @param	string		$morecss					More CSS
+	 *		@return	string						          	String with URL
 	 */
 	public function getNomUrl($withpicto = 0, $option = '', $maxlen = 0, $notooltip = 0, $save_lastsearch_value = -1, $noaliasinname = 0, $target = '', $morecss = '')
 	{
@@ -5443,7 +5443,6 @@ class Societe extends CommonObject
 	 *    @param    string      $code       Filter on this code of contact type ('SHIPPING', 'BILLING', ...)
 	 *	  @param    string      $element    Filter on this element of default contact type ('facture', 'propal', 'commande' ...)
 	 *    @return	array|int		        Array of contacts, -1 if error
-	 *
 	 */
 	public function getContacts($list = 0, $code = '', $element = '')
 	{
