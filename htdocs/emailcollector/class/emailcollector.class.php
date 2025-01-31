@@ -2872,7 +2872,7 @@ class EmailCollector extends CommonObject
 										$this->errors = $actioncomm->errors;
 									} else {
 										if ($fk_element_type == "ticket" && is_object($objectemail)) {
-											if ($objectemail->status == Ticket::STATUS_CLOSED || $objectemail->status == Ticket::STATUS_CANCELED) {
+											if ($objectemail->status == Ticket::STATUS_CLOSED || $objectemail->status == Ticket::STATUS_CANCELED || $objectemail->status == Ticket::STATUS_NEED_MORE_INFO || $objectemail->status == Ticket::STATUS_WAITING) {
 												if ($objectemail->fk_user_assign != null) {
 													$res = $objectemail->setStatut(Ticket::STATUS_ASSIGNED);
 												} else {
