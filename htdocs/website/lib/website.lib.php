@@ -100,36 +100,36 @@ function websiteGetContentPolicyDirectives()
 {
 	return array(
 		// Fetch directives
-		"child-src" => array("label" => "child-src","data-directivetype" => "fetch"),
-		"connect-src" => array("label" => "connect-src","data-directivetype" => "fetch"),
-		"default-src" => array("label" => "default-src","data-directivetype" => "fetch"),
-		"fenced-frame-src" => array("label" => "fenced-frame-src","data-directivetype" => "fetch"),
-		"font-src" => array("label" => "font-src","data-directivetype" => "fetch"),
-		"frame-src" => array("label" => "frame-src","data-directivetype" => "fetch"),
-		"img-src" => array("label" => "img-src","data-directivetype" => "fetch"),
-		"manifest-src" => array("label" => "manifest-src","data-directivetype" => "fetch"),
-		"media-src" => array("label" => "media-src","data-directivetype" => "fetch"),
-		"object-src" => array("label" => "object-src","data-directivetype" => "fetch"),
-		"prefetch-src" => array("label" => "prefetch-src","data-directivetype" => "fetch"),
-		"script-src" => array("label" => "script-src","data-directivetype" => "fetch"),
-		"script-src-elem" => array("label" => "script-src-elem","data-directivetype" => "fetch"),
-		"script-src-attr" => array("label" => "script-src-attr","data-directivetype" => "fetch"),
+		"child-src" => array("label" => "child-src", "data-directivetype" => "fetch"),
+		"connect-src" => array("label" => "connect-src", "data-directivetype" => "fetch"),
+		"default-src" => array("label" => "default-src", "data-directivetype" => "fetch"),
+		"fenced-frame-src" => array("label" => "fenced-frame-src", "data-directivetype" => "fetch"),
+		"font-src" => array("label" => "font-src", "data-directivetype" => "fetch"),
+		"frame-src" => array("label" => "frame-src", "data-directivetype" => "fetch"),
+		"img-src" => array("label" => "img-src", "data-directivetype" => "fetch"),
+		"manifest-src" => array("label" => "manifest-src", "data-directivetype" => "fetch"),
+		"media-src" => array("label" => "media-src", "data-directivetype" => "fetch"),
+		"object-src" => array("label" => "object-src", "data-directivetype" => "fetch"),
+		"prefetch-src" => array("label" => "prefetch-src", "data-directivetype" => "fetch"),
+		"script-src" => array("label" => "script-src", "data-directivetype" => "fetch"),
+		"script-src-elem" => array("label" => "script-src-elem", "data-directivetype" => "fetch"),
+		"script-src-attr" => array("label" => "script-src-attr", "data-directivetype" => "fetch"),
 		"style-src" => array("label" => "style-src","data-directivetype" => "fetch"),
-		"style-src-elem" => array("label" => "style-src-elem","data-directivetype" => "fetch"),
-		"style-src-attr" => array("label" => "style-src-attr","data-directivetype" => "fetch"),
-		"worker-src" => array("label" => "worker-src","data-directivetype" => "fetch"),
+		"style-src-elem" => array("label" => "style-src-elem", "data-directivetype" => "fetch"),
+		"style-src-attr" => array("label" => "style-src-attr", "data-directivetype" => "fetch"),
+		"worker-src" => array("label" => "worker-src", "data-directivetype" => "fetch"),
 		// Document directives
-		"base-uri" => array("label" => "base-uri","data-directivetype" => "document"),
-		"sandbox" => array("label" => "sandbox","data-directivetype" => "document"),
+		"base-uri" => array("label" => "base-uri", "data-directivetype" => "document"),
+		"sandbox" => array("label" => "sandbox", "data-directivetype" => "document"),
 		// Navigation directives
-		"form-action" => array("label" => "form-action","data-directivetype" => "navigation"),
-		"frame-ancestors" => array("label" => "frame-ancestors","data-directivetype" => "navigation"),
+		"form-action" => array("label" => "form-action", "data-directivetype" => "navigation"),
+		"frame-ancestors" => array("label" => "frame-ancestors", "data-directivetype" => "navigation"),
 		// Reporting directives
-		"report-to" => array("label" => "report-to","data-directivetype" => "reporting"),
+		"report-to" => array("label" => "report-to", "data-directivetype" => "reporting"),
 		// Other directives
-		"require-trusted-types-for" => array("label" => "require-trusted-types-for","data-directivetype" => "other"),
+		"require-trusted-types-for" => array("label" => "require-trusted-types-for", "data-directivetype" => "other"),
 		"othertrusted-types",
-		"upgrade-insecure-requests" => array("label" => "upgrade-insecure-requests","data-directivetype" => "other"),
+		"upgrade-insecure-requests" => array("label" => "upgrade-insecure-requests", "data-directivetype" => "other"),
 	);
 }
 
@@ -143,9 +143,9 @@ function websiteGetContentPolicySources()
 	return array(
 		// Fetch directives
 		"fetch" => array(
-			"*",
-			"data",
-			"self",
+			"*" => array("label" => "*", "data-sourcetype" => "select"),
+			"data" => array("label" => "data", "data-sourcetype" => "data"),
+			"self" => array("label" => "self", "data-sourcetype" => "select"),
 		),
 		// Document directives
 		"document" => array(
@@ -167,4 +167,29 @@ function websiteGetContentPolicySources()
 			"upgrade-insecure-requests",
 		),
 	);
+}
+
+function websiteGetContentPolicyToArray($forceCSP){
+	$forceCSPArr = array();
+	$securitypolicies = explode(";", $forceCSP);
+	foreach ($securitypolicies as $key => $securitypolicy) {
+		if ($securitypolicy == "") continue;
+		$securitypolicyarr = explode(" ", $securitypolicy);
+		$directive = array_shift($securitypolicyarr);
+		while ($directive == ""){
+			$directive = array_shift($securitypolicyarr);
+		}
+		if (empty($directive)) {
+			continue;
+		}
+		$sources = $securitypolicyarr;
+		foreach ($sources as $key => $source) {
+			if (empty($forceCSPArr[$directive])) {
+				$forceCSPArr[$directive] = array($source);
+			} else {
+				$forceCSPArr[$directive][] = $source;
+			}
+		}
+	}
+	return $forceCSPArr;
 }

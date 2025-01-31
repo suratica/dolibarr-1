@@ -266,6 +266,8 @@ $filereadme = $pathofwebsite.'/README.md';
 $filelicense = $pathofwebsite.'/LICENSE';
 $filemaster = $pathofwebsite.'/master.inc.php';
 
+$forceCSP = getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCECSP");
+
 // Define $urlwithroot
 $urlwithouturlroot = preg_replace('/'.preg_quote(DOL_URL_ROOT, '/').'$/i', '', trim($dolibarr_main_url_root));
 $urlwithroot = $urlwithouturlroot.DOL_URL_ROOT; // This is to use external domain name found into config file
@@ -1978,6 +1980,7 @@ if ($action == "updatesecurity" && $usercanedit) {
 		}
 	} else {
 		$action = 'editsecurity';
+		$forceCSP = getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCECSP");
 	}
 }
 
@@ -2901,6 +2904,47 @@ if ($action == 'generatesitemaps' && $usercanedit) {
 		setEventMessages('Failed to write file '.$filerobot, null, 'errors');
 	}
 	$action = 'preview';
+}
+
+if ($action == 'removecspsource' && $usercanedit) {
+	$db->begin();
+	$sourcecsp = explode("_", GETPOST("sourcecsp"));
+	$directive = $sourcecsp[0];
+	$sourcekey = $sourcecsp[1];
+	$forceCSPArr = websiteGetContentPolicyToArray($forceCSP);
+	if (!isset($directive) || !isset($sourcekey)) {
+		$error++;
+	}
+	
+	$securityspstring = "";
+	if (!$error && !empty($forceCSPArr)) {
+		if (!empty($forceCSPArr[$directive][$sourcekey])) {
+			unset($forceCSPArr[$directive][$sourcekey]);
+		}
+		if (count($forceCSPArr[$directive]) == 0) {
+			unset($forceCSPArr[$directive]);
+		}
+		foreach ($forceCSPArr as $directive => $sourcekeys) {
+			if ($securityspstring != ""){
+				$securityspstring .= "; ";
+			}
+			$securityspstring .= $directive . " " . implode(" ", $sourcekeys);
+		}
+		$res = dolibarr_set_const($db, 'WEBSITE_'.$object->id.'_SECURITY_FORCECSP', $securityspstring, 'chaine', 0, '', $conf->entity);
+		if ($res <= 0) {
+			$error++;
+		}
+	}
+
+	if (!$error) {
+		$db->commit();
+		setEventMessages($langs->trans("SecurityPolicySucesfullyRemoved"), null, 'mesgs');
+	} else {
+		$db->rollback();
+		setEventMessages($langs->trans("ErrorRemovingSecurityPolicy"), null, 'errors');
+	}
+	header("Location: ".$_SERVER["PHP_SELF"].'?websiteid='.$websiteid."&action=editsecurity");
+	exit();
 }
 
 
@@ -4245,14 +4289,14 @@ if ($action == 'editsecurity') {
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="centpercent">';
 	print '<tr><td>'.$langs->trans("SecurityPolicy").'</td></tr>';
-	print '<tr><td>'.$langs->trans("Value").':</span></td><td colspan=2><input style="width:90%;" class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" value="'.getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCECSP").'"></td></tr>';
+	print '<tr><td>'.$langs->trans("Value").':</span></td><td colspan=2><input style="width:90%;" class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" value="'.$forceCSP.'"></td></tr>';
 	print '<tr><td></td></tr>';
 	print '<tr><td></td>';
 	print '<td>'.$form->selectarray("select_identifier_WEBSITE_SECURITY_FORCECSP", $selectarraySP, "select_identifier_WEBSITE_SECURITY_FORCECSP", 1, 0, 0, '', 0, 0, 0, '', 'minwidth300').'</td>';
 	print '<td>';
 	foreach ($selectarraySPlevel2 as $key => $values) {
 		print '<div class="div_WEBSITE_SECURITY_FORCECSP hidden" id="div_'.$key.'_WEBSITE_SECURITY_FORCECSP">';
-		print $form->selectarray("select_".$key."_WEBSITE_SECURITY_FORCECSP", $values, "select_".$key."_WEBSITE_SECURITY_FORCECSP", 1, 0, 1, '', 0, 0, 0, '', 'minwidth300 select_WEBSITE_SECURITY_FORCECSP');
+		print $form->selectarray("select_".$key."_WEBSITE_SECURITY_FORCECSP", $values, "select_".$key."_WEBSITE_SECURITY_FORCECSP", 1, 0, 0, '', 0, 0, 0, '', 'minwidth300 select_WEBSITE_SECURITY_FORCECSP');
 		print '</div>';
 	}
 	print '</td>';
@@ -4263,7 +4307,21 @@ if ($action == 'editsecurity') {
 	print '</div>';
 
 
-	// TODO: liste sous page identifier pour supprimer
+	$forceCSPArr = websiteGetContentPolicyToArray($forceCSP);
+	print '<div class="div-table-responsive-no-min">';
+	print '<ul>';
+	foreach ($forceCSPArr as $directive => $sources) {
+		print '<li><span>'.$directive.'</span>';
+		print '<ul>';
+		foreach ($sources as $key => $source) {
+			print '<li><span>'.$source.'</span>&nbsp;<a href="'.$_SERVER["PHP_SELF"].'?websiteid='.$websiteid.'&action=removecspsource&sourcecsp='.$directive.'_'.$key.'&token='.newToken().'">'.img_delete().'</a></li>';
+		}
+		print '</ul>';
+		print '</li>';
+	}
+	print '</ul>';
+	print '</div>';
+
 	print '<script>
 		$(document).ready(function() {
 			function getObjectForceSP(forcesp) {
@@ -4277,6 +4335,9 @@ if ($action == 'editsecurity') {
 					directive = securitypolicy.shift();
 					while (directive == ""){
 						directive = securitypolicy.shift();
+					}
+					if (directive == undefined) {
+						return ;
 					}
 					sources = securitypolicy;
 					sources.forEach((source) => {
@@ -4319,7 +4380,10 @@ if ($action == 'editsecurity') {
 				}
 				securityspstring = "";
 				for (const [key, val] of Object.entries(securitysp)) {
-					securityspstring = securityspstring + key + " " + val.join(" ") + "; "
+					if (securityspstring != ""){
+						securityspstring = securityspstring + "; ";
+					}
+					securityspstring = securityspstring + key + " " + val.join(" ");
 				}
 				
 				$("#WEBSITE_"+ objid +"_SECURITY_FORCECSP").val(securityspstring);
