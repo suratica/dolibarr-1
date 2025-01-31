@@ -3345,6 +3345,13 @@ class EmailCollector extends CommonObject
 										$tickettocreate->context['actionmsg'] = $langs->trans("ActionAC_EMAIL_IN").' - '.$langs->trans("TICKET_CREATEInDolibarr");
 										//$tickettocreate->email_fields_no_propagate_in_actioncomm = 0;
 
+										// Add sender to context array to make sure that confirmation e-mail can be sent by trigger script
+										$sender_contact = New Contact($this->db);
+										$sender_contact->fetch(0, null, '', $from);
+										if (!empty($sender_contact->id)) {
+											$tickettocreate->context['contactid'] = $sender_contact->id;
+										}
+
 										$result = $tickettocreate->create($user);
 										if ($result <= 0) {
 											$errorforactions++;
