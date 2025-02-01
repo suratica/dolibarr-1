@@ -65,7 +65,7 @@ class MultiCurrencies extends DolibarrApi
 
 		$sql = "SELECT t.rowid";
 		$sql .= " FROM ".$this->db->prefix()."multicurrency as t";
-		$sql .= ' WHERE 1 = 1';
+		$sql .= " WHERE t.entity IN (".getEntity('multicurrency').")";
 		// Add sql filters
 		if ($sqlfilters) {
 			$errormessage = '';
@@ -386,11 +386,13 @@ class MultiCurrencies extends DolibarrApi
 		$object = parent::_cleanObjectDatas($object);
 
 		// Clear all fields out of interest
-		foreach ($object as $key => $value) {
-			if ($key == "id" || $key == "rate" || $key == "date_sync") {
-				continue;
+		if (!empty($object)) {
+			foreach ($object as $key => $value) {
+				if ($key == "id" || $key == "rate" || $key == "date_sync") {
+					continue;
+				}
+				unset($object->$key);
 			}
-			unset($object->$key);
 		}
 
 		return $object;
