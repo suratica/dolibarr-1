@@ -8,7 +8,7 @@
  * Copyright (C) 2012		Yann Droneaud			<yann@droneaud.fr>
  * Copyright (C) 2012		Florian Henry			<florian.henry@open-concept.pro>
  * Copyright (C) 2015       Marcos García           <marcosgdf@gmail.com>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -53,11 +53,11 @@ class DoliDBPgsql extends DoliDB
 	const VERSIONMIN = '9.0.0'; // Version min database
 
 	/**
-	 * @var boolean $unescapeslashquot  			Set this to 1 when calling SQL queries, to say that SQL is not standard but already escaped for Mysql. Used by PostgreSQL driver
+	 * @var boolean  			Set this to 1 when calling SQL queries, to say that SQL is not standard but already escaped for Mysql. Used by PostgreSQL driver
 	 */
 	public $unescapeslashquot = false;
 	/**
-	 * @var boolean $standard_conforming_strings		Set this to true if postgres accept only standard encoding of string using '' and not \'
+	 * @var boolean		Set this to true if postgres accept only standard encoding of string using '' and not \'
 	 */
 	public $standard_conforming_strings = false;
 
@@ -951,7 +951,7 @@ class DoliDBPgsql extends DoliDB
 		//print $charset.' '.setlocale(LC_CTYPE,'0'); exit;
 
 		// NOTE: Do not use ' around the database name
-		$sql = "CREATE DATABASE ".$this->escape($database)." OWNER '".$this->escape($owner)."' ENCODING '".$this->escape($charset)."'";
+		$sql = "CREATE DATABASE ".$this->escape($database)." OWNER '".$this->escape($owner)."' ENCODING '".$this->escape((string) $charset)."'";
 
 		dol_syslog($sql, LOG_DEBUG);
 		$ret = $this->query($sql);
