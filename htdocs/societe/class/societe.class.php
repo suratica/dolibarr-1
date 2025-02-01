@@ -4543,6 +4543,9 @@ class Societe extends CommonObject
 		$this->town = getDolGlobalString('MAIN_INFO_SOCIETE_TOWN');
 		$this->region_code = getDolGlobalString('MAIN_INFO_SOCIETE_REGION');
 
+		$this->currency_code = getDolGlobalString('MAIN_MONNAIE');
+		$this->currency = currency_name($this->currency_code);
+
 		$this->socialobject = getDolGlobalString('MAIN_INFO_SOCIETE_OBJECT');
 
 		$this->note_private = getDolGlobalString('MAIN_INFO_SOCIETE_NOTE');
