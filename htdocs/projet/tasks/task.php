@@ -243,9 +243,9 @@ if ($action == 'remove_file' && $user->hasRight('projet', 'creer')) {
 
 	$ret = dol_delete_file($file);
 	if ($ret) {
-		setEventMessages($langs->trans("FileWasRemoved", GETPOST('urlfile')), null, 'mesgs');
+		setEventMessages($langs->trans("FileWasRemoved", GETPOST('file')), null, 'mesgs');
 	} else {
-		setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('urlfile')), null, 'errors');
+		setEventMessages($langs->trans("ErrorFailToDeleteFile", GETPOST('file')), null, 'errors');
 	}
 }
 
@@ -253,6 +253,7 @@ if ($action == 'remove_file' && $user->hasRight('projet', 'creer')) {
 /*
  * View
  */
+
 $form = new Form($db);
 $formother = new FormOther($db);
 $formfile = new FormFile($db);
