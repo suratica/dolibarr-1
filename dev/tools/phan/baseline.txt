@@ -9,12 +9,12 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 3800+ occurrences
+    // PhanTypeMismatchArgument : 3760+ occurrences
     // PhanUndeclaredProperty : 540+ occurrences
     // PhanTypeMismatchArgumentNullable : 460+ occurrences
-    // PhanPossiblyUndeclaredGlobalVariable : 200+ occurrences
     // PhanUndeclaredGlobalVariable : 190+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 180+ occurrences
+    // PhanPossiblyUndeclaredGlobalVariable : 180+ occurrences
     // PhanTypeMismatchArgumentProbablyReal : 150+ occurrences
     // PhanTypeMismatchProperty : 130+ occurrences
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
@@ -22,8 +22,8 @@ return [
     // PhanPluginUndeclaredVariableIsset : 40+ occurrences
     // PhanTypeExpectedObjectPropAccess : 40+ occurrences
     // PhanTypeInvalidDimOffset : 25+ occurrences
-    // PhanTypeMismatchDimFetch : 25+ occurrences
     // PhanTypeMismatchArgumentNullableInternal : 20+ occurrences
+    // PhanTypeMismatchDimFetch : 20+ occurrences
     // PhanUndeclaredConstant : 15+ occurrences
     // PhanTypeComparisonFromArray : 10+ occurrences
     // PhanUndeclaredMethod : 10+ occurrences
@@ -628,15 +628,9 @@ return [
         'htdocs/fourn/facture/paiement.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/fourn/facture/rapport.php' => ['PhanTypeMismatchArgument'],
         'htdocs/fourn/facture/tpl/linkedobjectblock.tpl.php' => ['PhanUndeclaredProperty'],
-        'htdocs/ftp/admin/ftpclient.php' => ['PhanPossiblyUndeclaredGlobalVariable'],
-        'htdocs/ftp/index.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/holiday/card.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/holiday/card_group.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal', 'PhanTypeMismatchProperty'],
-        'htdocs/holiday/class/holiday.class.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/holiday/define_holiday.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/holiday/list.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument', 'PhanUndeclaredGlobalVariable'],
+        'htdocs/holiday/card_group.php' => ['PhanTypeMismatchArgument'],
+        'htdocs/holiday/list.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/holiday/month_report.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/holiday/view_log.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchDimFetch'],
         'htdocs/hrm/admin/admin_hrm.php' => ['PhanEmptyForeach'],
         'htdocs/hrm/class/establishment.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/hrm/class/evaluation.class.php' => ['PhanUndeclaredProperty'],
