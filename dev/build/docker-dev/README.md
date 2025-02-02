@@ -15,7 +15,7 @@ Go in repository build/docker :
 
 And then, you can run :
 
-        docker-compose up
+        docker compose up
 
 This will run 4 containers Docker : Dolibarr, MariaDB, PhpMyAdmin and MailDev.
 
