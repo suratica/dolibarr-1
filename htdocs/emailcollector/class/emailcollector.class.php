@@ -3346,7 +3346,7 @@ class EmailCollector extends CommonObject
 										//$tickettocreate->email_fields_no_propagate_in_actioncomm = 0;
 
 										// Add sender to context array to make sure that confirmation e-mail can be sent by trigger script
-										$sender_contact = New Contact($this->db);
+										$sender_contact = new Contact($this->db);
 										$sender_contact->fetch(0, null, '', $from);
 										if (!empty($sender_contact->id)) {
 											$tickettocreate->context['contactid'] = $sender_contact->id;
