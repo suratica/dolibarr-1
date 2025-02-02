@@ -37,8 +37,8 @@ services:
             PHP_INI_DATE_TIMEZONE: $PHP_INI_DATE_TIMEZONE
             PHP_INI_MEMORY_LIMIT: $PHP_INI_MEMORY_LIMIT
         volumes:
-            - ../../htdocs:/var/www/html/
-            - ../../documents:/var/documents
+            - ../../../htdocs:/var/www/html/
+            - ../../../documents:/var/www/documents
         ports:
             - "80:80"
             - "9000:9000"
