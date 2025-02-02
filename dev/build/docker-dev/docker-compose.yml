@@ -1,5 +1,4 @@
-version: '3'
-
+---
 networks:
     internal-pod:
         internal: true
