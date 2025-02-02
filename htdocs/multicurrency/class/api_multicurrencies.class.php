@@ -386,13 +386,11 @@ class MultiCurrencies extends DolibarrApi
 		$object = parent::_cleanObjectDatas($object);
 
 		// Clear all fields out of interest
-		if (!empty($object)) {
-			foreach ($object as $key => $value) {
-				if ($key == "id" || $key == "rate" || $key == "date_sync") {
-					continue;
-				}
-				unset($object->$key);
+		foreach ($object as $key => $value) {
+			if ($key == "id" || $key == "rate" || $key == "date_sync") {
+				continue;
 			}
+			unset($object->$key);
 		}
 
 		return $object;
