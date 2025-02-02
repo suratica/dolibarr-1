@@ -2517,13 +2517,12 @@ class Societe extends CommonObject
 				$discount->amount_ttc = price2num($remise, 'MT');
 				$discount->amount_ht = price2num((float) $remise / (1 + (float) $vatrate / 100), 'MT');
 				$discount->amount_tva = price2num((float) $discount->amount_ttc - (float) $discount->amount_ht, 'MT');
-
 			} else {
 				$discount->amount_ht = price2num($remise, 'MT');
 				$discount->amount_tva = price2num((float) $remise * (float) $vatrate / 100, 'MT');
 				$discount->amount_ttc = price2num((float) $discount->amount_ht + (float) $discount->amount_tva, 'MT');
 
-				$discount->multicurrency_amount_ht = price2num($remise * (float)$discount->multicurrency_tx, 'MT');
+				$discount->multicurrency_amount_ht = price2num($remise * (float) $discount->multicurrency_tx, 'MT');
 				$discount->multicurrency_amount_tva = price2num(((float) $remise * (float) $vatrate / 100) * (float) $discount->multicurrency_tx, 'MT');
 				$discount->multicurrency_amount_ttc= price2num(((float) $discount->amount_ht + (float) $discount->amount_tva) * (float) $discount->multicurrency_tx, 'MT');
 			}
