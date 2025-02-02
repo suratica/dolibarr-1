@@ -16,19 +16,6 @@ services:
         networks:
             - internal-pod
             - external-pod
-
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        environment:
-            PMA_HOST: mariadb
-        depends_on:
-            - mariadb
-        ports:
-            - "8080:80"
-        networks:
-            - internal-pod
-            - external-pod
-
     web:
         build: .
         environment:
@@ -42,7 +29,6 @@ services:
             - "80:80"
             - "9000:9000"
         depends_on:
-            - mariadb
             - mail
         networks:
             - internal-pod
