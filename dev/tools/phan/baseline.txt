@@ -9,13 +9,13 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 3760+ occurrences
+    // PhanTypeMismatchArgument : 3730+ occurrences
     // PhanUndeclaredProperty : 540+ occurrences
-    // PhanTypeMismatchArgumentNullable : 460+ occurrences
+    // PhanTypeMismatchArgumentNullable : 450+ occurrences
     // PhanUndeclaredGlobalVariable : 190+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 180+ occurrences
     // PhanPossiblyUndeclaredGlobalVariable : 180+ occurrences
-    // PhanTypeMismatchArgumentProbablyReal : 150+ occurrences
+    // PhanTypeMismatchArgumentProbablyReal : 140+ occurrences
     // PhanTypeMismatchProperty : 130+ occurrences
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
     // PhanRedefineFunction : 45+ occurrences
@@ -28,11 +28,11 @@ return [
     // PhanTypeComparisonFromArray : 10+ occurrences
     // PhanUndeclaredMethod : 10+ occurrences
     // PhanPluginUnknownObjectMethodCall : 8 occurrences
-    // PhanEmptyForeach : 7 occurrences
     // PhanPluginEmptyStatementIf : 7 occurrences
     // PhanPluginSuspiciousParamPosition : 7 occurrences
     // PhanPluginDuplicateExpressionBinaryOp : 6 occurrences
     // PhanTypeArraySuspiciousNull : 6 occurrences
+    // PhanEmptyForeach : 5 occurrences
     // PhanParamTooMany : 5 occurrences
     // PhanPluginBothLiteralsBinaryOp : 4 occurrences
     // PhanPluginDuplicateArrayKey : 4 occurrences
@@ -630,27 +630,17 @@ return [
         'htdocs/fourn/facture/tpl/linkedobjectblock.tpl.php' => ['PhanUndeclaredProperty'],
         'htdocs/holiday/card_group.php' => ['PhanTypeMismatchArgument'],
         'htdocs/holiday/list.php' => ['PhanUndeclaredGlobalVariable'],
-        'htdocs/holiday/month_report.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/hrm/admin/admin_hrm.php' => ['PhanEmptyForeach'],
-        'htdocs/hrm/class/establishment.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/hrm/class/evaluation.class.php' => ['PhanUndeclaredProperty'],
-        'htdocs/hrm/class/evaluationdet.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/hrm/class/job.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/hrm/class/position.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/hrm/class/skill.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/hrm/class/skilldet.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/hrm/class/skillrank.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/hrm/compare.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/hrm/core/tpl/objectline_view.tpl.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
-        'htdocs/hrm/establishment/card.php' => ['PhanTypeMismatchArgument'],
+        'htdocs/hrm/class/evaluationdet.class.php' => ['PhanUndeclaredProperty'],
+        'htdocs/hrm/class/job.class.php' => ['PhanUndeclaredProperty'],
+        'htdocs/hrm/class/position.class.php' => ['PhanUndeclaredProperty'],
+        'htdocs/hrm/class/skill.class.php' => ['PhanUndeclaredProperty'],
+        'htdocs/hrm/class/skilldet.class.php' => ['PhanUndeclaredProperty'],
+        'htdocs/hrm/class/skillrank.class.php' => ['PhanUndeclaredProperty'],
+        'htdocs/hrm/core/tpl/objectline_view.tpl.php' => ['PhanUndeclaredProperty'],
         'htdocs/hrm/evaluation_card.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/hrm/evaluation_list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/hrm/job_agenda.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgumentNullable'],
         'htdocs/hrm/job_card.php' => ['PhanUndeclaredGlobalVariable'],
-        'htdocs/hrm/job_list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/hrm/position_list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal', 'PhanTypeMismatchProperty'],
-        'htdocs/hrm/skill_card.php' => ['PhanTypeExpectedObjectPropAccess', 'PhanTypeMismatchArgument', 'PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
-        'htdocs/hrm/skill_list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
+        'htdocs/hrm/skill_card.php' => ['PhanTypeExpectedObjectPropAccess', 'PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/imports/emptyexample.php' => ['PhanRedefineFunction', 'PhanTypeMismatchArgumentProbablyReal'],
         'htdocs/imports/import.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
         'htdocs/index.php' => ['PhanTypeMismatchArgument'],
