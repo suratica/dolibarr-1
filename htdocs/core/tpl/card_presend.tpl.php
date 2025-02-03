@@ -54,6 +54,7 @@ if ($action == 'presend') {
 	$titreform = 'SendMail';
 
 	$object->fetchProject();
+
 	$ref = dol_sanitizeFileName($object->ref);
 	if (!in_array($object->element, array('user', 'member'))) {
 		//$fileparams['fullname'] can be filled from the card
@@ -102,17 +103,25 @@ if ($action == 'presend') {
 		$topicmail = $outputlangs->trans($defaulttopic, '__REF__ (__REF_CLIENT__)');
 	}
 
-	// Build document if it not exists
+	// Build document if it does not exists
 	$forcebuilddoc = true;
+	// except for some cases where it can not exists
 	if (in_array($object->element, array('user', 'member'))) {
 		$forcebuilddoc = false;
 	}
 	if ($object->element == 'invoice_supplier' && !getDolGlobalString('INVOICE_SUPPLIER_ADDON_PDF')) {
 		$forcebuilddoc = false;
 	}
+	if ($object->element == 'project' && !getDolGlobalString('PROJECT_ADDON_PDF')) {
+		$forcebuilddoc = false;
+	}
+	if ($object->element == 'project_task' && !getDolGlobalString('PROJECT_TASK_ADDON_PDF')) {
+		$forcebuilddoc = false;
+	}
 	if ($object->element == 'societe' && !getDolGlobalString('COMPANY_ADDON_PDF')) {
 		$forcebuilddoc = false;
 	}
+
 	if ($forcebuilddoc) {    // If there is no default value for supplier invoice, we do not generate file, even if modelpdf was set by a manual generation
 		if ((!$file || !is_readable($file)) && method_exists($object, 'generateDocument')) {
 			$result = $object->generateDocument(GETPOST('model') ? GETPOST('model') : $object->model_pdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
