@@ -424,7 +424,7 @@ class KnowledgeRecord extends CommonObject
 					if ($key == 't.rowid') {
 						$sqlwhere[] = $this->db->sanitize($key)." = ".((int) $value);
 					} elseif (array_key_exists($key, $this->fields) && in_array($this->fields[$key]['type'], array('date', 'datetime', 'timestamp'))) {
-						$sqlwhere[] = $this->db->sanitize($key)." = '".$this->db->idate($value)."'";
+						$sqlwhere[] = $this->db->sanitize($key)." = '".$this->db->idate((int) $value)."'";
 					} elseif (strpos($value, '%') === false) {
 						$sqlwhere[] = $this->db->sanitize($key).' IN ('.$this->db->sanitize($this->db->escape($value)).')';
 					} else {
