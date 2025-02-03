@@ -14635,33 +14635,9 @@ parameters:
 			path: ../../../htdocs/core/tpl/bloc_showhide.tpl.php
 
 		-
-			message: '#^Variable \$action might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/core/tpl/card_presend.tpl.php
-
-		-
-			message: '#^Variable \$db might not be defined\.$#'
-			identifier: variable.undefined
-			count: 12
-			path: ../../../htdocs/core/tpl/card_presend.tpl.php
-
-		-
 			message: '#^Variable \$hidedetails might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
-			path: ../../../htdocs/core/tpl/card_presend.tpl.php
-
-		-
-			message: '#^Variable \$hookmanager might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/core/tpl/card_presend.tpl.php
-
-		-
-			message: '#^Variable \$langs might not be defined\.$#'
-			identifier: variable.undefined
-			count: 6
 			path: ../../../htdocs/core/tpl/card_presend.tpl.php
 
 		-
@@ -14681,18 +14657,6 @@ parameters:
 			identifier: variable.undefined
 			count: 2
 			path: ../../../htdocs/core/tpl/card_presend.tpl.php
-
-		-
-			message: '#^Variable \$db might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/core/tpl/commonfields_edit.tpl.php
-
-		-
-			message: '#^Variable \$db might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/core/tpl/commonfields_view.tpl.php
 
 		-
 			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
