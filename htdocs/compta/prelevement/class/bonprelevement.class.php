@@ -6,7 +6,7 @@
  * Copyright (C) 2014-2016 Ferran Marcet        <fmarcet@2byte.es>
  * Copyright (C) 2018      Nicolas ZABOURI      <info@inovea-conseil.com>
  * Copyright (C) 2019      JC Prieto			<jcprieto@virtual20.com><prietojc@gmail.com>
- * Copyright (C) 2024      MDW					<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW					<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024      Frédéric France      <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -252,7 +252,7 @@ class BonPrelevement extends CommonObject
 	 */
 	public $date_trans;
 	/**
-	 * @var int Current transport method, index to $methodes_trans
+	 * @var int Current transport method, index to `$methodes_trans`
 	 */
 	public $method_trans;
 	/**
@@ -2912,7 +2912,7 @@ class BonPrelevement extends CommonObject
 	 *	Return clickable link of object (with eventually picto)
 	 *
 	 *	@param      string	    			$option                 Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-	 *  @param		?array{string,mixed}	$arraydata				Array of data
+	 *  @param		?array<string,mixed>	$arraydata				Array of data
 	 *  @return		string											HTML Code for Kanban thumb.
 	 */
 	public function getKanbanView($option = '', $arraydata = null)
