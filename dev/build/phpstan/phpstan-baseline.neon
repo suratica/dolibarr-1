@@ -30025,18 +30025,6 @@ parameters:
 			path: ../../../htdocs/user/card.php
 
 		-
-			message: '#^Variable \$dolibarr_main_authentication might not be defined\.$#'
-			identifier: variable.undefined
-			count: 12
-			path: ../../../htdocs/user/card.php
-
-		-
-			message: '#^Variable \$formproduct might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/user/card.php
-
-		-
 			message: '#^Variable \$mc might not be defined\.$#'
 			identifier: variable.undefined
 			count: 3
