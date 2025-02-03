@@ -14887,12 +14887,6 @@ parameters:
 			path: ../../../htdocs/core/tpl/formlayoutai.tpl.php
 
 		-
-			message: '#^Variable \$langs might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/core/tpl/list_print_subtotal.tpl.php
-
-		-
 			message: '#^Variable \$limit might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2
