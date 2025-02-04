@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2017-2024  Alexandre Spangaro      <aspangaro@easya.solutions>
- * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2018-2025  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2023       Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2023       Joachim Kueter     		<git-jk@bloxera.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
@@ -739,7 +739,7 @@ if ($id) {
 		} else {
 			$bankaccountnotfound = 1;
 
-			print '<span class="opacitymedium">'.$langs->trans("NoRecordfound").'</span>';
+			print '<span class="opacitymedium">'.$langs->trans("NoRecordFound").'</span>';
 		}
 		print '</td>';
 		print '</tr>';
