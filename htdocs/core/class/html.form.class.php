@@ -874,7 +874,7 @@ class Form
 
 					console.log("initCheckForSelect mode="+mode+" name="+name+" cssclass="+cssclass+" atleastoneselected="+atleastoneselected);
 
-    	  			if (atleastoneselected || ' . $alwaysvisible . ')
+    	  			if (atleastoneselected || ' . ((int) $alwaysvisible) . ')
     	  			{
                                     jQuery("."+name).show();
         			    ' . ($selected ? 'if (atleastoneselected) { jQuery("."+name+"select").val("' . $selected . '").trigger(\'change\'); jQuery("."+name+"confirmed").prop(\'disabled\', false); }' : '') . '
@@ -2726,8 +2726,6 @@ class Form
 				$urloption .= '&warehouseid=' . (int) $warehouseId;
 			}
 
-			$out .= ajax_autocompleter((string) $selected, $htmlname, DOL_URL_ROOT . '/product/ajax/products.php', $urloption, getDolGlobalInt('PRODUIT_USE_SEARCH_TO_SELECT'), getDolGlobalInt('PRODUCT_SEARCH_AUTO_SELECT_IF_ONLY_ONE', 1), $ajaxoptions);
-
 			if (isModEnabled('variants') && is_array($selected_combinations)) {
 				// Code to automatically insert with javascript the select of attributes under the select of product
 				// when a parent of variant has been selected.
@@ -2817,6 +2815,8 @@ class Form
 			if ($hidelabel == 3) {
 				$out .= img_picto($langs->trans("Search"), 'search');
 			}
+
+			$out .= ajax_autocompleter((string) $selected, $htmlname, DOL_URL_ROOT . '/product/ajax/products.php', $urloption, getDolGlobalInt('PRODUIT_USE_SEARCH_TO_SELECT'), getDolGlobalInt('PRODUCT_SEARCH_AUTO_SELECT_IF_ONLY_ONE', 1), $ajaxoptions);
 		} else {
 			$out .= $this->select_produits_list($selected, $htmlname, $filtertype, $limit, $price_level, '', $status, $finished, 0, $socid, $showempty, $forcecombo, $morecss, $hidepriceinlabel, $warehouseStatus, $status_purchase, $warehouseId);
 		}
@@ -7020,7 +7020,7 @@ class Form
 		// Keep only the VAT qualified for $type_vat
 		$arrayofvatrates = array();
 		foreach ($this->cache_vatrates as $cachevalue) {
-			if (empty($cachevalue['type_vat']) || $cachevalue['type_vat'] != $type_vat) {
+			if (empty($cachevalue['type_vat']) || $cachevalue['type_vat'] == $type_vat) {
 				$arrayofvatrates[] = $cachevalue;
 			}
 		}
@@ -8502,7 +8502,7 @@ class Form
 	 * @param 	int				$forcecombo           	Force to load all values and output a standard combobox (with no beautification)
 	 * @param 	int<0,1>		$disabled             	1=Html component is disabled
 	 * @param	string			$selected_input_value 	Value of preselected input text (for use with ajax)
-	 * @param	string|array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-5,5>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}	$objectfield	'Object:Field' that contains the definition of parent (in table $fields or $extrafields). Example: 'Object:xxx' or 'Object@module:xxx' or 'Object:options_xxx' or 'Object@module:options_xxx' or,  better, the full entry array in ->fields
+	 * @param	string|array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-6,6>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}	$objectfield	'Object:Field' that contains the definition of parent (in table $fields or $extrafields). Example: 'Object:xxx' or 'Object@module:xxx' or 'Object:options_xxx' or 'Object@module:options_xxx' or,  better, the full entry array in ->fields
 	 * @return  string	    							Return HTML string
 	 * @see selectForFormsList(), select_thirdparty_list()
 	 */
@@ -9451,7 +9451,7 @@ class Form
 	 * @param string 	$htmlname 	Name of HTML field
 	 * @param array<string,array{label:string,checked?:string,enabled?:string,type?:string,langfile?:string,position?:int,help?:string}> 	$array 	Array with array of fields we could show. This array may be modified according to setup of user.
 	 * @param string 	$varpage 	Id of context for page. Can be set by caller with $varpage=(empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage);
-	 * @param string 	$pos 		Position colon on liste value 'left' or '' (meaning 'right').
+	 * @param string 	$pos 		Position of the colon in list: 'left' or '' (meaning 'right').
 	 * @return string            	HTML multiselect string
 	 * @see selectarray()
 	 */
@@ -9509,7 +9509,8 @@ class Form
 				}
 
 				// Note: $val['checked'] <> 0 means we must show the field into the combo list  @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
-				$listoffieldsforselection .= '<li><input type="checkbox" id="checkbox' . $key . '" value="' . $key . '"' . ((!array_key_exists('checked', $val) || empty($val['checked']) || $val['checked'] == '-1') ? '' : ' checked="checked"') . ' data-position="'.(empty($val['position']) ? '' : $val['position']).'" /><label for="checkbox' . $key . '">' . dol_escape_htmltag($langs->trans($val['label'])) . '</label></li>';
+				$listoffieldsforselection .= '<li><input type="checkbox" id="checkbox' . $key . '" value="' . $key . '"' . ((!array_key_exists('checked', $val) || empty($val['checked']) || $val['checked'] == '-1') ? '' : ' checked="checked"') . ' data-position="'.(empty($val['position']) ? '' : $val['position']).'" />';
+				$listoffieldsforselection .= '<label for="checkbox' . $key . '">'.dol_string_nohtmltag($langs->trans($val['label'])) . '</label></li>';
 				$listcheckedstring .= (empty($val['checked']) ? '' : $key . ',');
 			}
 		}

@@ -262,7 +262,7 @@ if ($result > 0) {
 			print '<tr>';
 			print '<td>'.$langs->trans('BankTransactionLine').'</td>';
 			print '<td>';
-			print $bankline->getNomUrl(1, 0, 'showconciliated');
+			print $bankline->getNomUrl(1, 0, 'showconciliatedandaccounted');
 			print '</td>';
 			print '</tr>';
 		}

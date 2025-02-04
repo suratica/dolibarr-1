@@ -96,11 +96,15 @@ if (!isset($mode) || $mode != 'noajax') {    // For ajax call
 	}
 } else {
 	// When no an ajax call (include from other file)
+	/**
+	 * @var string $module
+	 */
 	'
 	@phan-var-force int $section
 	@phan-var-force string $module
 	@phan-var-force string $showonrightsize
 	';
+
 	$rootdirfordoc = $conf->ecm->dir_output;
 
 	$ecmdir = new EcmDirectory($db);
@@ -233,6 +237,7 @@ if ($type == 'directory') {
 		'holiday',
 		'recruitment-recruitmentcandidature',
 		'banque',
+		'bank-statement',
 		'chequereceipt',
 		'mrp-mo'
 	);
@@ -286,6 +291,8 @@ if ($type == 'directory') {
 		$upload_dir = $conf->recruitment->dir_output.'/recruitmentcandidature';
 	} elseif ($module == 'banque') {
 		$upload_dir = $conf->bank->dir_output;
+	} elseif ($module == 'bank-statement') {
+		$upload_dir = $conf->bank->dir_output.'/*/statement';
 	} elseif ($module == 'chequereceipt') {
 		$upload_dir = $conf->bank->dir_output.'/checkdeposits';
 	} elseif ($module == 'mrp-mo') {
@@ -300,7 +307,7 @@ if ($type == 'directory') {
 
 	// Automatic list
 	if (in_array($module, $automodules)) {
-		$param .= '&module='.$module;
+		$param .= '&module='.urlencode($module);
 		if (isset($search_doc_ref) && $search_doc_ref != '') {
 			$param .= '&search_doc_ref='.urlencode($search_doc_ref);
 		}
@@ -309,6 +316,7 @@ if ($type == 'directory') {
 
 		$filter = preg_quote((string) $search_doc_ref, '/');
 		$filearray = dol_dir_list($upload_dir, "files", 1, $filter, $excludefiles, $sortfield, $sorting, 1);
+		//var_dump($filearray);
 
 		// To allow external users,we must restrict $filearray to entries the user is a thirdparty.
 		// This can be done by filtering on entries found into llx_ecm
