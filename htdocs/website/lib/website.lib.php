@@ -94,7 +94,7 @@ function websiteconfigPrepareHead($object)
 /**
  * Prepare array of directives for Website
  *
- * @return 	array					Array of tabs
+ * @return 	array					Array of directives
  */
 function websiteGetContentPolicyDirectives()
 {
@@ -128,7 +128,7 @@ function websiteGetContentPolicyDirectives()
 		"report-to" => array("label" => "report-to", "data-directivetype" => "reporting"),
 		// Other directives
 		"require-trusted-types-for" => array("label" => "require-trusted-types-for", "data-directivetype" => "other"),
-		"othertrusted-types",
+		"othertrusted-types" => array("label" => "othertrusted-types", "data-directivetype" => "other"),
 		"upgrade-insecure-requests" => array("label" => "upgrade-insecure-requests", "data-directivetype" => "other"),
 	);
 }
@@ -136,7 +136,7 @@ function websiteGetContentPolicyDirectives()
 /**
  * Prepare array of sources for Website
  *
- * @return 	array					Array of tabs
+ * @return 	array					Array of sources
  */
 function websiteGetContentPolicySources()
 {
@@ -145,32 +145,43 @@ function websiteGetContentPolicySources()
 		"fetch" => array(
 			"*" => array("label" => "*", "data-sourcetype" => "select"),
 			"data" => array("label" => "data", "data-sourcetype" => "data"),
-			"self" => array("label" => "self", "data-sourcetype" => "select"),
+			"self" => array("label" => "self", "data-sourcetype" => "quoted"),
 		),
 		// Document directives
 		"document" => array(
-			"base-uri",
-			"sandbox",
+			"base-uri" => array("label" => "base-uri", "data-sourcetype" => "select"),
+			"sandbox" => array("label" => "sandbox", "data-sourcetype" => "select"),
 		),
 		// Navigation directives
 		"navigation" => array(
-			"self",
+			"self" => array("label" => "self", "data-sourcetype" => "quoted"),
 		),
 		// Reporting directives
 		"reporting" => array(
-			"report-to",
+			"report-to" => array("label" => "report-to", "data-sourcetype" => "select"),
 		),
 		// Other directives
 		"other" => array(
-			"require-trusted-types-for",
-			"trusted-types",
-			"upgrade-insecure-requests",
+			"require-trusted-types-for" => array("label" => "require-trusted-types-for", "data-sourcetype" => "select"),
+			"trusted-types" => array("label" => "trusted-types", "data-sourcetype" => "select"),
+			"upgrade-insecure-requests" => array("label" => "upgrade-insecure-requests", "data-sourcetype" => "select"),
 		),
 	);
 }
 
+/**
+ * Transform a Content Security Policy to an array
+ * @param	string		content security policy
+ * 
+ * @return 	array		Array of sources
+ */
 function websiteGetContentPolicyToArray($forceCSP){
 	$forceCSPArr = array();
+	$sourceCSPArr = websiteGetContentPolicySources();
+	$sourceCSPArrflatten = array();
+	foreach ($sourceCSPArr as $key => $arr) {
+		$sourceCSPArrflatten = array_merge($sourceCSPArrflatten, array_keys($arr));
+	}
 	$securitypolicies = explode(";", $forceCSP);
 	foreach ($securitypolicies as $key => $securitypolicy) {
 		if ($securitypolicy == "") continue;
@@ -183,11 +194,29 @@ function websiteGetContentPolicyToArray($forceCSP){
 			continue;
 		}
 		$sources = $securitypolicyarr;
+		$issourcedata = 0;
 		foreach ($sources as $key => $source) {
-			if (empty($forceCSPArr[$directive])) {
-				$forceCSPArr[$directive] = array($source);
+			$source = str_replace(":", "", $source);
+			$source = str_replace("'", "", $source);
+
+			if ($source == "data") {
+				$issourcedata = 1;
+				if (empty($forceCSPArr[$directive])) {
+					$forceCSPArr[$directive] = array($source => array());
+				} else {
+					$forceCSPArr[$directive][$source] = array();
+				}
+				continue;
+			}
+			if ($issourcedata && !in_array($source, $sourceCSPArrflatten)) {
+				$forceCSPArr[$directive]["data"][] = $source;
 			} else {
-				$forceCSPArr[$directive][] = $source;
+				$issourcedata = 0;
+				if (empty($forceCSPArr[$directive])) {
+					$forceCSPArr[$directive] = array($source);
+				} else {
+					$forceCSPArr[$directive][] = $source;
+				}
 			}
 		}
 	}
