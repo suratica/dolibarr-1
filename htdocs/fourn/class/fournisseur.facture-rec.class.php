@@ -116,7 +116,7 @@ class FactureFournisseurRec extends CommonInvoice
 	public $label;
 
 	/**
-	 * @var float $amount
+	 * @var float
 	 * @deprecated
 	 */
 	public $amount;
@@ -183,7 +183,7 @@ class FactureFournisseurRec extends CommonInvoice
 	 */
 	public $usenewprice = 0;
 	/**
-	 * @var int
+	 * @var ?int
 	 */
 	public $frequency;
 	/**
@@ -949,15 +949,15 @@ class FactureFournisseurRec extends CommonInvoice
 	 * @param string 	$ref			Ref
 	 * @param string 	$label			Label
 	 * @param string 	$desc 			Description de la ligne
-	 * @param double 	$pu_ht			Unit price
-	 * @param double 	$pu_ttc			Unit price with tax
-	 * @param double 	$qty 			Quantity
-	 * @param int 		$remise_percent Percentage discount of the line
-	 * @param double 	$txtva 			Taux de tva force, sinon -1
+	 * @param float		$pu_ht			Unit price
+	 * @param float		$pu_ttc			Unit price with tax
+	 * @param float		$qty 			Quantity
+	 * @param float		$remise_percent Percentage discount of the line
+	 * @param float		$txtva 			Taux de tva force, sinon -1
 	 * @param int 		$txlocaltax1 	Local tax 1 rate (deprecated)
 	 * @param int 		$txlocaltax2 	Local tax 2 rate (deprecated)
 	 * @param string 	$price_base_type HT or TTC
-	 * @param int 		$type 			Type of line (0=product, 1=service)
+	 * @param int<0,1>	$type 			Type of line (0=product, 1=service)
 	 * @param int 		$date_start		Date start
 	 * @param int 		$date_end		Date end
 	 * @param int 		$info_bits 		VAT npr or not ?
@@ -1142,10 +1142,10 @@ class FactureFournisseurRec extends CommonInvoice
 	 * @param string	$ref				Ref
 	 * @param string 	$label 				Label of the line
 	 * @param string 	$desc 				Description de la ligne
-	 * @param double 	$pu_ht 				Unit price HT (> 0 even for credit note)
-	 * @param double 	$qty 				Quantity
+	 * @param float		$pu_ht 				Unit price HT (> 0 even for credit note)
+	 * @param float		$qty 				Quantity
 	 * @param int 		$remise_percent 	Percentage discount of the line
-	 * @param double 	$txtva 				VAT rate forced with format '5.0 (XXX)', or -1
+	 * @param float		$txtva 				VAT rate forced with format '5.0 (XXX)', or -1
 	 * @param int 		$txlocaltax1 		Local tax 1 rate (deprecated)
 	 * @param int 		$txlocaltax2 		Local tax 2 rate (deprecated)
 	 * @param string 	$price_base_type 	HT or TTC
@@ -1156,8 +1156,8 @@ class FactureFournisseurRec extends CommonInvoice
 	 * @param int 		$special_code 		Special code
 	 * @param int 		$rang 				Position of line
 	 * @param string 	$fk_unit 			Unit
-	 * @param double	$pu_ht_devise 		Unit price in currency
-	 * @param double    $pu_ttc             Unit price TTC (> 0 even for credit note)
+	 * @param float		$pu_ht_devise 		Unit price in currency
+	 * @param float		$pu_ttc             Unit price TTC (> 0 even for credit note)
 	 * @return int  		                Return integer <0 if KO, Id of line if OK
 	 * @throws Exception
 	 */
@@ -1879,7 +1879,7 @@ class FactureFournisseurRec extends CommonInvoice
 	/**
 	 *	Update frequency and unit
 	 *
-	 *	@param     	int		$frequency		value of frequency
+	 *	@param     	?int	$frequency		value of frequency
 	 *	@param     	string	$unit 			unit of frequency  (d, m, y)
 	 *	@return		int						Return integer <0 if KO, >0 if OK
 	 */

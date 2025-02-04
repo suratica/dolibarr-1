@@ -148,7 +148,7 @@ class FactureRec extends CommonInvoice
 	public $user_author;
 
 	/**
-	 * @var int Frequency
+	 * @var ?int Frequency
 	 */
 	public $frequency;
 
@@ -1945,10 +1945,10 @@ class FactureRec extends CommonInvoice
 	/**
 	 *	Update frequency and unit
 	 *
-	 *	@param     	int		$frequency		value of frequency
-	 *	@param     	string	$unit 			unit of frequency  (d, m, y)
-	 *	@param     	int 	$notrigger 		Disable the trigger
-	 *	@return		int						Return integer <0 if KO, >0 if OK
+	 *	@param     	?int		$frequency		value of frequency
+	 *	@param     	string		$unit 			unit of frequency  (d, m, y)
+	 *	@param     	int<0,1> 	$notrigger 		Disable the trigger
+	 *	@return		int							Return integer <0 if KO, >0 if OK
 	 */
 	public function setFrequencyAndUnit($frequency, $unit, $notrigger = 0)
 	{
