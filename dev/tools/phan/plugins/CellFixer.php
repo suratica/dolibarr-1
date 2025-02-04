@@ -47,17 +47,19 @@ call_user_func(static function (): void {
 		$functionlike = (string) $instance->getTemplateParameters()[4];
 		$functiontype = (string) $instance->getTemplateParameters()[5];
 
-		$expected_functionlike = "\\TCPDF::setPageOrientation()";
-		$expected_name = "setPageOrientation";
-		if ($functionlike !== $expected_functionlike) {
-			//print "$functionlike != '$expected_functionlike'".PHP_EOL;
+		$expected_functionlike = "\\TCPDI::Cell()";
+		$expected_functionlike2 = "\\TCPDF::Cell()";
+		$expected_name = "Cell";
+		if ($functionlike !== $expected_functionlike
+			&& $functionlike !== $expected_functionlike2) {
+			print "$functionlike != '$expected_functionlike'|'$expected_functionlike2".PHP_EOL;
 			return null;
 		}
 
 		$toBoolReplaceArray = array("0" => "false","1" => "true");
 		// Check if we fix any of this
 		if (
-			($argument_name === 'autopagebreak' && in_array($argument_code, array_keys($toBoolReplaceArray)))
+			($argument_name === 'fill' && in_array($argument_code, array_keys($toBoolReplaceArray)))
 			//|| ($argument_name === 'm' && $argument_code === "''")
 			//|| ($argument_name === 'empty' && $argument_code === "''")
 		) {
@@ -81,13 +83,13 @@ call_user_func(static function (): void {
 			}
 			$arguments = $node->children;
 			if (count($arguments) <= $argIdx) {
-				// print "Arg Count is ".count($arguments)." - Skip $instance".PHP_EOL;
+				print "Arg Count is ".count($arguments)." - Skip $instance".PHP_EOL;
 				continue;
 			}
 
 			$is_actual_call = $node->parent instanceof CallExpression;
 			if (!$is_actual_call) {
-				// print "Not actual call - Skip $instance".PHP_EOL;
+				print "Not actual call - Skip $instance".PHP_EOL;
 				continue;
 			}
 
@@ -113,7 +115,7 @@ call_user_func(static function (): void {
 
 			foreach ($arguments as $i => $argument) {
 				if ($argument instanceof ArgumentExpression) {
-					// print "Type$i: ".get_class($argument->expression).PHP_EOL;
+					print "Type$i: ".get_class($argument->expression).PHP_EOL;
 				}
 			}
 
@@ -124,11 +126,17 @@ call_user_func(static function (): void {
 
 			if (
 				$arg instanceof ArgumentExpression
+				// && $arg->expression instanceof StringLiteral
 				&& $arg->expression instanceof NumericLiteral
 			) {
-				// Get the string value of the NumericLiteral
+				// Get the value of the NumericLiteral
 				$fieldValue = (string) $arg->expression;
-				//print "Field is '$fieldValue'".PHP_EOL;
+				print "Number is '$fieldValue'".PHP_EOL;
+				/*
+				// Get the string value of the StringLiteral
+				$fieldValue = $arg->expression->getStringContentsText();
+				print "String is '$fieldValue'".PHP_EOL;
+				*/
 			} elseif ($arg instanceof ArgumentExpression && $arg->expression instanceof ReservedWord) {
 				$child = $arg->expression->children;
 				if (!$child instanceof Token) {
@@ -143,12 +151,12 @@ call_user_func(static function (): void {
 
 				$fieldValue = '';  // Fake empty
 			} else {
-				// print "Expression is not expected type ".get_class($arg)."/".get_class($arg->expression)."- Skip $instance".PHP_EOL;
+				print "Expression is not expected type ".get_class($arg)."/".get_class($arg->expression)."- Skip $instance".PHP_EOL;
 				continue;
 			}
 
 			if ($fieldValue !== $expectedStringValue) {
-				// print "Not replacing '$argument_name' which is '$fieldValue'/".get_class($arg)."/".get_class($arg->expression)."- Skip $instance".PHP_EOL;
+				print "Not replacing $argument_name which is '$fieldValue'/".get_class($arg)."/".get_class($arg->expression)."- Skip $instance".PHP_EOL;
 				continue;
 			}
 

@@ -47,17 +47,19 @@ call_user_func(static function (): void {
 		$functionlike = (string) $instance->getTemplateParameters()[4];
 		$functiontype = (string) $instance->getTemplateParameters()[5];
 
-		$expected_functionlike = "\\TCPDF::setPageOrientation()";
-		$expected_name = "setPageOrientation";
-		if ($functionlike !== $expected_functionlike) {
-			//print "$functionlike != '$expected_functionlike'".PHP_EOL;
+		$expected_functionlike = "\\TCPDI::setAutoPageBreak()";
+		$expected_functionlike2 = "\\TCPDF::setAutoPageBreak()";
+		$expected_name = "setAutoPageBreak";
+		if ($functionlike !== $expected_functionlike
+			&& $functionlike !== $expected_functionlike2) {
+			//print "$functionlike != '$expected_functionlike'|'$expected_functionlike2".PHP_EOL;
 			return null;
 		}
 
 		$toBoolReplaceArray = array("0" => "false","1" => "true");
 		// Check if we fix any of this
 		if (
-			($argument_name === 'autopagebreak' && in_array($argument_code, array_keys($toBoolReplaceArray)))
+			($argument_name === 'auto' && in_array($argument_code, array_keys($toBoolReplaceArray)))
 			//|| ($argument_name === 'm' && $argument_code === "''")
 			//|| ($argument_name === 'empty' && $argument_code === "''")
 		) {
@@ -65,7 +67,7 @@ call_user_func(static function (): void {
 			$argIdx = ($argument_index - 1) * 2;
 			$expectedStringValue = $argument_code;
 		} else {
-			print "ARG$argument_index:$argument_name CODE:$argument_name".PHP_EOL;
+			//print "ARG$argument_index:$argument_name CODE:$argument_name".PHP_EOL;
 			return null;
 		}
 
@@ -87,11 +89,11 @@ call_user_func(static function (): void {
 
 			$is_actual_call = $node->parent instanceof CallExpression;
 			if (!$is_actual_call) {
-				// print "Not actual call - Skip $instance".PHP_EOL;
+				//print "Not actual call - Skip $instance".PHP_EOL;
 				continue;
 			}
 
-			print "Actual call - $instance".PHP_EOL;
+			//print "Actual call - $instance".PHP_EOL;
 			$callable = $node->parent;
 
 			$callableExpression = $callable->callableExpression;
@@ -102,18 +104,18 @@ call_user_func(static function (): void {
 				$memberNameToken = $callableExpression->memberName;
 				$actual_name = (new NodeUtils($contents->getContents()))->tokenToString($memberNameToken);
 			} else {
-				print "Callable expression is ".get_class($callableExpression)."- Skip $instance".PHP_EOL;
+				//print "Callable expression is ".get_class($callableExpression)."- Skip $instance".PHP_EOL;
 				continue;
 			}
 
 			if ((string) $actual_name !== (string) $expected_name) {
-				// print "Name unexpected '$actual_name'!='$expected_name' - Skip $instance".PHP_EOL;
+				print "Name unexpected '$actual_name'!='$expected_name' - Skip $instance".PHP_EOL;
 				continue;
 			}
 
 			foreach ($arguments as $i => $argument) {
 				if ($argument instanceof ArgumentExpression) {
-					// print "Type$i: ".get_class($argument->expression).PHP_EOL;
+					//print "Type$i: ".get_class($argument->expression).PHP_EOL;
 				}
 			}
 
@@ -124,11 +126,17 @@ call_user_func(static function (): void {
 
 			if (
 				$arg instanceof ArgumentExpression
+				// && $arg->expression instanceof StringLiteral
 				&& $arg->expression instanceof NumericLiteral
 			) {
-				// Get the string value of the NumericLiteral
+				// Get the value of the NumericLiteral
 				$fieldValue = (string) $arg->expression;
-				//print "Field is '$fieldValue'".PHP_EOL;
+				print "Number is '$fieldValue'".PHP_EOL;
+				/*
+				// Get the string value of the StringLiteral
+				$fieldValue = $arg->expression->getStringContentsText();
+				print "String is '$fieldValue'".PHP_EOL;
+				*/
 			} elseif ($arg instanceof ArgumentExpression && $arg->expression instanceof ReservedWord) {
 				$child = $arg->expression->children;
 				if (!$child instanceof Token) {
@@ -143,12 +151,12 @@ call_user_func(static function (): void {
 
 				$fieldValue = '';  // Fake empty
 			} else {
-				// print "Expression is not expected type ".get_class($arg)."/".get_class($arg->expression)."- Skip $instance".PHP_EOL;
+				print "Expression is not expected type ".get_class($arg)."/".get_class($arg->expression)."- Skip $instance".PHP_EOL;
 				continue;
 			}
 
 			if ($fieldValue !== $expectedStringValue) {
-				// print "Not replacing '$argument_name' which is '$fieldValue'/".get_class($arg)."/".get_class($arg->expression)."- Skip $instance".PHP_EOL;
+				print "Not replacing '$argument_name' which is '$fieldValue'/".get_class($arg)."/".get_class($arg->expression)."- Skip $instance".PHP_EOL;
 				continue;
 			}
 
