@@ -8035,12 +8035,6 @@ parameters:
 			path: ../../../htdocs/core/ajax/ajaxdirpreview.php
 
 		-
-			message: '#^Variable \$module might not be defined\.$#'
-			identifier: variable.undefined
-			count: 34
-			path: ../../../htdocs/core/ajax/ajaxdirpreview.php
-
-		-
 			message: '#^Variable \$section might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
