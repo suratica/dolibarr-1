@@ -568,7 +568,6 @@ NbOfOrder
 NbOfSendingsByMonth
 NbOfTicket
 NeedRefresh
-NetMeasure
 Network
 NewAdherent
 NewAdherentAddress
@@ -589,7 +588,6 @@ NoOperations
 NoPasswordGenerationRuleConfigured
 NoReader
 NoRecordedUnpaidInvoices
-NoRecordfound
 NoRecords
 NoRecordsToDisplay
 NoSenderEmailDefined
