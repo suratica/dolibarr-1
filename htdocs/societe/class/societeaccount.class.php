@@ -104,7 +104,7 @@ class SocieteAccount extends CommonObject
 		'pass_encoding' => array('type' => 'varchar(24)', 'label' => 'PassEncoding', 'visible' => 0, 'enabled' => 1, 'position' => 30),
 		'pass_crypted' => array('type' => 'password', 'label' => 'Password', 'visible' => -1, 'enabled' => 1, 'position' => 31, 'notnull' => 1),
 		'pass_temp'    => array('type' => 'varchar(128)', 'label' => 'Temp', 'visible' => 0, 'enabled' => 0, 'position' => 32, 'notnull' => -1,),
-		'fk_soc' => array('type' => 'integer:Societe:societe/class/societe.class.php', 'label' => 'ThirdParty', 'visible' => 1, 'enabled' => 1, 'position' => 40, 'notnull' => -1, 'index' => 1, 'picto' => 'company', 'css' => 'maxwidth300 widthcentpercentminusxx'),
+		'fk_soc' => array('type' => 'integer:Societe:societe/class/societe.class.php', 'label' => 'ThirdParty', 'visible' => -6, 'enabled' => 1, 'position' => 40, 'notnull' => -1, 'index' => 1, 'picto' => 'company', 'css' => 'maxwidth300 widthcentpercentminusxx'),
 		'site' => array('type' => 'varchar(128)', 'label' => 'WebsiteTypeLabel', 'visible' => 0, 'enabled' => 0, 'position' => 41, 'notnull' => 1, 'default' => '', 'help' => 'Name of the website or service if this is account on an external website or service', 'csslist' => 'tdoverflowmax150', 'arrayofkeyval' => array(/* For static analysis, filled in constructor */)),
 		'fk_website' => array('type' => 'integer:Website:website/class/website.class.php', 'label' => 'WebSite', 'visible' => 0, 'enabled' => 0, 'position' => 42, 'notnull' => -1, 'index' => 1, 'picto' => 'website', 'css' => 'maxwidth300 widthcentpercentminusxx', 'csslist' => 'tdoverflowmax150'),
 		'site_account' => array('type' => 'varchar(128)', 'label' => 'ExternalSiteAccount', 'visible' => 0, 'enabled' => 1, 'position' => 44, 'help' => 'A key to identify the account on external web site if this is an account on an external website'),
@@ -148,6 +148,10 @@ class SocieteAccount extends CommonObject
 	 * @var string
 	 */
 	public $pass_crypted;
+	/**
+	 * @var string
+	 */
+	public $pass;
 	/**
 	 * @var string
 	 */
