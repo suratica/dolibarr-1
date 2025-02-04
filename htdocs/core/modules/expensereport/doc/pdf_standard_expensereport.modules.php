@@ -369,9 +369,9 @@ class pdf_standard_expensereport extends ModeleExpenseReport
 
 					$pdf->setTopMargin($tab_top_newpage);
 					if (empty($showpricebeforepagebreak) && ($i !== ($nblines - 1))) {
-						$pdf->setPageOrientation('', 1, $heightforfooter); // The only function to edit the bottom margin of current page to set it.
+						$pdf->setPageOrientation('', true, $heightforfooter); // The only function to edit the bottom margin of current page to set it.
 					} else {
-						$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext + $heightforinfotot); // The only function to edit the bottom margin of current page to set it.
+						$pdf->setPageOrientation('', true, $heightforfooter + $heightforfreetext + $heightforinfotot); // The only function to edit the bottom margin of current page to set it.
 					}
 
 					$pageposbefore = $pdf->getPage();
@@ -403,7 +403,7 @@ class pdf_standard_expensereport extends ModeleExpenseReport
 							$pdf->setTopMargin($tab_top_newpage);
 							continue;
 						} else {
-							$pdf->setPageOrientation('', 1, $heightforfooter);
+							$pdf->setPageOrientation('', true, $heightforfooter);
 							$showpricebeforepagebreak = 0;
 						}
 
@@ -442,7 +442,7 @@ class pdf_standard_expensereport extends ModeleExpenseReport
 					$pageposafter = $pdf->getPage();
 					$pdf->setPage($pageposbefore);
 					$pdf->setTopMargin($this->marge_haute);
-					$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
+					$pdf->setPageOrientation('', true, 0); // The only function to edit the bottom margin of current page to set it.
 
 					//$nexY+=$nblineFollowComment*($pdf->getFontSize()*1.3);    // Add space between lines
 					$nexY += ($pdf->getFontSize() * 1.3); // Add space between lines
@@ -450,7 +450,7 @@ class pdf_standard_expensereport extends ModeleExpenseReport
 					// Detect if some page were added automatically and output _tableau for past pages
 					while ($pagenb < $pageposafter) {
 						$pdf->setPage($pagenb);
-						$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
+						$pdf->setPageOrientation('', true, 0); // The only function to edit the bottom margin of current page to set it.
 						if ($pagenb == 1) {
 							$this->_tableau($pdf, $tab_top, $this->page_hauteur - $tab_top - $heightforfooter, 0, $outputlangs, 0, 1);
 						} else {
@@ -459,7 +459,7 @@ class pdf_standard_expensereport extends ModeleExpenseReport
 						$this->_pagefoot($pdf, $object, $outputlangs, 1);
 						$pagenb++;
 						$pdf->setPage($pagenb);
-						$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
+						$pdf->setPageOrientation('', true, 0); // The only function to edit the bottom margin of current page to set it.
 						if (!getDolGlobalInt('MAIN_PDF_DONOTREPEAT_HEAD')) {
 							$this->_pagehead($pdf, $object, 0, $outputlangs);
 						}
