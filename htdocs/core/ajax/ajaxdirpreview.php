@@ -96,7 +96,7 @@ if (!isset($mode) || $mode != 'noajax') {    // For ajax call
 	}
 } else {
 	// When no an ajax call (include from other file)
-	/*
+	/**
 	 * @var string $module
 	 */
 	'
