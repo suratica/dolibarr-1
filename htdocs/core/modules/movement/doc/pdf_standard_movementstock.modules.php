@@ -636,7 +636,7 @@ class pdf_standard_movementstock extends ModelePDFMovement
 						// Origin
 						$pricemin = $objp->price;
 						$pdf->SetXY($this->posxdiscount, $curY);
-						$pdf->MultiCell($this->postotalht - $this->posxdiscount - 0.8, 3, $origin, 0, 'R', 0);
+						$pdf->MultiCell($this->postotalht - $this->posxdiscount - 0.8, 3, $origin, 0, 'R', false);
 
 						// Qty
 						$valtoshow = price2num($objp->qty, 'MS');
@@ -644,7 +644,7 @@ class pdf_standard_movementstock extends ModelePDFMovement
 						$totalunit += $objp->qty;
 
 						$pdf->SetXY($this->postotalht, $curY);
-						$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->postotalht, 3, $objp->qty, 0, 'R', 0);
+						$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->postotalht, 3, $objp->qty, 0, 'R', false);
 
 						$totalvaluesell += price2num($pricemin * $objp->value, 'MT');
 
@@ -720,7 +720,7 @@ class pdf_standard_movementstock extends ModelePDFMovement
 
 					// Total Qty
 					$pdf->SetXY($this->postotalht, $curY);
-					$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->postotalht, 3, $totalunit, 0, 'R', 0);
+					$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->postotalht, 3, $totalunit, 0, 'R', false);
 				} else {
 					dol_print_error($this->db);
 				}

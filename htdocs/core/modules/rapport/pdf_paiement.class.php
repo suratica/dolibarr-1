@@ -539,9 +539,9 @@ class pdf_paiement extends CommonDocGenerator
 					$pdf->line($this->marge_gauche, $this->tab_top + 15 + $yp, $this->page_largeur - $this->marge_droite, $this->tab_top + 15 + $yp);
 					$pdf->SetFont('', 'B', $default_font_size - 1);
 					$pdf->SetXY($this->posxdate - 1, $this->tab_top + 10 + $yp);
-					$pdf->MultiCell($this->posxpaymentamount - 2 - $this->marge_droite, $this->line_height, $langs->transnoentities('SubTotal')." : ", 0, 'R', 1);
+					$pdf->MultiCell($this->posxpaymentamount - 2 - $this->marge_droite, $this->line_height, $langs->transnoentities('SubTotal')." : ", 0, 'R', true);
 					$pdf->SetXY($this->posxpaymentamount - 1, $this->tab_top + 10 + $yp);
-					$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount + 1, $this->line_height, price($total_page), 0, 'R', 1);
+					$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount + 1, $this->line_height, price($total_page), 0, 'R', true);
 					$pdf->SetFont('', '', $default_font_size - 1);
 					$pdf->SetFillColor(220, 220, 220);
 					$page++;
@@ -554,16 +554,16 @@ class pdf_paiement extends CommonDocGenerator
 				}
 
 				$pdf->SetXY($this->posxdate - 1, $this->tab_top + 10 + $yp);
-				$pdf->MultiCell($this->posxpaymenttype - $this->posxdate + 1, $this->line_height, $lines[$j][1], 0, 'L', 1);
+				$pdf->MultiCell($this->posxpaymenttype - $this->posxdate + 1, $this->line_height, $lines[$j][1], 0, 'L', true);
 
 				$pdf->SetXY($this->posxpaymenttype, $this->tab_top + 10 + $yp);
-				$pdf->MultiCell($this->posxinvoiceamount - $this->posxpaymenttype, $this->line_height, $lines[$j][2].' '.$lines[$j][3], 0, 'L', 1);
+				$pdf->MultiCell($this->posxinvoiceamount - $this->posxpaymenttype, $this->line_height, $lines[$j][2].' '.$lines[$j][3], 0, 'L', true);
 
 				$pdf->SetXY($this->posxinvoiceamount, $this->tab_top + 10 + $yp);
-				$pdf->MultiCell($this->posxpaymentamount - $this->posxinvoiceamount, $this->line_height, '', 0, 'R', 1);
+				$pdf->MultiCell($this->posxpaymentamount - $this->posxinvoiceamount, $this->line_height, '', 0, 'R', true);
 
 				$pdf->SetXY($this->posxpaymentamount, $this->tab_top + 10 + $yp);
-				$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount, $this->line_height, $lines[$j][4], 0, 'R', 1);
+				$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount, $this->line_height, $lines[$j][4], 0, 'R', true);
 				$yp += 5;
 				$total_page += (float) $lines[$j][9];
 				if (($this->doc_type == 'client' && getDolGlobalString('PAYMENTS_REPORT_GROUP_BY_MOD')) || ($this->doc_type == 'fourn' && getDolGlobalString('PAYMENTS_FOURN_REPORT_GROUP_BY_MOD'))) {
@@ -573,19 +573,19 @@ class pdf_paiement extends CommonDocGenerator
 
 			// Invoice number
 			$pdf->SetXY($this->posxinvoice, $this->tab_top + 10 + $yp);
-			$pdf->MultiCell($this->posxinvoice - $this->posxbankaccount, $this->line_height, $lines[$j][0], 0, 'L', 0);
+			$pdf->MultiCell($this->posxinvoice - $this->posxbankaccount, $this->line_height, $lines[$j][0], 0, 'L', false);
 
 			// BankAccount
 			$pdf->SetXY($this->posxbankaccount, $this->tab_top + 10 + $yp);
-			$pdf->MultiCell($this->posxbankaccount - $this->posxdate, $this->line_height, $lines[$j][8], 0, 'L', 0);
+			$pdf->MultiCell($this->posxbankaccount - $this->posxdate, $this->line_height, $lines[$j][8], 0, 'L', false);
 
 			// Invoice amount
 			$pdf->SetXY($this->posxinvoiceamount, $this->tab_top + 10 + $yp);
-			$pdf->MultiCell($this->posxpaymentamount - $this->posxinvoiceamount - 1, $this->line_height, $lines[$j][5], 0, 'R', 0);
+			$pdf->MultiCell($this->posxpaymentamount - $this->posxinvoiceamount - 1, $this->line_height, $lines[$j][5], 0, 'R', false);
 
 			// Payment amount
 			$pdf->SetXY($this->posxpaymentamount, $this->tab_top + 10 + $yp);
-			$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount, $this->line_height, $lines[$j][6], 0, 'R', 0);
+			$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount, $this->line_height, $lines[$j][6], 0, 'R', false);
 			$yp += 5;
 
 			if ($oldprowid != $lines[$j][7]) {
@@ -600,9 +600,9 @@ class pdf_paiement extends CommonDocGenerator
 				$pdf->line($this->marge_gauche, $this->tab_top + 15 + $yp, $this->page_largeur - $this->marge_droite, $this->tab_top + 15 + $yp);
 				$pdf->SetXY($this->posxdate - 1, $this->tab_top + 10 + $yp);
 				$pdf->SetFont('', 'I', $default_font_size - 1);
-				$pdf->MultiCell($this->posxpaymentamount - 2 - $this->marge_droite, $this->line_height, $langs->transnoentities('Total').' '.$mod." : ", 0, 'R', 1);
+				$pdf->MultiCell($this->posxpaymentamount - 2 - $this->marge_droite, $this->line_height, $langs->transnoentities('Total').' '.$mod." : ", 0, 'R', true);
 				$pdf->SetXY($this->posxpaymentamount - 1, $this->tab_top + 10 + $yp);
-				$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount + 1, $this->line_height, price($total_mod), 0, 'R', 1);
+				$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount + 1, $this->line_height, price($total_mod), 0, 'R', true);
 				$pdf->SetFont('', '', $default_font_size - 1);
 				$mod = $lines[$j + 1][2];
 				$total_mod = 0;
@@ -624,9 +624,9 @@ class pdf_paiement extends CommonDocGenerator
 		$pdf->line($this->marge_gauche, $this->tab_top + 15 + $yp, $this->page_largeur - $this->marge_droite, $this->tab_top + 15 + $yp);
 		$pdf->SetXY($this->posxdate - 1, $this->tab_top + 10 + $yp);
 		$pdf->SetFont('', 'B');
-		$pdf->MultiCell($this->posxpaymentamount - 2 - $this->marge_droite, $this->line_height, $langs->transnoentities('Total')." : ", 0, 'R', 1);
+		$pdf->MultiCell($this->posxpaymentamount - 2 - $this->marge_droite, $this->line_height, $langs->transnoentities('Total')." : ", 0, 'R', true);
 		$pdf->SetXY($this->posxpaymentamount - 1, $this->tab_top + 10 + $yp);
-		$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount + 1, $this->line_height, price($total), 0, 'R', 1);
+		$pdf->MultiCell($this->page_largeur - $this->marge_droite - $this->posxpaymentamount + 1, $this->line_height, price($total), 0, 'R', true);
 		$pdf->SetFillColor(220, 220, 220);
 	}
 }
