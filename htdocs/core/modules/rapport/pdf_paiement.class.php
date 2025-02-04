@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2014 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2015-2018 Charlene BENKE  	<charlie@patas-monkey.com>
  * Copyright (C) 2020      Maxime DEMAREST <maxime@indelog.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		Frédéric France			<frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -156,7 +156,7 @@ class pdf_paiement extends CommonDocGenerator
 	 *	@param	string	$_dir			repertoire
 	 *	@param	int		$month			mois du rapport
 	 *	@param	int		$year			annee du rapport
-	 *	@param	string	$outputlangs	Lang output object
+	 *	@param	?Translate	$outputlangs	Lang output object
 	 *	@return	int						Return integer <0 if KO, >0 if OK
 	 */
 	public function write_file($_dir, $month, $year, $outputlangs)
