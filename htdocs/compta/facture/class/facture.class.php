@@ -3943,7 +3943,7 @@ class Facture extends CommonInvoice
 			if (empty($fk_prev_id)) {
 				$fk_prev_id = 'null';
 			}
-			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '') {
+			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '' || $situation_percent == null) {
 				$situation_percent = 100;
 			}
 			if (empty($ref_ext)) {
@@ -4207,7 +4207,7 @@ class Facture extends CommonInvoice
 			if (empty($special_code) || $special_code == 3) {
 				$special_code = 0;
 			}
-			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '') {
+			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '' || $situation_percent == null) {
 				$situation_percent = 100;
 			}
 			if (empty($ref_ext)) {
