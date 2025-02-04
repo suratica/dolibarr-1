@@ -1833,7 +1833,7 @@ class Categorie extends CommonObject
 		}
 
 		// Check contrast with background and correct text color
-		$forced_color = 'categtextwhite'; // We want color white because the background is dark (grey or other)
+		$forced_color = 'categtextwhite'; // We want color white because the getNomUrl of a tag is always called inside a dark background like '<span color="bbb"></span>' to show it as a tag. TODO Add this in param to force when called outside of span.
 		if ($this->color) {
 			if (colorIsLight($this->color)) {	// If color is light, we force color to dark
 				$forced_color = 'categtextblack';
