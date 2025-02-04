@@ -31,6 +31,19 @@
  * $arrayoffamiliestoexclude=array('system', 'mycompany', 'object', 'objectamount', 'date', 'user', ...);
  * $file
  */
+/**
+ * @var int<0,1> $diroutput
+ * @var string $defaulttopic
+ * @var string $defaulttopiclang
+ * @var string[] $arrayoffamiliestoexclude
+ * @var string $file
+ * @var string $action
+ * @var CommonObject $object
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ */
 '
 @phan-var-force int<0,1> $diroutput
 @phan-var-force string $defaulttopic
