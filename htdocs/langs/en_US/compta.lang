@@ -283,6 +283,7 @@ ImportDataset_tax_contrib=Social/fiscal taxes
 ImportDataset_tax_vat=VAT payments
 ErrorBankAccountNotFound=Error: Bank account not found
 FiscalPeriod=Accounting period
+FiscalYearSetAsDefault=Fiscal year (%s) defined as default
 ListSocialContributionAssociatedProject=List of social contributions associated with the project
 DeleteFromCat=Remove from accounting group
 AccountingAffectation=Accounting assignment
