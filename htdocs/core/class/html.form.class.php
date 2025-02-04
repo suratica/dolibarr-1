@@ -9449,7 +9449,7 @@ class Form
 	 * @param string 	$htmlname 	Name of HTML field
 	 * @param array<string,array{label:string,checked:string,enabled?:string,type?:string,langfile?:string,position?:int,help?:string}> 	$array 	Array with array of fields we could show. This array may be modified according to setup of user.
 	 * @param string 	$varpage 	Id of context for page. Can be set by caller with $varpage=(empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage);
-	 * @param string 	$pos 		Position colon on liste value 'left' or '' (meaning 'right').
+	 * @param string 	$pos 		Position of the colon in list: 'left' or '' (meaning 'right').
 	 * @return string            	HTML multiselect string
 	 * @see selectarray()
 	 */

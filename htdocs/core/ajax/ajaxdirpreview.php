@@ -96,11 +96,15 @@ if (!isset($mode) || $mode != 'noajax') {    // For ajax call
 	}
 } else {
 	// When no an ajax call (include from other file)
+	/*
+	 * @var string $module
+	 */
 	'
 	@phan-var-force int $section
 	@phan-var-force string $module
 	@phan-var-force string $showonrightsize
 	';
+
 	$rootdirfordoc = $conf->ecm->dir_output;
 
 	$ecmdir = new EcmDirectory($db);
