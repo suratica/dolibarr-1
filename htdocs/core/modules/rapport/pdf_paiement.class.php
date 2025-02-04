@@ -377,7 +377,7 @@ class pdf_paiement extends CommonDocGenerator
 
 		// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
 		$pdf->SetMargins($this->marge_gauche, $this->marge_haute, $this->marge_droite); // Left, Top, Right
-		$pdf->SetAutoPageBreak(1, 0);
+		$pdf->setAutoPageBreak(true, 0);
 
 		// New page
 		$pdf->AddPage();

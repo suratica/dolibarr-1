@@ -414,7 +414,7 @@ class pdf_octopus extends ModelePDFFactures
 				$pdf = pdf_getInstance($this->format);
 				//$default_font_size = pdf_getPDFFontSize($outputlangs); // Must be after pdf_getInstance
 				$default_font_size = 9;
-				$pdf->SetAutoPageBreak(1, 0);
+				$pdf->setAutoPageBreak(true, 0);
 
 				// compute height for situation invoices
 				$this->heightforinfotot = 45;	// Height reserved to output the info and total part and payment part
@@ -672,12 +672,12 @@ class pdf_octopus extends ModelePDFFactures
 							}
 							$pdf->setTopMargin($this->tab_top_newpage);
 							// The only function to edit the bottom margin of current page to set it.
-							$pdf->setPageOrientation('', 1, $this->heightforfooter + $this->heightforfreetext);
+							$pdf->setPageOrientation('', true, $this->heightforfooter + $this->heightforfreetext);
 						}
 
 						// back to start
 						$pdf->setPage($pageposbeforenote);
-						$pdf->setPageOrientation('', 1, $this->heightforfooter + $this->heightforfreetext);
+						$pdf->setPageOrientation('', true, $this->heightforfooter + $this->heightforfreetext);
 						$pdf->SetFont('', '', $default_font_size - 1);
 						$pdf->writeHTMLCell(190, 3, $this->posxdesc - 1, $this->tab_top, dol_htmlentitiesbr($notetoshow), 0, 1);
 						$pageposafternote = $pdf->getPage();
@@ -691,7 +691,7 @@ class pdf_octopus extends ModelePDFFactures
 							$pdf->setPage($pageposafternote);
 							$pdf->setTopMargin($this->tab_top_newpage);
 							// The only function to edit the bottom margin of current page to set it.
-							$pdf->setPageOrientation('', 1, $this->heightforfooter + $this->heightforfreetext);
+							$pdf->setPageOrientation('', true, $this->heightforfooter + $this->heightforfreetext);
 							//$posyafter = $this->tab_top_newpage;
 						}
 
@@ -713,7 +713,7 @@ class pdf_octopus extends ModelePDFFactures
 							}
 
 							// Add footer
-							$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
+							$pdf->setPageOrientation('', true, 0); // The only function to edit the bottom margin of current page to set it.
 							$this->_pagefoot($pdf, $object, $outputlangs, 1);
 
 							$i++;
@@ -786,7 +786,7 @@ class pdf_octopus extends ModelePDFFactures
 					}
 
 					$pdf->setTopMargin($this->tab_top_newpage);
-					$pdf->setPageOrientation('', 1, $this->heightforfooter + $this->heightforfreetext + $this->heightforinfotot); // The only function to edit the bottom margin of current page to set it.
+					$pdf->setPageOrientation('', true, $this->heightforfooter + $this->heightforfreetext + $this->heightforinfotot); // The only function to edit the bottom margin of current page to set it.
 					$pageposbefore = $pdf->getPage();
 
 					$showpricebeforepagebreak = 1;
@@ -830,7 +830,7 @@ class pdf_octopus extends ModelePDFFactures
 						if ($pageposafter > $pageposbefore) {	// There is a pagebreak
 							$pdf->rollbackTransaction(true);
 							$pageposafter = $pageposbefore;
-							$pdf->setPageOrientation('', 1, $this->heightforfooter); // The only function to edit the bottom margin of current page to set it.
+							$pdf->setPageOrientation('', true, $this->heightforfooter); // The only function to edit the bottom margin of current page to set it.
 
 							$this->printColDescContent($pdf, $posy, 'desc', $object, $i, $outputlangs, $hideref, $hidedesc);
 
@@ -865,7 +865,7 @@ class pdf_octopus extends ModelePDFFactures
 					$pageposafter = $pdf->getPage();
 					$pdf->setPage($pageposbefore);
 					$pdf->setTopMargin($this->marge_haute);
-					$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
+					$pdf->setPageOrientation('', true, 0); // The only function to edit the bottom margin of current page to set it.
 
 					// We suppose that a too long description or photo were moved completely on next page
 					if ($pageposafter > $pageposbefore && empty($showpricebeforepagebreak)) {
@@ -1082,7 +1082,7 @@ class pdf_octopus extends ModelePDFFactures
 						$this->_pagefoot($pdf, $object, $outputlangs, 1);
 						$pagenb++;
 						$pdf->setPage($pagenb);
-						$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
+						$pdf->setPageOrientation('', true, 0); // The only function to edit the bottom margin of current page to set it.
 						if (!getDolGlobalInt('MAIN_PDF_DONOTREPEAT_HEAD')) {
 							$this->_pagehead($pdf, $object, 0, $outputlangs, $outputlangsbis);
 						}
@@ -3836,7 +3836,7 @@ class pdf_octopus extends ModelePDFFactures
 					$this->_pagehead($pdf, $object, 0, $outputlangs);
 				}
 				$pdf->setPage($pageposafter + 1);
-				$pdf->setPageOrientation('', 1, 0);	// The only function to edit the bottom margin of current page to set it.
+				$pdf->setPageOrientation('', true, 0);	// The only function to edit the bottom margin of current page to set it.
 
 				$posy = $this->tab_top_newpage + 1;
 			} else {
@@ -3868,7 +3868,7 @@ class pdf_octopus extends ModelePDFFactures
 
 		$posy += 10;
 
-		$pdf->setPageOrientation('', 1, 0);	// The only function to edit the bottom margin of current page to set it.
+		$pdf->setPageOrientation('', true, 0);	// The only function to edit the bottom margin of current page to set it.
 
 		$pdf->SetTextColor(0, 0, 60);
 		$pdf->SetFont('', '', $default_font_size - 1);

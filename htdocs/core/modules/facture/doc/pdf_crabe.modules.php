@@ -304,7 +304,7 @@ class pdf_crabe extends ModelePDFFactures
 				// Create pdf instance
 				$pdf = pdf_getInstance($this->format);
 				$default_font_size = pdf_getPDFFontSize($outputlangs); // Must be after pdf_getInstance
-				$pdf->SetAutoPageBreak(1, 0);
+				$pdf->setAutoPageBreak(true, 0);
 
 				$heightforinfotot = 50 + (4 * $nbpayments); // Height reserved to output the info and total part and payment part
 				if ($heightforinfotot > 220) {

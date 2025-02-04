@@ -275,7 +275,7 @@ class pdf_standard_expensereport extends ModeleExpenseReport
 					$heightforfooter += 6;
 				}
 
-				$pdf->SetAutoPageBreak(1, 0);
+				$pdf->setAutoPageBreak(true, 0);
 
 				if (class_exists('TCPDF')) {
 					$pdf->setPrintHeader(false);
