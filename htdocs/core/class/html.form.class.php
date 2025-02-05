@@ -8502,7 +8502,7 @@ class Form
 	 * @param 	int				$forcecombo           	Force to load all values and output a standard combobox (with no beautification)
 	 * @param 	int<0,1>		$disabled             	1=Html component is disabled
 	 * @param	string			$selected_input_value 	Value of preselected input text (for use with ajax)
-	 * @param	string|array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-5,5>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}	$objectfield	'Object:Field' that contains the definition of parent (in table $fields or $extrafields). Example: 'Object:xxx' or 'Object@module:xxx' or 'Object:options_xxx' or 'Object@module:options_xxx' or,  better, the full entry array in ->fields
+	 * @param	string|array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-6,6>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}	$objectfield	'Object:Field' that contains the definition of parent (in table $fields or $extrafields). Example: 'Object:xxx' or 'Object@module:xxx' or 'Object:options_xxx' or 'Object@module:options_xxx' or,  better, the full entry array in ->fields
 	 * @return  string	    							Return HTML string
 	 * @see selectForFormsList(), select_thirdparty_list()
 	 */
@@ -9293,7 +9293,7 @@ class Form
 	 * Show a multiselect form from an array. WARNING: Use this only for short lists.
 	 *
 	 * @param 	string 		$htmlname 		Name of select
-	 * @param 	array<string,string|array{id:string,label:string,color:string,picto:string,labelhtml:string}>	$array 			Array(key=>value) or Array(key=>array('id'=>key, 'label'=>value, 'color'=> , 'picto'=> , 'labelhtml'=> ))
+	 * @param 	array<string|int,string|array{id:string,label:string,color:string,picto:string,labelhtml:string}>	$array 			Array(key=>value) or Array(key=>array('id'=>key, 'label'=>value, 'color'=> , 'picto'=> , 'labelhtml'=> ))
 	 * @param 	string[]	$selected 		Array of keys preselected
 	 * @param 	int<0,1>	$key_in_label 	1 to show key like in "[key] value"
 	 * @param 	int<0,1>	$value_as_key 	1 to use value as key
@@ -10435,7 +10435,7 @@ class Form
 	 * @param string 	$imagesize 					'mini', 'small' or '' (original)
 	 * @param int<0,1>	$addlinktofullsize 			Add link to fullsize image
 	 * @param int<0,1>	$cache 						1=Accept to use image in cache
-	 * @param string 	$forcecapture 				'', 'user' or 'environment'. Force parameter capture on HTML input file element to ask a smartphone to allow to open camera to take photo. Auto if ''.
+	 * @param ''|'user'|'environment' 	$forcecapture 	'', 'user' or 'environment'. Force parameter capture on HTML input file element to ask a smartphone to allow to open camera to take photo. Auto if ''.
 	 * @param int<0,1>	$noexternsourceoverwrite 	No overwrite image with extern source (like 'gravatar' or other module)
 	 * @return string                            	HTML code to output photo
 	 * @see getImagePublicURLOfObject()

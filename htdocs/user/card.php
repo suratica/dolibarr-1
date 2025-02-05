@@ -13,7 +13,7 @@
  * Copyright (C) 2015		Ari Elbaz (elarifr)			<github@accedinfo.com>
  * Copyright (C) 2015-2018	Charlene Benke				<charlie@patas-monkey.com>
  * Copyright (C) 2016		Raphaël Doursenaud			<rdoursenaud@gpcsolutions.fr>
- * Copyright (C) 2018-2024	Frédéric France				<frederic.france@free.fr>
+ * Copyright (C) 2018-2025  Frédéric France				<frederic.france@free.fr>
  * Copyright (C) 2018		David Beniamine				<David.Beniamine@Tetras-Libre.fr>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
@@ -70,17 +70,19 @@ if (isModEnabled('stock')) {
  * @var HookManager $hookmanager
  * @var Translate $langs
  * @var User $user
+ *
+ * @var string $dolibarr_main_authentication
  */
 
 // Load translation files required by page
 $langs->loadLangs(array('users', 'companies', 'ldap', 'admin', 'hrm', 'stocks', 'other'));
 
 $id = GETPOSTINT('id');
-$action		= GETPOST('action', 'aZ09');
+$action = GETPOST('action', 'aZ09');
 $mode = GETPOST('mode', 'alpha');
-$confirm	= GETPOST('confirm', 'alpha');
+$confirm = GETPOST('confirm', 'alpha');
 $group = GETPOSTINT("group", 3);
-$cancel		= GETPOST('cancel', 'alpha');
+$cancel = GETPOST('cancel', 'alpha');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'useracard'; // To manage different context of search
 
 if (empty($id) && $action != 'add' && $action != 'create') {
@@ -876,6 +878,7 @@ $formother = new FormOther($db);
 $formcompany = new FormCompany($db);
 $formadmin = new FormAdmin($db);
 $formfile = new FormFile($db);
+$formproduct = null;
 if (isModEnabled('stock')) {
 	$formproduct = new FormProduct($db);
 }

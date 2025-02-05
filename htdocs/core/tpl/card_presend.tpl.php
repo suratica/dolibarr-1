@@ -37,7 +37,12 @@
  * @var string $defaulttopiclang
  * @var string[] $arrayoffamiliestoexclude
  * @var string $file
+ * @var string $action
  * @var CommonObject $object
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
  */
 '
 @phan-var-force int<0,1> $diroutput
