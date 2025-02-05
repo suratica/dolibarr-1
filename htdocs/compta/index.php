@@ -9,7 +9,7 @@
  * Copyright (C) 2019      Nicolas ZABOURI      <info@inovea-conseil.com>
  * Copyright (C) 2020      Tobias Sekan         <tobias.sekan@startmail.com>
  * Copyright (C) 2020      Josep Lluís Amador   <joseplluis@lliuretic.cat>
- * Copyright (C) 2021-2024 Frédéric France		<frederic.france@free.fr>
+ * Copyright (C) 2021-2025  Frédéric France		<frederic.france@free.fr>
  * Copyright (C) 2024      Rafael San José      <rsanjose@alxarafe.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
@@ -484,6 +484,7 @@ if (isModEnabled('don') && $user->hasRight('don', 'lire')) {
 				$donationstatic->statut = $obj->status;
 				$donationstatic->status = $obj->status;
 
+				$label = '';
 				if (!empty($obj->socid)) {
 					$companystatic = new Societe($db);
 					$ret = $companystatic->fetch($obj->socid);
