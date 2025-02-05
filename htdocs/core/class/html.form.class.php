@@ -10435,7 +10435,7 @@ class Form
 	 * @param string 	$imagesize 					'mini', 'small' or '' (original)
 	 * @param int<0,1>	$addlinktofullsize 			Add link to fullsize image
 	 * @param int<0,1>	$cache 						1=Accept to use image in cache
-	 * @param string 	$forcecapture 				'', 'user' or 'environment'. Force parameter capture on HTML input file element to ask a smartphone to allow to open camera to take photo. Auto if ''.
+	 * @param ''|'user'|'environment' 	$forcecapture 	'', 'user' or 'environment'. Force parameter capture on HTML input file element to ask a smartphone to allow to open camera to take photo. Auto if ''.
 	 * @param int<0,1>	$noexternsourceoverwrite 	No overwrite image with extern source (like 'gravatar' or other module)
 	 * @return string                            	HTML code to output photo
 	 * @see getImagePublicURLOfObject()

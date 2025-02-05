@@ -681,7 +681,7 @@ while ($i < $imaxinloop) {
 		$jobstatic->status = $obj->job_status;
 
 		$userstatic->id = $obj->fk_user;
-		$userstatic->ref = $obj->fk_user;
+		$userstatic->ref = (string) $obj->fk_user;
 		$userstatic->firstname = $obj->firstname;
 		$userstatic->lastname = $obj->lastname;
 		$userstatic->email = $obj->email;
@@ -750,7 +750,7 @@ while ($i < $imaxinloop) {
 				if ($key == 'status') {
 					print $object->getLibStatut(5);
 				} elseif ($key == 'rowid') {
-					print $object->showOutputField($val, $key, $object->id, '');
+					print $object->showOutputField($val, $key, (string) $object->id, '');
 				} else {
 					print $object->showOutputField($val, $key, $object->$key, '');
 				}
