@@ -21,23 +21,20 @@
  * or see https://www.gnu.org/
  */
 
-/*
- * Code to output content when action is presend
- *
- * $trackid must be defined
- * $modelmail
- * $defaulttopic and $defaulttopiclang
- * $diroutput
- * $arrayoffamiliestoexclude=array('system', 'mycompany', 'object', 'objectamount', 'date', 'user', ...);
- * $file
- */
 /**
- * @var int<0,1> $diroutput
+ * @var string $trackid
+ * @var string $modelmail
  * @var string $defaulttopic
  * @var string $defaulttopiclang
- * @var string[] $arrayoffamiliestoexclude
+ * @var int<0,1> $diroutput
+ * @var string[] $arrayoffamiliestoexclude	Example: array('system', 'mycompany', 'object', 'objectamount', 'date', 'user', ...);
  * @var string $file
+ * @var string $action
  * @var CommonObject $object
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
  */
 '
 @phan-var-force int<0,1> $diroutput
