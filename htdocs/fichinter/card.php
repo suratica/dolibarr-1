@@ -1287,7 +1287,7 @@ if ($action == 'create') {
 				'type' => 'other',
 				'name' => 'socid',
 				'label' => $langs->trans("SelectThirdParty"),
-				'value' => $form->select_company(GETPOST('socid', 'int'), 'socid', '', '', 0, 0, array(), 0, 'minwidth200')
+				'value' => $form->select_company(GETPOSTINT('socid'), 'socid', '', '', 0, 0, array(), 0, 'minwidth200')
 			),
 			array(
 				'type' => 'checkbox',
