@@ -16,7 +16,7 @@
  * Copyright (C) 2017		Gustavo Novaro
  * Copyright (C) 2019-2025  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2023		Benjamin Falière		<benjamin.faliere@altairis.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -379,7 +379,7 @@ class Product extends CommonObject
 	public $seuil_stock_alerte = 0;
 
 	/**
-	 * @var float Ask for replenishment when $desiredstock < $stock_reel
+	 * @var float Ask for replenishment when `$desiredstock` < `$stock_reel`
 	 */
 	public $desiredstock = 0;
 
@@ -6437,7 +6437,7 @@ class Product extends CommonObject
 	 *  Move an uploaded file described into $file array into target directory $sdir.
 	 *
 	 * @param	string $sdir Target directory
-
+	 *
 	 * @param	array{name:string,tmp_name:string}	$file	Array of file info of file to upload: array('name'=>..., 'tmp_name'=>...)
 	 * @return	int											Return integer <0 if KO, >0 if OK
 	 */
@@ -7050,8 +7050,8 @@ class Product extends CommonObject
 	/**
 	 *	Return clickable link of object (with eventually picto)
 	 *
-	 *	@param	string	    $option					Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-	 *  @param	?array{string,mixed}	$arraydata	Array of data
+	 *	@param	string					$option		Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
+	 *  @param	?array<string,mixed>	$arraydata	Array of data
 	 *  @return	string								HTML Code for Kanban thumb.
 	 */
 	public function getKanbanView($option = '', $arraydata = null)

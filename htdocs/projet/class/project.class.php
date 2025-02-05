@@ -9,7 +9,7 @@
  * Copyright (C) 2022       Charlene Benke          <charlene@patas-monkey.com>
  * Copyright (C) 2023       Gauthier VERDOL         <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2024		Frédéric France         <frederic.france@free.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		William Mead			<william.mead@manchenumerique.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -176,8 +176,8 @@ class Project extends CommonObject
 	public $usage_bill_time; // Is the time spent on project must be invoiced or not
 
 	/**
-	   * @var integer		Event organization: Use Event Organization
-	   */
+	 * @var integer		Event organization: Use Event Organization
+	 */
 	public $usage_organize_event;
 
 	/**
@@ -2515,10 +2515,10 @@ class Project extends CommonObject
 	/**
 	 *	Return clickable link of object (with eventually picto)
 	 *
-	 *	@param      string	    			$option                 Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-	 *  @param		array{string,mixed}		$arraydata				Array of data
-	 *  @param		string					$size					Size of thumb (''=auto, 'large'=large, 'small'=small)
-	 *  @return		string											HTML Code for Kanban thumb.
+	 *	@param	string	    			$option		Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
+	 *  @param	?array<string,mixed>	$arraydata	Array of data
+	 *  @param	string					$size		Size of thumb (''=auto, 'large'=large, 'small'=small)
+	 *  @return	string								HTML Code for Kanban thumb.
 	 */
 	public function getKanbanView($option = '', $arraydata = null, $size = '')
 	{

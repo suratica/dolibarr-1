@@ -181,7 +181,7 @@ class MyObject extends CommonObject
 	public $fk_user_modif;
 
 	/**
-	 * @var string public $last_main_doc
+	 * @var string public
 	 */
 	public $last_main_doc;
 
@@ -908,7 +908,7 @@ class MyObject extends CommonObject
 	 *	Return a thumb for kanban views
 	 *
 	 *	@param	string	    			$option		Where point the link (0=> main card, 1,2 => shipment, 'nolink'=>No link)
-	 *  @param	?array<string,string>	$arraydata	Array of data
+	 *  @param	?array<string,mixed>	$arraydata	Array of data
 	 *  @return	string								HTML Code for Kanban thumb.
 	 */
 	public function getKanbanView($option = '', $arraydata = null)
