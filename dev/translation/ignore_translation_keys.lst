@@ -426,9 +426,6 @@ FailedtoSetToApprove
 FailedtoSetToDeny
 FeatureNotAvailableWithThisDatabaseDriver
 FieldNotFoundInObject
-FieldsEdit
-FieldsInsert
-FieldsView
 File encoding
 FileDidAlreadyExist
 FileIsNotCorrect
