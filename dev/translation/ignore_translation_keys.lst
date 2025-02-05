@@ -123,7 +123,6 @@ AmountOfTicketsByMonthHT
 AmountOfinterventions
 AmountOfinterventionsByMonthHT
 AnObjectWithThisClassNameAlreadyExists
-Anciennete
 AnnualByAccountDueDebtMode
 AnnualByAccountInputOutputMode
 Anonymous
@@ -418,8 +417,6 @@ FailedToExecutCommandJob
 FailedToGetCostPrice
 FailedToOpenFile
 FailedToReadFile
-FailedToSetPaid
-FailedToSetToCancel
 FailedToUncompressFile
 FailedToUpdatePrice
 FailedtoSetToApprove
