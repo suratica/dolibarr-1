@@ -428,7 +428,6 @@ FeatureNotAvailableWithThisDatabaseDriver
 FieldNotFoundInObject
 FieldsEdit
 FieldsInsert
-FieldsLinked
 FieldsView
 File encoding
 FileDidAlreadyExist
@@ -1097,7 +1096,6 @@ PDF/A-1b
 PDF/A-3b
 PartnershipSentByEMail
 PdfTitle
-Privileges
 ProcessingError
 PurchaseOrder
 PurchaseOrders
