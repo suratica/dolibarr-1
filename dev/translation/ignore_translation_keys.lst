@@ -418,8 +418,6 @@ FailedToExecutCommandJob
 FailedToGetCostPrice
 FailedToOpenFile
 FailedToReadFile
-FailedToSetPaid
-FailedToSetToCancel
 FailedToUncompressFile
 FailedToUpdatePrice
 FailedtoSetToApprove
