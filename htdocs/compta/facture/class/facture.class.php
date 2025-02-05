@@ -78,6 +78,11 @@ class Facture extends CommonInvoice
 	public $table_element_line = 'facturedet';
 
 	/**
+	 * @var string Name of class line
+	 */
+	public $class_element_line = 'FactureLigne';
+
+	/**
 	 * @var string Fieldname with ID of parent key if this field has a parent
 	 */
 	public $fk_element = 'fk_facture';
@@ -449,7 +454,8 @@ class Facture extends CommonInvoice
 			$this->type = self::TYPE_STANDARD;
 		}
 
-		$this->ref_client = trim($this->ref_client);
+		$this->ref_client = trim($this->ref_client); // deprecated
+		$this->ref_customer = trim($this->ref_customer);
 
 		$this->note_private = (isset($this->note_private) ? trim($this->note_private) : '');
 		$this->note = (isset($this->note) ? trim($this->note) : $this->note_private); // deprecated
@@ -862,16 +868,17 @@ class Facture extends CommonInvoice
 							1
 						);
 
+						if ($result < 0) {
+							$this->error = $newinvoiceline->error;
+							$this->errors = array_merge($this->errors, $newinvoiceline->errors);
+							$error++;
+							break;
+						}
+
 						// Defined the new fk_parent_line
 						if ($result > 0 && $newinvoiceline->product_type == 9) {
 							$fk_parent_line = $result;
 						}
-					}
-					if ($result < 0) {
-						$this->error = $newinvoiceline->error;
-						$this->errors = $newinvoiceline->errors;
-						$error++;
-						break;
 					}
 				}
 			} elseif (!$error && empty($this->fac_rec)) { 		// If this->lines is an array of invoice line arrays
@@ -2455,8 +2462,12 @@ class Facture extends CommonInvoice
 		if (isset($this->ref_ext)) {
 			$this->ref_ext = trim($this->ref_ext);
 		}
+		// deprecated
 		if (isset($this->ref_client)) {
 			$this->ref_client = trim($this->ref_client);
+		}
+		if (isset($this->ref_customer)) {
+			$this->ref_customer = trim($this->ref_customer);
 		}
 		if (isset($this->increment)) {
 			$this->increment = trim($this->increment);
@@ -2496,7 +2507,7 @@ class Facture extends CommonInvoice
 		$sql .= " ref_ext=".(isset($this->ref_ext) ? "'".$this->db->escape($this->ref_ext)."'" : "null").",";
 		$sql .= " type=".(isset($this->type) ? $this->db->escape($this->type) : "null").",";
 		$sql .= " subtype=".(isset($this->subtype) ? $this->db->escape($this->subtype) : "null").",";
-		$sql .= " ref_client=".(isset($this->ref_client) ? "'".$this->db->escape($this->ref_client)."'" : "null").",";
+		$sql .= " ref_client=".(isset($this->ref_customer) ? "'".$this->db->escape($this->ref_customer)."'" : (isset($this->ref_client) ? "'".$this->db->escape($this->ref_client)."'" : "null")).",";
 		$sql .= " increment=".(isset($this->increment) ? "'".$this->db->escape($this->increment)."'" : "null").",";
 		$sql .= " fk_soc=".(isset($this->socid) ? $this->db->escape($this->socid) : "null").",";
 		$sql .= " datec=".(strval($this->date_creation) != '' ? "'".$this->db->idate($this->date_creation)."'" : 'null').",";
@@ -2701,7 +2712,8 @@ class Facture extends CommonInvoice
 		}
 
 		if (!$error) {
-			$this->ref_client = $ref_client;
+			$this->ref_client = $ref_client; //deprecated
+			$this->ref_customer = $ref_client;
 		}
 
 		if (!$notrigger && empty($error)) {
@@ -2714,7 +2726,8 @@ class Facture extends CommonInvoice
 		}
 
 		if (!$error) {
-			$this->ref_client = $ref_client;
+			$this->ref_client = $ref_client; //deprecated
+			$this->ref_customer = $ref_client;
 
 			$this->db->commit();
 			return 1;
@@ -3857,7 +3870,7 @@ class Facture extends CommonInvoice
 			if (empty($fk_prev_id)) {
 				$fk_prev_id = 'null';
 			}
-			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '') {
+			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '' || $situation_percent == null) {
 				$situation_percent = 100;
 			}
 			if (empty($ref_ext)) {
@@ -3869,7 +3882,7 @@ class Facture extends CommonInvoice
 			$pu_ht = price2num($pu_ht);
 			$pu_ht_devise = price2num($pu_ht_devise);
 			$pu_ttc = price2num($pu_ttc);
-			$pa_ht = price2num($pa_ht);
+			$pa_ht = price2num($pa_ht); // do not convert to float here, it breaks the functioning of $pa_ht_isemptystring
 			if (!preg_match('/\((.*)\)/', (string) $txtva)) {
 				$txtva = price2num($txtva); // $txtva can have format '5.0(XXX)' or '5'
 			}
@@ -4118,7 +4131,7 @@ class Facture extends CommonInvoice
 			if (empty($special_code) || $special_code == 3) {
 				$special_code = 0;
 			}
-			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '') {
+			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '' || $situation_percent == null) {
 				$situation_percent = 100;
 			}
 			if (empty($ref_ext)) {
@@ -4129,7 +4142,7 @@ class Facture extends CommonInvoice
 			$qty			= price2num($qty);
 			$pu 			= price2num($pu);
 			$pu_ht_devise = price2num($pu_ht_devise);
-			$pa_ht = price2num($pa_ht);
+			$pa_ht = price2num($pa_ht); // do not convert to float here, it breaks the functioning of $pa_ht_isemptystring
 			if (!preg_match('/\((.*)\)/', (string) $txtva)) {
 				$txtva = price2num($txtva); // $txtva can have format '5.0(XXX)' or '5'
 			}
@@ -4745,7 +4758,7 @@ class Facture extends CommonInvoice
 		}
 		// If the internal user must only see his customers, force searching by him
 		$search_sale = 0;
-		if (!$user->hasRight('societe', 'client', 'voir')) {
+		if (empty($user->socid) && !$user->hasRight('societe', 'client', 'voir')) {
 			$search_sale = $user->id;
 		}
 		// Search on sale representative
@@ -4938,7 +4951,7 @@ class Facture extends CommonInvoice
 
 		$sql = "SELECT f.rowid, f.date_lim_reglement as datefin, f.fk_statut as status, f.total_ht";
 		$sql .= " FROM ".MAIN_DB_PREFIX."facture as f";
-		if (!$user->hasRight('societe', 'client', 'voir')) {
+		if (empty($user->socid) && !$user->hasRight('societe', 'client', 'voir')) {
 			$sql .= " JOIN ".MAIN_DB_PREFIX."societe_commerciaux as sc ON f.fk_soc = sc.fk_soc";
 			$sql .= " WHERE sc.fk_user = ".((int) $user->id);
 			$clause = " AND";
@@ -5186,7 +5199,7 @@ class Facture extends CommonInvoice
 		$sql = "SELECT count(f.rowid) as nb";
 		$sql .= " FROM ".MAIN_DB_PREFIX."facture as f";
 		$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."societe as s ON f.fk_soc = s.rowid";
-		if (!$user->hasRight('societe', 'client', 'voir')) {
+		if (empty($user->socid) && !$user->hasRight('societe', 'client', 'voir')) {
 			$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."societe_commerciaux as sc ON s.rowid = sc.fk_soc";
 			$sql .= " WHERE sc.fk_user = ".((int) $user->id);
 			$clause = "AND";
@@ -6081,6 +6094,11 @@ class FactureLigne extends CommonInvoiceLine
 	public $rang = 0;
 
 	public $fk_fournprice;
+
+	/**
+	 * Buy price without taxes
+	 * @var float|string|null
+	 */
 	public $pa_ht;
 	public $marge_tx;
 	public $marque_tx;
@@ -6248,6 +6266,7 @@ class FactureLigne extends CommonInvoiceLine
 		$error = 0;
 
 		$pa_ht_isemptystring = (empty($this->pa_ht) && $this->pa_ht == ''); // If true, we can use a default value. If this->pa_ht = '0', we must use '0'.
+		$this->pa_ht = (float) $this->pa_ht; // convert to float after check if empty value
 
 		dol_syslog(get_class($this)."::insert rang=".$this->rang, LOG_DEBUG);
 
@@ -6302,9 +6321,6 @@ class FactureLigne extends CommonInvoiceLine
 			$this->situation_percent = 100;
 		}
 
-		if (empty($this->pa_ht)) {
-			$this->pa_ht = 0;
-		}
 		if (empty($this->multicurrency_subprice)) {
 			$this->multicurrency_subprice = 0;
 		}
@@ -6488,6 +6504,7 @@ class FactureLigne extends CommonInvoiceLine
 		$error = 0;
 
 		$pa_ht_isemptystring = (empty($this->pa_ht) && $this->pa_ht == ''); // If true, we can use a default value. If this->pa_ht = '0', we must use '0'.
+		$this->pa_ht = (float) $this->pa_ht; // convert to float after check if empty value
 
 		// Clean parameters
 		$this->desc = trim($this->desc);
@@ -6532,9 +6549,6 @@ class FactureLigne extends CommonInvoiceLine
 		}
 		if (!isset($this->situation_percent) || $this->situation_percent > 100 || (string) $this->situation_percent == '') {
 			$this->situation_percent = 100;
-		}
-		if (empty($this->pa_ht)) {
-			$this->pa_ht = 0;
 		}
 
 		if (empty($this->multicurrency_subprice)) {

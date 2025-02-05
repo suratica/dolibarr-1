@@ -4847,6 +4847,15 @@ abstract class CommonObject
 		$haschild = 0;
 		foreach ($arraytoscan as $table => $element) {
 			//print $id.'-'.$table.'-'.$elementname.'<br>';
+
+			// Check if module is enabled (to avoid error if tables of module not created)
+			if (isset($element['enabled']) && !empty($element['enabled'])) {
+				$enabled = (int) dol_eval($element['enabled'], 1);
+				if (empty($enabled)) {
+					continue;
+				}
+			}
+
 			// Check if element can be deleted
 			$sql = "SELECT COUNT(*) as nb";
 			$sql .= " FROM ".$this->db->prefix().$table." as c";
@@ -6546,6 +6555,12 @@ abstract class CommonObject
 				// If we clone, we have to clean unique extrafields to prevent duplicates.
 				// This behaviour can be prevented by external code by changing $this->context['createfromclone'] value in createFrom hook
 				if (!empty($this->context['createfromclone']) && $this->context['createfromclone'] == 'createfromclone' && !empty($attributeUnique)) {
+					$new_array_options[$key] = null;
+				}
+
+				// If we create product combination, we have to clean unique extrafields to prevent duplicates.
+				// This behaviour can be prevented by external code by changing $this->context['createproductcombination'] value in hook
+				if (!empty($this->context['createproductcombination']) && $this->context['createproductcombination'] == 'createproductcombination' && !empty($attributeUnique)) {
 					$new_array_options[$key] = null;
 				}
 
@@ -8947,6 +8962,10 @@ abstract class CommonObject
 					if (($mode == 'create') && !in_array(abs($visibility), array(1, 3))) {
 						continue; // <> -1 and <> 1 and <> 3 = not visible on forms, only on list
 					} elseif (($mode == 'edit') && !in_array(abs($visibility), array(1, 3, 4))) {
+						// We need to make sure, that the values of hidden extrafields are also part of $_POST. Otherwise, they would be empty after an update of the object. See also getOptionalsFromPost
+						$ef_name = 'options_' . $key;
+						$ef_value = $this->array_options[$ef_name];
+						$out .= '<input type="hidden" name="' . $ef_name . '" id="' . $ef_name . '" value="' . $ef_value . '" />' . "\n";
 						continue; // <> -1 and <> 1 and <> 3 = not visible on forms, only on list and <> 4 = not visible at the creation
 					} elseif ($mode == 'view' && empty($visibility)) {
 						continue;
@@ -10179,7 +10198,7 @@ abstract class CommonObject
 		}
 
 		// Create lines
-		if (!empty($this->table_element_line) && !empty($this->fk_element)) {
+		if (!empty($this->table_element_line) && !empty($this->fk_element) && !empty($this->lines)) {
 			foreach ($this->lines as $line) {
 				$keyforparent = $this->fk_element;
 				$line->$keyforparent = $this->id;
