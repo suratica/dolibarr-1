@@ -53,7 +53,9 @@ $toselect		= GETPOST('toselect', 'array'); // Array of ids of elements selected 
 $contextpage	= GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'assetlist'; // To manage different context of search
 $backtopage		= GETPOST('backtopage', 'alpha'); // Go back to a dedicated page
 $optioncss		= GETPOST('optioncss', 'aZ'); // Option for the css output (always '' except when 'print')
-$mode			= GETPOST('mode', 'alpha');  // mode view (kanban or common)
+$mode       	= GETPOST('mode', 'aZ'); // The display mode ('list', 'kanban', 'hierarchy', 'calendar', 'gantt', ...)
+$groupby 		= GETPOST('groupby', 'aZ09');	// Example: $groupby = 'p.fk_opp_status' or $groupby = 'p.fk_statut'
+
 $id				= GETPOSTINT('id');
 
 // Load variable for pagination
