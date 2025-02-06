@@ -64,7 +64,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
  */
 
 // Load translation files required by the page
-$langs->loadLangs(array("admin", "other", "website", "main", "errors"));
+$langs->loadLangs(array("admin", "other", "website"));
 
 // Security check
 if (!$user->hasRight('website', 'read')) {
