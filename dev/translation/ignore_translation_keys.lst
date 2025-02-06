@@ -199,7 +199,6 @@ CloneProgression
 CloneTimes
 Close Done
 Close2
-CloseShipment
 CodeTooltipHelp
 Column
 Combination
@@ -214,7 +213,6 @@ ConfirmActionMyObject
 ConfirmActionTarget
 ConfirmCloneMyObject
 ConfirmCloneTask
-ConfirmCloseShipment
 ConfirmCreateAdherent
 ConfirmDeleteAdherent
 ConfirmDeleteIndividual
