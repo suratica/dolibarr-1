@@ -933,8 +933,9 @@ abstract class CommonDocGenerator
 			array('line_date_end_rfc', 'date_end', 'dayrfc', 'auto', null)
 		);
 		foreach ($date_specs as $date_spec) {
-			if (property_exists($line, $date_spec[1])) {
-				$resarray[$date_spec[0]] = dol_print_date($line->${$date_spec[1]}, $date_spec[2], $date_spec[3], $date_spec[4]);
+			$propertyname = $date_spec[1];
+			if (property_exists($line, $propertyname)) {
+				$resarray[$date_spec[0]] = dol_print_date($line->$propertyname, $date_spec[2], $date_spec[3], $date_spec[4]);
 			}
 		}
 
@@ -1126,9 +1127,9 @@ abstract class CommonDocGenerator
 	 * Define array with couple substitution key => substitution value
 	 *
 	 * @param   array<string,CommonObject|float|int|string>	$object	Dolibarr Object
-	 * @param   Translate	$outputlangs	Language object for output
-	 * @param   boolean|int	$recursive		Want to fetch child array or child object.
-	 * @return	array<string,mixed>			Array of substitution key->code
+	 * @param   Translate			$outputlangs	Language object for output
+	 * @param   boolean|int			$recursive		Want to fetch child array or child object.
+	 * @return	array<string,mixed>					Array of substitution key->code
 	 */
 	public function get_substitutionarray_each_var_object(&$object, $outputlangs, $recursive = 1)
 	{
