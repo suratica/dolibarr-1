@@ -1126,7 +1126,7 @@ abstract class CommonDocGenerator
 	/**
 	 * Define array with couple substitution key => substitution value
 	 *
-	 * @param   array<string,CommonObject|float|int|string>	$object	Dolibarr Object
+	 * @param   array<string,CommonObject|float|int|string>|CommonObject	$object		Dolibarr Object
 	 * @param   Translate			$outputlangs	Language object for output
 	 * @param   boolean|int			$recursive		Want to fetch child array or child object.
 	 * @return	array<string,mixed>					Array of substitution key->code
@@ -1135,7 +1135,9 @@ abstract class CommonDocGenerator
 	{
 		// phpcs:enable
 		$array_other = array();
-		if (is_array($object) && count($object)) {
+
+		if ((is_array($object) && count($object)) || is_object($object)) {
+			// Loop on each entry of array or on each property of object
 			foreach ($object as $key => $value) {
 				if (in_array($key, array('db', 'fields', 'lines', 'modelpdf', 'model_pdf'))) {		// discard some properties
 					continue;
