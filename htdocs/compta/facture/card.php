@@ -3528,7 +3528,12 @@ if ($action == 'create') {
 
 		// Overwrite some values if creation of invoice is from a predefined invoice
 		if (empty($origin) && empty($originid) && GETPOSTINT('fac_rec') > 0) {
-			$invoice_predefined->fetch(GETPOSTINT('fac_rec'));
+			//$invoice_predefined->fetch(GETPOSTINT('fac_rec'));
+			foreach ($invoice_predefined->array_options as $key => $option) {
+				if (!isset($object->array_options[$key])) {
+					$object->array_options[$key] = $invoice_predefined->array_options[$key];
+				}
+			}
 
 			$dateinvoice = $invoice_predefined->date_when; // To use next gen date by default later
 			if (empty($projectid)) {
