@@ -67,7 +67,7 @@ if (!isModEnabled('don')) {
 }
 
 
-$langs->load("donations", "main");
+$langs->load("donations");
 
 
 /*
