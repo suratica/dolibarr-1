@@ -4393,7 +4393,7 @@ if ($action == 'editsecurity') {
 	// Content Security Policy
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="centpercent">';
-	print '<tr><td>'.$langs->trans("SecurityPolicy").'</td></tr>';
+	print '<tr><td>'.$langs->trans("ContentSecurityPolicy").'</td></tr>';
 	print '<tr><td>'.$langs->trans("Value").':</span></td><td colspan=2><input style="width:90%;" class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" value="'.$forceCSP.'"></td></tr>';
 
 	print '<tr><td></td></tr>';
