@@ -127,9 +127,9 @@ function websiteGetContentPolicyDirectives()
 		// Reporting directives
 		"report-to" => array("label" => "report-to", "data-directivetype" => "reporting"),
 		// Other directives
-		"require-trusted-types-for" => array("label" => "require-trusted-types-for", "data-directivetype" => "other"),
-		"othertrusted-types" => array("label" => "othertrusted-types", "data-directivetype" => "other"),
-		"upgrade-insecure-requests" => array("label" => "upgrade-insecure-requests", "data-directivetype" => "other"),
+		"require-trusted-types-for" => array("label" => "require-trusted-types-for", "data-directivetype" => "require-trusted-types-for"),
+		"trusted-types" => array("label" => "trusted-types", "data-directivetype" => "trusted-types"),
+		"upgrade-insecure-requests" => array("label" => "upgrade-insecure-requests", "data-directivetype" => "none"),
 	);
 }
 
@@ -146,25 +146,42 @@ function websiteGetContentPolicySources()
 			"*" => array("label" => "*", "data-sourcetype" => "select"),
 			"data" => array("label" => "data", "data-sourcetype" => "data"),
 			"self" => array("label" => "self", "data-sourcetype" => "quoted"),
+			"unsafe-eval" => array("label" => "unsafe-eval", "data-sourcetype" => "quoted"),
+			"wasm-unsafe-eval" => array("label" => "wasm-unsafe-eval", "data-sourcetype" => "quoted"),
+			"unsafe-inline" => array("label" => "unsafe-inline", "data-sourcetype" => "quoted"),
+			"unsafe-hashes" => array("label" => "unsafe-hashes", "data-sourcetype" => "quoted"),
+			"inline-speculation-rules" => array("label" => "inline-speculation-rules", "data-sourcetype" => "quoted"),
+			"strict-dynamic" => array("label" => "strict-dynamic", "data-sourcetype" => "quoted"),
+			"report-sample" => array("label" => "report-sample", "data-sourcetype" => "quoted"),
+			"host-source" => array("label" => "host-source", "data-sourcetype" => "input"),
+			"scheme-source" => array("label" => "scheme-source", "data-sourcetype" => "input"),
 		),
 		// Document directives
 		"document" => array(
-			"base-uri" => array("label" => "base-uri", "data-sourcetype" => "select"),
-			"sandbox" => array("label" => "sandbox", "data-sourcetype" => "select"),
+			"none" => array("label" => "self", "data-sourcetype" => "quoted"),
+			"self" => array("label" => "self", "data-sourcetype" => "quoted"),
+			"host-source" => array("label" => "host-source", "data-sourcetype" => "input"),
+			"scheme-source" => array("label" => "scheme-source", "data-sourcetype" => "input"),
 		),
 		// Navigation directives
 		"navigation" => array(
+			"none" => array("label" => "self", "data-sourcetype" => "quoted"),
 			"self" => array("label" => "self", "data-sourcetype" => "quoted"),
+			"host-source" => array("label" => "host-source", "data-sourcetype" => "input"),
+			"scheme-source" => array("label" => "scheme-source", "data-sourcetype" => "input"),
 		),
 		// Reporting directives
 		"reporting" => array(
-			"report-to" => array("label" => "report-to", "data-sourcetype" => "select"),
+			"report-to" => array("label" => "report-to", "data-sourcetype" => "input"),
 		),
 		// Other directives
-		"other" => array(
-			"require-trusted-types-for" => array("label" => "require-trusted-types-for", "data-sourcetype" => "select"),
-			"trusted-types" => array("label" => "trusted-types", "data-sourcetype" => "select"),
-			"upgrade-insecure-requests" => array("label" => "upgrade-insecure-requests", "data-sourcetype" => "select"),
+		"require-trusted-types-for" => array(
+			"script" => array("label" => "script", "data-sourcetype" => "select"),
+		),
+		"trusted-types" => array(
+			"policyName" => array("label" => "policyName", "data-sourcetype" => "input"),
+			"none" => array("label" => "none", "data-sourcetype" => "quoted"),
+			"allow-duplicates" => array("label" => "allow-duplicates", "data-sourcetype" => "quoted"),
 		),
 	);
 }
@@ -195,27 +212,31 @@ function websiteGetContentPolicyToArray($forceCSP){
 		}
 		$sources = $securitypolicyarr;
 		$issourcedata = 0;
-		foreach ($sources as $key => $source) {
-			$source = str_replace(":", "", $source);
-			$source = str_replace("'", "", $source);
+		if (empty($sources)) {
+				$forceCSPArr[$directive] = array();
+		} else{
+			foreach ($sources as $key => $source) {
+				$source = str_replace(":", "", $source);
+				$source = str_replace("'", "", $source);
 
-			if ($source == "data") {
-				$issourcedata = 1;
-				if (empty($forceCSPArr[$directive])) {
-					$forceCSPArr[$directive] = array($source => array());
-				} else {
-					$forceCSPArr[$directive][$source] = array();
+				if ($source == "data") {
+					$issourcedata = 1;
+					if (empty($forceCSPArr[$directive])) {
+						$forceCSPArr[$directive] = array($source => array());
+					} else {
+						$forceCSPArr[$directive][$source] = array();
+					}
+					continue;
 				}
-				continue;
-			}
-			if ($issourcedata && !in_array($source, $sourceCSPArrflatten)) {
-				$forceCSPArr[$directive]["data"][] = $source;
-			} else {
-				$issourcedata = 0;
-				if (empty($forceCSPArr[$directive])) {
-					$forceCSPArr[$directive] = array($source);
+				if ($issourcedata && !in_array($source, $sourceCSPArrflatten)) {
+					$forceCSPArr[$directive]["data"][] = $source;
 				} else {
-					$forceCSPArr[$directive][] = $source;
+					$issourcedata = 0;
+					if (empty($forceCSPArr[$directive])) {
+						$forceCSPArr[$directive] = array($source);
+					} else {
+						$forceCSPArr[$directive][] = $source;
+					}
 				}
 			}
 		}

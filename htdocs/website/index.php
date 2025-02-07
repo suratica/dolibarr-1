@@ -1950,7 +1950,10 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 	$forceCSPArr = websiteGetContentPolicyToArray($forceCSP);
 	$directivesarray = websiteGetContentPolicyDirectives();
 	$sourcesarray = websiteGetContentPolicySources();
-	if (empty($sourcecsp) || empty($directivecsp)) {
+	if (empty($directivecsp)) {
+		$error++;
+	}
+	if ($error || (isset($sourcecsp) && $directivesarray[$directivecsp]["data-directivetype"] != "none")) {
 		$error++;
 	}
 	if (!$error) {
@@ -1962,8 +1965,13 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 			}
 			$forceCSPArr[$directivecsp]["data"][] = $sourcedatacsp;
 			
+		} else if($sourcetype == "input") {
+			if (empty($forceCSPArr[$directivecsp])) {
+				$forceCSPArr[$directivecsp] = array();
+			}
+			$forceCSPArr[$directivecsp] = array_merge(explode(" ", $sourcedatacsp), $forceCSPArr[$directivecsp]);
 		} else {
-			$forceCSPArr[$directivecsp][] = $sourcecsp;
+			array_unshift($forceCSPArr[$directivecsp], $sourcecsp);
 		}
 
 		foreach ($forceCSPArr as $directive => $sourcekeys) {
@@ -1979,7 +1987,7 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 					$sourcetype = $sourcesarray[$directivetype][$source]["data-sourcetype"];
 					if ($sourcetype == "quoted") {
 						$sourcestring .= " '".$source."'";
-					} else {
+					} else if ($directivetype != "none") {
 						$sourcestring .= " ".$source;
 					}
 				} 
@@ -2976,16 +2984,21 @@ if ($action == 'removecspsource' && $usercanedit) {
 	$forceCSPArr = websiteGetContentPolicyToArray($forceCSP);
 	$directivesarray = websiteGetContentPolicyDirectives();
 	$sourcesarray = websiteGetContentPolicySources();
-	if (!isset($directive) || !isset($sourcekey)) {
+	if (empty($directive)) {
+		$error++;
+	}
+	if ($error || (!isset($sourcekey) && $directivesarray[$directive]["data-directivetype"] != "none")) {
 		$error++;
 	}
 	
 	$directivetype = $directivesarray[$directive]["data-directivetype"];
-	$sourcetype = $sourcesarray[$directivetype][$sourcekey]["data-sourcetype"];
+	if (!isset($sourcekey)) {
+		$sourcetype = $sourcesarray[$directivetype][$sourcekey]["data-sourcetype"];
+	}
 
 	$securityspstring = "";
 	if (!$error && !empty($forceCSPArr)) {
-		if (!empty($forceCSPArr[$directive][$sourcekey])) {
+		if (isset($sourcekey) && !empty($forceCSPArr[$directive][$sourcekey])) {
 			if ($sourcetype == "data") {
 				$keydata = array_search($sourcedata, $forceCSPArr[$directive][$sourcekey]);
 				if ($keydata !== false) {
@@ -4406,21 +4419,25 @@ if ($action == 'editsecurity') {
 	print '<ul>';
 	foreach ($forceCSPArr as $directive => $sources) {
 		print '<li><span>'.$directive.'</span>';
-		print '<ul>';
-		foreach ($sources as $key => $source) {
-			if (is_array($source)){
-				print '<li><span>'.$key.'</span>';
-				print '<ul>';
-				foreach ($source as $keysource => $sourcedata) {
-					print '<li><span>'.$sourcedata.'</span>&nbsp;<a href="'.$_SERVER["PHP_SELF"].'?websiteid='.$websiteid.'&action=removecspsource&sourcecsp='.$directive.'_'.$key.'_'.$sourcedata.'&token='.newToken().'">'.img_delete().'</a></li>';
+		if (!empty($sources)) {
+			print '<ul>';
+			foreach ($sources as $key => $source) {
+				if (is_array($source)){
+					print '<li><span>'.$key.'</span>';
+					print '<ul>';
+					foreach ($source as $keysource => $sourcedata) {
+						print '<li><span>'.$sourcedata.'</span>&nbsp;<a href="'.$_SERVER["PHP_SELF"].'?websiteid='.$websiteid.'&action=removecspsource&sourcecsp='.$directive.'_'.$key.'_'.$sourcedata.'&token='.newToken().'">'.img_delete().'</a></li>';
+					}
+					print '</ul>';
+					print '</li>';
+				} else {
+					print '<li><span>'.$source.'</span>&nbsp;<a href="'.$_SERVER["PHP_SELF"].'?websiteid='.$websiteid.'&action=removecspsource&sourcecsp='.$directive.'_'.$key.'&token='.newToken().'">'.img_delete().'</a></li>';
 				}
-				print '</ul>';
-				print '</li>';
-			} else {
-				print '<li><span>'.$source.'</span>&nbsp;<a href="'.$_SERVER["PHP_SELF"].'?websiteid='.$websiteid.'&action=removecspsource&sourcecsp='.$directive.'_'.$key.'&token='.newToken().'">'.img_delete().'</a></li>';
-			}
+			}	
+			print '</ul>';
+		} else {
+			print '&nbsp;<a href="'.$_SERVER["PHP_SELF"].'?websiteid='.$websiteid.'&action=removecspsource&sourcecsp='.$directive.'&token='.newToken().'">'.img_delete().'</a>';
 		}
-		print '</ul>';
 		print '</li>';
 	}
 	print '</ul>';
@@ -4433,15 +4450,21 @@ if ($action == 'editsecurity') {
 				console.log("We hide all select div");
 				$(".div_WEBSITE_SECURITY_FORCECSP").hide();
 				$(".select_WEBSITE_SECURITY_FORCECSP").val(null).trigger("change");
-				console.log("We show div select with key "+key);
-				$("#div_"+key+"_WEBSITE_SECURITY_FORCECSP").show();
+				$(".div_input_data_WEBSITE_SECURITY_FORCECSP").hide();
+				$(".div_btn_class_WEBSITE_SECURITY_FORCECSP").hide();
+				if (key == "none"){
+					$(".div_btn_class_WEBSITE_SECURITY_FORCECSP").show();
+				} else {
+					console.log("We show div select with key "+key);
+					$("#div_"+key+"_WEBSITE_SECURITY_FORCECSP").show();
+				}
 			});
 
 			$(".select_WEBSITE_SECURITY_FORCECSP").on("change", function() {
 				keysource = $(this).find(":selected").data("sourcetype");
 				$("#select_source_WEBSITE_SECURITY_FORCECSP").val($(this).val());
 				console.log("We hide and show fields");
-				if (keysource == "data") {
+				if (keysource == "data" || keysource == "input") {
 					$(".div_input_data_WEBSITE_SECURITY_FORCECSP").show();
 				} else {
 				 	$("#input_data_WEBSITE_SECURITY_FORCECSP").val("");
