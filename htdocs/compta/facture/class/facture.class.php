@@ -2522,6 +2522,9 @@ class Facture extends CommonInvoice
 		if (isset($this->retained_warranty)) {
 			$this->retained_warranty = floatval($this->retained_warranty);
 		}
+		if (!isset($this->fk_user_author) && isset($this->user_author) ) {
+			$this->fk_user_author = $this->user_author;
+		}
 
 
 		// Check parameters
