@@ -2525,7 +2525,7 @@ class Societe extends CommonObject
 
 			// Position current discount
 			$sql = "UPDATE ".MAIN_DB_PREFIX."societe ";
-			$sql .= " SET remise_supplier = '".$this->db->escape($remise)."'";
+			$sql .= " SET remise_supplier = ".((float) $remise);
 			$sql .= " WHERE rowid = ".((int) $this->id);
 			$resql = $this->db->query($sql);
 			if (!$resql) {
@@ -2537,7 +2537,7 @@ class Societe extends CommonObject
 			// Writes trace in discount history
 			$sql = "INSERT INTO ".MAIN_DB_PREFIX."societe_remise_supplier";
 			$sql .= " (entity, datec, fk_soc, remise_supplier, note, fk_user_author)";
-			$sql .= " VALUES (".((int) $conf->entity).", '".$this->db->idate($now)."', ".((int) $this->id).", '".$this->db->escape($remise)."',";
+			$sql .= " VALUES (".((int) $conf->entity).", '".$this->db->idate($now)."', ".((int) $this->id).", ".((float) $remise).",";
 			$sql .= " '".$this->db->escape($note)."',";
 			$sql .= " ".((int) $user->id);
 			$sql .= ")";
@@ -2574,7 +2574,7 @@ class Societe extends CommonObject
 		global $langs;
 
 		// Clean parameters
-		$remise = price2num($remise);
+		$remise = (float) price2num($remise);
 		$desc = trim($desc);
 
 		// Check parameters
@@ -4244,7 +4244,7 @@ class Societe extends CommonObject
 	public function isACompany()
 	{
 		// Define if third party is treated as company (or not) when nature is unknown
-		$isACompany = getDolGlobalInt('MAIN_UNKNOWN_CUSTOMERS_ARE_COMPANIES');
+		$isACompany = getDolGlobalInt('MAIN_UNKNOWN_CUSTOMERS_ARE_COMPANIES', 1);	// default if not set is 1 because it was like this in all past versions
 
 		// Now try to guess using different tips
 		if (!empty($this->tva_intra)) {
@@ -4252,12 +4252,9 @@ class Societe extends CommonObject
 		} elseif (!empty($this->idprof1) || !empty($this->idprof2) || !empty($this->idprof3) || !empty($this->idprof4) || !empty($this->idprof5) || !empty($this->idprof6)) {
 			$isACompany = 1;
 		} else {
-			if (!getDolGlobalString('MAIN_CUSTOMERS_ARE_COMPANIES_EVEN_IF_SET_AS_INDIVIDUAL')) {
-				// TODO Add a field is_a_company into dictionary
-				if (preg_match('/^TE_PRIVATE/', $this->typent_code)) {
+			if (!getDolGlobalString('MAIN_CUSTOMERS_ARE_COMPANIES_EVEN_IF_SET_AS_INDIVIDUAL')) {	// never or rarely set
+				if (preg_match('/^TE_PRIVATE/', $this->typent_code)) {	// TODO Add a field is_a_company into dictionary
 					$isACompany = 0;
-				} else {
-					$isACompany = 1;
 				}
 			} else {
 				$isACompany = 1;
