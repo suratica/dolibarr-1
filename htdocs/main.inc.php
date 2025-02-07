@@ -2036,21 +2036,21 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
 			print '<link rel="stylesheet" type="text/css" href="'.DOL_URL_ROOT.$fontawesome_directory.'/css/all.min.css'.($ext ? '?'.$ext : '').'">'."\n";
 		}
 
-		if (!defined('DISABLE_CSS_DEFAULT_THEME')) {
-			print '<!-- Includes CSS for Dolibarr theme -->'."\n";
-			// Output style sheets (optioncss='print' or ''). Note: $conf->css looks like '/theme/eldy/style.css.php'
-			$themepath = dol_buildpath($conf->css, 1);
-			$themesubdir = '';
-			if (!empty($conf->modules_parts['theme'])) {	// This slow down
-				foreach ($conf->modules_parts['theme'] as $reldir) {
-					if (file_exists(dol_buildpath($reldir.$conf->css, 0))) {
-						$themepath = dol_buildpath($reldir.$conf->css, 1);
-						$themesubdir = $reldir;
-						break;
-					}
+		// Output style sheets (optioncss='print' or ''). Note: $conf->css looks like '/theme/eldy/style.css.php'
+		$themepath = dol_buildpath($conf->css, 1);
+		$themesubdir = '';
+		if (!empty($conf->modules_parts['theme'])) {	// This slow down
+			foreach ($conf->modules_parts['theme'] as $reldir) {
+				if (file_exists(dol_buildpath($reldir.$conf->css, 0))) {
+					$themepath = dol_buildpath($reldir.$conf->css, 1);
+					$themesubdir = $reldir;
+					break;
 				}
 			}
+		}
 
+		if (!defined('DISABLE_CSS_DEFAULT_THEME')) {
+			print '<!-- Includes CSS for Dolibarr theme -->'."\n";
 			print '<link rel="stylesheet" type="text/css" href="' . $themepath . $themeparam . '">' . "\n";
 		}
 
