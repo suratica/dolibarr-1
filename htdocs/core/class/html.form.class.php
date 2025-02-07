@@ -4375,6 +4375,8 @@ class Form
 
 		dol_syslog(__METHOD__, LOG_DEBUG);
 
+		$this->cache_availability = array();
+
 		$langs->load('propal');
 
 		$sql = "SELECT rowid, code, label, position";
