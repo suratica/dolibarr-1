@@ -188,22 +188,25 @@ function websiteGetContentPolicySources()
 
 /**
  * Transform a Content Security Policy to an array
- * @param	string		content security policy
+ * @param	string	$forceCSP	content security policy
  * 
- * @return 	array		Array of sources
+ * @return 	array				Array of sources
  */
 function websiteGetContentPolicyToArray($forceCSP){
 	$forceCSPArr = array();
 	$sourceCSPArr = websiteGetContentPolicySources();
 	$sourceCSPArrflatten = array();
+	// We remove a level for sources array
 	foreach ($sourceCSPArr as $key => $arr) {
 		$sourceCSPArrflatten = array_merge($sourceCSPArrflatten, array_keys($arr));
 	}
 	$securitypolicies = explode(";", $forceCSP);
+	// Loop on each security policy to create an array
 	foreach ($securitypolicies as $key => $securitypolicy) {
 		if ($securitypolicy == "") continue;
 		$securitypolicyarr = explode(" ", $securitypolicy);
 		$directive = array_shift($securitypolicyarr);
+		// Remove unwanted spaces
 		while ($directive == ""){
 			$directive = array_shift($securitypolicyarr);
 		}
@@ -215,6 +218,7 @@ function websiteGetContentPolicyToArray($forceCSP){
 		if (empty($sources)) {
 				$forceCSPArr[$directive] = array();
 		} else{
+			//Loop on each sources to add to the right directive array key
 			foreach ($sources as $key => $source) {
 				$source = str_replace(":", "", $source);
 				$source = str_replace("'", "", $source);
