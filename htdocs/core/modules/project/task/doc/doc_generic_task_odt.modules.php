@@ -606,7 +606,7 @@ class doc_generic_task_odt extends ModelePDFTask
 					}
 				}
 
-				/** var Task $object */
+				/** @var Task $object */
 
 				// Replace tags of lines for tasks
 				try {
