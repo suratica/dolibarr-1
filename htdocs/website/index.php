@@ -4343,8 +4343,9 @@ if ($action == 'editcss') {
 }
 
 if ($action == 'editsecurity') {
-	$selectarraySP = websiteGetContentPolicyDirectives();
-	$selectarraySPlevel2 = websiteGetContentPolicySources();
+	$selectarrayCSPDirectives = websiteGetContentPolicyDirectives();
+	$selectarrayCSPSources = websiteGetContentPolicySources();
+	$forceCSPArr = websiteGetContentPolicyToArray($forceCSP);
 	print '<div class="fiche">';
 	print '<br>';
 
@@ -4376,17 +4377,19 @@ if ($action == 'editsecurity') {
 	print '</table>';
 	print '</div>';
 
-	// Security Policy
+	// Content Security Policy
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="centpercent">';
 	print '<tr><td>'.$langs->trans("SecurityPolicy").'</td></tr>';
 	print '<tr><td>'.$langs->trans("Value").':</span></td><td colspan=2><input style="width:90%;" class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" value="'.$forceCSP.'"></td></tr>';
+
 	print '<tr><td></td></tr>';
+
 	print '<tr><td></td>';
-	print '<td>'.$form->selectarray("select_identifier_WEBSITE_SECURITY_FORCECSP", $selectarraySP, "select_identifier_WEBSITE_SECURITY_FORCECSP", 1, 0, 0, '', 0, 0, 0, '', 'minwidth300').'</td>';
+	print '<td>'.$form->selectarray("select_identifier_WEBSITE_SECURITY_FORCECSP", $selectarrayCSPDirectives, "select_identifier_WEBSITE_SECURITY_FORCECSP", 1, 0, 0, '', 0, 0, 0, '', 'minwidth300').'</td>';
 	print '<td>';
 	print '<input type="hidden" id="select_source_WEBSITE_SECURITY_FORCECSP" name="select_source_WEBSITE_SECURITY_FORCECSP">';
-	foreach ($selectarraySPlevel2 as $key => $values) {
+	foreach ($selectarrayCSPSources as $key => $values) {
 		print '<div class="div_WEBSITE_SECURITY_FORCECSP hidden" id="div_'.$key.'_WEBSITE_SECURITY_FORCECSP">';
 		print $form->selectarray("select_".$key."_WEBSITE_SECURITY_FORCECSP", $values, "select_".$key."_WEBSITE_SECURITY_FORCECSP", 1, 0, 0, '', 0, 0, 0, '', 'minwidth300 select_WEBSITE_SECURITY_FORCECSP');
 		print '</div>';
@@ -4398,9 +4401,7 @@ if ($action == 'editsecurity') {
 	print '</table>';
 	print '</div>';
 
-	//TODO: add comment to explain + better look 
-
-	$forceCSPArr = websiteGetContentPolicyToArray($forceCSP);
+	// Content Security Policy list of selected rules
 	print '<div class="div-table-responsive-no-min">';
 	print '<ul>';
 	foreach ($forceCSPArr as $directive => $sources) {
@@ -4424,7 +4425,7 @@ if ($action == 'editsecurity') {
 	}
 	print '</ul>';
 	print '</div>';
-	//TODO: add console.log in js 
+
 	print '<script>
 		$(document).ready(function() {
 			$("#select_identifier_WEBSITE_SECURITY_FORCECSP").on("change", function() {
@@ -4439,6 +4440,7 @@ if ($action == 'editsecurity') {
 			$(".select_WEBSITE_SECURITY_FORCECSP").on("change", function() {
 				keysource = $(this).find(":selected").data("sourcetype");
 				$("#select_source_WEBSITE_SECURITY_FORCECSP").val($(this).val());
+				console.log("We hide and show fields");
 				if (keysource == "data") {
 					$(".div_input_data_WEBSITE_SECURITY_FORCECSP").show();
 				} else {
@@ -4454,8 +4456,10 @@ if ($action == 'editsecurity') {
 
 			$("#input_data_WEBSITE_SECURITY_FORCECSP").on("change", function(){
 				if ($(this).val() != undefined) {
+					console.log("We show add button");
 					$(".div_btn_class_WEBSITE_SECURITY_FORCECSP").show();
 				} else {
+					console.log("We hide add button");
 					$(".div_btn_class_WEBSITE_SECURITY_FORCECSP").hide();
 				}
 			});
