@@ -2525,7 +2525,7 @@ class Societe extends CommonObject
 
 			// Position current discount
 			$sql = "UPDATE ".MAIN_DB_PREFIX."societe ";
-			$sql .= " SET remise_supplier = '".$this->db->escape($remise)."'";
+			$sql .= " SET remise_supplier = ".((float) $remise);
 			$sql .= " WHERE rowid = ".((int) $this->id);
 			$resql = $this->db->query($sql);
 			if (!$resql) {
@@ -2574,7 +2574,7 @@ class Societe extends CommonObject
 		global $langs;
 
 		// Clean parameters
-		$remise = price2num($remise);
+		$remise = (float) price2num($remise);
 		$desc = trim($desc);
 
 		// Check parameters
