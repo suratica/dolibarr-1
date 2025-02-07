@@ -398,7 +398,8 @@ class doc_generic_asset_odt extends ModelePDFAsset
 					}
 				}
 				// Replace tags of lines
-				/*$foundtagforlines = 1;
+				/*
+				$foundtagforlines = 1;
 				try {
 					$listlines = $odfHandler->setSegment('lines');
 				} catch (OdfExceptionSegmentNotFound $e) {
