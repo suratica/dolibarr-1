@@ -4337,8 +4337,8 @@ class Form
 				$i++;
 			}
 
-			$parameters = array('context' => 'paymentterm', 'cache_conditions_paiements' => $this->cache_conditions_paiements);
-			$reshook = $hookmanager->executeHooks('loadDictionaryCache', $parameters); // Note that $action and $object may have been modified by hook
+			$parameters = array('context' => 'paymentterm');
+			$reshook = $hookmanager->executeHooks('loadDictionaryCache', $parameters, $this); // Note that $action and $object may have been modified by hook
 			if (empty($reshook)) {
 				if (is_array($hookmanager->resArray) && count($hookmanager->resArray)) {
 					$this->cache_conditions_paiements = array_merge($this->cache_conditions_paiements, $hookmanager->resArray);
@@ -4580,8 +4580,8 @@ class Form
 				$i++;
 			}
 
-			$parameters = array('context' => 'paymenttype', 'cache_types_paiements' => $this->cache_types_paiements);
-			$reshook = $hookmanager->executeHooks('loadDictionaryCache', $parameters); // Note that $action and $object may have been modified by hook
+			$parameters = array('context' => 'paymenttype');
+			$reshook = $hookmanager->executeHooks('loadDictionaryCache', $parameters, $this); // Note that $action and $object may have been modified by hook
 			if (empty($reshook)) {
 				if (is_array($hookmanager->resArray) && count($hookmanager->resArray)) {
 					$this->cache_types_paiements = array_merge($this->cache_types_paiements, $hookmanager->resArray);
