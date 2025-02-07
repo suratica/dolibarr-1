@@ -1965,7 +1965,7 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 			}
 			$forceCSPArr[$directivecsp]["data"][] = $sourcedatacsp;
 			
-		} else if($sourcetype == "input") {
+		} elseif($sourcetype == "input") {
 			if (empty($forceCSPArr[$directivecsp])) {
 				$forceCSPArr[$directivecsp] = array();
 			}
@@ -1987,7 +1987,7 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 					$sourcetype = $sourcesarray[$directivetype][$source]["data-sourcetype"];
 					if ($sourcetype == "quoted") {
 						$sourcestring .= " '".$source."'";
-					} else if ($directivetype != "none") {
+					} elseif ($directivetype != "none") {
 						$sourcestring .= " ".$source;
 					}
 				} 
