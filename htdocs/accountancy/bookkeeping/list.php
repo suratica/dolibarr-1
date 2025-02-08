@@ -1,12 +1,12 @@
 <?php
-/* Copyright (C) 2013-2016  Olivier Geffroy         <jeff@jeffinfo.com>
- * Copyright (C) 2013-2016  Florian Henry           <florian.henry@open-concept.pro>
- * Copyright (C) 2013-2024  Alexandre Spangaro      <alexandre@inoveasya.solutions>
- * Copyright (C) 2022  		Lionel Vessiller        <lvessiller@open-dsi.fr>
- * Copyright (C) 2016-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
- * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
- * Copyright (C) 2022  		Progiseize         		<a.bisotti@progiseiea-conseil.com>
- * Copyright (C) 2024       MDW                     <mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2013-2016	Olivier Geffroy				<jeff@jeffinfo.com>
+ * Copyright (C) 2013-2016	Florian Henry				<florian.henry@open-concept.pro>
+ * Copyright (C) 2013-2025	Alexandre Spangaro			<alexandre@inovea-conseil.com>
+ * Copyright (C) 2022		Lionel Vessiller			<lvessiller@open-dsi.fr>
+ * Copyright (C) 2016-2017	Laurent Destailleur			<eldy@users.sourceforge.net>
+ * Copyright (C) 2018-2024	Frédéric France				<frederic.france@free.fr>
+ * Copyright (C) 2022		Progiseize					<a.bisotti@progiseiea-conseil.com>
+ * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formaccounting.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
+require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfiscalyear.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formother.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/accounting.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
@@ -170,6 +171,7 @@ if ($sortfield == "") {
 $object = new BookKeeping($db);
 $hookmanager->initHooks(array('bookkeepinglist'));
 
+$formfiscalyear = new FormFiscalYear($db);
 $formaccounting = new FormAccounting($db);
 $form = new Form($db);
 
@@ -873,7 +875,21 @@ if ($massactionbutton && $contextpage != 'poslist') {
 	$selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
 }
 
+if (getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT')) {
+	$fiscalYear = getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT');
+	$useempty = 0;
+} else {
+	$fiscalYear = 0;
+	$useempty = 1;
+}
+
 $moreforfilter = '';
+$moreforfilter = '<div class="divsearchfield">';
+$moreforfilter .= $langs->trans('FiscalYear').': ';
+$moreforfilter .= '<div class="nowrap inline-block">';
+$moreforfilter .= $formfiscalyear->selectFiscalYear($fiscalYear, 'searchfiscalyear', $useempty, 0, 1);
+$moreforfilter .= '</div>';
+$moreforfilter .= '</div>';
 $moreforfilter .= '<div class="divsearchfield">';
 $moreforfilter .= $langs->trans('AccountingCategory').': ';
 $moreforfilter .= '<div class="nowrap inline-block">';
