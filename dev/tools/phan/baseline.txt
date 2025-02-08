@@ -9,12 +9,12 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 2340+ occurrences
+    // PhanTypeMismatchArgument : 2330+ occurrences
     // PhanUndeclaredProperty : 530+ occurrences
     // PhanTypeMismatchArgumentNullable : 430+ occurrences
     // PhanUndeclaredGlobalVariable : 190+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 170+ occurrences
-    // PhanPossiblyUndeclaredGlobalVariable : 160+ occurrences
+    // PhanPossiblyUndeclaredGlobalVariable : 150+ occurrences
     // PhanTypeMismatchProperty : 130+ occurrences
     // PhanTypeMismatchArgumentProbablyReal : 120+ occurrences
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
@@ -23,9 +23,9 @@ return [
     // PhanTypeInvalidDimOffset : 25+ occurrences
     // PhanPluginUndeclaredVariableIsset : 20+ occurrences
     // PhanTypeMismatchDimFetch : 20+ occurrences
-    // PhanTypeMismatchArgumentNullableInternal : 15+ occurrences
     // PhanUndeclaredConstant : 15+ occurrences
     // PhanTypeComparisonFromArray : 10+ occurrences
+    // PhanTypeMismatchArgumentNullableInternal : 10+ occurrences
     // PhanUndeclaredMethod : 10+ occurrences
     // PhanPluginSuspiciousParamPosition : 7 occurrences
     // PhanPluginUnknownObjectMethodCall : 7 occurrences
@@ -588,14 +588,7 @@ return [
         'htdocs/multicurrency/class/api_multicurrencies.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgument'],
         'htdocs/multicurrency/class/multicurrency.class.php' => ['PhanTypeExpectedObjectPropAccess', 'PhanTypeMismatchArgument'],
         'htdocs/multicurrency/multicurrency_rate.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/opcachepreload.php' => ['PhanEmptyForeach'],
-        'htdocs/opensurvey/card.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument'],
-        'htdocs/opensurvey/class/opensurveysondage.class.php' => ['PhanTypeMismatchProperty'],
-        'htdocs/opensurvey/exportcsv.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/opensurvey/list.php' => ['PhanPluginUndeclaredVariableIsset'],
-        'htdocs/opensurvey/results.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullableInternal', 'PhanUndeclaredGlobalVariable'],
-        'htdocs/opensurvey/wizard/choix_date.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument'],
-        'htdocs/opensurvey/wizard/create_survey.php' => ['PhanPossiblyUndeclaredGlobalVariable'],
+        'htdocs/opensurvey/results.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/partnership/class/api_partnerships.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgument'],
         'htdocs/partnership/class/partnership.class.php' => ['PhanUndeclaredProperty'],
         'htdocs/partnership/core/modules/partnership/mod_partnership_advanced.php' => ['PhanUndeclaredProperty'],
