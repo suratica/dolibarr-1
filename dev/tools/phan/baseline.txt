@@ -9,7 +9,7 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 2330+ occurrences
+    // PhanTypeMismatchArgument : 2300+ occurrences
     // PhanUndeclaredProperty : 530+ occurrences
     // PhanTypeMismatchArgumentNullable : 430+ occurrences
     // PhanUndeclaredGlobalVariable : 190+ occurrences
@@ -32,8 +32,8 @@ return [
     // PhanPluginDuplicateExpressionBinaryOp : 6 occurrences
     // PhanPluginEmptyStatementIf : 6 occurrences
     // PhanTypeArraySuspiciousNull : 6 occurrences
-    // PhanEmptyForeach : 5 occurrences
     // PhanParamTooMany : 5 occurrences
+    // PhanEmptyForeach : 4 occurrences
     // PhanPluginBothLiteralsBinaryOp : 4 occurrences
     // PhanPluginDuplicateArrayKey : 4 occurrences
     // PhanEmptyFQSENInClasslike : 3 occurrences
@@ -314,7 +314,6 @@ return [
         'htdocs/core/actions_extrafields.inc.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/actions_lineupdown.inc.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/actions_massactions.inc.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanUndeclaredProperty'],
-        'htdocs/core/actions_printing.inc.php' => ['PhanUndeclaredProperty'],
         'htdocs/core/actions_sendmails.inc.php' => ['PhanPluginUndeclaredVariableIsset', 'PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument', 'PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/core/ajax/ajaxdirpreview.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
         'htdocs/core/ajax/ajaxdirtree.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchProperty', 'PhanUndeclaredGlobalVariable'],
@@ -586,16 +585,14 @@ return [
         'htdocs/mrp/mo_movements.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/mrp/tpl/linkedobjectblock.tpl.php' => ['PhanUndeclaredProperty'],
         'htdocs/multicurrency/class/api_multicurrencies.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgument'],
-        'htdocs/multicurrency/class/multicurrency.class.php' => ['PhanTypeExpectedObjectPropAccess', 'PhanTypeMismatchArgument'],
+        'htdocs/multicurrency/class/multicurrency.class.php' => ['PhanTypeExpectedObjectPropAccess'],
         'htdocs/multicurrency/multicurrency_rate.php' => ['PhanTypeMismatchArgument'],
         'htdocs/opensurvey/results.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/partnership/class/api_partnerships.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgument'],
         'htdocs/partnership/class/partnership.class.php' => ['PhanUndeclaredProperty'],
         'htdocs/partnership/core/modules/partnership/mod_partnership_advanced.php' => ['PhanUndeclaredProperty'],
         'htdocs/partnership/partnership_card.php' => ['PhanUndeclaredGlobalVariable'],
-        'htdocs/partnership/partnership_contact.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/partnership/partnership_list.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/printing/index.php' => ['PhanUndeclaredProperty'],
+        'htdocs/partnership/partnership_list.php' => ['PhanUndeclaredProperty'],
         'htdocs/product/admin/price_rules.php' => ['PhanTypeMismatchArgument'],
         'htdocs/product/admin/product.php' => ['PhanPluginEmptyStatementIf', 'PhanTypeMismatchArgumentProbablyReal'],
         'htdocs/product/admin/product_tools.php' => ['PhanTypeMismatchArgument'],
@@ -655,7 +652,7 @@ return [
         'htdocs/product/stock/stocktransfer/stocktransfer_card.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredGlobalVariable'],
         'htdocs/product/stock/stocktransfer/stocktransfer_contact.php' => ['PhanTypeMismatchArgument'],
         'htdocs/product/stock/stocktransfer/stocktransfer_list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/product/stock/tpl/stockcorrection.tpl.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
+        'htdocs/product/stock/tpl/stockcorrection.tpl.php' => ['PhanUndeclaredProperty'],
         'htdocs/product/stock/tpl/stocktransfer.tpl.php' => ['PhanUndeclaredProperty'],
         'htdocs/projet/activity/perday.php' => ['PhanTypeMismatchArgument'],
         'htdocs/projet/activity/permonth.php' => ['PhanTypeMismatchArgument'],
