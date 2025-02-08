@@ -9,7 +9,7 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 2300+ occurrences
+    // PhanTypeMismatchArgument : 2230+ occurrences
     // PhanUndeclaredProperty : 530+ occurrences
     // PhanTypeMismatchArgumentNullable : 430+ occurrences
     // PhanUndeclaredGlobalVariable : 190+ occurrences
@@ -593,16 +593,8 @@ return [
         'htdocs/partnership/core/modules/partnership/mod_partnership_advanced.php' => ['PhanUndeclaredProperty'],
         'htdocs/partnership/partnership_card.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/partnership/partnership_list.php' => ['PhanUndeclaredProperty'],
-        'htdocs/product/admin/price_rules.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/product/admin/product.php' => ['PhanPluginEmptyStatementIf', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/product/admin/product_tools.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/product/ajax/products.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/product/canvas/product/actions_card_product.class.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/product/canvas/service/actions_card_service.class.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/product/card.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanUndeclaredGlobalVariable'],
         'htdocs/product/class/api_products.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
         'htdocs/product/class/html.formproduct.class.php' => ['PhanUndeclaredProperty'],
-        'htdocs/product/class/product.class.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
         'htdocs/product/class/productcustomerprice.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/product/class/productfournisseurprice.class.php' => ['PhanUndeclaredMethod', 'PhanUndeclaredProperty'],
         'htdocs/product/composition/card.php' => ['PhanTypeMismatchArgument'],
