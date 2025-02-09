@@ -22279,6 +22279,11 @@ parameters:
 			path: ../../../htdocs/opensurvey/card.php
 
 		-
+			message: '#^PHPDoc type .* is not covariant with PHPDoc type array<CommonObject\|stdClass> of overridden property CommonObject::\$lines\.$#'
+			count: 1
+			path: ../../../htdocs/opensurvey/class/opensurveysondage.class.php
+
+		-
 			message: '#^If condition is always false\.$#'
 			identifier: if.alwaysFalse
 			count: 1
