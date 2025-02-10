@@ -2974,7 +2974,7 @@ if ($action == 'generatesitemaps' && $usercanedit) {
 
 if ($action == 'removecspsource' && $usercanedit) {
 	$db->begin();
-	
+
 	$sourcetype = "";
 	$sourcecsp = explode("_", GETPOST("sourcecsp"));
 	$directive = $sourcecsp[0];
@@ -3046,7 +3046,7 @@ if ($action == 'removecspsource' && $usercanedit) {
 		$db->rollback();
 		setEventMessages($langs->trans("ErrorRemovingSecurityPolicy"), null, 'errors');
 	}
-	
+
 	header("Location: ".$_SERVER["PHP_SELF"].'?websiteid='.$websiteid."&action=editsecurity");
 	exit();
 }
