@@ -47,6 +47,7 @@ insert into llx_const (name, value, type, note, visible, entity) values ('SYSLOG
 -- Hidden but specific to one entity
 insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_UPLOAD_DOC','2048','chaine','Max size for file upload (0 means no upload allowed)',0,__ENTITY__);
 
+<<<<<<< HEAD
 insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_ENABLE_OVERWRITE_TRANSLATION','1','chaine','Enable translation overwrite',0,__ENTITY__);
 insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_ENABLE_DEFAULT_VALUES','1','chaine','Enable default value overwrite',0,__ENTITY__);
 insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_MONNAIE','EUR','chaine','Currency',0,__ENTITY__);
@@ -54,6 +55,11 @@ insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_M
 insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_MAIL_SMTP_SERVER','','chaine','Host or ip address for SMTP server',0,__ENTITY__);
 insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_MAIL_SMTP_PORT','','chaine','Port for SMTP server',0,__ENTITY__);
 insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_MAIL_EMAIL_FROM','robot@domain.com','chaine','email emitter for Dolibarr automatic emails',0,__ENTITY__);
+=======
+insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_MAIL_SMTP_SERVER','','chaine','Host or ip address for SMTP server',0,1);
+insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_MAIL_SMTP_PORT','','chaine','Port for SMTP server',0,1);
+insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_MAIL_EMAIL_FROM','robot@domain.tld','chaine','email emitter for Dolibarr automatic emails',0,1);
+>>>>>>> branch 'develop' of git@github.com:Dolibarr/dolibarr.git
 
 --
 -- IHM
@@ -89,8 +95,8 @@ insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_D
 --
 -- Mail Mailing
 --
---insert into llx_const (name, value, type, note, visible) values ('MAIN_FIX_FOR_BUGGED_MTA','1','chaine','Set constant to fix email ending from PHP with some linux like system',1);
-insert into llx_const (name, value, type, note, visible, entity) values ('MAILING_EMAIL_FROM','no-reply@mydomain.com','chaine','EMail emmetteur pour les envois d emailings',0, __ENTITY__);
+--insert into llx_const (name, value, type, note, visible, entity) values ('MAIN_FIX_FOR_BUGGED_MTA','1','chaine','Set constant to fix email ending from PHP with some linux like system',1,__ENTITY__);
+insert into llx_const (name, value, type, note, visible, entity) values ('MAILING_EMAIL_FROM','no-reply@mydomain.tld','chaine','EMail emmetteur pour les envois d emailings',0, __ENTITY__);
 
 
 --
