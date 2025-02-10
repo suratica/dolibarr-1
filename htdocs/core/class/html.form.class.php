@@ -2564,7 +2564,7 @@ class Form
 	 *
 	 * @param string 	$action 			Value for $action
 	 * @param string 	$htmlname			Field name in form
-	 * @param int 		$show_empty 		0=list without the empty value, 1=add empty value
+	 * @param int<0,1>	$show_empty 		0=list without the empty value, 1=add empty value
 	 * @param int[] 	$exclude 			Array list of users id to exclude
 	 * @param int<0,1>	$disabled 			If select list must be disabled
 	 * @param int[]|string 	$include 		Array list of users id to include or 'hierarchy' to have only supervised users
@@ -2573,7 +2573,7 @@ class Form
 	 * @param int 		$maxlength 			Maximum length of string into list (0=no limit)
 	 * @param int<-1,1>	$showstatus 		0=show user status only if status is disabled, 1=always show user status into label, -1=never show user status
 	 * @param string 	$morefilter 		Add more filters into sql request
-	 * @param int 		$showproperties 	Show properties of each attendees
+	 * @param int<0,1>	$showproperties 	Show properties of each attendees
 	 * @param array<int,array{transparency:bool|int<0,1>}> $listofresourceid 	Array with properties of each resource
 	 * @return    string                    HTML select string
 	 */
@@ -2662,14 +2662,14 @@ class Form
 	 *  @param		int|string	$filtertype				Filter on product type (''=nofilter, 0=product, 1=service)
 	 *  @param		int			$limit					Limit on number of returned lines
 	 *  @param		int			$price_level			Level of price to show
-	 *  @param		int			$status					Sell status: -1=No filter on sell status, 0=Products not on sell, 1=Products on sell
-	 *  @param		int			$finished				2=all, 1=finished, 0=raw material
+	 *  @param		int<-1,1>	$status					Sell status: -1=No filter on sell status, 0=Products not on sell, 1=Products on sell
+	 *  @param		int<0,2>	$finished				2=all, 1=finished, 0=raw material
 	 *  @param		string		$selected_input_value	Value of preselected input text (for use with ajax)
-	 *  @param		int			$hidelabel				Hide label (0=no, 1=yes, 2=show search icon (before) and placeholder, 3 search icon after)
+	 *  @param		int<0,3>	$hidelabel				Hide label (0=no, 1=yes, 2=show search icon (before) and placeholder, 3 search icon after)
 	 *  @param		array<string,string|string[]>	$ajaxoptions			Options for ajax_autocompleter
 	 *  @param      int			$socid					Thirdparty Id (to get also price dedicated to this customer)
-	 *  @param		string|int<0,1>	$showempty			'' to not show empty line. Translation key to show an empty line. '1' show empty line with no text.
-	 * 	@param		int			$forcecombo				Force to use combo box.
+	 *  @param		string|int<0,1>	$showempty				'' to not show empty line. Translation key to show an empty line. '1' show empty line with no text.
+	 * 	@param		int<0,1>	$forcecombo				Force to use combo box.
 	 *  @param      string      $morecss                Add more css on select
 	 *  @param      int<0,1>	$hidepriceinlabel       1=Hide prices in label
 	 *  @param      string      $warehouseStatus        Warehouse status filter to count the quantity in stock. Following comma separated filter options can be used
