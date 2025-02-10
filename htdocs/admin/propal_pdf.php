@@ -102,7 +102,6 @@ if ($action == "update") {
 
 // Terms of sale
 if ($action == 'removetermsofsale') {
-
 	$filename = getDolGlobalString('MAIN_INFO_PROPAL_TERMSOFSALE');
 	$file = $conf->propal->dir_output.'/'.$filename;
 
@@ -111,7 +110,6 @@ if ($action == 'removetermsofsale') {
 	}
 	dolibarr_del_const($db, 'MAIN_INFO_PROPAL_TERMSOFSALE', $conf->entity);
 }
-	
 
 /*
  * View
