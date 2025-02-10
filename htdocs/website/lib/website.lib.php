@@ -94,7 +94,7 @@ function websiteconfigPrepareHead($object)
 /**
  * Prepare array of directives for Website
  *
- * @return 	array<array{string:array{string:string}}>					Array of directives
+ * @return 	array<string,array<string,string>>					Array of directives
  */
 function websiteGetContentPolicyDirectives()
 {
@@ -136,7 +136,7 @@ function websiteGetContentPolicyDirectives()
 /**
  * Prepare array of sources for Website
  *
- * @return 	array<array{string:array{string:array{string:string}}}>					Array of sources
+ * @return 	array<string,array<string,array<string,string>>>					Array of sources
  */
 function websiteGetContentPolicySources()
 {
@@ -190,7 +190,7 @@ function websiteGetContentPolicySources()
  * Transform a Content Security Policy to an array
  * @param	string	$forceCSP	content security policy
  *
- * @return 	array<array{string:array{"data":array{int:string},int:string}}>				Array of sources
+ * @return 	array<non-falsy-string, array<'data'|int<0, max>, list<string>|string>>				Array of sources
  */
 function websiteGetContentPolicyToArray($forceCSP)
 {

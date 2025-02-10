@@ -2976,15 +2976,15 @@ if ($action == 'removecspsource' && $usercanedit) {
 	$db->begin();
 	$sourcecsp = explode("_", GETPOST("sourcecsp"));
 	$directive = $sourcecsp[0];
-	$sourcekey = $sourcecsp[1];
-	$sourcedata = $sourcecsp[2];
+	$sourcekey = !empty($sourcecsp[1]) ? $sourcecsp[1] : null;
+	$sourcedata = !empty($sourcecsp[2]) ? $sourcecsp[2] : null;
 	$forceCSPArr = websiteGetContentPolicyToArray($forceCSP);
 	$directivesarray = websiteGetContentPolicyDirectives();
 	$sourcesarray = websiteGetContentPolicySources();
 	if (empty($directive)) {
 		$error++;
 	}
-	if ($error || (!is_null($sourcekey) && $directivesarray[$directive]["data-directivetype"] != "none")) {
+	if ($error || (!isset($sourcekey) && $directivesarray[$directive]["data-directivetype"] != "none")) {
 		$error++;
 	}
 
