@@ -2989,7 +2989,7 @@ if ($action == 'removecspsource' && $usercanedit) {
 	}
 
 	$directivetype = $directivesarray[$directive]["data-directivetype"];
-	if (!isset($sourcekey)) {
+	if (isset($sourcekey)) {
 		$sourcetype = $sourcesarray[$directivetype][$sourcekey]["data-sourcetype"];
 	}
 
