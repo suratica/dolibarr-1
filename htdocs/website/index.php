@@ -1964,8 +1964,7 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 				$forceCSPArr[$directivecsp]["data"] = array();
 			}
 			$forceCSPArr[$directivecsp]["data"][] = $sourcedatacsp;
-			
-		} elseif($sourcetype == "input") {
+		} elseif ($sourcetype == "input") {
 			if (empty($forceCSPArr[$directivecsp])) {
 				$forceCSPArr[$directivecsp] = array();
 			}
@@ -1975,7 +1974,7 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 		}
 
 		foreach ($forceCSPArr as $directive => $sourcekeys) {
-			if ($securityspstring != ""){
+			if ($securityspstring != "") {
 				$securityspstring .= "; ";
 			}
 			$sourcestring = "";
@@ -1990,7 +1989,7 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 					} elseif ($directivetype != "none") {
 						$sourcestring .= " ".$source;
 					}
-				} 
+				}
 			}
 			$securityspstring .= $directive . $sourcestring;
 		}
@@ -2990,7 +2989,7 @@ if ($action == 'removecspsource' && $usercanedit) {
 	if ($error || (!isset($sourcekey) && $directivesarray[$directive]["data-directivetype"] != "none")) {
 		$error++;
 	}
-	
+
 	$directivetype = $directivesarray[$directive]["data-directivetype"];
 	if (!isset($sourcekey)) {
 		$sourcetype = $sourcesarray[$directivetype][$sourcekey]["data-sourcetype"];
@@ -3007,7 +3006,7 @@ if ($action == 'removecspsource' && $usercanedit) {
 				if (count($forceCSPArr[$directive][$sourcekey]) == 0) {
 					unset($forceCSPArr[$directive][$sourcekey]);
 				}
-			}else {
+			} else {
 				unset($forceCSPArr[$directive][$sourcekey]);
 			}
 		}
@@ -3015,7 +3014,7 @@ if ($action == 'removecspsource' && $usercanedit) {
 			unset($forceCSPArr[$directive]);
 		}
 		foreach ($forceCSPArr as $directive => $sourcekeys) {
-			if ($securityspstring != ""){
+			if ($securityspstring != "") {
 				$securityspstring .= "; ";
 			}
 			$sourcestring = "";
@@ -3030,7 +3029,7 @@ if ($action == 'removecspsource' && $usercanedit) {
 					} else {
 						$sourcestring .= " ".$source;
 					}
-				} 
+				}
 			}
 			$securityspstring .= $directive . $sourcestring;
 		}
@@ -4422,7 +4421,7 @@ if ($action == 'editsecurity') {
 		if (!empty($sources)) {
 			print '<ul>';
 			foreach ($sources as $key => $source) {
-				if (is_array($source)){
+				if (is_array($source)) {
 					print '<li><span>'.$key.'</span>';
 					print '<ul>';
 					foreach ($source as $keysource => $sourcedata) {
@@ -4433,7 +4432,7 @@ if ($action == 'editsecurity') {
 				} else {
 					print '<li><span>'.$source.'</span>&nbsp;<a href="'.$_SERVER["PHP_SELF"].'?websiteid='.$websiteid.'&action=removecspsource&sourcecsp='.$directive.'_'.$key.'&token='.newToken().'">'.img_delete().'</a></li>';
 				}
-			}	
+			}
 			print '</ul>';
 		} else {
 			print '&nbsp;<a href="'.$_SERVER["PHP_SELF"].'?websiteid='.$websiteid.'&action=removecspsource&sourcecsp='.$directive.'&token='.newToken().'">'.img_delete().'</a>';
