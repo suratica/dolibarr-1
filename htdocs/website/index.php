@@ -2984,7 +2984,7 @@ if ($action == 'removecspsource' && $usercanedit) {
 	if (empty($directive)) {
 		$error++;
 	}
-	if ($error || (!isset($sourcekey) && $directivesarray[$directive]["data-directivetype"] != "none")) {
+	if ($error || (!is_null($sourcekey) && $directivesarray[$directive]["data-directivetype"] != "none")) {
 		$error++;
 	}
 

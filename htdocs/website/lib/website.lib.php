@@ -28,7 +28,7 @@
  * Prepare array of tabs for Website
  *
  * @param	Website		$object		Website
- * @return 	array					Array of tabs
+ * @return 	array<array{0:string,1:string,2:string}>	Array of tabs
  */
 function websiteconfigPrepareHead($object)
 {
@@ -94,7 +94,7 @@ function websiteconfigPrepareHead($object)
 /**
  * Prepare array of directives for Website
  *
- * @return 	array					Array of directives
+ * @return 	array<array{string:array{string:string}}>					Array of directives
  */
 function websiteGetContentPolicyDirectives()
 {
@@ -136,7 +136,7 @@ function websiteGetContentPolicyDirectives()
 /**
  * Prepare array of sources for Website
  *
- * @return 	array					Array of sources
+ * @return 	array<array{string:array{string:array{string:string}}}>					Array of sources
  */
 function websiteGetContentPolicySources()
 {
@@ -190,7 +190,7 @@ function websiteGetContentPolicySources()
  * Transform a Content Security Policy to an array
  * @param	string	$forceCSP	content security policy
  *
- * @return 	array				Array of sources
+ * @return 	array<array{string:array{"data":array{int:string},int:string}}>				Array of sources
  */
 function websiteGetContentPolicyToArray($forceCSP)
 {
@@ -220,7 +220,7 @@ function websiteGetContentPolicyToArray($forceCSP)
 				$forceCSPArr[$directive] = array();
 		} else {
 			//Loop on each sources to add to the right directive array key
-			foreach ($sources as $key => $source) {
+			foreach ($sources as $key2 => $source) {
 				$source = str_replace(":", "", $source);
 				$source = str_replace("'", "", $source);
 
