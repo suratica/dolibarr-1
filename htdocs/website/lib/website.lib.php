@@ -197,13 +197,13 @@ function websiteGetContentPolicyToArray($forceCSP)
 	$forceCSPArr = array();
 	$sourceCSPArr = websiteGetContentPolicySources();
 	$sourceCSPArrflatten = array();
-	
+
 	// We remove a level for sources array
 	foreach ($sourceCSPArr as $key => $arr) {
 		$sourceCSPArrflatten = array_merge($sourceCSPArrflatten, array_keys($arr));
 	}
 	$securitypolicies = explode(";", $forceCSP);
-	
+
 	// Loop on each security policy to create an array
 	foreach ($securitypolicies as $key => $securitypolicy) {
 		if ($securitypolicy == "") {
