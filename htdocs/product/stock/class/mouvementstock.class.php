@@ -208,15 +208,15 @@ class MouvementStock extends CommonObject
 	 *	@param		int				$price				Unit price HT of product, used to calculate average weighted price (AWP or PMP in french). If 0, average weighted price is not changed.
 	 *	@param		string			$label				Label of stock movement
 	 *	@param		string			$inventorycode		Inventory code
-	 *	@param		integer|string	$datem				Force date of movement
-	 *	@param		integer|string	$eatby				eat-by date. Will be used if lot does not exists yet and will be created.
-	 *	@param		integer|string	$sellby				sell-by date. Will be used if lot does not exists yet and will be created.
+	 *	@param		int|string		$datem				Force date of movement
+	 *	@param		int|string		$eatby				eat-by date. Will be used if lot does not exists yet and will be created.
+	 *	@param		int|string		$sellby				sell-by date. Will be used if lot does not exists yet and will be created.
 	 *	@param		string			$batch				batch number
 	 *	@param		boolean			$skip_batch			If set to true, stock movement is done without impacting batch record
 	 * 	@param		int				$id_product_batch	Id product_batch (when skip_batch is false and we already know which record of product_batch to use)
-	 *  @param		int				$disablestockchangeforsubproduct	Disable stock change for sub-products of kit (useful only if product is a subproduct)
-	 *  @param		int				$donotcleanemptylines				Do not clean lines in stock table with qty=0 (because we want to have this done by the caller)
-	 * 	@param		boolean			$force_update_batch	Allows to add batch stock movement even if $product doesn't use batch anymore
+	 *  @param		int<0,1>		$disablestockchangeforsubproduct	Disable stock change for sub-products of kit (useful only if product is a subproduct)
+	 *  @param		int<0,1>		$donotcleanemptylines				Do not clean lines in stock table with qty=0 (because we want to have this done by the caller)
+	 * 	@param		bool			$force_update_batch	Allows to add batch stock movement even if $product doesn't use batch anymore
 	 *	@return		int									Return integer <0 if KO, 0 if fk_product is null or product id does not exists, >0 if OK
 	 */
 	public function _create($user, $fk_product, $entrepot_id, $qty, $type, $price = 0, $label = '', $inventorycode = '', $datem = '', $eatby = '', $sellby = '', $batch = '', $skip_batch = false, $id_product_batch = 0, $disablestockchangeforsubproduct = 0, $donotcleanemptylines = 0, $force_update_batch = false)
