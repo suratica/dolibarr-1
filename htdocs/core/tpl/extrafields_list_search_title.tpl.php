@@ -14,7 +14,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 /**
@@ -71,7 +70,7 @@ if (!empty($extrafieldsobjectkey)) {	// $extrafieldsobject is the $object->table
 				$tooltip = empty($extrafields->attributes[$extrafieldsobjectkey]['help'][$key]) ? '' : $extrafields->attributes[$extrafieldsobjectkey]['help'][$key];
 
 				// Show cell
-				print getTitleFieldOfList($extrafields->attributes[$extrafieldsobjectkey]['label'][$key], 0, $_SERVER["PHP_SELF"], $sortonfield, "", $param, 'data-titlekey="'.$key.'"', $sortfield, $sortorder, $cssclassview.' ', $disablesortlink, $tooltip)."\n";
+				print getTitleFieldOfList($extrafields->attributes[$extrafieldsobjectkey]['label'][$key], 0, $_SERVER["PHP_SELF"], $sortonfield, "", $param, 'data-titlekey="'.$key.'"', $sortfield, $sortorder, $cssclasstd.' ', $disablesortlink, $tooltip)."\n";
 				if (isset($totalarray) && isset($totalarray['nbfield'])) {
 					$totalarray['nbfield']++;
 				}
