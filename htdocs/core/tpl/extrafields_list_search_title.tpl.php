@@ -1,5 +1,4 @@
 <?php
-
 /* Copyright (C) 2025		MDW	<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2025		Frédéric France			<frederic.france@free.fr>
  *
@@ -22,6 +21,11 @@
  * @var Conf $conf
  * @var CommonObject $object
  * @var ?Translate $langs
+ *
+ * @var ?string $extrafieldsobjectkey
+ * @var ?int   $disablesortlink
+ * @var string $sortfield
+ * @var string $sortorder
  */
 
 // Protection to avoid direct call of template
@@ -53,7 +57,8 @@ if (!empty($extrafieldsobjectkey)) {	// $extrafieldsobject is the $object->table
 					continue;
 				}
 
-				$cssclass = $extrafields->getAlignFlag($key, $extrafieldsobjectkey);
+				$cssclasstd = $extrafields->getCSSClass($key, $extrafieldsobjectkey, 'csslist');
+
 				$sortonfield = $extrafieldsobjectprefix.$key;
 				if (!empty($extrafields->attributes[$extrafieldsobjectkey]['computed'][$key])) {
 					$sortonfield = '';
@@ -66,7 +71,7 @@ if (!empty($extrafieldsobjectkey)) {	// $extrafieldsobject is the $object->table
 				$tooltip = empty($extrafields->attributes[$extrafieldsobjectkey]['help'][$key]) ? '' : $extrafields->attributes[$extrafieldsobjectkey]['help'][$key];
 
 				// Show cell
-				print getTitleFieldOfList($extrafields->attributes[$extrafieldsobjectkey]['label'][$key], 0, $_SERVER["PHP_SELF"], $sortonfield, "", $param, 'data-titlekey="'.$key.'"', $sortfield, $sortorder, $cssclass.' ', $disablesortlink, $tooltip)."\n";
+				print getTitleFieldOfList($extrafields->attributes[$extrafieldsobjectkey]['label'][$key], 0, $_SERVER["PHP_SELF"], $sortonfield, "", $param, 'data-titlekey="'.$key.'"', $sortfield, $sortorder, $cssclassview.' ', $disablesortlink, $tooltip)."\n";
 				if (isset($totalarray) && isset($totalarray['nbfield'])) {
 					$totalarray['nbfield']++;
 				}
