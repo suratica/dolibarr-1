@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2019 Laurent Destailleur          <eldy@users.sourceforge.net>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -31,6 +31,14 @@ require_once DOL_DOCUMENT_ROOT.'/mrp/class/mo.class.php';
 require_once DOL_DOCUMENT_ROOT.'/mrp/lib/mrp_mo.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/mrp/lib/mrp.lib.php';
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array('admin', 'errors', 'mrp', 'other'));
 
@@ -50,12 +58,15 @@ $type = 'mrp';
 /*
  * Actions
  */
+$error = 0;
 
 include DOL_DOCUMENT_ROOT.'/core/actions_setmoduleoptions.inc.php';
 
 if ($action == 'updateMask') {
 	$maskconstmrp = GETPOST('maskconstMo', 'aZ09');
 	$maskmrp = GETPOST('maskMo', 'alpha');
+
+	$res = 0;
 
 	if ($maskconstmrp && preg_match('/_MASK$/', $maskconstmrp)) {
 		$res = dolibarr_set_const($db, $maskconstmrp, $maskmrp, 'chaine', 0, '', $conf->entity);
@@ -92,7 +103,7 @@ if ($action == 'updateMask') {
 		require_once $file;
 
 		$module = new $classname($db);
-		'@phan-var-force CommonDocGenerator $module';
+		'@phan-var-force ModelePDFMo $module';
 
 		if ($module->write_file($mo, $langs) > 0) {
 			header("Location: ".DOL_URL_ROOT."/document.php?modulepart=mrp&file=SPECIMEN.pdf");
@@ -211,6 +222,8 @@ foreach ($dirmodels as $reldir) {
 
 					$module = new $file($db);
 
+					'@phan-var-force ModeleNumRefMos $module';
+
 					// Show modules according to features level
 					if ($module->version == 'development' && getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2) {
 						continue;
@@ -249,13 +262,15 @@ foreach ($dirmodels as $reldir) {
 
 						$mrp = new Mo($db);
 						$mrp->initAsSpecimen();
+						$product = new Product($db);
+						$product->initAsSpecimen();
 
 						// Info
 						$htmltooltip = '';
 						$htmltooltip .= ''.$langs->trans("Version").': <b>'.$module->getVersion().'</b><br>';
 						$mrp->type = 0;
-						$nextval = $module->getNextValue($mysoc, $mrp);
-						if ("$nextval" != $langs->trans("NotAvailable")) {  // Keep " on nextval
+						$nextval = $module->getNextValue($product, $mrp);
+						if ((string) $nextval != $langs->trans("NotAvailable")) {
 							$htmltooltip .= ''.$langs->trans("NextValue").': ';
 							if ($nextval) {
 								if (preg_match('/^Error/', $nextval) || $nextval == 'NotConfigured') {
@@ -268,7 +283,7 @@ foreach ($dirmodels as $reldir) {
 						}
 
 						print '<td class="center">';
-						print $form->textwithpicto('', $htmltooltip, 1, 0);
+						print $form->textwithpicto('', $htmltooltip, 1, 'info');
 						print '</td>';
 
 						print "</tr>\n";
@@ -346,6 +361,8 @@ foreach ($dirmodels as $reldir) {
 							require_once $dir.'/'.$file;
 							$module = new $classname($db);
 
+							'@phan-var-force ModelePDFMo $module';
+
 							$modulequalified = 1;
 							if ($module->version == 'development' && getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2) {
 								$modulequalified = 0;
@@ -359,7 +376,7 @@ foreach ($dirmodels as $reldir) {
 								print(empty($module->name) ? $name : $module->name);
 								print "</td><td>\n";
 								if (method_exists($module, 'info')) {
-									print $module->info($langs);
+									print $module->info($langs);  // @phan-suppress-current-line PhanUndeclaredMethod
 								} else {
 									print $module->description;
 								}
@@ -401,7 +418,7 @@ foreach ($dirmodels as $reldir) {
 
 
 								print '<td class="center">';
-								print $form->textwithpicto('', $htmltooltip, 1, 0);
+								print $form->textwithpicto('', $htmltooltip, 1, 'info');
 								print '</td>';
 
 								// Preview
@@ -409,7 +426,7 @@ foreach ($dirmodels as $reldir) {
 								if ($module->type == 'pdf') {
 									print '<a href="'.$_SERVER["PHP_SELF"].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'pdf').'</a>';
 								} else {
-									print img_object($langs->trans("PreviewNotAvailable"), 'generic');
+									print img_object($langs->transnoentitiesnoconv("PreviewNotAvailable"), 'generic');
 								}
 								print '</td>';
 
@@ -434,7 +451,7 @@ print load_fiche_titre($langs->trans("OtherOptions"), '', '');
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
 print '<td>'.$langs->trans("Parameter").'</td>';
-print '<td class="center" width="60">'.$langs->trans("Value").'</td>';
+print '<td class="center" width="60"></td>';
 print "<td>&nbsp;</td>\n";
 print "</tr>\n";
 
