@@ -1762,7 +1762,7 @@ class Commande extends CommonOrder
 					}
 
 					$this->db->commit();
-					return $line->id;
+					return $this->line->id;
 				} else {
 					$this->db->rollback();
 					return -1;
