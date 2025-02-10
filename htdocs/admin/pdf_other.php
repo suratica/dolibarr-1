@@ -209,7 +209,7 @@ print '<form enctype="multipart/form-data" method="post" action="'.$_SERVER["PHP
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="update">';
 
-if (isModEnabled('propal')) {
+/*if (isModEnabled('propal')) {
 	print load_fiche_titre($langs->trans("Proposal"), '', 'proposal');
 
 	print '<div class="div-table-responsive-no-min">';
@@ -227,7 +227,6 @@ if (isModEnabled('propal')) {
 		print $form->selectarray("MAIN_PDF_PROPAL_USE_ELECTRONIC_SIGNING", $arrval, $conf->global->MAIN_PDF_PROPAL_USE_ELECTRONIC_SIGNING);
 	}
 	print '</td></tr>';
-	*/
 
 	print '<tr class="oddeven"><td>';
 	print $form->textwithpicto($langs->trans("MAIN_PDF_ADD_TERMSOFSALE_PROPAL"), $langs->trans("PdfAddTermOfSaleHelp"));
@@ -253,7 +252,7 @@ if (isModEnabled('propal')) {
 
 	print '</table>';
 	print '</div>';
-}
+}*/
 
 if (isModEnabled('order')) {
 	$langs->load("orders");
