@@ -189,7 +189,7 @@ function websiteGetContentPolicySources()
 /**
  * Transform a Content Security Policy to an array
  *
- * @param	string		$forceCSP		Content security policy tring
+ * @param	string		$forceCSP		Content security policy string
  * @return 	array<string,array<string|int,array<string|int,string>|string>>				Array of sources
  */
 function websiteGetContentPolicyToArray($forceCSP)
