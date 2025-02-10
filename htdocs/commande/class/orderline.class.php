@@ -481,7 +481,7 @@ class OrderLine extends CommonOrderLine
 
 			if (!$error) {
 				$this->db->commit();
-				return 1;
+				return $this->id;
 			}
 
 			foreach ($this->errors as $errmsg) {
