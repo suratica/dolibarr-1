@@ -81,6 +81,7 @@ class Form
 	public $cache_types_paiements = array();
 	public $cache_conditions_paiements = array();
 	public $cache_transport_mode = array();
+	/** @var array<int,array{code:string,label:string,position:int}> */
 	public $cache_availability = array();
 	public $cache_demand_reason = array();
 	public $cache_types_fees = array();
@@ -3734,7 +3735,7 @@ class Form
 	 * @param int 		$socid 				Id of supplier thirdparty (0 = no filter)
 	 * @param string 	$selected 			Product price preselected (must be 'id' in product_fournisseur_price or 'idprod_IDPROD')
 	 * @param string 	$htmlname 			Name of HTML select
-	 * @param string 	$filtertype 		Filter on product type (''=nofilter, 0=product, 1=service)
+	 * @param ''|int<0,1> 	$filtertype 		Filter on product type (''=nofilter, 0=product, 1=service)
 	 * @param string 	$filtre 			Generic filter. Data must not come from user input.
 	 * @param string 	$filterkey 			Filter of produdts
 	 * @param int 		$statut 			-1=Return all products, 0=Products not on buy, 1=Products on buy
@@ -4392,9 +4393,9 @@ class Form
 
 				// Si traduction existe, on l'utilise, sinon on prend le libelle par default
 				$label = ($langs->trans("AvailabilityType" . $obj->code) != "AvailabilityType" . $obj->code ? $langs->trans("AvailabilityType" . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
-				$this->cache_availability[$obj->rowid]['code'] = $obj->code;
-				$this->cache_availability[$obj->rowid]['label'] = $label;
-				$this->cache_availability[$obj->rowid]['position'] = $obj->position;
+				$this->cache_availability[$obj->rowid]['code'] = (string) $obj->code;
+				$this->cache_availability[$obj->rowid]['label'] = (string) $label;
+				$this->cache_availability[$obj->rowid]['position'] = (int) $obj->position;
 				$i++;
 			}
 
@@ -4410,11 +4411,11 @@ class Form
 	/**
 	 * Return the list of type of delay available.
 	 *
-	 * @param 	string 		$selected Id du type de delais pre-selectionne
-	 * @param 	string 		$htmlname Nom de la zone select
-	 * @param 	string 		$filtertype To add a filter
-	 * @param 	int 		$addempty Add empty entry
-	 * @param 	string 		$morecss More CSS
+	 * @param 	''|int			$selected	Id du type de delais pre-selectionne
+	 * @param 	string			$htmlname	Nom de la zone select
+	 * @param 	string|int<0,1> $filtertype To add a filter
+	 * @param 	int<0,1> 		$addempty	Add empty entry
+	 * @param 	string			$morecss	More CSS
 	 * @return  void
 	 */
 	public function selectAvailabilityDelay($selected = '', $htmlname = 'availid', $filtertype = '', $addempty = 0, $morecss = '')
