@@ -204,7 +204,7 @@ class Form
 	 * @param string		$text 		Text of label (not used in this function)
 	 * @param string		$htmlname 	Name of select field
 	 * @param string|int	$value 		Value to show/edit
-	 * @param CommonObject 	$object 	Object (that we want to show)
+	 * @param CommonObject|ActionsCardProduct|ActionsCardService 	$object 	Object (that we want to show)
 	 * @param bool|int<0,1> $perm 		Permission to allow button to edit parameter
 	 * @param string		$typeofdata Type of data ('string' by default, 'checkbox', 'email', 'phone', 'amount:99', 'numeric:99',
 	 *                                  'text' or 'textarea:rows:cols%', 'safehtmlstring', 'restricthtml',
