@@ -1959,6 +1959,7 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 	if (!$error) {
 		$directivetype = $directivesarray[$directivecsp]["data-directivetype"];
 		$sourcetype = $sourcesarray[$directivetype][$sourcecsp]["data-sourcetype"];
+		$securityspstring = "";
 		if ($sourcetype == "data") {
 			if (empty($forceCSPArr[$directivecsp]["data"])) {
 				$forceCSPArr[$directivecsp]["data"] = array();
@@ -1972,7 +1973,6 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 		} else {
 			array_unshift($forceCSPArr[$directivecsp], $sourcecsp);
 		}
-
 		foreach ($forceCSPArr as $directive => $sourcekeys) {
 			if ($securityspstring != "") {
 				$securityspstring .= "; ";
