@@ -1976,6 +1976,9 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 			if (empty($forceCSPArr[$directivecsp])) {
 				$forceCSPArr[$directivecsp] = array();
 			}
+			if (!isset($sourcecsp)) {
+				$sourcecsp = "";
+			}
 			array_unshift($forceCSPArr[$directivecsp], $sourcecsp);
 		}
 		foreach ($forceCSPArr as $directive => $sourcekeys) {
