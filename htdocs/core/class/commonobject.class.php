@@ -5387,7 +5387,7 @@ abstract class CommonObject
 
 				// Define output language and label
 				if (getDolGlobalInt('MAIN_MULTILANGS')) {
-					if (property_exists($this, 'socid') && !is_object($this->thirdparty)) {
+					if (property_exists($this, 'socid') && !empty($this->socid) && !is_object($this->thirdparty)) {
 						dol_print_error(null, 'Error: Method printObjectLine was called on an object and object->fetch_thirdparty was not done before');
 						return;
 					}
