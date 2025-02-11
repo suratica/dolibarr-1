@@ -1973,6 +1973,9 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 			}
 			$forceCSPArr[$directivecsp] = array_merge(explode(" ", $sourcedatacsp), $forceCSPArr[$directivecsp]);
 		} else {
+			if (empty($forceCSPArr[$directivecsp])) {
+				$forceCSPArr[$directivecsp] = array();
+			}
 			array_unshift($forceCSPArr[$directivecsp], $sourcecsp);
 		}
 		foreach ($forceCSPArr as $directive => $sourcekeys) {
@@ -1986,12 +1989,10 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 				} else {
 					$directivetype = $directivesarray[$directive]["data-directivetype"];
 					$sourcetype = $sourcesarray[$directivetype][$source]["data-sourcetype"];
-					if (isset($sourcetype)) {
-						if ($sourcetype == "quoted") {
-							$sourcestring .= " '".$source."'";
-						} elseif ($directivetype != "none") {
-							$sourcestring .= " ".$source;
-						}
+					if (isset($sourcetype) && $sourcetype == "quoted") {
+						$sourcestring .= " '".$source."'";
+					} elseif ($directivetype != "none") {
+						$sourcestring .= " ".$source;
 					}
 				}
 			}
