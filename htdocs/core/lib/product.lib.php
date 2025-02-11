@@ -6,7 +6,7 @@
  * Copyright (C) 2015-2016	Marcos García			<marcosgdf@gmail.com>
  * Copyright (C) 2023	   	Gauthier VERDOL			<gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2024	   	Jean-Rémi TAPONIER		<jean-remi@netlogic.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		Mélina Joum				<melina.joum@altairis.fr>
  * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
  *
@@ -572,7 +572,7 @@ function show_stats_for_company($product, $socid)
 		print '<tr><td>';
 		print '<a href="'.DOL_URL_ROOT.'/product/stats/facturerec.php?id='.$product->id.'">'.img_object('', 'bill', 'class="pictofixedwidth"').$langs->trans("RecurringInvoiceTemplate").'</a>';
 		print '</td><td class="right">';
-		print $product->stats_facture['customers'];
+		print $product->stats_facturerec['customers'];
 		print '</td><td class="right">';
 		print $product->stats_facturerec['nb'];
 		print '</td><td class="right">';
@@ -599,6 +599,27 @@ function show_stats_for_company($product, $socid)
 		print '</td>';
 		print '</tr>';
 	}
+	// Supplier template invoices
+	/* TODO
+	if (isModEnabled("invoice") && $user->hasRight('fournisseur', 'facture', 'lire')) {
+		$nblines++;
+		$ret = $product->load_stats_facture_fournisseurrec($socid);
+		if ($ret < 0) {
+			dol_print_error($db);
+		}
+		$langs->load("bills");
+		print '<tr><td>';
+		print '<a href="'.DOL_URL_ROOT.'/product/stats/facture_facturerec.php?id='.$product->id.'">'.img_object('', 'bill', 'class="pictofixedwidth"').$langs->trans("RecurringInvoiceTemplate").'</a>';
+		print '</td><td class="right">';
+		print $product->stats_facturefournrec['customers'];
+		print '</td><td class="right">';
+		print $product->stats_facturefournrec['nb'];
+		print '</td><td class="right">';
+		print $product->stats_facturefournrec['qty'];
+		print '</td>';
+		print '</tr>';
+	}
+	*/
 
 	// Shipments
 	if (isModEnabled('shipping') && $user->hasRight('shipping', 'lire')) {
@@ -858,15 +879,15 @@ function show_stats_for_batch($batch, $socid)
  *	Return translation label of a unit key.
  *  Function kept for backward compatibility.
  *
- *  @param	string  	$unitscale			Scale of unit: '0', '-3', '6', ...
+ *  @param	?int	  	$unitscale			Scale of unit: '0', '-3', '6', ...
  *	@param  string		$measuring_style    Style of unit: weight, volume,...
  *	@param	int			$unitid             ID of unit (rowid in llx_c_units table)
- *  @param	int			$use_short_label	1=Use short label ('g' instead of 'gram'). Short labels are not translated.
- *  @param	Translate	$outputlangs		Language object
+ *  @param	int<0,1>	$use_short_label	1=Use short label ('g' instead of 'gram'). Short labels are not translated.
+ *  @param	?Translate	$outputlangs		Language object
  *	@return	string	   			         	Unit string
  * 	@see	measuringUnitString() formproduct->selectMeasuringUnits()
  */
-function measuring_units_string($unitscale = '', $measuring_style = '', $unitid = 0, $use_short_label = 0, $outputlangs = null)
+function measuring_units_string($unitscale = null, $measuring_style = '', $unitid = 0, $use_short_label = 0, $outputlangs = null)
 {
 	return measuringUnitString($unitid, $measuring_style, $unitscale, $use_short_label, $outputlangs);
 }
@@ -876,13 +897,13 @@ function measuring_units_string($unitscale = '', $measuring_style = '', $unitid 
  *
  *	@param	int			$unitid             ID of unit (rowid in llx_c_units table)
  *	@param  string		$measuring_style    Style of unit: 'weight', 'volume', ..., '' = 'net_measure' for option PRODUCT_ADD_NET_MEASURE
- *  @param	string  	$unitscale			Scale of unit: '0', '-3', '6', ...
- *  @param	int			$use_short_label	1=Use very short label ('g' instead of 'gram'), not translated. 2=Use translated short label.
- *  @param	Translate	$outputlangs		Language object
+ *  @param	?int	  	$unitscale			Scale of unit: '0', '-3', '6', ...
+ *  @param	int<0,2>	$use_short_label	1=Use very short label ('g' instead of 'gram'), not translated. 2=Use translated short label.
+ *  @param	?Translate	$outputlangs		Language object
  *	@return	string|-1	   			        Unit string if OK, -1 if KO
  * 	@see	formproduct->selectMeasuringUnits()
  */
-function measuringUnitString($unitid, $measuring_style = '', $unitscale = '', $use_short_label = 0, $outputlangs = null)
+function measuringUnitString($unitid, $measuring_style = '', $unitscale = null, $use_short_label = 0, $outputlangs = null)
 {
 	global $langs, $db;
 	global $measuring_unit_cache;

@@ -509,14 +509,15 @@ function dolWebsiteSaveContent($content)
 /**
  * Make a redirect to another container.
  *
- * @param 	string	$containerref		Ref of container to redirect to (Example: 'mypage' or 'mypage.php').
- * @param 	string	$containeraliasalt	Ref of alternative aliases to redirect to.
- * @param 	int		$containerid		Id of container.
- * @param	int<0,1>	$permanent			0=Use temporary redirect 302, 1=Use permanent redirect 301
- * @param 	array<string,mixed>	$parameters			Array of parameters to append to the URL.
+ * @param 	string		$containerref			Ref of container to redirect to (Example: 'mypage' or 'mypage.php').
+ * @param 	string		$containeraliasalt		Ref of alternative aliases to redirect to.
+ * @param 	int			$containerid			Id of container.
+ * @param	int<0,1>	$permanent				0=Use temporary redirect 302 (default), 1=Use permanent redirect 301
+ * @param 	array<string,mixed>	$parameters		Array of parameters to append to the URL.
+ * @param	int<0,1>	$parampropagation		0=Do not propagate query parameter in URL when doing the redirect, 1=Keep parameters (default)
  * @return  void
  */
-function redirectToContainer($containerref, $containeraliasalt = '', $containerid = 0, $permanent = 0, $parameters = array())
+function redirectToContainer($containerref, $containeraliasalt = '', $containerid = 0, $permanent = 0, $parameters = array(), $parampropagation = 1)
 {
 	global $db, $website;
 	'@phan-var-force Website $website';
@@ -572,7 +573,9 @@ function redirectToContainer($containerref, $containeraliasalt = '', $containeri
 		}
 	} else { // When page called from virtual host server
 		$newurl = '/'.$containerref.'.php';
-		$newurl .= (empty($_SERVER["QUERY_STRING"]) ? '' : '?'.$_SERVER["QUERY_STRING"]);
+		if ($parampropagation) {
+			$newurl .= (empty($_SERVER["QUERY_STRING"]) ? '' : '?'.$_SERVER["QUERY_STRING"]);
+		}
 	}
 
 	if ($newurl) {
@@ -599,9 +602,10 @@ function redirectToContainer($containerref, $containeraliasalt = '', $containeri
  * @param 	string	$containerref		Path to file to include (must be a page from website root. Example: 'mypage.php' means 'mywebsite/mypage.php')
  * @param 	int		$once				If set to 1, we use include_once.
  * @param	int		$cachedelay			A cache delay in seconds.
+ * @param	string	$cachekey			Add a key into the name of the cache so the includeContainer can use different cache content for the same page.
  * @return  void
  */
-function includeContainer($containerref, $once = 0, $cachedelay = 0)
+function includeContainer($containerref, $once = 0, $cachedelay = 0, $cachekey = '')
 {
 	global $conf, $db, $hookmanager, $langs, $mysoc, $user, $website, $websitepage, $weblangs; // Very important. Required to have var available when running included containers.
 	global $includehtmlcontentopened;
@@ -618,7 +622,7 @@ function includeContainer($containerref, $once = 0, $cachedelay = 0)
 	$fullpathcache = '';
 	// If we ask to use the cache delay
 	if ($cachedelay > 0 && !getDolGlobalString("WEBSITE_DISABLE_CACHE_OF_CONTAINERS")) {
-		$fullpathcache = DOL_DATA_ROOT.($conf->entity > 1 ? '/'.$conf->entity : '').'/website/temp/'.$websitekey.'-'.$websitepage->id.'-'.$containerref.'.cache';
+		$fullpathcache = DOL_DATA_ROOT.($conf->entity > 1 ? '/'.$conf->entity : '').'/website/temp/'.$websitekey.'-'.$websitepage->id.'-'.$containerref.($cachekey ? '-'.$cachekey: '').'.cache';
 	}
 
 	if (empty($includehtmlcontentopened)) {
@@ -634,7 +638,7 @@ function includeContainer($containerref, $once = 0, $cachedelay = 0)
 
 	// We don't print info messages for pages of type library or service
 	if (!empty($websitepage->type_container) && !in_array($websitepage->type_container, array('library', 'service'))) {
-		print "\n".'<!-- include '.$websitekey.'/'.$containerref.(is_object($websitepage) ? ' parent id='.$websitepage->id : '').' level='.$includehtmlcontentopened.' -->'."\n";
+		print "\n".'<!-- include '.$websitekey.'/'.$containerref.($cachekey ? ' '.$cachekey: '').(is_object($websitepage) ? ' parent id='.$websitepage->id : '').' level='.$includehtmlcontentopened.' -->'."\n";
 	}
 
 	$tmpoutput = '';
@@ -775,13 +779,13 @@ function getStructuredData($type, $data = array())
 
 			$pageurl = $websitepage->pageurl;
 			$title = $websitepage->title;
-			$image = $websitepage->image;
+			$image = getImageFromHtmlContent($websitepage->content);
 			$companyname = $mysoc->name;
 			$description = $websitepage->description;
 
 			$pageurl = str_replace('__WEBSITE_KEY__', $website->ref, $pageurl);
 			$title = str_replace('__WEBSITE_KEY__', $website->ref, $title);
-			$image = '/medias'.(preg_match('/^\//', $image) ? '' : '/').str_replace('__WEBSITE_KEY__', $website->ref, $image);
+			$imagepath = '/medias'.(preg_match('/^\//', $image) ? '' : '/').str_replace('__WEBSITE_KEY__', $website->ref, $image);
 			$companyname = str_replace('__WEBSITE_KEY__', $website->ref, $companyname);
 			$description = str_replace('__WEBSITE_KEY__', $website->ref, $description);
 
@@ -794,10 +798,14 @@ function getStructuredData($type, $data = array())
 				    "@type": "WebPage",
 				    "@id": "'.dol_escape_json($pageurl).'"
 				  },
-				  "headline": "'.dol_escape_json($title).'",
+				  "headline": "'.dol_escape_json($title).'",';
+			if ($image) {
+				$ret .= '
 				  "image": [
-				    "'.dol_escape_json($image).'"
-				   ],
+				    "'.dol_escape_json($imagepath).'"
+				   ],';
+			}
+			$ret .= '
 				  "dateCreated": "'.dol_print_date($websitepage->date_creation, 'dayhourrfc').'",
 				  "datePublished": "'.dol_print_date($websitepage->date_creation, 'dayhourrfc').'",
 				  "dateModified": "'.dol_print_date($websitepage->date_modification, 'dayhourrfc').'",
@@ -810,7 +818,7 @@ function getStructuredData($type, $data = array())
 				     "name": "'.dol_escape_json($companyname).'",
 				     "logo": {
 				        "@type": "ImageObject",
-				        "url": "/wrapper.php?modulepart=mycompany&file=logos%2F'.urlencode($mysoc->logo).'"
+				        "url": "/wrapper.php?modulepart=mycompany&file='.urlencode('logos/'.$mysoc->logo).'"
 				     }
 				   },'."\n";
 			if ($websitepage->keywords) {
@@ -1072,10 +1080,11 @@ function getNbOfImagePublicURLOfObject($object)
  * @param	Object	$object			Object
  * @param	int		$no				Numero of image (if there is several images. 1st one by default)
  * @param   string  $extName        Extension to differentiate thumb file name ('', '_small', '_mini')
+ * @param	int		$cover			1=Sort with cover then position, -1=Filter on cover last then position, 0=Exclude cover and filter on position first
  * @return  string					HTML img content or '' if no image found
  * @see getNbOfImagePublicURLOfObject(), getPublicFilesOfObject(), getImageFromHtmlContent()
  */
-function getImagePublicURLOfObject($object, $no = 1, $extName = '')
+function getImagePublicURLOfObject($object, $no = 1, $extName = '', $cover = 1)
 {
 	global $db;
 
@@ -1090,7 +1099,12 @@ function getImagePublicURLOfObject($object, $no = 1, $extName = '')
 	$sql .= " WHERE entity IN (".getEntity($object->element).")";
 	$sql .= " AND src_object_type = '".$db->escape($object->element)."' AND src_object_id = ".((int) $object->id);	// Filter on object
 	$sql .= " AND ".$db->regexpsql('filename', $regexforimg, 1);
-	$sql .= $db->order("cover,position,rowid", "ASC,ASC,ASC");
+	$sql .= ($cover ? "" : " AND cover <> 1");
+	if ($cover == 1) {
+		$sql .= $db->order("cover,position,rowid", "ASC,ASC,ASC");
+	} else {
+		$sql .= $db->order("cover,position,rowid", "DESC,ASC,ASC");
+	}
 
 	$resql = $db->query($sql);
 	if ($resql) {

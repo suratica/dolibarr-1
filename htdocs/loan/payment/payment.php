@@ -2,6 +2,7 @@
 /* Copyright (C) 2014-2024	Alexandre Spangaro			<alexandre@inovea-conseil.com>
  * Copyright (C) 2015-2025  Frédéric France				<frederic.france@free.fr>
  * Copyright (C) 2020		Maxime DEMAREST				<maxime@indelog.fr>
+ * Copyright (C) 2025		MDW							<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -203,7 +204,7 @@ if ($action == 'add_payment' && $permissiontoadd) {
 							$ls->lines[$k - 1]->fk_bank = $payment->fk_bank;
 							$ls->lines[$k - 1]->fk_payment_loan = $payment->id;
 						}
-						$ls->lines[$k - 1]->amount_capital = $v['mens'] - $v['interet'];
+						$ls->lines[$k - 1]->amount_capital = ((float) price2num($v['mens'])) - $v['interet'];
 						$ls->lines[$k - 1]->amount_interest = $v['interet'];
 						$ls->lines[$k - 1]->tms = dol_now();
 						$ls->lines[$k - 1]->fk_user_modif = $user->id;
@@ -254,6 +255,7 @@ llxHeader('', $title, $help_url, '', 0, 0, '', '', '', 'bodyforlist mod-loan pag
 // Form to create loan's payment
 if ($action == 'create') {
 	$total = $loan->capital;
+	$sumpaid = 0;
 
 	print load_fiche_titre($langs->trans("DoPayment"));
 

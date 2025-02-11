@@ -35,6 +35,7 @@ require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
 require_once DOL_DOCUMENT_ROOT.'/societe/class/societeaccount.class.php';
+require_once DOL_DOCUMENT_ROOT.'/website/class/website.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 
@@ -471,10 +472,10 @@ $objecttmp = new SocieteAccount($db);
 $trackid = 'thi'.$object->id;
 include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 
-/*if ($sall)
+/*if ($search_all)
 {
 	foreach($fieldstosearchall as $key => $val) $fieldstosearchall[$key]=$langs->trans($val);
-	print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $sall) . join(', ', $fieldstosearchall).'</div>';
+	print '<div class="divsearchfieldfilter">'.$langs->trans("FilterOnInto", $search_all) . join(', ', $fieldstosearchall).'</div>';
 }*/
 
 $moreforfilter = '';
@@ -684,15 +685,14 @@ while ($i < $imaxinloop) {
 				print ' title="'.dol_escape_htmltag($object->$key).'"';
 			}
 			print '>';
-			/*if ($key == 'status') {
-				print $objectwebsiteaccount->getLibStatut(5);
-			} elseif ($key == 'rowid') {
-				print $objectwebsiteaccount->showOutputField($val, $key, $object->id, '');
-			} else {
-				print $objectwebsiteaccount->showOutputField($val, $key, $object->$key, '');
-			}*/
 			if ($key == 'login') {
 				print $objectwebsiteaccount->getNomUrl(1, '', 0, '', 1);
+			} elseif ($key == 'fk_website') {
+				if ($obj->$key > 0) {
+					$tmpwebsite = new Website($db);
+					$tmpwebsite->fetch($obj->$key);
+					print $tmpwebsite->getNomUrl(1);
+				}
 			} else {
 				print $objectwebsiteaccount->showOutputField($val, $key, $obj->$key, '');
 			}
