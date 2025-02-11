@@ -13018,7 +13018,7 @@ function dolGetButtonTitle($label, $helpText = '', $iconClass = 'fa fa-file', $u
 	);
 
 	if (!empty($helpText)) {
-		$attr['title'] = dol_escape_htmltag($helpText);
+		$attr['title'] = $helpText;
 	} elseif ($label) { // empty($attr['title']) &&
 		$attr['title'] = $label;
 		$useclassfortooltip = 0;
