@@ -113,8 +113,15 @@ class Commande extends CommonOrder
 	/**
 	 * Status of the order
 	 * @var int
+	 * @deprecated Use status
 	 */
 	public $statut;
+
+	/**
+	 * Status of the order
+	 * @var int
+	 */
+	public $status;
 
 	/**
 	 * @var int Status Billed or not
@@ -792,12 +799,10 @@ class Commande extends CommonOrder
 	 *
 	 * 	@param      User	$user       Object user that close
 	 *  @param		int		$notrigger	1=Does not execute triggers, 0=Execute triggers
-	 *	@return		int					Return integer <0 if KO, >0 if OK
+	 *	@return		int					Return integer <0 if KO, 0=Nothing done, >0 if OK
 	 */
 	public function cloture($user, $notrigger = 0)
 	{
-		global $conf;
-
 		$error = 0;
 
 		$usercanclose = ((!getDolGlobalString('MAIN_USE_ADVANCED_PERMS') && $user->hasRight('commande', 'creer'))
@@ -1890,7 +1895,7 @@ class Commande extends CommonOrder
 			return -1;
 		}
 
-		$sql = 'SELECT c.rowid, c.entity, c.date_creation, c.ref, c.fk_soc, c.fk_user_author, c.fk_user_valid, c.fk_user_modif, c.fk_statut';
+		$sql = 'SELECT c.rowid, c.entity, c.date_creation, c.ref, c.fk_soc, c.fk_user_author, c.fk_user_valid, c.fk_user_modif, c.fk_statut as status';
 		$sql .= ', c.amount_ht, c.total_ht, c.total_ttc, c.total_tva, c.localtax1 as total_localtax1, c.localtax2 as total_localtax2, c.fk_cond_reglement, c.deposit_percent, c.fk_mode_reglement, c.fk_availability, c.fk_input_reason';
 		$sql .= ', c.fk_account';
 		$sql .= ', c.date_commande, c.date_valid, c.tms';
@@ -1946,8 +1951,8 @@ class Commande extends CommonOrder
 				$this->fk_project = $obj->fk_project;
 				$this->project = null; // Clear if another value was already set by fetch_projet
 
-				$this->statut = $obj->fk_statut;
-				$this->status = $obj->fk_statut;
+				$this->statut = $obj->status;
+				$this->status = $obj->status;
 
 				$this->user_author_id = $obj->fk_user_author;
 				$this->user_creation_id = $obj->fk_user_author;
