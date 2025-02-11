@@ -1958,14 +1958,16 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 	}
 	if (!$error) {
 		$directivetype = $directivesarray[$directivecsp]["data-directivetype"];
-		$sourcetype = $sourcesarray[$directivetype][$sourcecsp]["data-sourcetype"];
+		if (isset($sourcecsp)) {
+			$sourcetype = $sourcesarray[$directivetype][$sourcecsp]["data-sourcetype"];
+		}
 		$securityspstring = "";
-		if ($sourcetype == "data") {
+		if (isset($sourcetype) && $sourcetype == "data") {
 			if (empty($forceCSPArr[$directivecsp]["data"])) {
 				$forceCSPArr[$directivecsp]["data"] = array();
 			}
 			$forceCSPArr[$directivecsp]["data"][] = $sourcedatacsp;
-		} elseif ($sourcetype == "input") {
+		} elseif (isset($sourcetype) && $sourcetype == "input") {
 			if (empty($forceCSPArr[$directivecsp])) {
 				$forceCSPArr[$directivecsp] = array();
 			}
@@ -1984,10 +1986,12 @@ if ($action == "updatesecurity" && $usercanedit && GETPOST("btn_WEBSITE_SECURITY
 				} else {
 					$directivetype = $directivesarray[$directive]["data-directivetype"];
 					$sourcetype = $sourcesarray[$directivetype][$source]["data-sourcetype"];
-					if ($sourcetype == "quoted") {
-						$sourcestring .= " '".$source."'";
-					} elseif ($directivetype != "none") {
-						$sourcestring .= " ".$source;
+					if (isset($sourcetype)) {
+						if ($sourcetype == "quoted") {
+							$sourcestring .= " '".$source."'";
+						} elseif ($directivetype != "none") {
+							$sourcestring .= " ".$source;
+						}
 					}
 				}
 			}
