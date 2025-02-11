@@ -1503,7 +1503,7 @@ if (!empty($arrayfields['s.name_alias']['checked'])) {
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['co.country_code']['checked'])) {
-	print_liste_field_titre($arrayfields['co.country_code']['label'], $_SERVER["PHP_SELF"], "country.code", "", $param, "", $sortfield, $sortorder);
+	print_liste_field_titre($arrayfields['co.country_code']['label'], $_SERVER["PHP_SELF"], "country.code", "", $param, "", $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['commercial']['checked'])) {
