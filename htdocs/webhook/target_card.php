@@ -85,7 +85,7 @@ include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be 'inclu
 // Permissions
 // There is several ways to check permission.
 // Set $enablepermissioncheck to 1 to enable a minimum low level of checks
-$enablepermissioncheck = 1;
+$enablepermissioncheck = getDolGlobalBool("WEBHOOK_ENABLE_PERMISSION_CHECK");
 if ($enablepermissioncheck) {
 	$permissiontoread = (bool) $user->hasRight('webhook', 'target', 'read');
 	$permissiontoadd = (bool) $user->hasRight('webhook', 'target', 'write'); // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
