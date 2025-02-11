@@ -186,7 +186,8 @@ print '<input type="file" class="flat minwidth100 maxwidthinputfileonsmartphone"
 if (getDolGlobalString("MAIN_INFO_PROPAL_TERMSOFSALE")) {
 	$termofsale = getDolGlobalString("MAIN_INFO_PROPAL_TERMSOFSALE");
 	if (file_exists($conf->propal->dir_output.'/'.$termofsale)) {
-		print '<div class="inline-block valignmiddle marginrightonly"><a href="'.$documenturl.'?modulepart='.$modulepart.'&amp;file='.urlencode($termofsale).'">'.$termofsale.'</a>'.$formfile->showPreview(array("name" => $termofsale), $modulepart, $termofsale, 0, '');
+		$file = dol_dir_list($conf->propal->dir_output, 'files', 0, $termofsale);
+		print '<div class="inline-block valignmiddle marginrightonly"><a href="'.$documenturl.'?modulepart='.$modulepart.'&amp;file='.urlencode($termofsale).'">'.$termofsale.'</a>'.$formfile->showPreview($file, $modulepart, $termofsale, 0, '');
 		print '<div class="inline-block valignmiddle marginrightonly"><a class="reposition" href="'.$_SERVER["PHP_SELF"].'?action=removetermsofsale&token='.newToken().'">'.img_delete($langs->trans("Delete"), '', 'marginleftonly').'</a></div>';
 	}
 }
