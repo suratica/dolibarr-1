@@ -363,8 +363,8 @@ foreach ($dirproduct as $dirroot) {
 					print "</td>\n";
 				} else {
 					$disabled = false;
-					if (!(isModEnabled('multicompany') && ((is_object($mc) && !empty($mc->sharings['referent'])) && ($mc->sharings['referent'] == $conf->entity)))) {
-					}
+					// if (!(isModEnabled('multicompany') && ((is_object($mc) && !empty($mc->sharings['referent'])) && ($mc->sharings['referent'] == $conf->entity)))) {
+					// }
 					print '<td class="center">';
 					if (!$disabled) {
 						print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=setcodeproduct&token='.newToken().'&value='.urlencode($file).'">';

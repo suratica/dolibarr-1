@@ -81,6 +81,7 @@ class Form
 	public $cache_types_paiements = array();
 	public $cache_conditions_paiements = array();
 	public $cache_transport_mode = array();
+	/** @var array<int,array{code:string,label:string,position:int}> */
 	public $cache_availability = array();
 	public $cache_demand_reason = array();
 	public $cache_types_fees = array();
@@ -204,7 +205,7 @@ class Form
 	 * @param string		$text 		Text of label (not used in this function)
 	 * @param string		$htmlname 	Name of select field
 	 * @param string|int	$value 		Value to show/edit
-	 * @param CommonObject 	$object 	Object (that we want to show)
+	 * @param CommonObject|ActionsCardProduct|ActionsCardService 	$object 	Object (that we want to show)
 	 * @param bool|int<0,1> $perm 		Permission to allow button to edit parameter
 	 * @param string		$typeofdata Type of data ('string' by default, 'checkbox', 'email', 'phone', 'amount:99', 'numeric:99',
 	 *                                  'text' or 'textarea:rows:cols%', 'safehtmlstring', 'restricthtml',
@@ -2563,7 +2564,7 @@ class Form
 	 *
 	 * @param string 	$action 			Value for $action
 	 * @param string 	$htmlname			Field name in form
-	 * @param int 		$show_empty 		0=list without the empty value, 1=add empty value
+	 * @param int<0,1>	$show_empty 		0=list without the empty value, 1=add empty value
 	 * @param int[] 	$exclude 			Array list of users id to exclude
 	 * @param int<0,1>	$disabled 			If select list must be disabled
 	 * @param int[]|string 	$include 		Array list of users id to include or 'hierarchy' to have only supervised users
@@ -2572,7 +2573,7 @@ class Form
 	 * @param int 		$maxlength 			Maximum length of string into list (0=no limit)
 	 * @param int<-1,1>	$showstatus 		0=show user status only if status is disabled, 1=always show user status into label, -1=never show user status
 	 * @param string 	$morefilter 		Add more filters into sql request
-	 * @param int 		$showproperties 	Show properties of each attendees
+	 * @param int<0,1>	$showproperties 	Show properties of each attendees
 	 * @param array<int,array{transparency:bool|int<0,1>}> $listofresourceid 	Array with properties of each resource
 	 * @return    string                    HTML select string
 	 */
@@ -2658,17 +2659,17 @@ class Form
 	 *
 	 *  @param		int			$selected				Preselected products
 	 *  @param		string		$htmlname				Name of HTML select field (must be unique in page).
-	 *  @param		int|string	$filtertype				Filter on product type (''=nofilter, 0=product, 1=service)
+	 *  @param		int|''		$filtertype				Filter on product type (''=nofilter, 0=product, 1=service)
 	 *  @param		int			$limit					Limit on number of returned lines
 	 *  @param		int			$price_level			Level of price to show
-	 *  @param		int			$status					Sell status: -1=No filter on sell status, 0=Products not on sell, 1=Products on sell
-	 *  @param		int			$finished				2=all, 1=finished, 0=raw material
+	 *  @param		int<-1,1>	$status					Sell status: -1=No filter on sell status, 0=Products not on sell, 1=Products on sell
+	 *  @param		int<0,2>	$finished				2=all, 1=finished, 0=raw material
 	 *  @param		string		$selected_input_value	Value of preselected input text (for use with ajax)
-	 *  @param		int			$hidelabel				Hide label (0=no, 1=yes, 2=show search icon (before) and placeholder, 3 search icon after)
+	 *  @param		int<0,3>	$hidelabel				Hide label (0=no, 1=yes, 2=show search icon (before) and placeholder, 3 search icon after)
 	 *  @param		array<string,string|string[]>	$ajaxoptions			Options for ajax_autocompleter
 	 *  @param      int			$socid					Thirdparty Id (to get also price dedicated to this customer)
-	 *  @param		string|int<0,1>	$showempty			'' to not show empty line. Translation key to show an empty line. '1' show empty line with no text.
-	 * 	@param		int			$forcecombo				Force to use combo box.
+	 *  @param		string|int<0,1>	$showempty				'' to not show empty line. Translation key to show an empty line. '1' show empty line with no text.
+	 * 	@param		int<0,1>	$forcecombo				Force to use combo box.
 	 *  @param      string      $morecss                Add more css on select
 	 *  @param      int<0,1>	$hidepriceinlabel       1=Hide prices in label
 	 *  @param      string      $warehouseStatus        Warehouse status filter to count the quantity in stock. Following comma separated filter options can be used
@@ -3734,7 +3735,7 @@ class Form
 	 * @param int 		$socid 				Id of supplier thirdparty (0 = no filter)
 	 * @param string 	$selected 			Product price preselected (must be 'id' in product_fournisseur_price or 'idprod_IDPROD')
 	 * @param string 	$htmlname 			Name of HTML select
-	 * @param string 	$filtertype 		Filter on product type (''=nofilter, 0=product, 1=service)
+	 * @param ''|int<0,1> 	$filtertype 		Filter on product type (''=nofilter, 0=product, 1=service)
 	 * @param string 	$filtre 			Generic filter. Data must not come from user input.
 	 * @param string 	$filterkey 			Filter of produdts
 	 * @param int 		$statut 			-1=Return all products, 0=Products not on buy, 1=Products on buy
@@ -4392,9 +4393,9 @@ class Form
 
 				// Si traduction existe, on l'utilise, sinon on prend le libelle par default
 				$label = ($langs->trans("AvailabilityType" . $obj->code) != "AvailabilityType" . $obj->code ? $langs->trans("AvailabilityType" . $obj->code) : ($obj->label != '-' ? $obj->label : ''));
-				$this->cache_availability[$obj->rowid]['code'] = $obj->code;
-				$this->cache_availability[$obj->rowid]['label'] = $label;
-				$this->cache_availability[$obj->rowid]['position'] = $obj->position;
+				$this->cache_availability[$obj->rowid]['code'] = (string) $obj->code;
+				$this->cache_availability[$obj->rowid]['label'] = (string) $label;
+				$this->cache_availability[$obj->rowid]['position'] = (int) $obj->position;
 				$i++;
 			}
 
@@ -4410,11 +4411,11 @@ class Form
 	/**
 	 * Return the list of type of delay available.
 	 *
-	 * @param 	string 		$selected Id du type de delais pre-selectionne
-	 * @param 	string 		$htmlname Nom de la zone select
-	 * @param 	string 		$filtertype To add a filter
-	 * @param 	int 		$addempty Add empty entry
-	 * @param 	string 		$morecss More CSS
+	 * @param 	''|int			$selected	Id du type de delais pre-selectionne
+	 * @param 	string			$htmlname	Nom de la zone select
+	 * @param 	string|int<0,1> $filtertype To add a filter
+	 * @param 	int<0,1> 		$addempty	Add empty entry
+	 * @param 	string			$morecss	More CSS
 	 * @return  void
 	 */
 	public function selectAvailabilityDelay($selected = '', $htmlname = 'availid', $filtertype = '', $addempty = 0, $morecss = '')
