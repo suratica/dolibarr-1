@@ -3835,13 +3835,13 @@ class Facture extends CommonInvoice
 	 *  @param	string		$desc            	Description of line
 	 *  @param	float		$pu_ht              Unit price without tax (> 0 even for credit note)
 	 *  @param	float		$qty             	Quantity
-	 *  @param	float		$txtva           	Force Vat rate, -1 for auto (Can contain the vat_src_code too with syntax '9.9 (CODE)')
+	 *  @param	float|string	$txtva         	Force Vat rate, -1 for auto (Can contain the vat_src_code too with syntax '9.9 (CODE)')
 	 *  @param	float		$txlocaltax1		Local tax 1 rate (deprecated, use instead txtva with code inside)
 	 *  @param	float		$txlocaltax2		Local tax 2 rate (deprecated, use instead txtva with code inside)
 	 *  @param 	int			$fk_product      	Id of predefined product/service
 	 *  @param	float		$remise_percent  	Percent of discount on line
-	 *  @param 	int|string	$date_start      	Date start of service
-	 *  @param 	int|string	$date_end        	Date end of service
+	 *  @param 	int|''		$date_start      	Date start of service
+	 *  @param 	int|''		$date_end        	Date end of service
 	 *  @param 	int			$fk_code_ventilation   	Code of dispatching into accountancy
 	 *  @param 	int			$info_bits			Bits of type of lines
 	 *  @param 	int			$fk_remise_except	Id discount used
@@ -3854,7 +3854,7 @@ class Facture extends CommonInvoice
 	 *  @param	int			$origin_id			Depend on global conf MAIN_CREATEFROM_KEEP_LINE_ORIGIN_INFORMATION can be Id of origin object (aka line id), else object id
 	 *  @param	int			$fk_parent_line		Id of parent line
 	 *  @param	int			$fk_fournprice		Supplier price id (to calculate margin) or ''
-	 *  @param	int			$pa_ht				Buying price of line (to calculate margin) or ''
+	 *  @param	float|''	$pa_ht				Buying price of line (to calculate margin) or ''
 	 *  @param	string		$label				Label of the line (deprecated, do not use)
 	 *  @param	array<string,mixed>	$array_options		extrafields array
 	 *  @param	int         $situation_percent  Situation advance percentage
