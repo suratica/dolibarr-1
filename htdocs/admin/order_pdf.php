@@ -63,7 +63,6 @@ $modulepart = GETPOST('modulepart', 'aZ09');	// Used by actions_setmoduleoptions
 $label = GETPOST('label', 'alpha');
 $scandir = GETPOST('scan_dir', 'alpha');
 $type = 'order';
-$statciobject = new Commande($db);
 $dirforterms = $conf->order->dir_output;
 if (!empty($conf->order->multidir_output[$conf->entity])) {
 	$dirforterms = $conf->order->multidir_output[$conf->entity].'/';
@@ -132,7 +131,7 @@ llxHeader('', $langs->trans("OrdersSetup"), '', '', 0, 0, '', '', '', 'mod-admin
 $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
 print load_fiche_titre($langs->trans("OrdersSetup"), $linkback, 'title_setup');
 
-$head = order_admin_prepare_head($statciobject);
+$head = order_admin_prepare_head();
 
 print dol_get_fiche_head($head, 'pdf', $langs->trans("Orders"), -1, 'order');
 
