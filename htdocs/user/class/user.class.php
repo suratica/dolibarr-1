@@ -2650,7 +2650,7 @@ class User extends CommonObject
 	public function send_password($user, $password = '', $changelater = 0)
 	{
 		// phpcs:enable
-		global $conf, $langs, $mysoc;
+		global $conf, $langs;
 		global $dolibarr_main_url_root;
 
 		require_once DOL_DOCUMENT_ROOT.'/core/class/CMailFile.class.php';
