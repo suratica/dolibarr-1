@@ -3325,10 +3325,17 @@ class Facture extends CommonInvoice
 						}
 					}
 					if ($key == 'TVA_INTRA') {
-						// Check for mandatory
-						if (getDolGlobalString('SOCIETE_VAT_INTRA_INVOICE_MANDATORY') && ($this->thirdparty->tva_assuj) && empty($this->thirdparty->tva_intra)) {
+						// Check for mandatory vat number
+						if (getDolGlobalString('SOCIETE_VAT_INTRA_INVOICE_MANDATORY') == 'eeconly') {
+							if (($this->thirdparty->tva_assuj) && empty($this->thirdparty->tva_intra) && $this->thirdparty->isInEEC()) {
+								$langs->load("errors");
+								$this->error = $langs->trans('ErrorProdIdIsMandatoryForEuThirdparties', $langs->transnoentitiesnoconv('VATIntra')).' ('.$langs->transnoentitiesnoconv("ForbiddenBySetupRules").') ['.$langs->trans('Company').' : '.$this->thirdparty->name.']';
+								dol_syslog(__METHOD__.' '.$this->error, LOG_ERR);
+								return -1;
+							}
+						} elseif (getDolGlobalString('SOCIETE_VAT_INTRA_INVOICE_MANDATORY') && ($this->thirdparty->tva_assuj) && empty($this->thirdparty->tva_intra)) {
 							$langs->load("errors");
-							$this->error = $langs->trans('ErrorProdIdIsMandatory', $langs->trans('VATIntra')).' ('.$langs->trans("ForbiddenBySetupRules").') ['.$langs->trans('Company').' : '.$this->thirdparty->name.']';
+							$this->error = $langs->trans('ErrorProdIdIsMandatory', $langs->transnoentitiesnoconv('VATIntra')).' ('.$langs->transnoentitiesnoconv("ForbiddenBySetupRules").') ['.$langs->trans('Company').' : '.$this->thirdparty->name.']';
 							dol_syslog(__METHOD__.' '.$this->error, LOG_ERR);
 							return -1;
 						}
