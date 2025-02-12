@@ -113,6 +113,8 @@ $user->loadDefaultValues();
 /**
  * Show header for new member
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
  * @param 	int    		$disablejs			More content into html header
@@ -121,7 +123,7 @@ $user->loadDefaultValues();
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderMembersNew($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	global $conf, $langs, $mysoc;
 
@@ -168,9 +170,11 @@ function llxHeaderMembersNew($title, $head = "", $disablejs = 0, $disablehead = 
 /**
  * Show footer for new member
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @return	void
  */
-function llxFooterMembersNew()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	global $conf, $langs;
 
@@ -500,7 +504,7 @@ if (empty($reshook) && $action == 'add') {	// Test on permission not required he
 // backtopage parameter with an url was set on member submit page, we never go here because a redirect was done to this url.
 
 if (empty($reshook) && $action == 'added') {	// Test on permission not required here
-	llxHeaderMembersNew($langs->trans("NewMemberForm"));
+	llxHeaderVierge($langs->trans("NewMemberForm"));
 
 	// If we have not been redirected
 	print '<br><br>';
@@ -508,7 +512,7 @@ if (empty($reshook) && $action == 'added') {	// Test on permission not required 
 	print $langs->trans("NewMemberbyWeb");
 	print '</div>';
 
-	llxFooterMembersNew();
+	llxFooterVierge();
 	exit;
 }
 
@@ -524,7 +528,7 @@ $adht = new AdherentType($db);
 $extrafields->fetch_name_optionals_label($object->table_element); // fetch optionals attributes and labels
 
 
-llxHeaderMembersNew($langs->trans("NewSubscription"));
+llxHeaderVierge($langs->trans("NewSubscription"));
 
 print '<br>';
 print load_fiche_titre(img_picto('', 'member_nocolor', 'class="pictofixedwidth"').' &nbsp; '.$langs->trans("NewSubscription"), '', '', 0, '', 'center');
@@ -979,6 +983,6 @@ if (getDolGlobalString('MEMBER_SKIP_TABLE') || getDolGlobalString('MEMBER_NEWFOR
 }
 
 //htmlPrintOnlineFooter($mysoc, $langs);
-llxFooterMembersNew();
+llxFooterVierge();
 
 $db->close();

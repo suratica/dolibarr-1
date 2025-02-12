@@ -59,6 +59,8 @@ if (!defined('NOIPCHECK')) {
 /**
  * Header function
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
  * @param 	int    		$disablejs			More content into html header
@@ -67,16 +69,18 @@ if (!defined('NOIPCHECK')) {
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderAgendaExport($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	print '<html><title>Export agenda cal</title><body>';
 }
 /**
  * Footer function
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @return	void
  */
-function llxFooterAgendaExport()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	print '</body></html>';
 }
@@ -180,9 +184,9 @@ if (!getDolGlobalString('MAIN_AGENDA_XCAL_EXPORTKEY')) {
 
 	top_httphead();
 
-	llxHeaderAgendaExport("");
+	llxHeaderVierge("");
 	print '<div class="error">Module Agenda was not configured properly.</div>';
-	llxFooterAgendaExport();
+	llxFooterVierge();
 	exit;
 }
 
@@ -193,13 +197,13 @@ $reshook = $hookmanager->executeHooks('doActions', $filters); // Note that $acti
 if ($reshook < 0) {
 	top_httphead();
 
-	llxHeaderAgendaExport("");
+	llxHeaderVierge("");
 	if (!empty($hookmanager->errors) && is_array($hookmanager->errors)) {
 		print '<div class="error">'.implode('<br>', $hookmanager->errors).'</div>';
 	} else {
 		print '<div class="error">'.$hookmanager->error.'</div>';
 	}
-	llxFooterAgendaExport();
+	llxFooterVierge();
 } elseif (empty($reshook)) {
 	// Check exportkey
 	if (!GETPOST("exportkey") || getDolGlobalString('MAIN_AGENDA_XCAL_EXPORTKEY') != GETPOST("exportkey")) {
@@ -207,9 +211,9 @@ if ($reshook < 0) {
 
 		top_httphead();
 
-		llxHeaderAgendaExport("");
+		llxHeaderVierge("");
 		print '<div class="error">Bad value for key.</div>';
-		llxFooterAgendaExport();
+		llxFooterVierge();
 		exit;
 	}
 }
@@ -282,9 +286,9 @@ if ($shortfilename == 'dolibarrcalendar') {
 
 	top_httphead();
 
-	llxHeaderAgendaExport("");
+	llxHeaderVierge("");
 	print '<div class="error">'.$langs->trans("ErrorWrongValueForParameterX", 'format').'</div>';
-	llxFooterAgendaExport();
+	llxFooterVierge();
 	exit;
 }
 
@@ -407,6 +411,6 @@ if ($format == 'rss') {
 
 top_httphead();
 
-llxHeaderAgendaExport("");
+llxHeaderVierge("");
 print '<div class="error">'.$agenda->error.'</div>';
-llxFooterAgendaExport();
+llxFooterVierge();

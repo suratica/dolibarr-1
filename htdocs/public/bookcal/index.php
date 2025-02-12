@@ -125,6 +125,8 @@ $errmsg = '';
 /**
  * Show header for booking
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
  * @param 	int    		$disablejs			More content into html header
@@ -133,7 +135,7 @@ $errmsg = '';
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderBookCal($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	global $conf, $langs, $mysoc;
 
@@ -304,7 +306,7 @@ if ($action == 'add') {	// Test on permission not required here (anonymous actio
 
 $form = new Form($db);
 
-llxHeaderBookCal('BookingCalendar');
+llxHeaderVierge('BookingCalendar');
 
 print '<center><br><h2>'.(!empty($object->label) ? $object->label : $object->ref).'</h2></center>';
 

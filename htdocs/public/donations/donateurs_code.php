@@ -35,6 +35,10 @@ if (!defined('NOIPCHECK')) {
 
 // C'est un wrapper, donc header vierge
 /**
+ * Header function
+ *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
  * @param 	int    		$disablejs			More content into html header
@@ -43,16 +47,18 @@ if (!defined('NOIPCHECK')) {
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderDonatorCodes($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	print '<html><title>List of donators</title><body>';
 }
 /**
- * Header function
+ * Footer function
+ *
+ * Note: also called by functions.lib:recordNotFound
  *
  * @return	void
  */
-function llxFooterDonatorCodes()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	print '</body></html>';
 }
@@ -74,7 +80,7 @@ $langs->load("donations");
  * View
  */
 
-llxHeaderDonatorCodes("");
+llxHeaderVierge("");
 
 $sql = "SELECT d.datedon as datedon, d.lastname, d.firstname, d.amount, d.public, d.societe";
 $sql .= " FROM ".MAIN_DB_PREFIX."don as d";
@@ -116,4 +122,4 @@ if ($resql) {
 
 $db->close();
 
-llxFooterDonatorCodes();
+llxFooterVierge();

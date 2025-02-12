@@ -109,6 +109,8 @@ $extrafields->fetch_name_optionals_label($objectsoc->table_element); // fetch op
 /**
  * Show header for new prospect
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
  * @param 	int    		$disablejs			More content into html header
@@ -117,7 +119,7 @@ $extrafields->fetch_name_optionals_label($objectsoc->table_element); // fetch op
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderCompanyNew($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	global $conf, $langs, $mysoc;
 
@@ -164,9 +166,11 @@ function llxHeaderCompanyNew($title, $head = "", $disablejs = 0, $disablehead = 
 /**
  * Show footer for new societe
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @return	void
  */
-function llxFooterCompanyNew()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	global $conf, $langs;
 
@@ -288,7 +292,7 @@ if (empty($reshook) && $action == 'add') {	// Test on permission not required he
 // backtopage parameter with an url was set on prospect submit page, we never go here because a redirect was done to this url.
 
 if (empty($reshook) && $action == 'added') {	// Test on permission not required here
-	llxHeaderCompanyNew("newSocieteAdded");
+	llxHeaderVierge("newSocieteAdded");
 
 	// If we have not been redirected
 	print '<br><br>';
@@ -296,7 +300,7 @@ if (empty($reshook) && $action == 'added') {	// Test on permission not required 
 	print $langs->trans("newSocieteAdded");
 	print '</div>';
 
-	llxFooterCompanyNew();
+	llxFooterVierge();
 	exit;
 }
 
@@ -312,7 +316,7 @@ $adht = new AdherentType($db);
 $formadmin = new FormAdmin($db);
 
 
-llxHeaderCompanyNew($langs->trans("ContactUs"));
+llxHeaderVierge($langs->trans("ContactUs"));
 
 print '<br>';
 print load_fiche_titre(img_picto('', 'member_nocolor', 'class="pictofixedwidth"') . ' &nbsp; ' . $langs->trans("ContactUs"), '', '', 0, '', 'center');
@@ -489,6 +493,6 @@ print '</div></div>';
 
 
 
-llxFooterCompanyNew();
+llxFooterVierge();
 
 $db->close();

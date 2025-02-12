@@ -55,6 +55,8 @@ if (!defined('NOSESSION')) {
 /**
  * Header empty
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string 			$head				Optional head lines
  * @param 	string 			$title				HTML title
  * @param	string			$help_url			Url links to help page
@@ -72,7 +74,7 @@ if (!defined('NOSESSION')) {
  * @param	int				$disablenoindex		Disable the "noindex" on meta robot header
  * @return	void
  */
-function llxHeaderReadMailing($head = '', $title = '', $help_url = '', $target = '', $disablejs = 0, $disablehead = 0, $arrayofjs = '', $arrayofcss = '', $morequerystring = '', $morecssonbody = '', $replacemainareaby = '', $disablenofollow = 0, $disablenoindex = 0)
+function llxHeader($head = '', $title = '', $help_url = '', $target = '', $disablejs = 0, $disablehead = 0, $arrayofjs = '', $arrayofcss = '', $morequerystring = '', $morecssonbody = '', $replacemainareaby = '', $disablenofollow = 0, $disablenoindex = 0)  // @phan-suppress-current-line PhanRedefineFunction
 {
 }
 
@@ -80,12 +82,14 @@ function llxHeaderReadMailing($head = '', $title = '', $help_url = '', $target =
 /**
  * Footer empty
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param	string	$comment    				A text to add as HTML comment into HTML generated page
  * @param	string	$zone						'private' (for private pages) or 'public' (for public pages)
  * @param	int		$disabledoutputofmessages	Clear all messages stored into session without displaying them
  * @return	void
  */
-function llxFooterReadMailing($comment = '', $zone = 'private', $disabledoutputofmessages = 0)
+function llxFooter($comment = '', $zone = 'private', $disabledoutputofmessages = 0)  // @phan-suppress-current-line PhanRedefineFunction
 {
 }
 

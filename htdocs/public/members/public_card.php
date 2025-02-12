@@ -91,7 +91,7 @@ if (getDolGlobalString('MEMBER_PUBLIC_CSS')) {
 	$morehead = '<link rel="stylesheet" type="text/css" href="'.DOL_URL_ROOT.'/theme/eldy/style.css.php">';
 }
 
-llxHeaderMembersPubCard($langs->trans("MemberCard"), $morehead);
+llxHeaderVierge($langs->trans("MemberCard"), $morehead);
 
 // fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
@@ -140,7 +140,7 @@ if ($id > 0) {
 }
 
 
-llxFooterMembersPubCard();
+llxFooterVierge();
 
 $db->close();
 
@@ -148,6 +148,8 @@ $db->close();
 
 /**
  * Show header for card member
+ *
+ * Note: also called by functions.lib:recordNotFound
  *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
@@ -157,7 +159,7 @@ $db->close();
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderMembersPubCard($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	top_htmlhead($head, $title);
 
@@ -167,9 +169,11 @@ function llxHeaderMembersPubCard($title, $head = "", $disablejs = 0, $disablehea
 /**
  * Show footer for card member
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @return	void
  */
-function llxFooterMembersPubCard()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	printCommonFooter('public');
 

@@ -283,7 +283,7 @@ jQuery(document).ready(function () {
 });
 </script>';
 
-llxHeaderDemoIndex($langs->trans("DolibarrDemo"), $head);
+llxHeaderVierge($langs->trans("DolibarrDemo"), $head);
 
 
 print "\n";
@@ -468,13 +468,15 @@ if (isModEnabled('google') && getDolGlobalString('MAIN_GOOGLE_AD_CLIENT') && get
 	}
 }
 
-llxFooterDemoIndex();
+llxFooterVierge();
 
 $db->close();
 
 
 /**
  * Show header for demo
+ *
+ * Note: also called by functions.lib:recordNotFound
  *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
@@ -484,7 +486,7 @@ $db->close();
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderDemoIndex($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	top_httphead();
 
@@ -496,9 +498,11 @@ function llxHeaderDemoIndex($title, $head = "", $disablejs = 0, $disablehead = 0
 /**
  * Show footer for demo
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @return	void
  */
-function llxFooterDemoIndex()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	printCommonFooter('public');
 

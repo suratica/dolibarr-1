@@ -28,7 +28,6 @@ return [
     // PhanTypeComparisonFromArray : 8 occurrences
     // PhanPluginDuplicateExpressionBinaryOp : 6 occurrences
     // PhanPluginUnknownObjectMethodCall : 6 occurrences
-    // PhanRedefineFunction : 6 occurrences
     // PhanTypeArraySuspiciousNull : 6 occurrences
     // PhanParamTooMany : 5 occurrences
     // PhanPluginDuplicateArrayKey : 4 occurrences
@@ -38,6 +37,7 @@ return [
     // PhanPluginBothLiteralsBinaryOp : 3 occurrences
     // PhanEmptyForeach : 2 occurrences
     // PhanPluginEmptyStatementIf : 2 occurrences
+    // PhanRedefineFunction : 2 occurrences
     // PhanTypeMismatchDimAssignment : 2 occurrences
     // PhanTypeSuspiciousStringExpression : 2 occurrences
     // PhanAccessMethodProtected : 1 occurrence
@@ -142,7 +142,6 @@ return [
         'htdocs/asset/tpl/accountancy_codes_edit.tpl.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
         'htdocs/asset/tpl/depreciation_options_edit.tpl.php' => ['PhanTypeMismatchArgumentProbablyReal', 'PhanUndeclaredProperty'],
         'htdocs/asset/tpl/linkedobjectblock.tpl.php' => ['PhanUndeclaredProperty'],
-        'htdocs/asterisk/wrapper.php' => ['PhanRedefineFunction'],
         'htdocs/barcode/printsheet.php' => ['PhanPluginDuplicateExpressionBinaryOp', 'PhanTypeMismatchArgumentNullable'],
         'htdocs/bom/bom_card.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanUndeclaredProperty'],
         'htdocs/bom/bom_list.php' => ['PhanTypeMismatchArgument'],
@@ -751,7 +750,7 @@ return [
         'htdocs/variants/list.php' => ['PhanTypeMismatchArgument'],
         'htdocs/variants/tpl/productattributevalueline_edit.tpl.php' => ['PhanUndeclaredProperty'],
         'htdocs/variants/tpl/productattributevalueline_view.tpl.php' => ['PhanUndeclaredProperty'],
-        'htdocs/viewimage.php' => ['PhanRedefineFunction', 'PhanUndeclaredMethod'],
+        'htdocs/viewimage.php' => ['PhanUndeclaredMethod'],
         'htdocs/webhook/class/api_webhook.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType'],
         'htdocs/webhook/class/target.class.php' => ['PhanUndeclaredMethod'],
         'htdocs/webhook/target_card.php' => ['PhanTypeMismatchArgumentProbablyReal', 'PhanUndeclaredGlobalVariable'],

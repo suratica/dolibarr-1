@@ -171,6 +171,8 @@ $extrafields->fetch_name_optionals_label($object->table_element); // fetch optio
 /**
  * Show header for new member
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
  * @param 	int    		$disablejs			More content into html header
@@ -179,7 +181,7 @@ $extrafields->fetch_name_optionals_label($object->table_element); // fetch optio
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderNewAttendee($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	global $conf, $langs, $mysoc;
 
@@ -226,9 +228,11 @@ function llxHeaderNewAttendee($title, $head = "", $disablejs = 0, $disablehead =
 /**
  * Show footer for new member
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @return	void
  */
-function llxFooterNewAttendee()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	print '</div>';
 
@@ -719,7 +723,7 @@ if (empty($reshook) && $action == 'add' && (!empty($conference->id) && $conferen
 $form = new Form($db);
 $formcompany = new FormCompany($db);
 
-llxHeaderNewAttendee($langs->trans("NewRegistration"));
+llxHeaderVierge($langs->trans("NewRegistration"));
 
 
 print '<div align="center">';
@@ -964,6 +968,6 @@ if ((!empty($conference->id) && $conference->status == ConferenceOrBooth::STATUS
 
 print '</div></div>';
 
-llxFooterNewAttendee();
+llxFooterVierge();
 
 $db->close();

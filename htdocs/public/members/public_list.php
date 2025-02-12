@@ -66,6 +66,8 @@ $langs->loadLangs(array("main", "members", "companies", "other"));
 /**
  * Show header for member list
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
  * @param 	int    		$disablejs			More content into html header
@@ -74,7 +76,7 @@ $langs->loadLangs(array("main", "members", "companies", "other"));
  * @param 	string[]|string	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderMembersPubList($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	top_htmlhead($head, $title);
 
@@ -84,9 +86,11 @@ function llxHeaderMembersPubList($title, $head = "", $disablejs = 0, $disablehea
 /**
  * Show footer for member list
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @return	void
  */
-function llxFooterMembersPubList()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	printCommonFooter('public');
 
@@ -134,7 +138,7 @@ if (getDolGlobalString('MEMBER_PUBLIC_CSS')) {
 	$morehead = '<link rel="stylesheet" type="text/css" href="'.DOL_URL_ROOT.'/theme/eldy/style.css.php">';
 }
 
-llxHeaderMembersPubList($langs->trans("ListOfValidatedPublicMembers"), $morehead);
+llxHeaderVierge($langs->trans("ListOfValidatedPublicMembers"), $morehead);
 
 $sql = "SELECT rowid, firstname, lastname, societe, zip, town, email, birth, photo";
 
@@ -216,6 +220,6 @@ if ($result) {
 }
 
 
-llxFooterMembersPubList();
+llxFooterVierge();
 
 $db->close();

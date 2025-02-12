@@ -100,6 +100,8 @@ $user->loadDefaultValues();
 /**
  * Show header for new partnership
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @param 	string		$title				Title
  * @param 	string		$head				Head array
  * @param 	int<0,1>	$disablejs			More content into html header
@@ -108,7 +110,7 @@ $user->loadDefaultValues();
  * @param 	string[]	$arrayofcss			Array of complementary css files
  * @return	void
  */
-function llxHeaderPartnershipNew($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])
+function llxHeaderVierge($title, $head = "", $disablejs = 0, $disablehead = 0, $arrayofjs = [], $arrayofcss = [])  // @phan-suppress-current-line PhanRedefineFunction
 {
 	global $conf, $langs, $mysoc;
 
@@ -155,9 +157,11 @@ function llxHeaderPartnershipNew($title, $head = "", $disablejs = 0, $disablehea
 /**
  * Show footer for new member
  *
+ * Note: also called by functions.lib:recordNotFound
+ *
  * @return	void
  */
-function llxFooterPartnershipNew()
+function llxFooterVierge()  // @phan-suppress-current-line PhanRedefineFunction
 {
 	global $conf, $langs;
 
@@ -535,7 +539,7 @@ if (empty($reshook) && $action == 'add') {	// Test on permission not required he
 // If PARTNERSHIP_URL_REDIRECT_SUBSCRIPTION is set to url we never go here because a redirect was done to this url.
 // backtopage parameter with an url was set on member submit page, we never go here because a redirect was done to this url.
 if (empty($reshook) && $action == 'added') {	// Test on permission not required here
-	llxHeaderPartnershipNew($langs->trans("NewPartnershipForm"));
+	llxHeaderVierge($langs->trans("NewPartnershipForm"));
 
 	// Si on a pas ete redirige
 	print '<br><br>';
@@ -543,7 +547,7 @@ if (empty($reshook) && $action == 'added') {	// Test on permission not required 
 	print $langs->trans("NewPartnershipbyWeb");
 	print '</div>';
 
-	llxFooterPartnershipNew();
+	llxFooterVierge();
 	exit;
 }
 
@@ -559,7 +563,7 @@ $formcompany = new FormCompany($db);
 $extrafields->fetch_name_optionals_label($object->table_element); // fetch optionals attributes and labels
 
 
-llxHeaderPartnershipNew($langs->trans("NewPartnershipRequest"));
+llxHeaderVierge($langs->trans("NewPartnershipRequest"));
 
 print '<br>';
 print load_fiche_titre(img_picto('', 'hands-helping', 'class="pictofixedwidth"').' &nbsp; '.$langs->trans("NewPartnershipRequest"), '', '', 0, '', 'center');
@@ -717,6 +721,6 @@ print "<br>";
 print '</div></div>';
 
 
-llxFooterPartnershipNew();
+llxFooterVierge();
 
 $db->close();
