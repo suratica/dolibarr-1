@@ -24445,18 +24445,6 @@ parameters:
 			path: ../../../htdocs/public/members/public_card.php
 
 		-
-			message: '#^Variable \$db might not be defined\.$#'
-			identifier: variable.undefined
-			count: 5
-			path: ../../../htdocs/public/members/public_card.php
-
-		-
-			message: '#^Variable \$langs might not be defined\.$#'
-			identifier: variable.undefined
-			count: 17
-			path: ../../../htdocs/public/members/public_card.php
-
-		-
 			message: '#^Call to function is_numeric\(\) with int will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
