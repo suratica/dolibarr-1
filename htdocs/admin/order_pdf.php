@@ -65,8 +65,8 @@ $scandir = GETPOST('scan_dir', 'alpha');
 $type = 'order';
 $statciobject = new Commande($db);
 $dirforterms = $conf->order->dir_output;
-if (!empty($conf->order->multidir_output[$object->entity])) {
-	$dirforterms = $conf->order->multidir_output[$object->entity].'/';
+if (!empty($conf->order->multidir_output[$conf->entity])) {
+	$dirforterms = $conf->order->multidir_output[$conf->entity].'/';
 }
 
 /*
