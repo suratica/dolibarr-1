@@ -644,8 +644,8 @@ class pdf_einstein extends ModelePDFCommandes
 				if (getDolGlobalString("MAIN_INFO_ORDER_TERMSOFSALE") && getDolGlobalInt('MAIN_PDF_ADD_TERMSOFSALE_ORDER')) {
 					$termsofsalefilename = getDolGlobalString('MAIN_INFO_ORDER_TERMSOFSALE');
 					$termsofsale = $conf->order->dir_output.'/'.$termsofsalefilename;
-					if (!empty($conf->order->multidir_output[$object->entity])) {
-						$termsofsale = $conf->order->multidir_output[$object->entity].'/'.$termsofsalefilename;
+					if (!empty($conf->order->multidir_output[$conf->entity])) {
+						$termsofsale = $conf->order->multidir_output[$conf->entity].'/'.$termsofsalefilename;
 					}
 					if (file_exists($termsofsale) && is_readable($termsofsale)) {
 						$pagecount = $pdf->setSourceFile($termsofsale);
