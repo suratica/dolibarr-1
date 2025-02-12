@@ -1562,7 +1562,7 @@ class FormMail extends Form
 	                                    // Replace the placeholder with its corresponding value
 	                                    response = response.replace(key, substit[key]);
 	                                }
-	                            }		
+	                            }
 
 								// Assuming response is the URL of the generated image
 								var imageUrl = response;
