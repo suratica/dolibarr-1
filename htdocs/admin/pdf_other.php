@@ -247,7 +247,7 @@ if (isModEnabled('propal')) {
 		print ajax_constantonoff('MAIN_GENERATE_PROPOSALS_WITH_PICTURE');
 	} else {
 		$arrval = array('0' => $langs->trans("No"), '1' => $langs->trans("Yes"));
-		print $form->selectarray("MAIN_GENERATE_PROPOSALS_WITH_PICTURE", $arrval, getdolGlobalString('MAIN_GENERATE_PROPOSALS_WITH_PICTURE'));
+		print $form->selectarray("MAIN_GENERATE_PROPOSALS_WITH_PICTURE", $arrval, getDolGlobalString('MAIN_GENERATE_PROPOSALS_WITH_PICTURE'));
 	}
 	print '</td></tr>';
 
@@ -293,7 +293,7 @@ if (isModEnabled('order')) {
 		print ajax_constantonoff('MAIN_GENERATE_ORDERS_WITH_PICTURE');
 	} else {
 		$arrval = array('0' => $langs->trans("No"), '1' => $langs->trans("Yes"));
-		print $form->selectarray("MAIN_GENERATE_ORDERS_WITH_PICTURE", $arrval, getdolGlobalString('MAIN_GENERATE_ORDERS_WITH_PICTURE'));
+		print $form->selectarray("MAIN_GENERATE_ORDERS_WITH_PICTURE", $arrval, getDolGlobalString('MAIN_GENERATE_ORDERS_WITH_PICTURE'));
 	}
 	print '</td></tr>';
 
@@ -350,7 +350,7 @@ if (isModEnabled('invoice')) {
 		print ajax_constantonoff('MAIN_GENERATE_INVOICES_WITH_PICTURE');
 	} else {
 		$arrval = array('0' => $langs->trans("No"), '1' => $langs->trans("Yes"));
-		print $form->selectarray("MAIN_GENERATE_INVOICES_WITH_PICTURE", $arrval, getdolGlobalString('MAIN_GENERATE_INVOICES_WITH_PICTURE'));
+		print $form->selectarray("MAIN_GENERATE_INVOICES_WITH_PICTURE", $arrval, getDolGlobalString('MAIN_GENERATE_INVOICES_WITH_PICTURE'));
 	}
 	print '</td></tr>';
 
