@@ -17,7 +17,7 @@
  * Copyright (C) 2023       Gauthier VERDOL     <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2021       Grégory Blémand     <gregory.blemand@atm-consulting.fr>
  * Copyright (C) 2023       Lenin Rivas      	<lenin.rivas777@gmail.com>
- * Copyright (C) 2024		MDW					<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW					<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		William Mead		<william.mead@manchenumerique.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -140,7 +140,7 @@ abstract class CommonObject
 
 
 	/**
-	 * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-5,5>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}>	Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
+	 * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-6,6>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}>	Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
 	 */
 	public $fields = array();
 
@@ -152,7 +152,7 @@ abstract class CommonObject
 	public $array_languages = null; // Value is array() when load already tried
 
 	/**
-	 * @var array<int,array{parentId:int,source:string,socid:int,id:int,nom:string,civility:string,lastname:string,firstname:string,email:string,login:string,photo:string,statuscontact:int,rowid:int,code:string,libelle:string,status:string,fk_c_type_contact:int}>	 	To store result of ->liste_contact()
+	 * @var array<int,array{parentId:int,source:string,socid:int,id:int,nom:string,civility:string,lastname:string,firstname:string,email:string,login:string,photo:string,statuscontact:int,rowid:int,code:string,libelle:string,status:int,fk_c_type_contact:int}>	 	To store result of ->liste_contact()
 	 */
 	public $contacts_ids;
 
@@ -270,13 +270,13 @@ abstract class CommonObject
 	public $user;
 
 	/**
-	 * @var string 		The type of originating object. Combined with $origin_id, it allows to reload $origin_object
+	 * @var string 		The type of originating object. Combined with `$origin_type`, it allows to reload `$origin_object`
 	 * @see fetch_origin()
 	 */
 	public $origin_type;
 
 	/**
-	 * @var int 		The id of originating object. Combined with $origin_type, it allows to reload $origin_object
+	 * @var int 		The id of originating object. Combined with `$origin_type`, it allows to reload `$origin_object`
 	 * @see fetch_origin()
 	 */
 	public $origin_id;
@@ -704,7 +704,7 @@ abstract class CommonObject
 	public $user_creation;
 
 	/**
-	 * @var int			User id author/creation
+	 * @var int|null	User id author/creation
 	 */
 	public $user_creation_id;
 
@@ -1489,7 +1489,7 @@ abstract class CommonObject
 	 *    @param    string      $code       	Filter on this code of contact type ('SHIPPING', 'BILLING', ...)
 	 *    @param	int			$status			Status of user or company
 	 *    @param	int[]		$arrayoftcids	Array with ID of type of contacts. If we provide this, we can filter on ec.fk_c_type_contact IN ($arrayoftcids) to avoid a link on c_type_contact table (faster).
-	 *    @return array<int,array{parentId:int,source:string,socid:int,id:int,nom:string,civility:string,lastname:string,firstname:string,email:string,login:string,photo:string,gender:string,statuscontact:int,rowid:int,code:string,libelle:string,status:string,fk_c_type_contact:int}>|int<-1,-1>        	Array of contacts, -1 if error
+	 *    @return array<int,array{parentId:int,source:string,socid:int,id:int,nom:string,civility:string,lastname:string,firstname:string,email:string,login:string,photo:string,gender:string,statuscontact:int,rowid:int,code:string,libelle:string,status:int,fk_c_type_contact:int}>|int<-1,-1>        	Array of contacts, -1 if error
 	 */
 	public function liste_contact($statusoflink = -1, $source = 'external', $list = 0, $code = '', $status = -1, $arrayoftcids = array())
 	{
@@ -1500,14 +1500,14 @@ abstract class CommonObject
 
 		$sql = "SELECT ec.rowid, ec.statut as statuslink, ec.fk_socpeople as id, ec.fk_c_type_contact"; // This field contains id of llx_socpeople or id of llx_user
 		if ($source == 'internal') {
-			$sql .= ", '-1' as socid, t.statut as statuscontact, t.login, t.photo, t.gender";
+			$sql .= ", '-1' as socid, t.statut as statuscontact, t.login, t.photo, t.gender, t.fk_country as country_id";
 		}
 		if ($source == 'external' || $source == 'thirdparty') {
-			$sql .= ", t.fk_soc as socid, t.statut as statuscontact";
+			$sql .= ", t.fk_soc as socid, t.statut as statuscontact, t.fk_pays as country_id";
 		}
-		$sql .= ", t.civility as civility, t.lastname as lastname, t.firstname, t.email";
+		$sql .= ", t.civility as civility, t.lastname as lastname, t.firstname, t.email, t.address, t.zip, t.town";
 		if (empty($arrayoftcids)) {
-			$sql .= ", tc.source, tc.element, tc.code, tc.libelle as type_label";
+			$sql .= ", tc.source, tc.element, tc.code, tc.libelle as type_label, co.label as country";
 		}
 		$sql .= " FROM";
 		if (empty($arrayoftcids)) {
@@ -1516,9 +1516,11 @@ abstract class CommonObject
 		$sql .= " ".$this->db->prefix()."element_contact as ec";
 		if ($source == 'internal') {	// internal contact (user)
 			$sql .= " LEFT JOIN ".$this->db->prefix()."user as t on ec.fk_socpeople = t.rowid";
+			$sql .= " LEFT JOIN ".$this->db->prefix()."c_country as co ON co.rowid = t.fk_country";
 		}
 		if ($source == 'external' || $source == 'thirdparty') {	// external contact (socpeople)
 			$sql .= " LEFT JOIN ".$this->db->prefix()."socpeople as t on ec.fk_socpeople = t.rowid";
+			$sql .= " LEFT JOIN ".$this->db->prefix()."c_country as co ON co.rowid = t.fk_pays";
 		}
 		$sql .= " WHERE ec.element_id = ".((int) $this->id);
 		if (empty($arrayoftcids)) {
@@ -1566,6 +1568,11 @@ abstract class CommonObject
 						'lastname' => $obj->lastname,
 						'firstname' => $obj->firstname,
 						'email' => $obj->email,
+						'address' => $obj->address,
+						'zip' => $obj->zip,
+						'town' => $obj->town,
+						'country_id' => $obj->country_id,
+						'country' => $obj->country,
 						'login' => (empty($obj->login) ? '' : $obj->login),
 						'photo' => (empty($obj->photo) ? '' : $obj->photo),
 						'gender' => (empty($obj->gender) ? '' : $obj->gender),
@@ -1573,7 +1580,7 @@ abstract class CommonObject
 						'rowid' => $obj->rowid,
 						'code' => $obj->code,
 						'libelle' => $libelle_type,
-						'status' => $obj->statuslink,
+						'status' => (int) $obj->statuslink,
 						'fk_c_type_contact' => $obj->fk_c_type_contact
 					);
 				} else {
@@ -4551,10 +4558,11 @@ abstract class CommonObject
 			$deletetarget = true;
 		}
 
+		$element = $this->getElementType();
 		$sourceid = (!empty($sourceid) ? $sourceid : $this->id);
-		$sourcetype = (!empty($sourcetype) ? $sourcetype : $this->element);
+		$sourcetype = (!empty($sourcetype) ? $sourcetype : $element);
 		$targetid = (!empty($targetid) ? $targetid : $this->id);
-		$targettype = (!empty($targettype) ? $targettype : $this->element);
+		$targettype = (!empty($targettype) ? $targettype : $element);
 		$this->db->begin();
 		$error = 0;
 
@@ -4580,14 +4588,14 @@ abstract class CommonObject
 			} else {
 				if ($deletesource) {
 					$sql .= " fk_source = " . ((int) $sourceid) . " AND sourcetype = '" . $this->db->escape($sourcetype) . "'";
-					$sql .= " AND fk_target = " . ((int) $this->id) . " AND targettype = '" . $this->db->escape($this->element) . "'";
+					$sql .= " AND fk_target = " . ((int) $this->id) . " AND targettype = '" . $this->db->escape($element) . "'";
 				} elseif ($deletetarget) {
 					$sql .= " fk_target = " . ((int) $targetid) . " AND targettype = '" . $this->db->escape($targettype) . "'";
-					$sql .= " AND fk_source = " . ((int) $this->id) . " AND sourcetype = '" . $this->db->escape($this->element) . "'";
+					$sql .= " AND fk_source = " . ((int) $this->id) . " AND sourcetype = '" . $this->db->escape($element) . "'";
 				} else {
-					$sql .= " (fk_source = " . ((int) $this->id) . " AND sourcetype = '" . $this->db->escape($this->element) . "')";
+					$sql .= " (fk_source = " . ((int) $this->id) . " AND sourcetype = '" . $this->db->escape($element) . "')";
 					$sql .= " OR";
-					$sql .= " (fk_target = " . ((int) $this->id) . " AND targettype = '" . $this->db->escape($this->element) . "')";
+					$sql .= " (fk_target = " . ((int) $this->id) . " AND targettype = '" . $this->db->escape($element) . "')";
 				}
 			}
 
@@ -5379,7 +5387,7 @@ abstract class CommonObject
 
 				// Define output language and label
 				if (getDolGlobalInt('MAIN_MULTILANGS')) {
-					if (property_exists($this, 'socid') && !is_object($this->thirdparty)) {
+					if (property_exists($this, 'socid') && !empty($this->socid) && !is_object($this->thirdparty)) {
 						dol_print_error(null, 'Error: Method printObjectLine was called on an object and object->fetch_thirdparty was not done before');
 						return;
 					}
@@ -5794,7 +5802,7 @@ abstract class CommonObject
 	 */
 	protected function commonGenerateDocument($modelspath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref, $moreparams = null)
 	{
-		global $conf, $langs, $user, $hookmanager, $action;
+		global $conf, $langs, $hookmanager, $action;
 
 		$srctemplatepath = '';
 
@@ -6536,8 +6544,8 @@ abstract class CommonObject
 					}
 				} else {
 					/**
-					 We are in a situation where the current object has no values in its extra fields.
-					 We want to initialize all the values to null so that the array_option is accessible in other contexts (especially in document generation).
+					 * We are in a situation where the current object has no values in its extra fields.
+					 * We want to initialize all the values to null so that the array_option is accessible in other contexts (especially in document generation).
 					 **/
 					if (is_array($extrafields->attributes[$this->table_element]['label'])) {
 						foreach ($extrafields->attributes[$this->table_element]['label'] as $key => $val) {
@@ -10490,7 +10498,7 @@ abstract class CommonObject
 		}
 
 		// Create lines
-		if (!empty($this->table_element_line) && !empty($this->fk_element)) {
+		if (!empty($this->table_element_line) && !empty($this->fk_element) && !empty($this->lines)) {
 			foreach ($this->lines as $line) {
 				$keyforparent = $this->fk_element;
 				$line->$keyforparent = $this->id;
@@ -10694,6 +10702,14 @@ abstract class CommonObject
 		}
 		if (array_key_exists('user_modification_id', $fieldvalues) && !($fieldvalues['user_modification_id'] > 0)) {
 			$fieldvalues['user_modification_id'] = $user->id;
+		}
+		if (array_key_exists('pass_crypted', $fieldvalues) && property_exists($this, 'pass') && !empty($this->pass)) {
+			// @phan-suppress-next-line PhanUndeclaredProperty
+			$tmparray = dol_hash($this->pass, '0', 0, 1);
+			$fieldvalues['pass_crypted'] = $tmparray['pass_encrypted'];
+			if (array_key_exists('pass_encoding', $fieldvalues) && property_exists($this, 'pass_encoding')) {
+				$fieldvalues['pass_encoding'] = $tmparray['pass_encoding'];
+			}
 		}
 		if (array_key_exists('ref', $fieldvalues)) {
 			$fieldvalues['ref'] = dol_string_nospecial($fieldvalues['ref']); // If field is a ref, we sanitize data
