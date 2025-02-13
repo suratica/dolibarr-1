@@ -150,8 +150,8 @@ class Documentation
 					'icon' => 'fas fa-comments pictofixedwidth',
 					'submenu' => array(),
 					'summary' => array(
-						'DocBasicUsage' => '#seteventmessagesection-basicusage',
-						'DocSetEventMessageContextualVariations' => '#seteventmessagesection-contextvariations',
+						'DocBasicUsage' => '#setinputssection-basicusage',
+						'DocHelperFunctionsInputUsage' => '#setinputssection-helperfunctions',
 					)
 				),
 			),

@@ -39,21 +39,6 @@ $langs->load('uxdocumentation');
 
 $action = GETPOST('action', 'alpha');
 
-//if ($action == 'displayeventmessage') {
-//	setEventMessages($langs->trans('DocSetEventMessageUnique'), null);
-//} elseif ($action == 'displayeventmessages') {
-//	$messageArray = [$langs->trans('DocSetEventMessage', '1'),
-//		$langs->trans('DocSetEventMessage', '2'),
-//		$langs->trans('DocSetEventMessage', '3')];
-//	setEventMessages(null, $messageArray);
-//} elseif ($action == 'displayeventmessageok') {
-//	setEventMessages($langs->trans('DocSetEventMessageOK'), null);
-//} elseif ($action == 'displayeventmessagewarning') {
-//	setEventMessages($langs->trans('DocSetEventMessageWarning'), null, 'warnings');
-//} elseif ($action == 'displayeventmessageerror') {
-//	setEventMessages($langs->trans('DocSetEventMessageError'), null, 'errors');
-//}
-
 //
 $documentation = new Documentation($db);
 
@@ -82,7 +67,8 @@ $documentation->showSidebar(); ?>
 		<!-- Basic usage -->
 		<div class="documentation-section" id="setinputssection-basicusage">
 			<h2 class="documentation-title"><?php echo $langs->trans('DocBasicUsage'); ?></h2>
-			<p class="documentation-text"><?php echo $langs->trans('DocinputsDescription'); ?></p>
+			<!-- Classic Input -->
+			<p class="documentation-text"><?php echo $langs->trans('DocClassicInputsDescription'); ?></p>
 			<div class="documentation-example">
 				<td>Available Input</td>
 				<td><input id="label" name="label" class="minwidth200" maxlength="255" value=""></td>
@@ -99,13 +85,38 @@ $documentation->showSidebar(); ?>
 				'<td><input id="label" name="label" class="minwidth200" maxlength="255" value="" disabled></td>',
 			);
 			echo $documentation->showCode($lines); ?>
+
+			<!-- Checkbox input -->
+			<p class="documentation-text"><?php echo $langs->trans('DocCheckboxInputsDescription'); ?></p>
+			<div class="documentation-example">
+				<span class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
+				<span  class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
+				<span class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
+			</div>
+			<?php
+			$lines = array(
+				'<span class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
+				'<span class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
+				'<span class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
+			);
+			echo $documentation->showCode($lines); ?>
+
+			<!-- Radio input -->
+			<p class="documentation-text"><?php echo $langs->trans('DocRadioInputsDescription'); ?></p>
+			<div class="documentation-example">
+				<input type="radio" name="radioinput" value="radioinput"> Radio Input
+			</div>
+			<?php
+			$lines = array(
+				'<input type="radio" name="radioinput" value="radioinput"> Radio Input'
+			);
+			echo $documentation->showCode($lines); ?>
 		</div>
 
-
-		<!-- Select input -->
-		<div class="documentation-section" id="setinputssection-basicusage">
-			<h2 class="documentation-title"><?php echo $langs->trans('DocSelectInputUsage'); ?></h2>
-			<p class="documentation-text"><?php echo $langs->trans('DocinputsDescription'); ?></p>
+		<!-- Helper functions -->
+		<div class="documentation-section" id="setinputssection-helperfunctions">
+			<h2 class="documentation-title"><?php echo $langs->trans('DocHelperFunctionsInputUsage'); ?></h2>
+			<p class="documentation-text"><?php echo $langs->trans('DocSelectInputsDescription'); ?></p>
 			<div class="documentation-example">
 				<td>Select with empty value</td>
 				<?php
@@ -154,51 +165,9 @@ $documentation->showSidebar(); ?>
 
 			);
 			echo $documentation->showCode($lines); ?>
-		</div>
 
-		<!-- Checkbox input -->
-		<div class="documentation-section" id="setinputssection-basicusage">
-			<h2 class="documentation-title"><?php echo $langs->trans('DocCheckboxInputUsage'); ?></h2>
-			<p class="documentation-text"><?php echo $langs->trans('DocCheckboxInputDescription'); ?></p>
-			<div class="documentation-example">
-				<span id="spannature1" class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>
-				<span id="spannature2" class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>
-				<span id="spannature3" class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>
-				<br><br>
-				<span id="spannature4" class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
-				<span id="spannature5" class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
-				<span id="spannature6" class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput2" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>
-			</div>
-			<?php
-			$lines = array(
-				'<span id="spannature1" class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>',
-				'<span id="spannature2" class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>',
-				'<span id="spannature3" class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1"></label></span>',
-				' ',
-				'<span id="spannature1" class="spannature paddinglarge marginrightonly nonature-back"><label for="prospectinput" class="valignmiddle">Prospect<input id="prospectinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
-				'<span id="spannature2" class="spannature paddinglarge marginrightonly nonature-back"><label for="customerinput" class="valignmiddle">Customer<input id="customerinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
-				'<span id="spannature3" class="spannature paddinglarge marginrightonly nonature-back"><label for="supplierinput" class="valignmiddle">Supplier<input id="supplierinput" class="flat checkforselect marginleftonly valignmiddle" type="checkbox" name="customer" value="1" checked></label></span>',
-			);
-			echo $documentation->showCode($lines); ?>
-		</div>
-
-		<!-- Radio input -->
-		<div class="documentation-section" id="setinputssection-basicusage">
-			<h2 class="documentation-title"><?php echo $langs->trans('DocCheckboxInputUsage'); ?></h2>
-			<p class="documentation-text"><?php echo $langs->trans('DocCheckboxInputDescription'); ?></p>
-			<div class="documentation-example">
-
-			</div>
-			<?php
-			$lines = array(
-			);
-			echo $documentation->showCode($lines); ?>
-		</div>
-
-		<!-- Multiselect input -->
-		<div class="documentation-section" id="setinputssection-basicusage">
-			<h2 class="documentation-title"><?php echo $langs->trans('DocMultiSelectInputUsage'); ?></h2>
-			<p class="documentation-text"><?php echo $langs->trans('DocMultiSelectInputDescription'); ?></p>
+			<!-- Multiselect input -->
+			<p class="documentation-text"><?php echo $langs->trans('DocMultiSelectInputsDescription'); ?></p>
 			<div class="documentation-example">
 				<td>Multiselect</td>
 				<?php
@@ -233,12 +202,66 @@ $documentation->showSidebar(); ?>
 				'print $form->multiselectarray(\'categories\', $values, GETPOST(\'categories\', \'array\'), 0, 0, \'minwidth200\', 0, 0);'
 			);
 			echo $documentation->showCode($lines); ?>
-		</div>
 
-		<!-- Multiselect input -->
-		<div class="documentation-section" id="setinputssection-basicusage">
-			<h2 class="documentation-title"><?php echo $langs->trans('DocEditorInputUsage'); ?></h2>
-			<p class="documentation-text"><?php echo $langs->trans('DocEditorInputDescription'); ?></p>
+			<!-- Date input -->
+			<p class="documentation-text"><?php echo $langs->trans('DocDateSelectInputsDescription'); ?></p>
+			<div class="documentation-example">
+				<td>Date Select</td>
+				<?php
+				$values = ['1' => 'value 1', '2' => 'value 2', '3' => 'value 3'];
+				$form = new Form($db);
+				print $form->selectDate();
+				?>
+				<br><br>
+				<td>Date Select with hours</td>
+				<?php
+				$values = ['1' => 'value 1', '2' => 'value 2', '3' => 'value 3'];
+				$form = new Form($db);
+				print $form->selectDate('', 're2', 1, 1, 1);
+				?>
+			</div>
+			<?php
+			$lines = array(
+				'/**',
+				' *  Show a HTML widget to input a date or combo list for day, month, years and optionally hours and minutes.,',
+				' *  Fields are preselected with :,',
+				' *              - set_time date (must be a local PHP server timestamp or string date with format \'YYYY-MM-DD\' or \'YYYY-MM-DD HH:MM\'),',
+				' *              - local date in user area, if set_time is \'\' (so if set_time is \'\', output may differs when done from two different location),',
+				' *              - Empty (fields empty), if set_time is -1 (in this case, parameter empty must also have value 1),',
+				' *',
+				' * @param integer|string 		$set_time 		Pre-selected date (must be a local PHP server timestamp), -1 to keep date not preselected, \'\' to use current date with 00:00 hour (Parameter \'empty\' must be 0 or 2).,',
+				' * @param string 				$prefix 		Prefix for fields name,',
+				' * @param int 					$h 				1 or 2=Show also hours (2=hours on a new line), -1 has same effect but hour and minutes are prefilled with 23:59 if date is empty, 3 or 4 (4=hours on a new line)=Show hour always empty,',
+				' * @param int 					$m 				1=Show also minutes, -1 has same effect but hour and minutes are prefilled with 23:59 if date is empty, 3 show minutes always empty,',
+				' * @param int 					$empty 			0=Fields required, 1=Empty inputs are allowed, 2=Empty inputs are allowed for hours only,',
+				' * @param string 				$form_name 		Not used,',
+				' * @param int<0,1> 				$d 				1=Show days, month, years,',
+				' * @param int<0,2>				$addnowlink 	Add a link "Now", 1 with server time, 2 with local computer time,',
+				' * @param int<0,1> 				$disabled 		Disable input fields,',
+				' * @param int|string			$fullday 		When a checkbox with id #fullday is checked, hours are set with 00:00 (if value if \'fulldaystart\') or 23:59 (if value is \'fulldayend\'),',
+				' * @param string 				$addplusone 	Add a link "+1 hour". Value must be name of another selectDate field.,',
+				' * @param int|string|array<string,mixed>      $adddateof 		Add a link "Date of ..." using the following date. Must be array(array(\'adddateof\' => ..., \'labeladddateof\' => ...)),',
+				' * @param string 				$openinghours 	Specify hour start and hour end for the select ex 8,20,',
+				' * @param int 					$stepminutes 	Specify step for minutes between 1 and 30,',
+				' * @param string 				$labeladddateof Label to use for the $adddateof parameter. Deprecated. Used only when $adddateof is not an array.,',
+				' * @param string 				$placeholder 	Placeholder,',
+				' * @param \'auto\'|\'gmt\'|\'tzserver\'|\'tzuserrel\'	$gm 	\'auto\' (for backward compatibility, avoid this), \'gmt\' or \'tzserver\' or \'tzuserrel\',',
+				' * @param string				$calendarpicto 	URL of the icon/image used to display the calendar,',
+				' * @return string               	         	Html for selectDate,',
+				' * @see    form_date(), select_month(), select_year(), select_dayofweek(),',
+				' */',
+				'',
+				'<td>Date Select</td>',
+				'print $form->selectDate();',
+				'',
+				'<td>Date Select with hours</td>',
+				'print $form->selectDate(\'\', \'re2\', 1, 1, 1);'
+			);
+			echo $documentation->showCode($lines); ?>
+
+
+			<!-- Editor input -->
+			<p class="documentation-text"><?php echo $langs->trans('DocEditorInputsDescription'); ?></p>
 			<div class="documentation-example">
 				<?php
 				$doleditor = new DolEditor('desc', GETPOST('desc', 'restricthtml'), '', 160, 'dolibarr_details', '', false, true, getDolGlobalString('FCKEDITOR_ENABLE_DETAILS'), ROWS_4, '90%');
@@ -276,34 +299,6 @@ $documentation->showSidebar(); ?>
 	</div>
 
 </div>
-
-<script>
-	function refreshNatureCss() {
-		jQuery(".spannature").each(function( index ) {
-			id = $(this).attr("id").split("spannature")[1];
-			console.log(jQuery("#spannature"+(id)+" .checkforselect").is(":checked"));
-			if (jQuery("#spannature"+(id)+" .checkforselect").is(":checked")) {
-				if (id == 1) {
-					jQuery("#spannature"+(id)).addClass("prospect-back").removeClass("nonature-back");
-				}
-				if (id == 2) {
-					jQuery("#spannature"+(id)).addClass("customer-back").removeClass("nonature-back");
-				}
-				if (id == 3) {
-					jQuery("#spannature"+(id)).addClass("vendor-back").removeClass("nonature-back");
-				}
-			} else {
-				jQuery("#spannature"+(id)).removeClass("prospect-back").removeClass("customer-back").removeClass("vendor-back").addClass("nonature-back");
-			}
-		});
-	}
-
-	jQuery(".spannature").click(function(){
-		console.log("hey");
-		refreshNatureCss();
-	});
-	refreshNatureCss();
-</script>';
 
 <?php
 // Output close body + html
