@@ -1,5 +1,6 @@
 <?php
 /* Copyright (C) 2024		MDW	<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
  */
 if (!defined('ISLOADEDBYSTEELSHEET')) {
 	die('Must be call by steelsheet');
@@ -15,7 +16,8 @@ if (!defined('ISLOADEDBYSTEELSHEET')) {
 @phan-var-force string $left
 ';
 ?>
-/* <style type="text/css" > */
+
+/* IDE Hack <style type="text/css"> */
 
 
 /*
@@ -32,10 +34,10 @@ if (getDolGlobalString('THEME_INFOBOX_COLOR_ON_BACKGROUND')) {
 }
 
 if (!isset($conf->global->THEME_SATURATE_RATIO)) {
-	$conf->global->THEME_SATURATE_RATIO = 0.7;
+	$conf->global->THEME_SATURATE_RATIO = 0.8;
 }
 if (GETPOSTISSET('THEME_SATURATE_RATIO')) {
-	$conf->global->THEME_SATURATE_RATIO = GETPOSTINT('THEME_SATURATE_RATIO');
+	$conf->global->THEME_SATURATE_RATIO = GETPOSTFLOAT('THEME_SATURATE_RATIO');
 }
 
 ?>
@@ -235,12 +237,12 @@ a.info-box-text-a i.fa.fa-exclamation-triangle {
 	float: left;
 	text-align: center;
 	font-size: 45px;
-	line-height: 94px;;	/* must be same height as min-height of .info-box */
-	height: 94px;;		/* must be same height as min-height of .info-box */
+	line-height: 94px;	/* must be same height as min-height of .info-box */
+	height: 94px;		/* must be same height as min-height of .info-box */
 	width: 86px;
 	background: var(--colorbacktitle1) !important;
-	<?php if (isset($conf->global->THEME_SATURATE_RATIO)) { ?>
-		filter: saturate(<?php echo $conf->global->THEME_SATURATE_RATIO; ?>);
+	<?php if (getDolGlobalString('THEME_SATURATE_RATIO')) { ?>
+		filter: saturate(<?php echo getDolGlobalString('THEME_SATURATE_RATIO'); ?>);
 	<?php } ?>
 }
 
@@ -457,10 +459,10 @@ if (getDolGlobalString('THEME_INFOBOX_COLOR_ON_BACKGROUND')) {
 }
 
 if (!isset($conf->global->THEME_SATURATE_RATIO)) {
-	$conf->global->THEME_SATURATE_RATIO = 0.7;
+	$conf->global->THEME_SATURATE_RATIO = 0.8;
 }
 if (GETPOSTISSET('THEME_SATURATE_RATIO')) {
-	$conf->global->THEME_SATURATE_RATIO = GETPOSTINT('THEME_SATURATE_RATIO');
+	$conf->global->THEME_SATURATE_RATIO = GETPOSTFLOAT('THEME_SATURATE_RATIO');
 }
 ?>
 .bg-infobox-project i.fa{

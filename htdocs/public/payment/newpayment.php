@@ -6,8 +6,8 @@
  * Copyright (C) 2018-2021	Thibault FOUCART	    <support@ptibogxiv.net>
  * Copyright (C) 2021		Waël Almoman	    	<info@almoman.com>
  * Copyright (C) 2021		Dorian Vabre			<dorian.vabre@gmail.com>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,6 +49,10 @@ if (!defined('NOIPCHECK')) {
 }
 if (!defined('NOBROWSERNOTIF')) {
 	define('NOBROWSERNOTIF', '1');
+}
+
+if (!defined('XFRAMEOPTIONS_ALLOWALL')) {
+	define('XFRAMEOPTIONS_ALLOWALL', '1');
 }
 
 // For MultiCompany module.
@@ -187,7 +191,7 @@ if ($source == 'organizedeventregistration') {		// Test on permission not requir
 	}
 } elseif ($source == 'boothlocation') {			// Test on permission not required here (anonymous action protected by mitigation of /public/... urls)
 	// Getting the amount to pay, the invoice, finding the thirdparty
-	$invoiceid = GETPOST('ref');
+	$invoiceid = GETPOSTINT('ref');
 	$invoice = new Facture($db);
 	$resultinvoice = $invoice->fetch($invoiceid);
 	if ($resultinvoice <= 0) {
@@ -225,6 +229,14 @@ $urlwithroot = DOL_MAIN_URL_ROOT; // This is to use same domain name than curren
 
 $urlok = $urlwithroot.'/public/payment/paymentok.php?';
 $urlko = $urlwithroot.'/public/payment/paymentko.php?';
+
+if ($ws && !defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {	// So defined('USEEXTERNALSERVER') should be set but is not always
+	include_once DOL_DOCUMENT_ROOT.'/website/class/website.class.php';
+	$tmpwebsite = new Website($db);
+	$tmpwebsite->fetch(0, $ws);
+	$urlok = $tmpwebsite->virtualhost.'/public/payment/paymentok.php?';
+	$urlko = $tmpwebsite->virtualhost.'/public/payment/paymentko.php?';
+}
 
 // Complete urls for post treatment
 $ref = $REF = GETPOST('ref', 'alpha');
@@ -466,7 +478,7 @@ if ($action == 'dopayment') {	// Test on permission not required here (anonymous
 			dol_syslog("SCRIPT_URI: ".(empty($_SERVER["SCRIPT_URI"]) ? '' : $_SERVER["SCRIPT_URI"]), LOG_DEBUG); // If defined script uri must match domain of PAYPAL_API_OK and PAYPAL_API_KO
 
 			// A redirect is added if API call successful
-			$mesg = print_paypal_redirect($PAYPAL_API_PRICE, $PAYPAL_API_DEVISE, $PAYPAL_PAYMENT_TYPE, $PAYPAL_API_OK, $PAYPAL_API_KO, $FULLTAG);
+			$mesg = print_paypal_redirect((float) $PAYPAL_API_PRICE, $PAYPAL_API_DEVISE, $PAYPAL_PAYMENT_TYPE, $PAYPAL_API_OK, $PAYPAL_API_KO, $FULLTAG);
 
 			// If we are here, it means the Paypal redirect was not done, so we show error message
 			$action = '';
@@ -662,8 +674,7 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 
 				// Create the VAT record in Stripe
 				/* We don't know country of customer, so we can't create tax
-				if (!empty($conf->global->STRIPE_SAVE_TAX_IDS))	// We setup to save Tax info on Stripe side. Warning: This may result in error when saving customer
-				{
+				if (getDolGlobalString('STRIPE_SAVE_TAX_IDS')) {	// We setup to save Tax info on Stripe side. Warning: This may result in error when saving customer
 					if (!empty($vatcleaned))
 					{
 						$isineec=isInEEC($object);
@@ -979,7 +990,7 @@ if (getDolGlobalString('MAIN_IMAGE_PUBLIC_PAYMENT')) {
 
 
 print '<!-- Form to send a payment -->'."\n";
-print '<!-- creditor = '.dol_escape_htmltag($creditor).' -->'."\n";
+print '<!-- creditor = '.dol_escape_htmltag((string) $creditor).' -->'."\n";
 // Additional information for each payment system
 if (isModEnabled('paypal')) {
 	print '<!-- PAYPAL_API_SANDBOX = '.getDolGlobalString('PAYPAL_API_SANDBOX').' -->'."\n";
@@ -1011,7 +1022,7 @@ if (getDolGlobalString('PAYMENT_NEWFORM_TEXT')) {
 }
 if (empty($text)) {
 	$text .= '<tr><td class="textpublicpayment"><br><strong>'.$langs->trans("WelcomeOnPaymentPage").'</strong></td></tr>'."\n";
-	$text .= '<tr><td class="textpublicpayment"><span class="opacitymedium">'.$langs->trans("ThisScreenAllowsYouToPay", $creditor).'</span><br><br></td></tr>'."\n";
+	$text .= '<tr><td class="textpublicpayment"><span class="opacitymedium">'.$langs->trans("ThisScreenAllowsYouToPay", (string) $creditor).'</span><br><br></td></tr>'."\n";
 }
 print $text;
 
@@ -1249,7 +1260,7 @@ if ($source == 'invoice') {
 	print '</td><td class="CTableRow2">';
 	print img_picto('', 'company', 'class="pictofixedwidth"');
 	print '<b>'.$creditor.'</b>';
-	print '<input type="hidden" name="creditor" value="'.dol_escape_htmltag($creditor).'">';
+	print '<input type="hidden" name="creditor" value="'.dol_escape_htmltag((string) $creditor).'">';
 	print '</td></tr>'."\n";
 
 	// Debitor
@@ -1561,9 +1572,8 @@ if ($source == 'member' || $source == 'membersubscription') {
 
 	$member = new Adherent($db);
 	$adht = new AdherentType($db);
-	$subscription = new Subscription($db);
 
-	$result = $member->fetch(0, $ref);
+	$result = $member->fetch(0, $ref, 0, '', true, true);	// This fetch also ->last_subscription_amount
 	if ($result <= 0) {
 		$mesg = $member->error;
 		$error++;
@@ -1575,7 +1585,7 @@ if ($source == 'member' || $source == 'membersubscription') {
 	$object = $member;
 
 	if ($action != 'dopayment') { // Do not change amount if we just click on first dopayment
-		$amount = $subscription->total_ttc;
+		$amount = $member->last_subscription_amount;
 		if (GETPOST("amount", 'alpha')) {
 			$amount = price2num(GETPOST("amount", 'alpha'), 'MT', 2);
 		}
@@ -1712,6 +1722,10 @@ if ($source == 'member' || $source == 'membersubscription') {
 	if (empty($amount) && getDolGlobalString('MEMBER_NEWFORM_AMOUNT')) {
 		$amount = getDolGlobalString('MEMBER_NEWFORM_AMOUNT');
 	}
+	// - If an amount was posted from the form (for example from page with types of membership)
+	if ($caneditamount && GETPOSTISSET('amount') && GETPOSTFLOAT('amount', 'MT') > 0) {
+		$amount = GETPOSTFLOAT('amount', 'MT');
+	}
 	// - If a new amount was posted from the form
 	if ($caneditamount && GETPOSTISSET('newamount') && GETPOSTFLOAT('newamount', 'MT') > 0) {
 		$amount = GETPOSTFLOAT('newamount', 'MT');
@@ -1796,7 +1810,7 @@ if ($source == 'donation') {
 
 	$don = new Don($db);
 	// @phan-suppress-next-line PhanPluginSuspiciousParamPosition
-	$result = $don->fetch($ref);
+	$result = $don->fetch((int) $ref);
 	if ($result <= 0) {
 		$mesg = $don->error;
 		$error++;
@@ -1984,7 +1998,7 @@ if ($source == 'organizedeventregistration' && is_object($thirdparty)) {
 	print '<tr class="CTableRow2"><td class="CTableRow2">'.$langs->trans("Designation");
 	print '</td><td class="CTableRow2"><b>'.$text.'</b>';
 	print '<input type="hidden" name="source" value="'.dol_escape_htmltag($source).'">';
-	print '<input type="hidden" name="ref" value="'.dol_escape_htmltag($invoice->id).'">';
+	print '<input type="hidden" name="ref" value="'.dol_escape_htmltag((string) $invoice->id).'">';
 	print '</td></tr>'."\n";
 
 	// Amount
@@ -2068,7 +2082,7 @@ if ($source == 'boothlocation') {
 	print '<tr class="CTableRow2"><td class="CTableRow2">'.$langs->trans("Designation");
 	print '</td><td class="CTableRow2">'.$text;
 	print '<input type="hidden" name="source" value="'.dol_escape_htmltag($source).'">';
-	print '<input type="hidden" name="ref" value="'.dol_escape_htmltag($invoice->id).'">';
+	print '<input type="hidden" name="ref" value="'.dol_escape_htmltag((string) $invoice->id).'">';
 	print '</td></tr>'."\n";
 
 	// Amount
@@ -2139,6 +2153,7 @@ if ($action != 'dopayment') {
 			'source' => $source,
 			'object' => $object
 		];
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 		$reshook = $hookmanager->executeHooks('doCheckStatus', $parameters, $object, $action);
 		if ($reshook < 0) {
 			setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -2802,6 +2817,7 @@ if (preg_match('/^dopayment/', $action)) {			// If we chose/clicked on the payme
 		'tag' => GETPOST("tag", 'alpha'),
 		'dopayment' => GETPOST('dopayment', 'alpha')
 	];
+	// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 	$reshook = $hookmanager->executeHooks('doPayment', $parameters, $object, $action);
 	if ($reshook < 0) {
 		setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
