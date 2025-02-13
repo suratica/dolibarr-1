@@ -17,14 +17,15 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/agpl-3.0.html>.
  */
 
-$res=0;
-if (! $res && file_exists("../../main.inc.php")) : $res=@include '../../main.inc.php';
-endif;
-if (! $res && file_exists("../../../main.inc.php")) : $res=@include '../../../main.inc.php';
-endif;
-if (! $res && file_exists("../../../../main.inc.php")) : $res=@include '../../../../main.inc.php';
-endif;
+// Load Dolibarr environment
+require '../../../../main.inc.php';
 
+/**
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
 
 // Protection if external user
 if ($user->socid > 0) : accessforbidden();
