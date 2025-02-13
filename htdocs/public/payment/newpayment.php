@@ -963,6 +963,14 @@ if (!empty($logosmall) && is_readable($conf->mycompany->dir_output.'/logos/thumb
 }
 
 // Output html code for logo
+if ($ws) {
+	// Look for a personalized header file (htmlheaderpayment.html) if the payment system is called from a website
+	$filehtmlheader = dol_osencode(DOL_DATA_ROOT . ($conf->entity > 1 ? '/' . $conf->entity : '') . '/website/' . $ws . '/htmlheaderpayment.html');
+	if (is_file($filehtmlheader)) {
+		print file_get_contents($filehtmlheader);
+	}
+}
+
 if ($urllogo && !$ws) {
 	print '<div class="backgreypublicpayment">';
 	print '<div class="logopublicpayment">';
