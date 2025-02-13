@@ -329,7 +329,7 @@ if (!empty($search_progresscalc)) {
 if ($search_task_budget_amount) {
 	$morewherefilterarray[] = natural_search('t.budget_amount', $search_task_budget_amount, 1, 1);
 }
-if ($search_task_billable) {
+if (in_array($search_task_billable, ['yes', 'no'])) {
 	$morewherefilterarray[] = " t.billable = ".($search_task_billable == "yes" ? 1 : 0);
 }
 //var_dump($morewherefilterarray);
