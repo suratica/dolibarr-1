@@ -89,3 +89,4 @@ DocSelectInputsDescription = Select input to enter one value
 DocMultiSelectInputsDescription = Multiselect input to enter several values
 DocEditorInputsDescription = Editor input to enter text with HTML
 DocDateSelectInputsDescription = Date input to enter a date with or without hours
+DocInputsMainDescription = Documentation and exmeples for inputs
