@@ -1550,7 +1550,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				// SellBy / EatBy mandatory list
 				if (!empty($sellOrEatByMandatoryList)) {
 					print '<tr><td>'.$langs->trans('BatchSellOrEatByMandatoryList', $langs->transnoentities('SellByDate'), $langs->transnoentities('EatByDate')).'</td><td>';
-					print $form->selecarray('sell_or_eat_by_mandatory', $sellOrEatByMandatoryList, GETPOSTINT('sell_or_eat_by_mandatory'));
+					print $form->selectarray('sell_or_eat_by_mandatory', $sellOrEatByMandatoryList, GETPOSTINT('sell_or_eat_by_mandatory'));
 					print '</td></tr>';
 				}
 			}
