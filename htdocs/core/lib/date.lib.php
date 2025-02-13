@@ -124,7 +124,7 @@ function getServerTimeZoneInt($refgmtdate = 'now')
  */
 function dol_time_plus_duree($time, $duration_value, $duration_unit, $ruleforendofmonth = 0)
 {
-	if (!isDolTms($duration_value)) {
+	if (empty($duration_value)) {
 		return $time;
 	}
 	if ($duration_unit == 's') {
