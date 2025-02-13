@@ -1458,7 +1458,7 @@ print '</form>';
 $db->free($resql);
 
 $hidegeneratedfilelistifempty = 1;
-if ($massaction == 'builddoc' || $action == 'remove_file' || $show_files) {
+if ($massaction == 'builddoc' || $action == 'remove_file') {
 	$hidegeneratedfilelistifempty = 0;
 }
 
