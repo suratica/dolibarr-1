@@ -2496,13 +2496,12 @@ class Facture extends CommonInvoice
 		if (isset($this->retained_warranty)) {
 			$this->retained_warranty = (float) $this->retained_warranty;
 		}
-		if (!isset($this->fk_user_author) && isset($this->user_author) ) {
-			$this->fk_user_author = $this->user_author;
+		if (!isset($this->user_creation_id) && isset($this->fk_user_author) ) {
+			$this->user_creation_id = $this->fk_user_author;
 		}
-
-
-		// Check parameters
-		// Put here code to add control on parameters values
+		if (!isset($this->user_validation_id) && isset($this->fk_user_valid) ) {
+			$this->user_validation_id = $this->fk_user_valid;
+		}
 
 		// Update request
 		$sql = "UPDATE ".MAIN_DB_PREFIX."facture SET";
@@ -2527,8 +2526,8 @@ class Facture extends CommonInvoice
 		$sql .= " total_ttc=".(isset($this->total_ttc) ? (float) $this->total_ttc : "null").",";
 		$sql .= " revenuestamp=".((isset($this->revenuestamp) && $this->revenuestamp != '') ? (float) $this->revenuestamp : "null").",";
 		$sql .= " fk_statut=".(isset($this->status) ? (int) $this->status : "null").",";
-		$sql .= " fk_user_author=".(isset($this->fk_user_author) ? ((int) $this->fk_user_author) : "null").",";
-		$sql .= " fk_user_valid=".(isset($this->fk_user_valid) ? (int) $this->fk_user_valid : "null").",";
+		$sql .= " fk_user_author=".(isset($this->user_creation_id) ? ((int) $this->user_creation_id) : "null").",";
+		$sql .= " fk_user_valid=".(isset($this->user_validation_id) ? (int) $this->user_validation_id : "null").",";
 		$sql .= " fk_facture_source=".(isset($this->fk_facture_source) ? (int) $this->fk_facture_source : "null").",";
 		$sql .= " fk_projet=".(isset($this->fk_project) ? (int) $this->fk_project : "null").",";
 		$sql .= " fk_cond_reglement=".(isset($this->cond_reglement_id) ? (int) $this->cond_reglement_id : "null").",";
