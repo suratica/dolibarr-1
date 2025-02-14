@@ -88,7 +88,7 @@ class AdherentType extends CommonObject
 	 *  'alwayseditable' says if field can be modified also when status is not draft ('1' or '0')
 	 *  'default' is a default value for creation (can still be overwrote by the Setup of Default Values if field is editable in creation form). Note: If default is set to '(PROV)' and field is 'ref', the default value will be set to '(PROVid)' where id is rowid when a new record is created.
 	 *  'index' if we want an index in database.
-	 *  'foreignkey'=>'tablename.field' if the field is a foreign key (it is recommanded to name the field fk_...).
+	 *  'foreignkey'=>'tablename.field' if the field is a foreign key (it is recommended to name the field fk_...).
 	 *  'searchall' is 1 if we want to search in this field when making a search from the quick search button.
 	 *  'isameasure' must be set to 1 or 2 if field can be used for measure. Field type must be summable like integer or double(24,8). Use 1 in most cases, or 2 if you don't want to see the column total into list (for example for percentage)
 	 *  'css' and 'cssview' and 'csslist' is the CSS style to use on field. 'css' is used in creation and update. 'cssview' is used in view mode. 'csslist' is used for columns in lists. For example: 'css'=>'minwidth300 maxwidth500 widthcentpercentminusx', 'cssview'=>'wordbreak', 'csslist'=>'tdoverflowmax200'
@@ -106,22 +106,24 @@ class AdherentType extends CommonObject
 
 	// BEGIN MODULEBUILDER PROPERTIES
 	/**
-	 * @var array  Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
+	 * @inheritdoc
+	 * Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
 	 */
-	public $fields=array(
-		"rowid" => array("type"=>"integer", "label"=>"TechnicalID", "enabled"=>"1", 'position'=>10, 'notnull'=>1, "visible"=>"-1",),
-		"tms" => array("type"=>"timestamp", "label"=>"DateModification", "enabled"=>"1", 'position'=>20, 'notnull'=>1, "visible"=>"-1",),
-		"statut" => array("type"=>"smallint(6)", "label"=>"Statut", "enabled"=>"1", 'position'=>500, 'notnull'=>1, "visible"=>"-1",),
-		"libelle" => array("type"=>"varchar(50)", "label"=>"Libelle", "enabled"=>"1", 'position'=>30, 'notnull'=>1, "visible"=>"-1",),
-		"subscription" => array("type"=>"varchar(3)", "label"=>"Subscription", "enabled"=>"1", 'position'=>35, 'notnull'=>1, "visible"=>"-1",),
-		"amount" => array("type"=>"double(24,8)", "label"=>"Amount", "enabled"=>"1", 'position'=>40, 'notnull'=>0, "visible"=>"-1",),
-		"caneditamount" => array("type"=>"integer", "label"=>"Caneditamount", "enabled"=>"1", 'position'=>45, 'notnull'=>0, "visible"=>"-1",),
-		"vote" => array("type"=>"varchar(3)", "label"=>"Vote", "enabled"=>"1", 'position'=>50, 'notnull'=>1, "visible"=>"-1",),
-		"note" => array("type"=>"text", "label"=>"Note", "enabled"=>"1", 'position'=>55, 'notnull'=>0, "visible"=>"-1",),
-		"mail_valid" => array("type"=>"text", "label"=>"Mailvalid", "enabled"=>"1", 'position'=>60, 'notnull'=>0, "visible"=>"-1",),
-		"morphy" => array("type"=>"varchar(3)", "label"=>"Morphy", "enabled"=>"1", 'position'=>65, 'notnull'=>0, "visible"=>"-1",),
-		"duration" => array("type"=>"varchar(6)", "label"=>"Duration", "enabled"=>"1", 'position'=>70, 'notnull'=>0, "visible"=>"-1",),
+	public $fields = array(
+		"rowid" => array("type" => "integer", "label" => "TechnicalID", "enabled" => "1", 'position' => 10, 'notnull' => 1, "visible" => "-1",),
+		"tms" => array("type" => "timestamp", "label" => "DateModification", "enabled" => "1", 'position' => 20, 'notnull' => 1, "visible" => "-1",),
+		"statut" => array("type" => "smallint(6)", "label" => "Statut", "enabled" => "1", 'position' => 500, 'notnull' => 1, "visible" => "-1",),
+		"libelle" => array("type" => "varchar(50)", "label" => "Label", "enabled" => "1", 'position' => 30, 'notnull' => 1, "visible" => "-1",),
+		"subscription" => array("type" => "varchar(3)", "label" => "Subscription", "enabled" => "1", 'position' => 35, 'notnull' => 1, "visible" => "-1",),
+		"amount" => array("type" => "double(24,8)", "label" => "Amount", "enabled" => "1", 'position' => 40, 'notnull' => 0, "visible" => "-1",),
+		"caneditamount" => array("type" => "integer", "label" => "Caneditamount", "enabled" => "1", 'position' => 45, 'notnull' => 0, "visible" => "-1",),
+		"vote" => array("type" => "varchar(3)", "label" => "Vote", "enabled" => "1", 'position' => 50, 'notnull' => 1, "visible" => "-1",),
+		"note" => array("type" => "longtext", "label" => "Note", "enabled" => "1", 'position' => 55, 'notnull' => 0, "visible" => "-1",),
+		"mail_valid" => array("type" => "longtext", "label" => "Mailvalid", "enabled" => "1", 'position' => 60, 'notnull' => 0, "visible" => "-1",),
+		"morphy" => array("type" => "varchar(3)", "label" => "Morphy", "enabled" => "1", 'position' => 65, 'notnull' => 0, "visible" => "-1",),
+		"duration" => array("type" => "varchar(6)", "label" => "Duration", "enabled" => "1", 'position' => 70, 'notnull' => 0, "visible" => "-1",),
 	);
+	// END MODULEBUILDER PROPERTIES
 
 	/**
 	 * @var string
@@ -213,28 +215,6 @@ class AdherentType extends CommonObject
 	 * @var array<string,array{label:string,description:string,email:string}>	multilangs
 	 */
 	public $multilangs = array();
-
-
-	// BEGIN MODULEBUILDER PROPERTIES
-	/**
-	 * @inheritdoc
-	 * Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
-	 */
-	public $fields = array(
-		"rowid" => array("type" => "integer", "label" => "TechnicalID", "enabled" => "1", 'position' => 10, 'notnull' => 1, "visible" => "-1",),
-		"tms" => array("type" => "timestamp", "label" => "DateModification", "enabled" => "1", 'position' => 20, 'notnull' => 1, "visible" => "-1",),
-		"statut" => array("type" => "smallint(6)", "label" => "Statut", "enabled" => "1", 'position' => 500, 'notnull' => 1, "visible" => "-1",),
-		"libelle" => array("type" => "varchar(50)", "label" => "Label", "enabled" => "1", 'position' => 30, 'notnull' => 1, "visible" => "-1",),
-		"subscription" => array("type" => "varchar(3)", "label" => "Subscription", "enabled" => "1", 'position' => 35, 'notnull' => 1, "visible" => "-1",),
-		"amount" => array("type" => "double(24,8)", "label" => "Amount", "enabled" => "1", 'position' => 40, 'notnull' => 0, "visible" => "-1",),
-		"caneditamount" => array("type" => "integer", "label" => "Caneditamount", "enabled" => "1", 'position' => 45, 'notnull' => 0, "visible" => "-1",),
-		"vote" => array("type" => "varchar(3)", "label" => "Vote", "enabled" => "1", 'position' => 50, 'notnull' => 1, "visible" => "-1",),
-		"note" => array("type" => "longtext", "label" => "Note", "enabled" => "1", 'position' => 55, 'notnull' => 0, "visible" => "-1",),
-		"mail_valid" => array("type" => "longtext", "label" => "Mailvalid", "enabled" => "1", 'position' => 60, 'notnull' => 0, "visible" => "-1",),
-		"morphy" => array("type" => "varchar(3)", "label" => "Morphy", "enabled" => "1", 'position' => 65, 'notnull' => 0, "visible" => "-1",),
-		"duration" => array("type" => "varchar(6)", "label" => "Duration", "enabled" => "1", 'position' => 70, 'notnull' => 0, "visible" => "-1",),
-	);
-	// END MODULEBUILDER PROPERTIES
 
 
 	/**
