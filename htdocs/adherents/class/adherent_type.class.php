@@ -52,14 +52,12 @@ class AdherentType extends CommonObject
 	public $picto = 'members';
 
 	/**
-	 * 0=No test on entity, 1=Test with field entity, 2=Test with link by societe
-	 * @var int
+	 * @var int<0,1>|string		0=No test on entity, 1=Test with field entity, 2=Test with link by societe
 	 */
 	public $ismultientitymanaged = 1;
 
-
 	/**
-	 * @var int  Does object support extrafields ? 0=No, 1=Yes
+	 * @var int<0,1>|string  	Does object support extrafields ? 0=No, 1=Yes
 	 */
 	public $isextrafieldmanaged = 1;
 
