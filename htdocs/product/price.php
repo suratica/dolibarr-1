@@ -509,6 +509,41 @@ if (empty($reshook)) {
 					setEventMessages($object->error, $object->errors, 'errors');
 					break;
 				}
+
+				// Update level price extrafields
+				$price_extralabels = $extrafields->fetch_name_optionals_label("product_price");
+				if ((getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_AND_MULTIPRICES')) && !empty($price_extralabels)) {
+					$sql = "SELECT rowid";
+					$sql .= " FROM ".$object->db->prefix()."product_price";
+					$sql .= " WHERE entity IN (".getEntity('productprice').")";
+					$sql .= " AND price_level=".((int) $key); // $i
+					$sql .= " AND fk_product = ".((int) $object->id);
+					$sql .= " ORDER BY date_price DESC, rowid DESC";
+					$sql .= " LIMIT 1";
+					$resql = $object->db->query($sql);
+					if ($resql) {
+						$lineid = $object->db->fetch_object($resql);
+						$db->free($resql);
+					}
+					if (!empty($lineid->rowid)) {
+						if (!empty($price_extralabels) && is_array($price_extralabels)) {
+							foreach ($price_extralabels as $code => $label) {
+								$code_array = GETPOST($code, 'array');
+								$object->array_options['options_'.$code] = $code_array[$key];
+							}
+							// We need to force table to update product_price and not product extrafields
+							$object->id = $lineid->rowid;
+							$object->table_element = 'product_price';
+							$result = $object->insertExtraFields();
+						}
+						// Back to product table
+						$object->id = $id;
+						$object->table_element = 'product';
+						if ($result < 0) {
+							$error++;
+						}
+					}
+				}
 			}
 		}
 
