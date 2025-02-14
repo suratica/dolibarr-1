@@ -9,8 +9,8 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 1730+ occurrences
-    // PhanUndeclaredProperty : 510+ occurrences
+    // PhanTypeMismatchArgument : 1690+ occurrences
+    // PhanUndeclaredProperty : 500+ occurrences
     // PhanTypeMismatchArgumentNullable : 350+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 170+ occurrences
     // PhanUndeclaredGlobalVariable : 160+ occurrences
@@ -636,23 +636,10 @@ return [
         'htdocs/recruitment/recruitmentjobposition_card.php' => ['PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/recruitment/recruitmentjobposition_document.php' => ['PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/recruitment/recruitmentjobposition_note.php' => ['PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
-        'htdocs/resource/card.php' => ['PhanTypeMismatchArgument'],
         'htdocs/resource/class/dolresource.class.php' => ['PhanTypeMismatchArgumentNullable'],
-        'htdocs/resource/class/html.formresource.class.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/resource/element_resource.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/resource/list.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/salaries/admin/salaries.php' => ['PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/salaries/card.php' => ['PhanTypeMismatchArgument'],
         'htdocs/salaries/class/api_salaries.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType'],
-        'htdocs/salaries/class/paymentsalary.class.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/salaries/class/salariesstats.class.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/salaries/class/salary.class.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/salaries/document.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/salaries/info.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/salaries/list.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanUndeclaredGlobalVariable'],
-        'htdocs/salaries/paiement_salary.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal', 'PhanUndeclaredProperty'],
-        'htdocs/salaries/stats/index.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/salaries/virement_request.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
+        'htdocs/salaries/paiement_salary.php' => ['PhanUndeclaredProperty'],
+        'htdocs/salaries/virement_request.php' => ['PhanUndeclaredProperty'],
         'htdocs/societe/admin/societe.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal', 'PhanUndeclaredMethod'],
         'htdocs/societe/ajax/company.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanTypeMismatchArgumentProbablyReal', 'PhanUndeclaredProperty'],
         'htdocs/societe/canvas/actions_card_common.class.php' => ['PhanTypeMismatchArgument'],
