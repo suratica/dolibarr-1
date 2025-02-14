@@ -2173,7 +2173,7 @@ if ($action == 'create' && $usercancreate) {
 			print '<tr><td>'.$langs->trans("Categories").'</td><td colspan="3">';
 			$cate_arbo = $form->select_all_categories(Categorie::TYPE_ORDER, '', 'parent', 64, 0, 1);
 			$arrayselected = GETPOST('categories', 'array');
-			print img_picto('', 'category').$form->multiselectarray('categories', $cate_arbo, $arrayselected, '', 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0);
+			print img_picto('', 'category').$form->multiselectarray('categories', $cate_arbo, $arrayselected, 0, 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0);
 			print "</td></tr>";
 		}
 

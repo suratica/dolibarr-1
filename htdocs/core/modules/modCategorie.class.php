@@ -665,12 +665,12 @@ class modCategorie extends DolibarrModules
 	/**
 	 * Configure a tag link export
 	 *
-	 * @param int		$r				Index of import tables
-	 * @param int		$cat_id			Categorie id
-	 * @param string	$class			Class of the linked object
-	 * @param string	$enabled		Condition to enable this export
-	 * @param array		$permission		Permission to export the linked object
-	 * @param array		$fields_list	Additional fields of the linked object to export
+	 * @param int									$r				Index of import tables
+	 * @param int									$cat_id			Categorie id
+	 * @param string								$class			Class of the linked object
+	 * @param string								$enabled		Condition to enable this export
+	 * @param array<int,string>						$permission		Permission to export the linked object
+	 * @param array<string,array<string,string>>	$fields_list	Additional fields of the linked object to export
 	 *
 	 * @return void
 	 */
