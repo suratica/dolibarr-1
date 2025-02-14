@@ -500,52 +500,6 @@ if (empty($reshook)) {
 				// If price has changed, we update it
 				if (!array_key_exists($key, $object->multiprices) || $object->multiprices[$key] != $newprice || $object->multiprices_min[$key] != $newprice_min || $object->multiprices_base_type[$key] != $val['price_base_type'] || $object->multiprices_tva_tx[$key] != $newvattx) {
 					$res = $object->updatePrice($newprice, $val['price_base_type'], $user, $val['vat_tx'], $newprice_min, $key, $val['npr'], $psq, 0, $val['localtaxes_array'], $val['default_vat_code'], $val['price_label']);
-					if ($res > 0) {
-						$extralabels = $extrafields->fetch_name_optionals_label("product");
-						if (!getDolGlobalString('PRODUIT_MULTIPRICES') && !getDolGlobalString('PRODUIT_CUSTOMER_PRICES_AND_MULTIPRICES') && !empty($extralabels)) {
-							// Default price
-							$extrafield_values = $extrafields->getOptionalsFromPost("product");
-							foreach ($extrafield_values as $efkey => $value) {
-								$object->array_options[$efkey] = $value;
-							}
-							$result = $object->insertExtraFields();
-							if ($result < 0) {
-								$error++;
-							}
-						} elseif ((getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_AND_MULTIPRICES')) && !empty($extralabels)) {
-							$price_extralabels = $extrafields->fetch_name_optionals_label("product_price");
-							$sql = "SELECT rowid";
-							$sql .= " FROM ".$object->db->prefix()."product_price";
-							$sql .= " WHERE entity IN (".getEntity('productprice').")";
-							$sql .= " AND price_level=".((int) $key); // $i
-							$sql .= " AND fk_product = ".((int) $object->id);
-							$sql .= " ORDER BY date_price DESC, rowid DESC";
-							$sql .= " LIMIT 1";
-							$resql = $object->db->query($sql);
-							if ($resql) {
-								$lineid = $object->db->fetch_object($resql);
-								$db->free($resql);
-							}
-							if (!empty($lineid->rowid)) {
-								if (!empty($price_extralabels) && is_array($price_extralabels)) {
-									foreach ($price_extralabels as $code => $label) {
-										$code_array = GETPOST($code, 'array');
-										$object->array_options['options_'.$code] = $code_array[$key];
-									}
-									// We need to force table to update product_price and not product extrafields
-									$object->id = $lineid->rowid;
-									$object->table_element = 'product_price';
-									$result = $object->insertExtraFields();
-								}
-								// Back to product table
-								$object->id = $id;
-								$object->table_element = 'product';
-								if ($result < 0) {
-									$error++;
-								}
-							}
-						}
-					}
 				} else {
 					$res = 0;
 				}
@@ -1515,39 +1469,6 @@ if (getDolGlobalString('PRODUIT_MULTIPRICES') || getDolGlobalString('PRODUIT_CUS
 		}
 		print '</td></tr>';
 	}
-
-	// Extrafields
-	$extrafields->fetch_name_optionals_label("product");
-	$extralabels = !empty($extrafields->attributes["product"]['label']) ? $extrafields->attributes["product"]['label'] : [];
-	$extrafield_values = $extrafields->getOptionalsFromPost("product");
-	$sql  = "SELECT";
-	$sql .= " fk_object";
-	foreach ($extralabels as $key => $value) {
-		$sql .= ", ".$key;
-	}
-	$sql .= " FROM ".MAIN_DB_PREFIX."product_extrafields";
-	$sql .= " WHERE fk_object = ".((int) $object->id);
-	$resql = $db->query($sql);
-	if ($resql) {
-		$obj = $db->fetch_object($resql);
-		foreach ($extralabels as $key => $value) {
-			if (!empty($extrafields->attributes["product"]['list'][$key]) && ($extrafields->attributes["product"]['list'][$key] == 1 || $extrafields->attributes["product"]['list'][$key] == 3 || ($action == "edit_price" && $extrafields->attributes["product"]['list'][$key] == 4))) {
-				if (!empty($extrafields->attributes["product"]['langfile'][$key])) {
-					$langs->load($extrafields->attributes["product"]['langfile'][$key]);
-				}
-
-				print '<tr><td'.($extrafields->attributes["product"]['required'][$key] ? ' class="fieldrequired"' : '').'>';
-				if (!empty($extrafields->attributes["product"]['help'][$key])) {
-					print $form->textwithpicto($langs->trans($value), $langs->trans($extrafields->attributes["product"]['help'][$key]));
-				} else {
-					print $langs->trans($value);
-				}
-
-				print '<td align="left">'.$extrafields->showOutputField($key, $obj->{$key}, '', 'product')."</td></tr>";
-			}
-		}
-		$db->free($resql);
-	}
 }
 
 print "</table>\n";
@@ -1751,59 +1672,6 @@ if (($action == 'edit_price' || $action == 'edit_level_price') && $object->getRi
 		print '</td>';
 		print '</tr>';
 
-		// Extrafields
-		$extrafields->fetch_name_optionals_label("product");
-		$extralabels = !empty($extrafields->attributes["product"]['label']) ? $extrafields->attributes["product"]['label'] : '';
-		$extrafield_values = $extrafields->getOptionalsFromPost("product");
-		if (!empty($extralabels)) {
-			if (empty($object->id)) {
-				foreach ($extralabels as $key => $value) {
-					if (!empty($extrafields->attributes["product"]['list'][$key]) && ($extrafields->attributes["product"]['list'][$key] == 1 || $extrafields->attributes["product"]['list'][$key] == 3 || ($action == "edit_price" && $extrafields->attributes["product"]['list'][$key] == 4))) {
-						if (!empty($extrafields->attributes["product"]['langfile'][$key])) {
-							$langs->load($extrafields->attributes["product"]['langfile'][$key]);
-						}
-
-						print '<tr><td'.($extrafields->attributes["product"]['required'][$key] ? ' class="fieldrequired"' : '').'>';
-						if (!empty($extrafields->attributes["product"]['help'][$key])) {
-							print $form->textwithpicto($langs->trans($value), $langs->trans($extrafields->attributes["product"]['help'][$key]));
-						} else {
-							print $langs->trans($value);
-						}
-						print '</td><td>'.$extrafields->showInputField($key, GETPOSTISSET('options_'.$key) ? $extrafield_values['options_'.$key] : '', '', '', '', '', 0, 'product').'</td></tr>';
-					}
-				}
-			} else {
-				$sql  = "SELECT";
-				$sql .= " fk_object";
-				foreach ($extralabels as $key => $value) {
-					$sql .= ", ".$key;
-				}
-				$sql .= " FROM ".MAIN_DB_PREFIX."product_extrafields";
-				$sql .= " WHERE fk_object = ".((int) $object->id);
-				$resql = $db->query($sql);
-				if ($resql) {
-					$obj = $db->fetch_object($resql);
-					foreach ($extralabels as $key => $value) {
-						if (!empty($extrafields->attributes["product"]['list'][$key]) && ($extrafields->attributes["product"]['list'][$key] == 1 || $extrafields->attributes["product"]['list'][$key] == 3 || ($action == "edit_price" && $extrafields->attributes["product"]['list'][$key] == 4))) {
-							if (!empty($extrafields->attributes["product"]['langfile'][$key])) {
-								$langs->load($extrafields->attributes["product"]['langfile'][$key]);
-							}
-
-							print '<tr><td'.($extrafields->attributes["product"]['required'][$key] ? ' class="fieldrequired"' : '').'>';
-							if (!empty($extrafields->attributes["product"]['help'][$key])) {
-								print $form->textwithpicto($langs->trans($value), $langs->trans($extrafields->attributes["product"]['help'][$key]));
-							} else {
-								print $langs->trans($value);
-							}
-							print '</td><td>'.$extrafields->showInputField($key, GETPOSTISSET('options_'.$key) ? $extrafield_values['options_'.$key] : $obj->{$key}, '', '', '', '', 0, 'product');
-
-							print '</td></tr>';
-						}
-					}
-					$db->free($resql);
-				}
-			}
-		}
 		$parameters = array();
 		$reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 
