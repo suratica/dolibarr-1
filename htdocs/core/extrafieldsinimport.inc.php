@@ -1,4 +1,7 @@
 <?php
+/* Copyright (C) 2025		MDW	<mdeweerd@users.noreply.github.com>
+ */
+'@phan-var-force DolibarrModules $this';
 
 // $keyforselect = name of main table
 // keyforelement = name of picto
@@ -6,7 +9,7 @@
 
 if (empty($keyforselect) || empty($keyforelement) || empty($keyforaliasextra)) {
 	//print $keyforselet.' - '.$keyforelement.' - '.$keyforaliasextra;
-	dol_print_error('', 'include of file extrafieldsinimport.inc.php was done but var $keyforselect or $keyforelement or $keyforaliasextra was not set');
+	dol_print_error(null, 'include of file extrafieldsinimport.inc.php was done but var $keyforselect or $keyforelement or $keyforaliasextra was not set');
 	exit;
 }
 
@@ -50,7 +53,7 @@ if ($resql) {    // This can fail when class is used on old database (during mig
 				$tmpparam = jsonOrUnserialize($obj->param); // $tmp may be array 'options' => array 'c_currencies:code_iso:code_iso' => null
 				if (is_array($tmpparam) && array_key_exists('options', $tmpparam) &&  $tmpparam['options'] && is_array($tmpparam['options'])) {
 					$tmpkeys = array_keys($tmpparam['options']);
-					$tmp = array_shift($tmpkeys);
+					$tmp = (string) array_shift($tmpkeys);
 				}
 				if (preg_match('/[a-z0-9_]+:[a-z0-9_]+:[a-z0-9_]+/', $tmp)) {
 					$typeFilter = "List:".$tmp;
