@@ -820,7 +820,7 @@ function isInEEC($object)
  */
 function getCountriesInSEPA()
 {
-	// List of all country codes that are in Europe agreement for bank transferts 
+	// List of all country codes that are in Europe agreement for bank transferts
 	// List found on https://www.ecb.europa.eu/paym/integration/retail/sepa/html/index.en.html
 	global $conf, $db;
 	$country_code_in_SEPA = array();
