@@ -4398,7 +4398,7 @@ if ($action == 'editsecurity') {
 	$examplecsprule = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
 	// Force CSPRO
 	print '<tr class="oddeven">';
-	print '<td>'.$form->textwithpicto($langs->trans('WebsiteSecurityForceCSPRO'), $langs->trans("Exemple").": ".$examplecsprule).'</td>';
+	print '<td>'.$form->textwithpicto($langs->trans('WebsiteSecurityForceCSPRO'), $langs->trans("Example").": ".$examplecsprule).'</td>';
 	print '<td><input class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO" value="'.getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCECSPRO").'"></td>';
 	print '</tr>';
 	print '</table>';
@@ -4407,7 +4407,7 @@ if ($action == 'editsecurity') {
 	// Content Security Policy
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="centpercent">';
-	print '<tr><td>'.$form->textwithpicto($langs->trans('ContentSecurityPolicy'), $langs->trans("Exemple").": ".$examplecsprule).'</td></tr>';
+	print '<tr><td>'.$form->textwithpicto($langs->trans('ContentSecurityPolicy'), $langs->trans("Example").": ".$examplecsprule).'</td></tr>';
 	print '<tr><td>'.$langs->trans("Value").':</span></td><td colspan=2><input style="width:90%;" class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" value="'.$forceCSP.'"></td></tr>';
 
 	print '<tr><td></td></tr>';
