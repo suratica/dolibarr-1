@@ -2361,6 +2361,8 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 		print '<table class="liste centpercent">'."\n";
 
 		if (count($prodcustprice->lines) > 0 || $search_soc) {
+			$extrafields->fetch_name_optionals_label("product_customer_price");
+			$custom_price_extralabels = !empty($extrafields->attributes["product_customer_price"]['label']) ? $extrafields->attributes["product_customer_price"]['label'] : '';
 			if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES_AND_MULTIPRICES')) {
 				$colspan = 10;
 			} else {
@@ -2369,8 +2371,8 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 			if ($mysoc->localtax1_assuj == "1" || $mysoc->localtax2_assuj == "1") {
 				$colspan++;
 			}
-			if (!empty($price_extralabels) && is_array($price_extralabels)) {
-				$colspan += count($price_extralabels);
+			if (!empty($custom_price_extralabels) && is_array($custom_price_extralabels)) {
+				$colspan += count($custom_price_extralabels);
 			}
 
 			print '<tr class="liste_titre">';
