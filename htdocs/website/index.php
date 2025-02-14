@@ -2033,7 +2033,7 @@ if ($action == "updatesecurity" && $usercanedit) {
 	$res4 = dolibarr_set_const($db, 'WEBSITE_'.$object->id.'_SECURITY_FORCECSP', $securitysp, 'chaine', 0, '', $conf->entity);
 	$res5 = dolibarr_set_const($db, 'WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO', $securitycspro, 'chaine', 0, '', $conf->entity);
 
-	if ($res1 >= 0 && $res2 >= 0 && $res3 >= 0 && $res4 >= 0 && $res >= 0) {
+	if ($res1 >= 0 && $res2 >= 0 && $res3 >= 0 && $res4 >= 0 && $res5 >= 0) {
 		$db->commit();
 		setEventMessages($langs->trans("Saved"), null, 'mesgs');
 	} else {
