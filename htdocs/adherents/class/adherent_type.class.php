@@ -57,7 +57,7 @@ class AdherentType extends CommonObject
 	public $ismultientitymanaged = 1;
 
 	/**
-	 * @var int<0,1>|string  	Does object support extrafields ? 0=No, 1=Yes
+	 * @var int<0,1>  			Does object support extrafields ? 0=No, 1=Yes
 	 */
 	public $isextrafieldmanaged = 1;
 
