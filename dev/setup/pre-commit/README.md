@@ -46,12 +46,12 @@ the project: `pre-commit-config.yaml`.
 
 ### Troubleshooting
 
-# If you get error "ModuleNotFoundError: No module named 'platformdirs'"
+* If you get error "ModuleNotFoundError: No module named 'platformdirs'"
 
 Install the python package with
 `pip3 install platformdirs`   or   `pip3 install platformdirs --break-system-packages`
 
-# if yoy get error "ERROR: PHP_CodeSniffer requires the tokenizer, xmlwriter and SimpleXML extensions to be enabled. Please enable xmlwriter and SimpleXML."
+* If you get error "ERROR: PHP_CodeSniffer requires the tokenizer, xmlwriter and SimpleXML extensions to be enabled. Please enable xmlwriter and SimpleXML."
 
 Install the PHP package xml
 `sudo apt install php-simplexml`
