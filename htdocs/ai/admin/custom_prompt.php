@@ -203,7 +203,7 @@ print load_fiche_titre($langs->trans($title), $linkback, 'title_setup');
 
 // Configuration header
 $head = aiAdminPrepareHead();
-print dol_get_fiche_head($head, 'custom', $langs->trans($title), -1, "fa-microchip");
+print dol_get_fiche_head($head, 'custom', $langs->trans($title), -1, "ai");
 
 //$newbutton = '<a href="'.$_SERVER["PHP_SELF"].'?action=create">'.$langs->trans("New").'</a>';
 $newbutton = '';
