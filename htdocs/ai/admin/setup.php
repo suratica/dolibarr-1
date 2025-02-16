@@ -140,7 +140,7 @@ print load_fiche_titre($langs->trans($title), $linkback, 'title_setup');
 
 // Configuration header
 $head = aiAdminPrepareHead();
-print dol_get_fiche_head($head, 'settings', $langs->trans($title), -1, "fa-microchip");
+print dol_get_fiche_head($head, 'settings', $langs->trans($title), -1, "ai");
 
 
 if ($action == 'edit') {
