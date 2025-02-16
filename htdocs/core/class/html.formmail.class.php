@@ -1493,6 +1493,7 @@ class FormMail extends Form
 	 * @param	string		$format			Format for output ('', 'html', ...)
 	 * @param   string      $htmlContent    HTML name of WYSIWYG field
 	 * @return 	string      				HTML code to ask AI instruction and autofill result
+	 * TODO Move into a file html.formai.class.php
 	 */
 	public function getSectionForAIPrompt($function = 'textgeneration', $format = '', $htmlContent = 'message')
 	{
@@ -1502,7 +1503,7 @@ class FormMail extends Form
 
 		$htmlContent = preg_replace('/[^a-z0-9_]/', '', $htmlContent);
 
-		$out = '<div id="ai_input'.$htmlContent.'" class="hidden paddingtop paddingbottom">';
+		$out = '<div id="ai_input'.$htmlContent.'" class="ai_input'.$htmlContent.' hidden paddingtop paddingbottom">';
 		$out .= '<input type="text" class="quatrevingtpercent" id="ai_instructions'.$htmlContent.'" name="instruction" placeholder="'.$langs->trans("EnterYourAIPromptHere").'..." />';
 		$out .= '<input id="generate_button'.$htmlContent.'" type="button" class="button smallpaddingimp"  value="'.$langs->trans('Generate').'"/>';
 		$out .= '<div id="ai_status_message'.$htmlContent.'" class="fieldrequired hideobject marginrightonly margintoponly">';
@@ -1526,7 +1527,7 @@ class FormMail extends Form
 				});
 
 				$('#generate_button".$htmlContent."').click(function() {
-					console.log('We click on generate_button".$htmlContent." ai button');
+					console.log('We click on generate_button".$htmlContent." ai button, so we make an ajax on url /ai/ajax/generate_content.php');
 
 					var instructions = $('#ai_instructions".$htmlContent."').val();
 					var timeoutfinished = 0;
@@ -1659,7 +1660,7 @@ class FormMail extends Form
 		$websitepage = new WebsitePage($this->db);
 		$arrayofblogs = $websitepage->fetchAll('', 'DESC', 'date_creation', 0, 0, array('type_container' => 'blogpost'));
 
-		$out = '<div id="template-selector" class="email-layout-container hidden" style="display:none;">';
+		$out = '<div id="template-selector" class="template-selector email-layout-container hidden" style="display:none;">';
 
 		// Define list of email layouts to use
 		$layouts = array(

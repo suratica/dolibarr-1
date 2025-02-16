@@ -60,7 +60,7 @@ if (!isset($out)) {	// Init to empty string if not defined
 }
 
 // Add link to add layout
-if ($showlinktolayout) {
+if ($showlinktolayout) {	// May be set only if MAIN_EMAIL_USE_LAYOUT is set
 	$out .= '<a href="#" id="linkforlayouttemplates" class="notasortlink inline-block alink marginrightonly">';
 	$out .= img_picto($showlinktolayoutlabel, 'layout', 'class="paddingrightonly"');
 	$out .= $showlinktolayoutlabel.'...';
@@ -69,10 +69,10 @@ if ($showlinktolayout) {
 	$out .= '<script>
 						$(document).ready(function() {
   							$("#linkforlayouttemplates").click(function() {
-								console.log("We click on linkforlayouttemplates");
+								console.log("We click on linkforlayouttemplates, we toggle .template-selector");
 								event.preventDefault();
-								jQuery("#template-selector").toggle();
-								jQuery("#ai_input'.$htmlname.'").hide();
+								jQuery(".template-selector").toggle();
+								jQuery(".ai_input'.$htmlname.'").hide();
 								jQuery("#pageContent").show();	// May exists for website page only
 							});
 						});
@@ -89,10 +89,10 @@ if ($showlinktoai) {
 	$out .= '<script>
 						$(document).ready(function() {
   							$("#linkforaiprompt'.$showlinktoai.'").click(function() {
-								console.log("formlayoutai.tpl: We click on linkforaiprompt'.$showlinktoai.', we toggle #ai_input'.$showlinktoai.'");
+								console.log("formlayoutai.tpl: We click on linkforaiprompt'.$showlinktoai.', we toggle .ai_input'.$showlinktoai.'");
 								event.preventDefault();
-								jQuery("#ai_input'.$htmlname.'").toggle();
-								jQuery("#template-selector").hide();
+								jQuery(".ai_input'.$htmlname.'").toggle();
+								jQuery(".template-selector").hide();
 								jQuery(".email-layout-container").hide();
 								if (!jQuery("#ai_input'.$htmlname.'").is(":hidden")) {
 									console.log("Set focus on input field #ai_instructions'.$htmlname.'");

@@ -305,6 +305,7 @@ if ($action == 'edit' || $action == 'deleteproperty') {
 
 	$out .= $form->buttonsSaveCancel("Add", "");
 	$out .= '</form>';
+
 	$out .= '<br><br><br>';
 
 	print $out;
@@ -365,7 +366,7 @@ if ($action == 'edit' || $action == 'create' || $action == 'deleteproperty') {
 			$out .= '<tr>';
 			$out .= '<td></td>';
 			$out .= '<td>';
-			$out .= '<input type="submit" class="button small submitBtn reposition" name="modify" data-index="'.$key.'" value="'.dol_escape_htmltag($langs->trans("Modify")).'"/>';
+			$out .= '<input type="submit" class="button small submitBtn reposition" name="modify" data-index="'.$key.'" value="'.dol_escape_htmltag($langs->trans("Save")).'"/>';
 			$out .= ' &nbsp; ';
 
 			include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';

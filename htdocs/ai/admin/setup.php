@@ -176,17 +176,22 @@ $out = '';
 if ($functioncode) {
 	$labeloffeature = empty($arrayofaifeatures[GETPOST('functioncode')]['label']) ? 'Undefined' : $arrayofaifeatures[GETPOST('functioncode')]['label'];
 
-	$out .= $langs->trans("Test").' '.$labeloffeature.'...<br><br>';
+	//$out .= $langs->trans("Test").' '.$labeloffeature.'...<br><br>';
 
 	if (GETPOST('functioncode') == 'textgenerationemail') {
-		$showlinktoai = 1;
+		$key = 'textgenerationemail';	// The HTML ID of field to fill
+
+		include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
+		$showlinktoai = $key;		// 'textgeneration', 'imagegeneration', ...
+		$showlinktoailabel = $langs->trans("Test").' '.$labeloffeature;
 		$showlinktolayout = 0;
+		$formmail = new FormMail($db);
+		$htmlname = $key;
 
+		// Fill $out
+		include DOL_DOCUMENT_ROOT.'/core/tpl/formlayoutai.tpl.php';
 
-		$neweditor = new DolEditor('aicontenttotest', $content);
-		$out .= $neweditor->Create(1);
-
-		$out .= $form->buttonsSaveCancel("Test");
+		$out .= '<div id="'.$key.'"></div>';
 	} else {
 		$out .= $langs->trans("FeatureNotYetAvailable").'<br><br>';
 		$functioncode = '';

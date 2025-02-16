@@ -2614,3 +2614,4 @@ Privileges=Privileges
 FieldsLinked=Fields Linked
 PDF_XXX_SHOW_PRICE_INCL_TAX=Show column Price including tax
 AvailableWithSomePDFTemplatesOnly=Feature not supported on old PDF templates
+SelectFeatureToTest=Select the feature to test
