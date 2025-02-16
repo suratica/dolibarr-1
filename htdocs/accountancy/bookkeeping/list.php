@@ -177,9 +177,15 @@ $form = new Form($db);
 
 if (!in_array($action, array('delmouv', 'delmouvconfirm')) && !GETPOSTISSET('begin') && !GETPOSTISSET('formfilteraction') && GETPOST('page', 'alpha') == '' && !GETPOSTINT('noreset') && $user->hasRight('accounting', 'mouvements', 'export')) {
 	if (empty($search_date_start) && empty($search_date_end) && !GETPOSTISSET('restore_lastsearch_values') && !GETPOST('search_accountancy_code_start')) {
-		$query = "SELECT date_start, date_end from ".MAIN_DB_PREFIX."accounting_fiscalyear ";
-		$query .= " where date_start < '".$db->idate(dol_now())."' and date_end > '".$db->idate(dol_now())."' limit 1";
-		$res = $db->query($query);
+		$sql = "SELECT date_start, date_end";
+		$sql .=" FROM ".MAIN_DB_PREFIX."accounting_fiscalyear ";
+		if (getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT')) {
+			$sql .= " WHERE rowid = " . getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT');
+		} else {
+			$sql .= " WHERE date_start < '" . $db->idate(dol_now()) . "' and date_end > '" . $db->idate(dol_now()) . "'";
+		}
+		$sql .= $db->plimit(1);
+		$res = $db->query($sql);
 
 		if ($db->num_rows($res) > 0) {
 			$fiscalYear = $db->fetch_object($res);
@@ -884,12 +890,6 @@ if (getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT')) {
 }
 
 $moreforfilter = '';
-$moreforfilter = '<div class="divsearchfield">';
-$moreforfilter .= $langs->trans('FiscalYear').': ';
-$moreforfilter .= '<div class="nowrap inline-block">';
-$moreforfilter .= $formfiscalyear->selectFiscalYear($fiscalYear, 'searchfiscalyear', $useempty, 0, 1);
-$moreforfilter .= '</div>';
-$moreforfilter .= '</div>';
 $moreforfilter .= '<div class="divsearchfield">';
 $moreforfilter .= $langs->trans('AccountingCategory').': ';
 $moreforfilter .= '<div class="nowrap inline-block">';

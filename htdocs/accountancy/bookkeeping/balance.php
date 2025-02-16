@@ -1,7 +1,7 @@
 <?php
 /* Copyright (C) 2016       Olivier Geffroy         <jeff@jeffinfo.com>
  * Copyright (C) 2016       Florian Henry           <florian.henry@open-concept.pro>
- * Copyright (C) 2016-2024  Alexandre Spangaro      <alexandre@inovea-conseil.com>
+ * Copyright (C) 2016-2025  Alexandre Spangaro      <alexandre@inovea-conseil.com>
  * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2024       MDW                     <mdeweerd@users.noreply.github.com>
  *
@@ -100,9 +100,14 @@ $formother = new FormOther($db);
 $form = new Form($db);
 
 if (empty($search_date_start) && !GETPOSTISSET('formfilteraction')) {
-	$sql = "SELECT date_start, date_end from ".MAIN_DB_PREFIX."accounting_fiscalyear ";
-	$sql .= " WHERE date_start < '".$db->idate(dol_now())."' AND date_end > '".$db->idate(dol_now())."'";
-	$sql .= $db->plimit(1);
+    $sql = "SELECT date_start, date_end";
+    $sql .=" FROM ".MAIN_DB_PREFIX."accounting_fiscalyear ";
+    if (getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT')) {
+        $sql .= " WHERE rowid = " . getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT');
+    } else {
+        $sql .= " WHERE date_start < '" . $db->idate(dol_now()) . "' and date_end > '" . $db->idate(dol_now()) . "'";
+    }
+    $sql .= $db->plimit(1);
 	$res = $db->query($sql);
 
 	if ($db->num_rows($res) > 0) {
