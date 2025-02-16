@@ -85,8 +85,9 @@ if (! $ENV{"DESTIBETARC"} || ! $ENV{"DESTISTABLE"})
 	print "set DESTIBETARC=c:/tmp\n";
 	print "set DESTISTABLE=c:/tmp\n";
 	print "\n";
-	print "Example: DESTIBETARC='/media/HDDATA1_LD/Mes Archives/Doli/dolibarr/files/lastbuild'\n";
-	print "Example: DESTISTABLE='/media/HDDATA1_LD/Mes Archives/Doli/dolibarr/files/stable'\n";
+	print "Example in .bashrc:\n";
+	print "export DESTIBETARC='/mnt/HDDATA1_LD/Mes Archives/Doli/dolibarr/lastbuild'\n";
+	print "export DESTISTABLE='/mnt/HDDATA1_LD/Mes Archives/Doli/dolibarr/stable'\n";
 	sleep 2;
 	exit 1;
 }
