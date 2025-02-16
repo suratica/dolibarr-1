@@ -194,7 +194,7 @@ class Ai
 
 			if (isset($configurations[$function])) {
 				if (isset($configurations[$function]['prePrompt'])) {
-					$prePrompt = $configurations[$function]['prePrompt'];	// TODO We can send prePrompt into a separated message with role system.
+					$prePrompt = $configurations[$function]['prePrompt'];
 				}
 
 				if (isset($configurations[$function]['postPrompt'])) {
@@ -237,7 +237,9 @@ class Ai
 			if ($addDateTimeContext) {
 				$prePrompt = ($prePrompt ? $prePrompt.(preg_match('/[\.\!\?]$/', $prePrompt) ? '' : '.').' ' : '').'Today we are '.dol_print_date(dol_now(), 'dayhourtext');
 			}
-			$arrayforpayload['messages'][] = array('role' => 'system', 'content' => $prePrompt);
+			if ($prePrompt) {
+				$arrayforpayload['messages'][] = array('role' => 'system', 'content' => $prePrompt);
+			}
 
 			/*
 			$arrayforpayload['temperature'] = 0.7;
