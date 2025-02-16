@@ -153,7 +153,7 @@ if ($result) {
 	$newcardbutton = empty($hookmanager->resPrint) ? '' : $hookmanager->resPrint;
 
 	if (empty($reshook)) {
-		$newcardbutton .= dolGetButtonTitle($langs->trans('NewFiscalYear'), '', 'fa fa-plus-circle', 'fiscalyear_card.php?action=create', '', $user->hasRight('accounting', 'fiscalyear', 'write'));
+		$newcardbutton .= dolGetButtonTitle($langs->trans('NewFiscalYear'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/accountancy/admin/fiscalyear_card.php?action=create', '', $user->hasRight('accounting', 'fiscalyear', 'write'));
 	}
 
 	$title = $langs->trans('AccountingPeriods');
