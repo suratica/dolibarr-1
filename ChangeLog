@@ -2,7 +2,7 @@
 English Dolibarr ChangeLog
 --------------------------------------------------------------
 
-***** ChangeLog for 20.0.4 compared to 20.0.2 *****
+***** ChangeLog for 20.0.4 compared to 20.0.3 *****
 FIX: $this->origin_object can not be instance of CommandeFournisseur if it is already an instanceof CommonObject
 FIX: 17.0 API endpoints "PUT": prevent overwriting all extrafields if only some are supplied in the request cf. PR #29237
 FIX: 17.0 - collisions in cache for dol_getIdFromCode
