@@ -91,8 +91,8 @@ class FormFiscalYear extends Form
 				while ($i < $num) {
 					$obj = $this->db->fetch_object($resql);
 
-					$titletoshowhtml = ($maxlen ? dol_trunc($obj->label, $maxlen) : $obj->label).' <span class="opacitymedium">('.$obj->date_start.' - '.$obj->date_end.')</span>';
-					$titletoshow = ($maxlen ? dol_trunc($obj->label, $maxlen) : $obj->label).' <span class="opacitymedium">('.$obj->date_start.' - '.$obj->date_end.')</span>';
+					$titletoshowhtml = ($maxlen ? dol_trunc($obj->label, $maxlen) : $obj->label).' <span class="opacitymedium">('.$obj->date_start . " - " . $obj->date_end.')</span>';
+					$titletoshow = ($maxlen ? dol_trunc($obj->label, $maxlen) : $obj->label).' <span class="opacitymedium">('.$langs->transnoentitiesnoconv("FiscalYearFromTo", $obj->date_start, $obj->date_end).')</span>';
 
 					$out .= '<option value="'.$obj->rowid.'"';
 					if ($obj->rowid == $selected) {

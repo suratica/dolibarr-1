@@ -284,6 +284,7 @@ ImportDataset_tax_vat=VAT payments
 ErrorBankAccountNotFound=Error: Bank account not found
 FiscalPeriod=Accounting period
 FiscalYearSetAsDefault=Fiscal year (%s) defined as default
+FiscalYearFromTo=Period from %s to %s
 FiscalYearOpened=Fiscal year opened
 FiscalYearClosed=Fiscal year closed
 FiscalYearOpenedShort=Opened
