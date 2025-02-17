@@ -4488,7 +4488,11 @@ class Societe extends CommonObject
 		$this->entity = $member->entity;
 
 		$this->client = 1; // A member is a customer by default
-		$this->code_client = ($customercode ? $customercode : -1);
+		if (getDolGlobalString('THIRDPARTY_CUSTOMERCODE_EQUALS_MEMBERREF')) {
+			$this->code_client = $member->ref; // set Customer Code equal to existing Member Reference
+		} else {
+			$this->code_client = ($customercode ? $customercode : -1); // set new auto-incremented Customer Code
+		}
 		$this->code_fournisseur = '-1';
 		$this->typent_code = ($member->morphy == 'phy' ? 'TE_PRIVATE' : 0);
 		$this->typent_id = $this->typent_code ? dol_getIdFromCode($this->db, $this->typent_code, 'c_typent', 'id', 'code') : 0;
