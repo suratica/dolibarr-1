@@ -71,8 +71,7 @@ create table llx_categorie_order
   import_key   varchar(14)
 )ENGINE=innodb;
 
-ALTER TABLE llx_categorie_order ADD PRIMARY KEY pk_categorie_order (fk_categorie, fk_order);		-- noqa: PRS
-
+ALTER TABLE llx_categorie_order ADD PRIMARY KEY pk_categorie_order (fk_categorie, fk_order);	-- noqa: PRS
 ALTER TABLE llx_categorie_order ADD INDEX idx_categorie_order_fk_categorie (fk_categorie);
 ALTER TABLE llx_categorie_order ADD INDEX idx_categorie_order_fk_order (fk_order);
 
