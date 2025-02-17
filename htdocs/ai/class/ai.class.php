@@ -233,8 +233,8 @@ class Ai
 			);
 
 			// Add a system message
-			$addDateTimeContext = 0;
-			if ($addDateTimeContext) {
+			$addDateTimeContext = false;
+			if ($addDateTimeContext) {		// @phpstan-ignore-line
 				$prePrompt = ($prePrompt ? $prePrompt.(preg_match('/[\.\!\?]$/', $prePrompt) ? '' : '.').' ' : '').'Today we are '.dol_print_date(dol_now(), 'dayhourtext');
 			}
 			if ($prePrompt) {
