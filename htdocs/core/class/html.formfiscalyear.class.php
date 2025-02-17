@@ -28,11 +28,6 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
 class FormFiscalYear extends Form
 {
 	/**
-	 * @var array<string,array<string,string>>
-	 */
-	private $options_cache = array();
-
-	/**
 	 * @var DoliDB Database handler.
 	 */
 	public $db;
@@ -73,15 +68,11 @@ class FormFiscalYear extends Form
 		$sql .= " WHERE f.entity = ".$conf->entity;
 		$sql .= " ORDER BY f.date_start ASC";
 
-		$this->nbfiscalyear = 0;
-
 		dol_syslog(get_class($this).'::'.__METHOD__, LOG_DEBUG);
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			$num = $this->db->num_rows($resql);
 			if ($num) {
-				$this->nbfiscalyear = $num;
-
 				$out .= '<select class="flat minwidth200" id="'.$htmlname.'" name="'.$htmlname.'">';
 				$i = 0;
 
