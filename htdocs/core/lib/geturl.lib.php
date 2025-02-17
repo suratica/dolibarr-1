@@ -52,7 +52,7 @@ function getURLContent($url, $postorget = 'GET', $param = '', $followlocation = 
 	dol_syslog("getURLContent postorget=".$postorget." URL=".$url." param=".$param);
 
 	if (!function_exists('curl_init')) {
-		return array('http_code' => 500, 'content' => '', 'curl_error_no' => 'PHP curl lib not available', 'curl_error_msg' => 'PHP curl library must be installed');
+		return array('http_code' => 500, 'content' => '', 'curl_error_no' => 1, 'curl_error_msg' => 'PHP curl library must be installed');
 	}
 
 	//setting the curl parameters.
