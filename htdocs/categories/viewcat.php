@@ -1431,7 +1431,7 @@ if ($type == Categorie::TYPE_ORDER) {
 		dol_print_error($db, $object->error, $object->errors);
 	} else {
 		// Form to add record into a category
-		$showclassifyform = 1;
+		$showclassifyform = $user->hasRight('order', 'write');
 		if ($showclassifyform) {
 			print '<br>';
 			print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
