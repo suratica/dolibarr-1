@@ -167,7 +167,7 @@ class modCategorie extends DolibarrModules
 		if (isModEnabled('website')) {
 			$typeexample .= ($typeexample ? " / " : "")."11=Website page";
 		}
-		if (!empty($conf->commande->enabled)) {
+		if (isModEnabled('commande')) {
 			$typeexample .= ($typeexample ? " / " : "")."16=Order";
 		}
 
@@ -459,7 +459,7 @@ class modCategorie extends DolibarrModules
 			$r,
 			16,
 			'Commande',
-			'!empty($conf->commande->enabled)',
+			'isModEnabled("commande")',
 			['commande', 'commande', 'export'],
 			[
 				'rowid' => [
@@ -650,7 +650,7 @@ class modCategorie extends DolibarrModules
 		// 11 Website Pages, TODO ?
 
 		// 16 Order
-		if (!empty($conf->commande->enabled)) {
+		if (isModEnabled("commande")) {
 			++$r;
 			$this->importTagLinks(
 				$r,
@@ -735,8 +735,8 @@ class modCategorie extends DolibarrModules
 		$this->export_sql_end[$r]  = ' FROM '.MAIN_DB_PREFIX.'categorie as cat';
 		$this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'categorie as pcat ON pcat.rowid = cat.fk_parent';
 		$this->export_sql_end[$r] .= ' INNER JOIN '.MAIN_DB_PREFIX.'categorie_'.$cat_type.' as cfk ON cfk.fk_categorie = cat.rowid';
-		$this->export_sql_end[$r] .= ' INNER JOIN '.MAIN_DB_PREFIX.$class.' as p ON p.rowid = cfk.fk_'.$cat_type;
-		$this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.$class.'_extrafields as extra ON extra.fk_object = p.rowid';
+		$this->export_sql_end[$r] .= ' INNER JOIN '.MAIN_DB_PREFIX.strtolower($class).' as p ON p.rowid = cfk.fk_'.$cat_type;
+		$this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.strtolower($class).'_extrafields as extra ON extra.fk_object = p.rowid';
 		$this->export_sql_end[$r] .= ' WHERE cat.entity IN ('.getEntity('category').')';
 		$this->export_sql_end[$r] .= ' AND cat.type = '.((int) $cat_id);
 	}
