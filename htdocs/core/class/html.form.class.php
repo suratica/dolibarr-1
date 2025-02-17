@@ -412,13 +412,13 @@ class Form
 	/**
 	 * Output edit in place form
 	 *
-	 * @param 	string 	$fieldname 	Name of the field
-	 * @param 	CommonObject	$object Object
-	 * @param 	boolean $perm 		Permission to allow button to edit parameter. Set it to 0 to have a not edited field.
-	 * @param 	string 	$typeofdata Type of data ('string' by default, 'email', 'amount:99', 'numeric:99', 'text' or 'textarea:rows:cols', 'datepicker' ('day' do not work, don't know why), 'ckeditor:dolibarr_zzz:width:height:savemethod:1:rows:cols', 'select;xxx[:class]'...)
-	 * @param 	string 	$check 		Same coe than $check parameter of GETPOST()
-	 * @param 	string 	$morecss 	More CSS
-	 * @return  string              HTML code for the edit of alternative language
+	 * @param 	string			$fieldname	Name of the field
+	 * @param 	CommonObject	$object		Object
+	 * @param 	bool|int<0,1>	$perm		Permission to allow button to edit parameter. Set it to 0 to have a not edited field.
+	 * @param 	string			$typeofdata	Type of data ('string' by default, 'email', 'amount:99', 'numeric:99', 'text' or 'textarea:rows:cols', 'datepicker' ('day' do not work, don't know why), 'ckeditor:dolibarr_zzz:width:height:savemethod:1:rows:cols', 'select;xxx[:class]'...)
+	 * @param 	string			$check 		Same coe than $check parameter of GETPOST()
+	 * @param 	string			$morecss 	More CSS
+	 * @return  string						HTML code for the edit of alternative language
 	 */
 	public function widgetForTranslation($fieldname, $object, $perm, $typeofdata = 'string', $check = '', $morecss = '')
 	{
@@ -4616,7 +4616,7 @@ class Form
 	 * @param int $addempty Add an empty entry
 	 * @param int $noinfoadmin 0=Add admin info, 1=Disable admin info
 	 * @param string $morecss Add more CSS on select tag
-	 * @param int	 $deposit_percent < 0 : deposit_percent input makes no sense (for example, in list filters)
+	 * @param float	 $deposit_percent < 0 : deposit_percent input makes no sense (for example, in list filters)
 	 *                                0 : use default deposit percentage from entry
 	 *                                > 0 : force deposit percentage (for example, from company object)
 	 * @param int $noprint if set to one we return the html to print, if 0 (default) we print it
@@ -4646,7 +4646,7 @@ class Form
 	 * @param int $addempty Add an empty entry
 	 * @param int $noinfoadmin 0=Add admin info, 1=Disable admin info
 	 * @param string $morecss Add more CSS on select tag
-	 * @param int	 $deposit_percent < 0 : deposit_percent input makes no sense (for example, in list filters)
+	 * @param float	 $deposit_percent < 0 : deposit_percent input makes no sense (for example, in list filters)
 	 *                                0 : use default deposit percentage from entry
 	 *                                > 0 : force deposit percentage (for example, from company object)
 	 * @return    string                        String for the HTML select component
@@ -6153,7 +6153,7 @@ class Form
 	 * @param int<0,1> 	$addempty 			Add empty entry
 	 * @param ''|'direct-debit'|'bank-transfer'	$type 	Type ('direct-debit' or 'bank-transfer')
 	 * @param int 		$filtertype 		If > 0, include payment terms with deposit percentage (for objects other than invoices and invoice templates)
-	 * @param int	 	$deposit_percent 	< 0 : deposit_percent input makes no sense (for example, in list filters)
+	 * @param float	 	$deposit_percent 	< 0 : deposit_percent input makes no sense (for example, in list filters)
 	 *                                		0 : use default deposit percentage from entry
 	 *                                		> 0 : force deposit percentage (for example, from company object)
 	 * @param int<0,1>	$nooutput 			No print is done. String is returned.
@@ -11808,7 +11808,7 @@ class Form
 	 * @param 	string 	$save_label 		Alternative label for save button
 	 * @param 	string 	$cancel_label 		Alternative label for cancel button
 	 * @param 	array<array{addclass?:string,name?:string,label_key?:string}> $morebuttons 		Add additional buttons between save and cancel
-	 * @param 	bool 	$withoutdiv 		Option to remove enclosing centered div
+	 * @param 	bool|int<0,1> 	$withoutdiv	Option to remove enclosing centered div
 	 * @param 	string 	$morecss 			More CSS
 	 * @param 	string 	$dol_openinpopup 	If the button are shown in a context of a page shown inside a popup, we put here the string name of popup.
 	 * @return  string                      Html code with the buttons
