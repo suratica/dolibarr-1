@@ -167,7 +167,7 @@ class modCategorie extends DolibarrModules
 		if (isModEnabled('website')) {
 			$typeexample .= ($typeexample ? " / " : "")."11=Website page";
 		}
-		if (isModEnabled('commande')) {
+		if (isModEnabled('order')) {
 			$typeexample .= ($typeexample ? " / " : "")."16=Order";
 		}
 
@@ -459,7 +459,7 @@ class modCategorie extends DolibarrModules
 			$r,
 			16,
 			'Commande',
-			'isModEnabled("commande")',
+			'isModEnabled("order")',
 			['commande', 'commande', 'export'],
 			[
 				'rowid' => [
@@ -650,7 +650,7 @@ class modCategorie extends DolibarrModules
 		// 11 Website Pages, TODO ?
 
 		// 16 Order
-		if (isModEnabled("commande")) {
+		if (isModEnabled("order")) {
 			++$r;
 			$this->importTagLinks(
 				$r,
