@@ -11063,7 +11063,7 @@ class Form
 		$out = '';
 
 		$hideunselectables = false;
-		if (getDolGlobalString('PROJECT_HIDE_UNSELECTABLES')) {
+		if (getDolGlobalString('INVOICE_HIDE_UNSELECTABLES')) {
 			$hideunselectables = true;
 		}
 
@@ -11302,7 +11302,7 @@ class Form
 		$out = '';
 
 		$hideunselectables = false;
-		if (!empty($conf->global->PROJECT_HIDE_UNSELECTABLES)) {
+		if (getDolGlobalString('ORDER_HIDE_UNSELECTABLES')) {
 			$hideunselectables = true;
 		}
 
