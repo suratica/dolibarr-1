@@ -100,14 +100,14 @@ $formother = new FormOther($db);
 $form = new Form($db);
 
 if (empty($search_date_start) && !GETPOSTISSET('formfilteraction')) {
-    $sql = "SELECT date_start, date_end";
-    $sql .=" FROM ".MAIN_DB_PREFIX."accounting_fiscalyear ";
-    if (getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT')) {
-        $sql .= " WHERE rowid = " . getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT');
-    } else {
-        $sql .= " WHERE date_start < '" . $db->idate(dol_now()) . "' and date_end > '" . $db->idate(dol_now()) . "'";
-    }
-    $sql .= $db->plimit(1);
+	$sql = "SELECT date_start, date_end";
+	$sql .=" FROM ".MAIN_DB_PREFIX."accounting_fiscalyear ";
+	if (getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT')) {
+		$sql .= " WHERE rowid = " . getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT');
+	} else {
+		$sql .= " WHERE date_start < '" . $db->idate(dol_now()) . "' and date_end > '" . $db->idate(dol_now()) . "'";
+	}
+	$sql .= $db->plimit(1);
 	$res = $db->query($sql);
 
 	if ($db->num_rows($res) > 0) {
