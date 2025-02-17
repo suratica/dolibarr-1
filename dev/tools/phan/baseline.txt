@@ -9,16 +9,16 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 1580+ occurrences
+    // PhanTypeMismatchArgument : 1520+ occurrences
     // PhanUndeclaredProperty : 500+ occurrences
-    // PhanTypeMismatchArgumentNullable : 330+ occurrences
+    // PhanTypeMismatchArgumentNullable : 320+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 170+ occurrences
     // PhanUndeclaredGlobalVariable : 160+ occurrences
     // PhanTypeMismatchProperty : 120+ occurrences
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
     // PhanPossiblyUndeclaredGlobalVariable : 55+ occurrences
     // PhanTypeMismatchArgumentProbablyReal : 55+ occurrences
-    // PhanTypeExpectedObjectPropAccess : 35+ occurrences
+    // PhanTypeExpectedObjectPropAccess : 30+ occurrences
     // PhanTypeInvalidDimOffset : 25+ occurrences
     // PhanTypeMismatchDimFetch : 20+ occurrences
     // PhanPluginUndeclaredVariableIsset : 15+ occurrences
@@ -30,19 +30,20 @@ return [
     // PhanTypeArraySuspiciousNull : 6 occurrences
     // PhanParamTooMany : 5 occurrences
     // PhanPluginDuplicateArrayKey : 4 occurrences
-    // PhanPluginSuspiciousParamPosition : 4 occurrences
     // PhanEmptyFQSENInClasslike : 3 occurrences
     // PhanInvalidFQSENInClasslike : 3 occurrences
-    // PhanPluginBothLiteralsBinaryOp : 3 occurrences
+    // PhanPluginSuspiciousParamPosition : 3 occurrences
     // PhanPluginEmptyStatementIf : 2 occurrences
     // PhanRedefineFunction : 2 occurrences
     // PhanTypeMismatchDimAssignment : 2 occurrences
     // PhanTypeSuspiciousStringExpression : 2 occurrences
     // PhanAccessMethodProtected : 1 occurrence
+    // PhanPluginBothLiteralsBinaryOp : 1 occurrence
     // PhanPluginDuplicateExpressionAssignmentOperation : 1 occurrence
     // PhanPluginUnknownArrayPropertyType : 1 occurrence
     // PhanPossiblyUndeclaredVariable : 1 occurrence
     // PhanTypeExpectedObjectPropAccessButGotNull : 1 occurrence
+    // PhanUndeclaredVariable : 1 occurrence
 
     // Currently, file_suppressions and directory_suppressions are the only supported suppressions
     'file_suppressions' => [
@@ -523,7 +524,6 @@ return [
         'htdocs/fichinter/agenda.php' => ['PhanTypeMismatchArgument'],
         'htdocs/fichinter/card-rec.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/fichinter/class/api_interventions.class.php' => ['PhanTypeMismatchArgumentNullable', 'PhanUndeclaredProperty'],
-        'htdocs/fichinter/class/fichinter.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/fichinter/class/fichinterrec.class.php' => ['PhanUndeclaredProperty'],
         'htdocs/fichinter/contact.php' => ['PhanTypeMismatchArgument'],
         'htdocs/fichinter/document.php' => ['PhanTypeMismatchArgument'],
@@ -641,19 +641,10 @@ return [
         'htdocs/societe/class/api_thirdparties.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanTypeMismatchArgumentProbablyReal', 'PhanTypeMismatchProperty'],
         'htdocs/societe/class/societe.class.php' => ['PhanTypeMismatchProperty'],
         'htdocs/societe/paymentmodes.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument'],
-        'htdocs/stripe/admin/stripe.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/stripe/charge.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/stripe/class/actions_stripe.class.php' => ['PhanPluginBothLiteralsBinaryOp', 'PhanPluginSuspiciousParamPosition', 'PhanTypeMismatchArgument'],
-        'htdocs/stripe/class/stripe.class.php' => ['PhanTypeExpectedObjectPropAccess', 'PhanTypeMismatchProperty'],
-        'htdocs/stripe/lib/stripe.lib.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/supplier_proposal/card.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
+        'htdocs/stripe/class/stripe.class.php' => ['PhanTypeExpectedObjectPropAccess'],
+        'htdocs/supplier_proposal/card.php' => ['PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/supplier_proposal/class/api_supplier_proposals.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanUndeclaredProperty'],
-        'htdocs/supplier_proposal/class/supplier_proposal.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
-        'htdocs/supplier_proposal/contact.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/supplier_proposal/document.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/supplier_proposal/info.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/supplier_proposal/list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/supplier_proposal/note.php' => ['PhanTypeMismatchArgument'],
+        'htdocs/supplier_proposal/class/supplier_proposal.class.php' => ['PhanUndeclaredProperty'],
         'htdocs/takepos/admin/bar.php' => ['PhanTypeMismatchArgument'],
         'htdocs/takepos/admin/terminal.php' => ['PhanTypeMismatchArgument'],
         'htdocs/takepos/ajax/ajax.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal', 'PhanUndeclaredProperty'],

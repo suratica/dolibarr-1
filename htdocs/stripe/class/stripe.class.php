@@ -27,7 +27,7 @@ require_once DOL_DOCUMENT_ROOT.'/stripe/config.php'; // This set stripe global e
 
 /**
  *	Stripe class
- *  @TODO No reason to extends CommonObject
+ *  @TODO No reason to extend CommonObject
  */
 class Stripe extends CommonObject
 {
@@ -47,9 +47,9 @@ class Stripe extends CommonObject
 	public $fk_key;
 
 	/**
-	 * @var string Stripe ID
+	 * @var string Stripe ID (Note: Conflict with CommonObject)
 	 */
-	public $id;
+	public $id;  // @phpstan-ignore-line
 
 	/**
 	 * @var string
