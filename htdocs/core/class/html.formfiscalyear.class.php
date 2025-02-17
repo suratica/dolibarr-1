@@ -110,7 +110,7 @@ class FormFiscalYear extends Form
 
 				$out .= ajax_combobox($htmlname, array());
 			} else {
-				$out .= '<span class="opacitymedium">'.$langs->trans("ErrorNoFiscalyearDefined", $langs->transnoentitiesnoconv("Accounting"), $langs->transnoentitiesnoconv("Setup"), $langs->transnoentitiesnoconv("FiscalYear")).'</span>';
+				$out .= '<span class="opacitymedium">'.$langs->trans("ErrorNoFiscalyearDefined", $langs->transnoentitiesnoconv("Accounting"), $langs->transnoentitiesnoconv("Setup"), $langs->transnoentitiesnoconv("Fiscalyear")).'</span>';
 			}
 		} else {
 			dol_print_error($this->db);
