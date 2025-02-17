@@ -72,8 +72,8 @@ create table llx_categorie_order
 )ENGINE=innodb;
 
 --noqa:disable=PRS
-ALTER TABLE llx_categorie_order ADD PRIMARY KEY pk_categorie_order (fk_categorie, fk_order);
---noqa:enable=all
+ALTER TABLE llx_categorie_order ADD PRIMARY KEY pk_categorie_order(fk_categorie, fk_order);
+--noqa:enable=PRS
 ALTER TABLE llx_categorie_order ADD INDEX idx_categorie_order_fk_categorie (fk_categorie);
 ALTER TABLE llx_categorie_order ADD INDEX idx_categorie_order_fk_order (fk_order);
 
@@ -88,7 +88,9 @@ create table llx_categorie_invoice
   import_key   varchar(14)
 )ENGINE=innodb;
 
-ALTER TABLE llx_categorie_invoice ADD PRIMARY KEY pk_categorie_invoice (fk_categorie, fk_invoice);
+--noqa:disable=PRS
+ALTER TABLE llx_categorie_invoice ADD PRIMARY KEY pk_categorie_invoice(fk_categorie, fk_invoice);
+--noqa:enable=PRS
 ALTER TABLE llx_categorie_invoice ADD INDEX idx_categorie_invoice_fk_categorie (fk_categorie);
 ALTER TABLE llx_categorie_invoice ADD INDEX idx_categorie_invoice_fk_invoice (fk_invoice);
 
@@ -103,7 +105,9 @@ create table llx_categorie_supplier_order
   import_key        varchar(14)
 )ENGINE=innodb;
 
-ALTER TABLE llx_categorie_supplier_order ADD PRIMARY KEY pk_categorie_supplier_order (fk_categorie, fk_supplier_order);
+--noqa:disable=PRS
+ALTER TABLE llx_categorie_supplier_order ADD PRIMARY KEY pk_categorie_supplier_order(fk_categorie, fk_supplier_order);
+--noqa:enable=PRS
 ALTER TABLE llx_categorie_supplier_order ADD INDEX idx_categorie_supplier_order_fk_categorie (fk_categorie);
 ALTER TABLE llx_categorie_supplier_order ADD INDEX idx_categorie_supplier_order_fk_supplier_order (fk_supplier_order);
 
@@ -118,7 +122,10 @@ create table llx_categorie_supplier_invoice
   import_key          varchar(14)
 )ENGINE=innodb;
 
-ALTER TABLE llx_categorie_supplier_invoice ADD PRIMARY KEY pk_categorie_supplier_invoice (fk_categorie, fk_supplier_invoice);
+--noqa:disable=PRS
+ALTER TABLE llx_categorie_supplier_invoice ADD PRIMARY KEY pk_categorie_supplier_invoice(fk_categorie, fk_supplier_invoice);
+--noqa:enable=PRS
+
 ALTER TABLE llx_categorie_supplier_invoice ADD INDEX idx_categorie_supplier_invoice_fk_categorie (fk_categorie);
 ALTER TABLE llx_categorie_supplier_invoice ADD INDEX idx_categorie_supplier_invoice_fk_supplier_invoice (fk_supplier_invoice);
 
