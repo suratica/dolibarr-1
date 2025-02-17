@@ -27,7 +27,7 @@
 /**
  * Prepare admin pages header
  *
- * @return array<string,array<string,string>>}>
+ * @return array<string,array<string,string>>
  */
 function getLitOfAIFeatures()
 {
