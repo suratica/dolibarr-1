@@ -38,7 +38,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
  *             $formai->proprietes=1 ou chaine ou tableau de valeurs
  *             $formai->show_form() affiche le formulaire
  */
-class formAI extends Form
+class FormAI extends Form
 {
 	/**
 	 * @var DoliDB Database handler.
@@ -281,7 +281,7 @@ class formAI extends Form
 						$extrafields = new ExtraFields($this->db);
 					}
 					$product = new Product($this->db);
-					$product->fetch($line->fk_product, '', '', 1);
+					$product->fetch($line->fk_product);
 					$product->fetch_optionals();
 
 					$extrafields->fetch_name_optionals_label($product->table_element, true);
