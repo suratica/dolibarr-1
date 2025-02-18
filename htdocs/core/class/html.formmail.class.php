@@ -624,7 +624,7 @@ class FormMail extends Form
 			} elseif (!empty($this->param['models']) && in_array($this->param['models'], array(
 					'propal_send', 'order_send', 'facture_send',
 					'shipping_send', 'fichinter_send', 'supplier_proposal_send', 'order_supplier_send',
-					'invoice_supplier_send', 'thirdparty', 'contract', 'user', 'recruitmentcandidature_send', 'all'
+					'invoice_supplier_send', 'thirdparty', 'contract', 'user', 'recruitmentcandidature_send', 'product_send', 'all'
 				))) {
 				// If list of template is empty
 				$out .= '<div class="center" style="padding: 0px 0 12px 0">'."\n";
@@ -1493,6 +1493,7 @@ class FormMail extends Form
 	 * @param	string		$format			Format for output ('', 'html', ...)
 	 * @param   string      $htmlContent    HTML name of WYSIWYG field
 	 * @return 	string      				HTML code to ask AI instruction and autofill result
+	 * TODO Move into a file html.formai.class.php
 	 */
 	public function getSectionForAIPrompt($function = 'textgeneration', $format = '', $htmlContent = 'message')
 	{
@@ -1502,7 +1503,7 @@ class FormMail extends Form
 
 		$htmlContent = preg_replace('/[^a-z0-9_]/', '', $htmlContent);
 
-		$out = '<div id="ai_input'.$htmlContent.'" class="hidden paddingtop paddingbottom">';
+		$out = '<div id="ai_input'.$htmlContent.'" class="ai_input'.$htmlContent.' hidden paddingtop paddingbottom">';
 		$out .= '<input type="text" class="quatrevingtpercent" id="ai_instructions'.$htmlContent.'" name="instruction" placeholder="'.$langs->trans("EnterYourAIPromptHere").'..." />';
 		$out .= '<input id="generate_button'.$htmlContent.'" type="button" class="button smallpaddingimp"  value="'.$langs->trans('Generate').'"/>';
 		$out .= '<div id="ai_status_message'.$htmlContent.'" class="fieldrequired hideobject marginrightonly margintoponly">';
@@ -1526,7 +1527,7 @@ class FormMail extends Form
 				});
 
 				$('#generate_button".$htmlContent."').click(function() {
-					console.log('We click on generate_button".$htmlContent." ai button');
+					console.log('We click on generate_button".$htmlContent." ai button, so we make an ajax on url /ai/ajax/generate_content.php');
 
 					var instructions = $('#ai_instructions".$htmlContent."').val();
 					var timeoutfinished = 0;
@@ -1554,6 +1555,16 @@ class FormMail extends Form
 							}),
 							success: function(response) {
 								console.log('Received image URL: '+response);
+
+	                            // make substitutions
+	                            let substit = ". json_encode($this->substit).";
+	                            for (let key in substit) {
+	                                if (substit.hasOwnProperty(key)) {
+	                                    // Replace the placeholder with its corresponding value
+	                                    response = response.replace(key, substit[key]);
+	                                }
+	                            }
+
 								// Assuming response is the URL of the generated image
 								var imageUrl = response;
 								$('#ai_image_result').html('<img src=\"' + imageUrl + '\" alt=\"Generated Image\" />');
@@ -1579,49 +1590,50 @@ class FormMail extends Form
 							CKEDITOR.instances.".$htmlContent.".setReadOnly(1);
 						}
 
-					$.ajax({
-						url: '". DOL_URL_ROOT."/ai/ajax/generate_content.php?token=".currentToken()."',
-						type: 'POST',
-						contentType: 'application/json',
-						data: JSON.stringify({
-							'format': '".dol_escape_js($format)."',			/* the format for output */
-							'function': '".dol_escape_js($function)."',		/* the AI feature to call */
-							'instructions': instructions,					/* the prompt string */
-						}),
-						success: function(response) {
-							console.log('Add response into field \'#".$htmlContent."\': '+response);
+						$.ajax({
+							url: '". DOL_URL_ROOT."/ai/ajax/generate_content.php?token=".currentToken()."',
+							type: 'POST',
+							contentType: 'application/json',
+							data: JSON.stringify({
+								'format': '".dol_escape_js($format)."',			/* the format for output */
+								'function': '".dol_escape_js($function)."',		/* the AI feature to call */
+								'instructions': instructions,					/* the prompt string */
+							}),
+							success: function(response) {
+								console.log('Add response into field \'#".$htmlContent."\': '+response);
 
-							jQuery('#".$htmlContent."').val(response);		// If #htmlcontent is a input name or textarea
-							jQuery('#".$htmlContent."').html(response);		// If #htmlContent is a div
-							//jQuery('#".$htmlContent."preview').val(response);
+								jQuery('#".$htmlContent."').val(response);		// If #htmlcontent is a input name or textarea
+								jQuery('#".$htmlContent."').html(response);		// If #htmlContent is a div
+								//jQuery('#".$htmlContent."preview').val(response);
 
-							if (CKEDITOR.instances) {
-								var editorInstance = CKEDITOR.instances.".$htmlContent.";
-								if (editorInstance) {
-									editorInstance.setReadOnly(0);
-									editorInstance.setData(response);
+								if (CKEDITOR.instances) {
+									var editorInstance = CKEDITOR.instances.".$htmlContent.";
+									if (editorInstance) {
+										editorInstance.setReadOnly(0);
+										editorInstance.setData(response);
+									}
+									//var editorInstancepreview = CKEDITOR.instances.".$htmlContent."preview;
+									//if (editorInstancepreview) {
+									//	editorInstancepreview.setData(response);
+									//}
 								}
-								//var editorInstancepreview = CKEDITOR.instances.".$htmlContent."preview;
-								//if (editorInstancepreview) {
-								//	editorInstancepreview.setData(response);
-								//}
-							}
 
-							// remove readonly
-							$('#ai_instructions".$htmlContent."').val('');
+								// remove readonly
+								$('#ai_instructions".$htmlContent."').val('');
 
-							apicallfinished = 1;
-							if (timeoutfinished) {
+								apicallfinished = 1;
+								if (timeoutfinished) {
+									$('#ai_status_message".$htmlContent."').hide();
+								}
+							},
+							error: function(xhr, status, error) {
+								alert(error);
+								console.error('error ajax', status, error);
 								$('#ai_status_message".$htmlContent."').hide();
 							}
-						},
-						error: function(xhr, status, error) {
-							alert(error);
-							console.error('error ajax', status, error);
-							$('#ai_status_message".$htmlContent."').hide();
-						}
 
-					});
+						});
+					}
 				});
 			});
 			</script>
@@ -1648,7 +1660,7 @@ class FormMail extends Form
 		$websitepage = new WebsitePage($this->db);
 		$arrayofblogs = $websitepage->fetchAll('', 'DESC', 'date_creation', 0, 0, array('type_container' => 'blogpost'));
 
-		$out = '<div id="template-selector" class="email-layout-container hidden" style="display:none;">';
+		$out = '<div id="template-selector" class="template-selector email-layout-container hidden" style="display:none;">';
 
 		// Define list of email layouts to use
 		$layouts = array(
@@ -1693,7 +1705,7 @@ class FormMail extends Form
 		// Use the multiselect array function to create the dropdown
 		$out .= '<div id="post-dropdown-container" class="email-layout-container hidden" style="display:none;">';
 		$out .= '<label for="blogpost-select">Select Posts: </label>';
-		$out .= self::multiselectarray('blogpost-select', $blogArray);
+		$out .= self::multiselectarray('blogpost-select', $blogArray, array(), 0, 0, 'minwidth200');
 		$out .= '</div>';
 
 		$out .= '<script type="text/javascript">
@@ -1706,9 +1718,7 @@ class FormMail extends Form
           var sendtocc = jQuery("#sendtocc").val();
           var sendtoccc = jQuery("#sendtoccc").val();
 
-					console.log("We choose a layout for email template=" + template + ", subject="+subject);
-
-				console.log("We choose a layout for email template " + template);
+				console.log("We choose a layout for email template=" + template + ", subject="+subject);
 
 				$(".template-option").removeClass("selected");
 				$(this).addClass("selected");
@@ -2251,7 +2261,7 @@ class ModelMail extends CommonObject
 
 	// BEGIN MODULEBUILDER PROPERTIES
 	/**
-	 * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-5,5>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}>	Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
+	 * @var array<string,array{type:string,label:string,enabled:int<0,2>|string,position:int,notnull?:int,visible:int<-6,6>|string,alwayseditable?:int<0,1>,noteditable?:int<0,1>,default?:string,index?:int,foreignkey?:string,searchall?:int<0,1>,isameasure?:int<0,1>,css?:string,csslist?:string,help?:string,showoncombobox?:int<0,4>,disabled?:int<0,1>,arrayofkeyval?:array<int|string,string>,autofocusoncreate?:int<0,1>,comment?:string,copytoclipboard?:int<1,2>,validate?:int<0,1>,showonheader?:int<0,1>}>	Array with all fields and their property. Do not use it as a static var. It may be modified by constructor.
 	 */
 	public $fields = array(
 		"rowid" => array("type" => "integer", "label" => "TechnicalID", 'enabled' => 1, 'position' => 10, 'notnull' => 1, 'visible' => -1,),
@@ -2436,7 +2446,10 @@ class ModelMail extends CommonObject
 	 */
 	public function fetch($id, $ref = null, $noextrafields = 0, $nolines = 0)
 	{
-		$result = $this->fetchCommon($id, $ref, '', $noextrafields);
+		// The table llx_c_email_templates has no field ref. The field ref was named "label" instead. So we change the call to fetchCommon.
+		//$result = $this->fetchCommon($id, $ref, '', $noextrafields);
+		$result = $this->fetchCommon($id, '', " AND t.label = '".$this->db->escape($ref)."'", $noextrafields);
+
 		if ($result > 0 && !empty($this->table_element_line) && empty($nolines)) {
 			$this->fetchLines($noextrafields);
 		}
