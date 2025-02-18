@@ -4,7 +4,7 @@
  * Copyright (C) 2006-2015 Laurent Destailleur  <eldy@users.sourceforge.net>
  * Copyright (C) 2007      Patrick Raguin       <patrick.raguin@gmail.com>
  * Copyright (C) 2005-2012 Regis Houssin        <regis.houssin@inodbox.com>
- * Copyright (C) 2019-2024  Frédéric France      <frederic.france@free.fr>
+ * Copyright (C) 2019-2025  Frédéric France      <frederic.france@free.fr>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -118,8 +118,8 @@ $filters = [];
 if (($search_status != '' && $search_status >= 0)) {
 	$filters[] = "statut = ".((int) $search_status);
 }
-if (($search_employee != '' && $search_employee >= 0)) {
-	$filters[] = "employee = ".((int) $search_employee);
+if ($search_employee == 1) {
+	$filters[] = "employee = 1";
 }
 $sqlfilter = '';
 if (!empty($filters)) {
