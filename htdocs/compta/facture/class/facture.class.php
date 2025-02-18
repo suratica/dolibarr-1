@@ -104,7 +104,7 @@ class Facture extends CommonInvoice
 	protected $table_ref_field = 'ref';
 
 	/**
-	 * @var int ID
+	 * @var int|null ID
 	 * @deprecated		Use $user_creation_id
 	 */
 	public $fk_user_author;
