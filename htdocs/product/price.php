@@ -526,16 +526,14 @@ if (empty($reshook)) {
 						$db->free($resql);
 					}
 					if (!empty($lineid->rowid)) {
-						if (!empty($price_extralabels)) {
-							foreach ($price_extralabels as $code => $label) {
-								$code_array = GETPOST($code, 'array');
-								$object->array_options['options_'.$code] = $code_array[$key];
-							}
-							// We need to force table to update product_price and not product extrafields
-							$object->id = $lineid->rowid;
-							$object->table_element = 'product_price';
-							$result = $object->insertExtraFields();
+						foreach ($price_extralabels as $code => $label) {
+							$code_array = GETPOST($code, 'array');
+							$object->array_options['options_'.$code] = $code_array[$key];
 						}
+						// We need to force table to update product_price and not product extrafields
+						$object->id = $lineid->rowid;
+						$object->table_element = 'product_price';
+						$result = $object->insertExtraFields();
 						// Back to product table
 						$object->id = $id;
 						$object->table_element = 'product';
