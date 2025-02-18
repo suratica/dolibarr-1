@@ -526,7 +526,7 @@ if (empty($reshook)) {
 						$db->free($resql);
 					}
 					if (!empty($lineid->rowid)) {
-						if (!empty($price_extralabels) && is_array($price_extralabels)) {
+						if (!empty($price_extralabels)) {
 							foreach ($price_extralabels as $code => $label) {
 								$code_array = GETPOST($code, 'array');
 								$object->array_options['options_'.$code] = $code_array[$key];
