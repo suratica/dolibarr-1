@@ -287,7 +287,8 @@ class MyObject extends CommonObject
 		// uncomment lines below if you want to validate object after creation
 		// if ($result > 0) {
 		// $this->fetch($this->id); // needed to retrieve some fields (ie date_creation for masked ref)
-		// $result= $this->validate($user, $notrigger);
+		// $resultupdate = $this->validate($user, $notrigger);
+		// if ($resultupdate < 0) { return $resultupdate; }
 		// }
 
 		return $result;
