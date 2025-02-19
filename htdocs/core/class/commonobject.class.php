@@ -956,7 +956,7 @@ abstract class CommonObject
 	/**
 	 * setErrorsFromObject
 	 *
-	 * @param CommonObject $object commonobject
+	 * @param CommonObject|HookManager $object commonobject or HookManager
 	 * @return void
 	 */
 	public function setErrorsFromObject($object)
