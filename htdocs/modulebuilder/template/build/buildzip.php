@@ -74,7 +74,7 @@ function detectModule()
 	$tab = glob("core/modules/mod*.class.php");
 	if (count($tab) == 0) {
 		echo "[fail] Error on auto detect data : there is no mod*.class.php file into core/modules dir\n";
-		exit -1;
+		exit(-1);
 	}
 	if (count($tab) == 1) {
 		$file = $tab[0];
@@ -87,11 +87,11 @@ function detectModule()
 		echo "extract data from $file\n";
 		if (!file_exists($file) || $mod == "") {
 			echo "[fail] Error on auto detect data\n";
-			exit -2;
+			exit(-2);
 		}
 	} else {
 		echo "[fail] Error there is more than one mod*.class.php file into core/modules dir\n";
-		exit -3;
+		exit(-3);
 	}
 
 	//extract version from file
@@ -106,7 +106,7 @@ function detectModule()
 
 	if (version_compare($version, '0.0.1', '>=') != 1) {
 		echo "[fail] Error auto extract version fail\n";
-		exit -4;
+		exit(-4);
 	}
 
 	echo "module name = $mod, version = $version\n";
@@ -146,11 +146,11 @@ function secureUnlink($path)
 			clearstatcache();
 			if (file_exists($path)) {
 				echo "[fail] unlink of $path fail !\n";
-				exit -5;
+				exit(-5);
 			}
 		} else {
 			echo "[fail] unlink of $path fail !\n";
-			exit -6;
+			exit(-6);
 		}
 	}
 	return true;
@@ -172,7 +172,7 @@ function mkdirAndCheck($path)
 		}
 	}
 	echo "[fail] Error on $path (mkdir)\n";
-	exit -7;
+	exit(7);
 }
 
 /**
@@ -290,7 +290,7 @@ foreach ($listOfModuleContent as $moduleContent) {
 		if (!rcopy($entry, $dst . '/' . $entry)) {
 			echo "[fail]  Error on copy " . $entry . " to " . $dst . "/" . $entry . "\n";
 			echo "Please take time to analyze the problem and fix the bug\n";
-			exit -8;
+			exit(-8);
 		}
 	}
 }
@@ -304,5 +304,5 @@ if (file_exists($outzip)) {
 	echo "[success] module archive is ready : $outzip ...\n";
 } else {
 	echo "[fail] build zip error\n";
-	exit -9;
+	exit(-9);
 }
