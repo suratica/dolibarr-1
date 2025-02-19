@@ -10754,7 +10754,6 @@ function dol_eval_new($s)
 	$tokens_arrangement = ' ';
 
 	for ($i = 2, $c = count($tokens) - 1; $i < $c; ++$i) { // ignore <?php return and ;
-
 		if (is_array($tokens[$i])) {
 			$token_id = $tokens[$i][0];
 			$token_value = $tokens[$i][1];
@@ -10790,14 +10789,16 @@ function dol_eval_new($s)
 	}
 
 	// Prohibited Token IDs
-	for ($i = 0; $i < count($prohibited_token_ids); ++$i) {
+	$maxi = count($prohibited_token_ids);
+	for ($i = 0; $i < $maxi; ++$i) {
 		if (false !== strpos($tokens_arrangement, " {$prohibited_token_ids[$i]} ")) {
 			return "« {$prohibited_token_ids[$i]} » is prohibited in « {$s} »";
 		}
 	}
 
 	// Prohibited token arrangements
-	for ($i = 0; $i < count($prohibited_token_arrangements); ++$i) {
+	$maxi = count($prohibited_token_arrangements);
+	for ($i = 0; $i < $maxi; ++$i) {
 		if (false !== strpos($tokens_arrangement, $prohibited_token_arrangements[$i])) {
 			return "« {$prohibited_token_arrangements[$i]} » is prohibited in « {$s} »";
 		}
