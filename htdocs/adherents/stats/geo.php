@@ -293,10 +293,10 @@ if (getDolGlobalString("GOOGLE_SHOW_COUNTRY_GRAPH") && $mode == 'memberbycountry
 	$i = 0;
 	foreach ($data as $val) {
 		$valcountry = strtoupper($val['code']); // Should be ISO-3166 code (faster)
-		//$valcountry=ucfirst($val['label_en']);
-		if ($valcountry === 'Great Britain') {
-			$valcountry = 'United Kingdom';
-		}    // fix case of uk (when we use labels)
+		// $valcountry = ucfirst($val['label_en']);
+		// if ($valcountry == 'Great Britain') {
+		// 	$valcountry = 'United Kingdom';
+		// }    // fix case of uk (when we use labels)
 		print "\tdata.setValue(".$i.", 0, \"".$valcountry."\");\n";
 		print "\tdata.setValue(".$i.", 1, ".$val['nb'].");\n";
 		// Google's Geomap only supports up to 400 entries
