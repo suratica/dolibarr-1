@@ -264,44 +264,14 @@ if (empty($reshook)) {
 		$search_mvt_label = '';
 		$search_direction = '';
 		$search_ledger_code = array();
-		$search_date_startyear = '';
-		$search_date_startmonth = '';
-		$search_date_startday = '';
-		$search_date_endyear = '';
-		$search_date_endmonth = '';
-		$search_date_endday = '';
 		$search_date_start = '';
 		$search_date_end = '';
-		$search_date_creation_startyear = '';
-		$search_date_creation_startmonth = '';
-		$search_date_creation_startday = '';
-		$search_date_creation_endyear = '';
-		$search_date_creation_endmonth = '';
-		$search_date_creation_endday = '';
 		$search_date_creation_start = '';
 		$search_date_creation_end = '';
-		$search_date_modification_startyear = '';
-		$search_date_modification_startmonth = '';
-		$search_date_modification_startday = '';
-		$search_date_modification_endyear = '';
-		$search_date_modification_endmonth = '';
-		$search_date_modification_endday = '';
 		$search_date_modification_start = '';
 		$search_date_modification_end = '';
-		$search_date_export_startyear = '';
-		$search_date_export_startmonth = '';
-		$search_date_export_startday = '';
-		$search_date_export_endyear = '';
-		$search_date_export_endmonth = '';
-		$search_date_export_endday = '';
 		$search_date_export_start = '';
 		$search_date_export_end = '';
-		$search_date_validation_startyear = '';
-		$search_date_validation_startmonth = '';
-		$search_date_validation_startday = '';
-		$search_date_validation_endyear = '';
-		$search_date_validation_endmonth = '';
-		$search_date_validation_endday = '';
 		$search_date_validation_start = '';
 		$search_date_validation_end = '';
 		// Due date start
@@ -320,6 +290,12 @@ if (empty($reshook)) {
 		$search_not_reconciled = '';
 		$search_import_key = '';
 		$toselect = array();
+		unset($_SESSION['DOLDATE_search_date_start_accountancy_day']);
+		unset($_SESSION['DOLDATE_search_date_start_accountancy_month']);
+		unset($_SESSION['DOLDATE_search_date_start_accountancy_year']);
+		unset($_SESSION['DOLDATE_search_date_end_accountancy_day']);
+		unset($_SESSION['DOLDATE_search_date_end_accountancy_month']);
+		unset($_SESSION['DOLDATE_search_date_end_accountancy_year']);
 	}
 
 	// Must be after the remove filter action, before the export.
