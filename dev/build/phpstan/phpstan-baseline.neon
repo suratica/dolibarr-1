@@ -1459,12 +1459,6 @@ parameters:
 			path: ../../../htdocs/admin/mails.php
 
 		-
-			message: '#^Left side of && is always true\.$#'
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 7
-			path: ../../../htdocs/admin/mails_emailing.php
-
-		-
 			message: '#^Right side of && is always true\.$#'
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 2
