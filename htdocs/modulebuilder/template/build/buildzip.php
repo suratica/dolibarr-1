@@ -67,7 +67,7 @@ $exclude_list = [
 /**
  * auto detect module name and version from file name
  *
- * @return  array  [module name, module version]
+ * @return  array<string,string>  module name, module version
  */
 function detectModule()
 {
@@ -186,7 +186,7 @@ function is_excluded($filename)
 {
 	global $exclude_list;
 	$count = 0;
-	preg_filter($exclude_list, '1', $filename, -1, $count);
+	$notused = preg_filter($exclude_list, '1', $filename, -1, $count);
 	if ($count > 0) {
 		echo " - exclude $filename\n";
 		return true;
