@@ -68,8 +68,8 @@ $search_doc_ref = GETPOST("search_doc_ref", 'alpha');
 
 $search_doc_date = GETPOSTDATE('doc_date', 'getpost');	// deprecated. Can use 'search_date_start/end'
 
-$search_date_start = GETPOSTDATE('search_date_start', 'getpost');
-$search_date_end = GETPOSTDATE('search_date_end', 'getpostend');
+$search_date_start = GETPOSTDATE('search_date_start', 'getpost', 'auto', 'search_date_start_accountancy');
+$search_date_end = GETPOSTDATE('search_date_end', 'getpostend', 'auto', 'search_date_end_accountancy');
 
 $search_date_creation_start = GETPOSTDATE('search_date_creation_start', 'getpost');
 $search_date_creation_end = GETPOSTDATE('search_date_creation_end', 'getpostend');

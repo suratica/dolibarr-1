@@ -69,12 +69,12 @@ $search_doc_date = GETPOSTDATE('doc_date', 'getpost');	// deprecated. Can use 's
 $search_date_startyear = GETPOSTINT('search_date_startyear');
 $search_date_startmonth = GETPOSTINT('search_date_startmonth');
 $search_date_startday = GETPOSTINT('search_date_startday');
-$search_date_start = GETPOSTDATE('search_date_start', 'getpost');
+$search_date_start = GETPOSTDATE('search_date_start', 'getpost', 'auto', 'search_date_start_accountancy');
 
 $search_date_endyear = GETPOSTINT('search_date_endyear');
 $search_date_endmonth = GETPOSTINT('search_date_endmonth');
 $search_date_endday = GETPOSTINT('search_date_endday');
-$search_date_end = GETPOSTDATE('search_date_end', 'getpostend');
+$search_date_end = GETPOSTDATE('search_date_end', 'getpostend', 'auto', 'search_date_end_accountancy');
 
 $search_date_export_startyear = GETPOSTINT('search_date_export_startyear');
 $search_date_export_startmonth = GETPOSTINT('search_date_export_startmonth');
