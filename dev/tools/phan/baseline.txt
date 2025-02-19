@@ -9,16 +9,16 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 1520+ occurrences
+    // PhanTypeMismatchArgument : 1470+ occurrences
     // PhanUndeclaredProperty : 500+ occurrences
     // PhanTypeMismatchArgumentNullable : 320+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 170+ occurrences
     // PhanUndeclaredGlobalVariable : 160+ occurrences
     // PhanTypeMismatchProperty : 120+ occurrences
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
-    // PhanPossiblyUndeclaredGlobalVariable : 55+ occurrences
-    // PhanTypeMismatchArgumentProbablyReal : 55+ occurrences
+    // PhanTypeMismatchArgumentProbablyReal : 35+ occurrences
     // PhanTypeExpectedObjectPropAccess : 30+ occurrences
+    // PhanPossiblyUndeclaredGlobalVariable : 25+ occurrences
     // PhanTypeInvalidDimOffset : 25+ occurrences
     // PhanTypeMismatchDimFetch : 20+ occurrences
     // PhanPluginUndeclaredVariableIsset : 15+ occurrences
@@ -33,7 +33,6 @@ return [
     // PhanEmptyFQSENInClasslike : 3 occurrences
     // PhanInvalidFQSENInClasslike : 3 occurrences
     // PhanPluginSuspiciousParamPosition : 3 occurrences
-    // PhanPluginEmptyStatementIf : 2 occurrences
     // PhanRedefineFunction : 2 occurrences
     // PhanTypeMismatchDimAssignment : 2 occurrences
     // PhanTypeSuspiciousStringExpression : 2 occurrences
@@ -43,7 +42,6 @@ return [
     // PhanPluginUnknownArrayPropertyType : 1 occurrence
     // PhanPossiblyUndeclaredVariable : 1 occurrence
     // PhanTypeExpectedObjectPropAccessButGotNull : 1 occurrence
-    // PhanUndeclaredVariable : 1 occurrence
 
     // Currently, file_suppressions and directory_suppressions are the only supported suppressions
     'file_suppressions' => [
@@ -266,7 +264,6 @@ return [
         'htdocs/compta/prelevement/card.php' => ['PhanTypeMismatchArgument'],
         'htdocs/compta/prelevement/class/bonprelevement.class.php' => ['PhanTypeMismatchArgumentNullable'],
         'htdocs/compta/prelevement/class/rejetprelevement.class.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/compta/prelevement/create.php' => ['PhanTypeMismatchArgument'],
         'htdocs/compta/prelevement/demandes.php' => ['PhanTypeMismatchArgumentNullable'],
         'htdocs/compta/prelevement/line.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
         'htdocs/compta/resultat/clientfourn.php' => ['PhanTypeMismatchArgument'],
@@ -518,7 +515,6 @@ return [
         'htdocs/expensereport/payment/info.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/expensereport/payment/list.php' => ['PhanTypeMismatchArgument'],
         'htdocs/expensereport/tpl/linkedobjectblock.tpl.php' => ['PhanUndeclaredProperty'],
-        'htdocs/exports/class/export.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/exports/export.php' => ['PhanTypeMismatchArgument'],
         'htdocs/externalsite/frames.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/fichinter/agenda.php' => ['PhanTypeMismatchArgument'],
@@ -645,17 +641,9 @@ return [
         'htdocs/supplier_proposal/card.php' => ['PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/supplier_proposal/class/api_supplier_proposals.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanUndeclaredProperty'],
         'htdocs/supplier_proposal/class/supplier_proposal.class.php' => ['PhanUndeclaredProperty'],
-        'htdocs/takepos/admin/bar.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/takepos/admin/terminal.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/takepos/ajax/ajax.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal', 'PhanUndeclaredProperty'],
-        'htdocs/takepos/floors.php' => ['PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/takepos/freezone.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/takepos/index.php' => ['PhanPluginUndeclaredVariableIsset', 'PhanTypeMismatchArgument'],
-        'htdocs/takepos/invoice.php' => ['PhanPluginEmptyStatementIf', 'PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanTypeMismatchArgumentProbablyReal', 'PhanUndeclaredGlobalVariable'],
-        'htdocs/takepos/pay.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/takepos/phone.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/takepos/send.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/takepos/split.php' => ['PhanPluginUndeclaredVariableIsset', 'PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgumentProbablyReal'],
+        'htdocs/takepos/index.php' => ['PhanPluginUndeclaredVariableIsset'],
+        'htdocs/takepos/invoice.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanUndeclaredGlobalVariable'],
+        'htdocs/takepos/split.php' => ['PhanPluginUndeclaredVariableIsset'],
         'htdocs/theme/eldy/badges.inc.php' => ['PhanRedefineFunction'],
         'htdocs/theme/eldy/btn.inc.php' => ['PhanUndeclaredGlobalVariable'],
         'htdocs/theme/eldy/dropdown.inc.php' => ['PhanUndeclaredGlobalVariable'],
