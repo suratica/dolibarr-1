@@ -59,8 +59,10 @@ if ($type == 'sub') {
 }
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : $context_default;
 $show_subgroup = GETPOST('show_subgroup', 'alpha');
-$search_date_start = dol_mktime(0, 0, 0, GETPOSTINT('date_startmonth'), GETPOSTINT('date_startday'), GETPOSTINT('date_startyear'));
-$search_date_end = dol_mktime(23, 59, 59, GETPOSTINT('date_endmonth'), GETPOSTINT('date_endday'), GETPOSTINT('date_endyear'));
+
+$search_date_start = GETPOSTDATE('date_start', 'getpost');
+$search_date_end = GETPOSTDATE('date_end', 'getpostend');
+
 $search_ledger_code = GETPOST('search_ledger_code', 'array');
 $search_accountancy_code_start = GETPOST('search_accountancy_code_start', 'alpha');
 if ($search_accountancy_code_start == - 1) {
@@ -96,7 +98,6 @@ $object = new BookKeeping($db);
 $hookmanager->initHooks(array($contextpage));  // Note that conf->hooks_modules contains array
 
 $formaccounting = new FormAccounting($db);
-$formother = new FormOther($db);
 $form = new Form($db);
 
 if (empty($search_date_start) && !GETPOSTISSET('formfilteraction')) {

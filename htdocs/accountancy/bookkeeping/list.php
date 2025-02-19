@@ -65,57 +65,36 @@ $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'bo
 $search_mvt_num = GETPOST('search_mvt_num', 'alpha');
 $search_doc_type = GETPOST("search_doc_type", 'alpha');
 $search_doc_ref = GETPOST("search_doc_ref", 'alpha');
-$search_date_startyear =  GETPOSTINT('search_date_startyear');
-$search_date_startmonth =  GETPOSTINT('search_date_startmonth');
-$search_date_startday =  GETPOSTINT('search_date_startday');
-$search_date_endyear =  GETPOSTINT('search_date_endyear');
-$search_date_endmonth =  GETPOSTINT('search_date_endmonth');
-$search_date_endday =  GETPOSTINT('search_date_endday');
-$search_date_start = dol_mktime(0, 0, 0, $search_date_startmonth, $search_date_startday, $search_date_startyear);
-$search_date_end = dol_mktime(23, 59, 59, $search_date_endmonth, $search_date_endday, $search_date_endyear);
-$search_doc_date = dol_mktime(0, 0, 0, GETPOSTINT('doc_datemonth'), GETPOSTINT('doc_dateday'), GETPOSTINT('doc_dateyear'));
-$search_date_creation_startyear =  GETPOSTINT('search_date_creation_startyear');
-$search_date_creation_startmonth =  GETPOSTINT('search_date_creation_startmonth');
-$search_date_creation_startday =  GETPOSTINT('search_date_creation_startday');
-$search_date_creation_endyear =  GETPOSTINT('search_date_creation_endyear');
-$search_date_creation_endmonth =  GETPOSTINT('search_date_creation_endmonth');
-$search_date_creation_endday =  GETPOSTINT('search_date_creation_endday');
-$search_date_creation_start = dol_mktime(0, 0, 0, $search_date_creation_startmonth, $search_date_creation_startday, $search_date_creation_startyear);
-$search_date_creation_end = dol_mktime(23, 59, 59, $search_date_creation_endmonth, $search_date_creation_endday, $search_date_creation_endyear);
-$search_date_modification_startyear =  GETPOSTINT('search_date_modification_startyear');
-$search_date_modification_startmonth =  GETPOSTINT('search_date_modification_startmonth');
-$search_date_modification_startday =  GETPOSTINT('search_date_modification_startday');
-$search_date_modification_endyear =  GETPOSTINT('search_date_modification_endyear');
-$search_date_modification_endmonth =  GETPOSTINT('search_date_modification_endmonth');
-$search_date_modification_endday =  GETPOSTINT('search_date_modification_endday');
-$search_date_modification_start = dol_mktime(0, 0, 0, $search_date_modification_startmonth, $search_date_modification_startday, $search_date_modification_startyear);
-$search_date_modification_end = dol_mktime(23, 59, 59, $search_date_modification_endmonth, $search_date_modification_endday, $search_date_modification_endyear);
-$search_date_export_startyear =  GETPOSTINT('search_date_export_startyear');
-$search_date_export_startmonth =  GETPOSTINT('search_date_export_startmonth');
-$search_date_export_startday =  GETPOSTINT('search_date_export_startday');
-$search_date_export_endyear =  GETPOSTINT('search_date_export_endyear');
-$search_date_export_endmonth =  GETPOSTINT('search_date_export_endmonth');
-$search_date_export_endday =  GETPOSTINT('search_date_export_endday');
-$search_date_export_start = dol_mktime(0, 0, 0, $search_date_export_startmonth, $search_date_export_startday, $search_date_export_startyear);
-$search_date_export_end = dol_mktime(23, 59, 59, $search_date_export_endmonth, $search_date_export_endday, $search_date_export_endyear);
-$search_date_validation_startyear =  GETPOSTINT('search_date_validation_startyear');
-$search_date_validation_startmonth =  GETPOSTINT('search_date_validation_startmonth');
-$search_date_validation_startday =  GETPOSTINT('search_date_validation_startday');
-$search_date_validation_endyear =  GETPOSTINT('search_date_validation_endyear');
-$search_date_validation_endmonth =  GETPOSTINT('search_date_validation_endmonth');
-$search_date_validation_endday =  GETPOSTINT('search_date_validation_endday');
-$search_date_validation_start = dol_mktime(0, 0, 0, $search_date_validation_startmonth, $search_date_validation_startday, $search_date_validation_startyear);
-$search_date_validation_end = dol_mktime(23, 59, 59, $search_date_validation_endmonth, $search_date_validation_endday, $search_date_validation_endyear);
+
+$search_doc_date = GETPOSTDATE('doc_date', 'getpost');	// deprecated. Can use 'search_date_start/end'
+
+$search_date_start = GETPOSTDATE('search_date_start', 'getpost');
+$search_date_end = GETPOSTDATE('search_date_end', 'getpostend');
+
+$search_date_creation_start = GETPOSTDATE('search_date_creation_start', 'getpost');
+$search_date_creation_end = GETPOSTDATE('search_date_creation_end', 'getpostend');
+
+$search_date_modification_start = GETPOSTDATE('search_date_modification_start', 'getpost');
+$search_date_modification_end = GETPOSTDATE('search_date_modification_end', 'getpostend');
+
+$search_date_export_start = GETPOSTDATE('search_date_export_start', 'getpost');
+$search_date_export_end = GETPOSTDATE('search_date_export_end', 'getpostend');
+
+$search_date_validation_start = GETPOSTDATE('search_date_validation_start', 'getpost');
+$search_date_validation_start = GETPOSTDATE('search_date_validation_end', 'getpostend');
+
 // Due date start
 $search_date_due_start_day = GETPOSTINT('search_date_due_start_day');
 $search_date_due_start_month = GETPOSTINT('search_date_due_start_month');
 $search_date_due_start_year = GETPOSTINT('search_date_due_start_year');
-$search_date_due_start = dol_mktime(0, 0, 0, $search_date_due_start_month, $search_date_due_start_day, $search_date_due_start_year);
+$search_date_due_start = GETPOSTDATE('search_date_due_start_', 'getpost');
+
 // Due date end
 $search_date_due_end_day = GETPOSTINT('search_date_due_end_day');
 $search_date_due_end_month = GETPOSTINT('search_date_due_end_month');
 $search_date_due_end_year = GETPOSTINT('search_date_due_end_year');
-$search_date_due_end = dol_mktime(23, 59, 59, $search_date_due_end_month, $search_date_due_end_day, $search_date_due_end_year);
+$search_date_due_end = GETPOSTDATE('search_date_due_end_', 'getpostend');
+
 $search_import_key = GETPOST("search_import_key", 'alpha');
 
 $search_account_category = GETPOSTINT('search_account_category');
