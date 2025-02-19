@@ -2663,11 +2663,11 @@ if ($action == 'create') {
 						}
 						$dispachedLines = $object->getDispachedLines(1);
 						$nbDispachedLines = count($dispachedLines);
-						if($nbDispachedLines > 0){
+						if ($nbDispachedLines > 0) {
 							$hasreception = 1;
 						}
 					}
-					
+
 					if (in_array($object->statut, array(3, 4, 5))) {
 						if (isModEnabled("supplier_order") && $usercanreceive) {
 							print '<div class="inline-block divButAction"><a class="butAction" href="'.DOL_URL_ROOT.'/fourn/commande/dispatch.php?id='.$object->id.'">'.$labelofbutton.'</a></div>';
