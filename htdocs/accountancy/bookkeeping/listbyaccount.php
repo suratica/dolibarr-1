@@ -2,7 +2,7 @@
 /* Copyright (C) 2016       Neil Orley          <neil.orley@oeris.fr>
  * Copyright (C) 2013-2016  Olivier Geffroy     <jeff@jeffinfo.com>
  * Copyright (C) 2013-2020  Florian Henry       <florian.henry@open-concept.pro>
- * Copyright (C) 2013-2024  Alexandre Spangaro  <alexandre@inovea-conseil.com>
+ * Copyright (C) 2013-2025  Alexandre Spangaro  <alexandre@inovea-conseil.com>
  * Copyright (C) 2018-2024  Frédéric France     <frederic.france@free.fr>
  * Copyright (C) 2024       MDW                 <mdeweerd@users.noreply.github.com>
  *
@@ -162,8 +162,13 @@ $formaccounting = new FormAccounting($db);
 $form = new Form($db);
 
 if (empty($search_date_start) && empty($search_date_end) && !GETPOSTISSET('search_date_startday') && !GETPOSTISSET('search_date_startmonth') && !GETPOSTISSET('search_date_starthour')) {
-	$sql = "SELECT date_start, date_end from ".MAIN_DB_PREFIX."accounting_fiscalyear ";
-	$sql .= " where date_start < '".$db->idate(dol_now())."' and date_end > '".$db->idate(dol_now())."'";
+	$sql = "SELECT date_start, date_end";
+	$sql .=" FROM ".MAIN_DB_PREFIX."accounting_fiscalyear ";
+	if (getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT')) {
+		$sql .= " WHERE rowid = " . getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT');
+	} else {
+		$sql .= " WHERE date_start < '" . $db->idate(dol_now()) . "' and date_end > '" . $db->idate(dol_now()) . "'";
+	}
 	$sql .= $db->plimit(1);
 	$res = $db->query($sql);
 

@@ -1,12 +1,12 @@
 <?php
-/* Copyright (C) 2013-2016  Olivier Geffroy         <jeff@jeffinfo.com>
- * Copyright (C) 2013-2016  Florian Henry           <florian.henry@open-concept.pro>
- * Copyright (C) 2013-2024  Alexandre Spangaro      <alexandre@inoveasya.solutions>
- * Copyright (C) 2022  		Lionel Vessiller        <lvessiller@open-dsi.fr>
- * Copyright (C) 2016-2017  Laurent Destailleur     <eldy@users.sourceforge.net>
- * Copyright (C) 2018-2024  Frédéric France         <frederic.france@free.fr>
- * Copyright (C) 2022  		Progiseize         		<a.bisotti@progiseiea-conseil.com>
- * Copyright (C) 2024       MDW                     <mdeweerd@users.noreply.github.com>
+/* Copyright (C) 2013-2016	Olivier Geffroy				<jeff@jeffinfo.com>
+ * Copyright (C) 2013-2016	Florian Henry				<florian.henry@open-concept.pro>
+ * Copyright (C) 2013-2025	Alexandre Spangaro			<alexandre@inovea-conseil.com>
+ * Copyright (C) 2022		Lionel Vessiller			<lvessiller@open-dsi.fr>
+ * Copyright (C) 2016-2017	Laurent Destailleur			<eldy@users.sourceforge.net>
+ * Copyright (C) 2018-2024	Frédéric France				<frederic.france@free.fr>
+ * Copyright (C) 2022		Progiseize					<a.bisotti@progiseiea-conseil.com>
+ * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,14 +149,21 @@ if ($sortfield == "") {
 $object = new BookKeeping($db);
 $hookmanager->initHooks(array('bookkeepinglist'));
 
+$formfiscalyear = new FormFiscalYear($db);
 $formaccounting = new FormAccounting($db);
 $form = new Form($db);
 
 if (!in_array($action, array('delmouv', 'delmouvconfirm')) && !GETPOSTISSET('begin') && !GETPOSTISSET('formfilteraction') && GETPOST('page', 'alpha') == '' && !GETPOSTINT('noreset') && $user->hasRight('accounting', 'mouvements', 'export')) {
 	if (empty($search_date_start) && empty($search_date_end) && !GETPOSTISSET('restore_lastsearch_values') && !GETPOST('search_accountancy_code_start')) {
-		$query = "SELECT date_start, date_end from ".MAIN_DB_PREFIX."accounting_fiscalyear ";
-		$query .= " where date_start < '".$db->idate(dol_now())."' and date_end > '".$db->idate(dol_now())."' limit 1";
-		$res = $db->query($query);
+		$sql = "SELECT date_start, date_end";
+		$sql .=" FROM ".MAIN_DB_PREFIX."accounting_fiscalyear ";
+		if (getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT')) {
+			$sql .= " WHERE rowid = " . getDolGlobalInt('ACCOUNTANCY_FISCALYEAR_DEFAULT');
+		} else {
+			$sql .= " WHERE date_start < '" . $db->idate(dol_now()) . "' and date_end > '" . $db->idate(dol_now()) . "'";
+		}
+		$sql .= $db->plimit(1);
+		$res = $db->query($sql);
 
 		if ($db->num_rows($res) > 0) {
 			$fiscalYear = $db->fetch_object($res);
