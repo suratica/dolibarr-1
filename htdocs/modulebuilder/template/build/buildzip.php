@@ -29,7 +29,7 @@
 /**
  * list of files & dirs of your module
  *
- * @var array
+ * @var string[]
  */
 $listOfModuleContent = [
 	'admin',
@@ -54,7 +54,7 @@ $listOfModuleContent = [
 /**
  * if you want to exclude some files from your zip
  *
- * @var array
+ * @var string[]
  */
 $exclude_list = [
 	'/^.git$/',
