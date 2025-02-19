@@ -90,7 +90,7 @@ function detectModule()
 			exit -2;
 		}
 	} else {
-		echo "[fail] Error there is more than one mod*.clas.php file into core/modules dir\n";
+		echo "[fail] Error there is more than one mod*.class.php file into core/modules dir\n";
 		exit -3;
 	}
 
@@ -98,7 +98,7 @@ function detectModule()
 	$contents = file_get_contents($file);
 	$pattern = "/^.*this->version\s*=\s*'(?<version>.*)'\s*;.*\$/m";
 
-	// search, and store all matching occurences in $matches
+	// search, and store all matching occurrences in $matches
 	$version = '';
 	if (preg_match_all($pattern, $contents, $matches)) {
 		$version = reset($matches['version']);
