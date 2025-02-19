@@ -60,8 +60,8 @@ if ($type == 'sub') {
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : $context_default;
 $show_subgroup = GETPOST('show_subgroup', 'alpha');
 
-$search_date_start = GETPOSTDATE('date_start', 'getpost');
-$search_date_end = GETPOSTDATE('date_end', 'getpostend');
+$search_date_start = GETPOSTDATE('date_start', 'getpost', 'auto', 'search_date_start_accountancy');
+$search_date_end = GETPOSTDATE('date_end', 'getpostend', 'auto', 'search_date_end_accountancy');
 
 $search_ledger_code = GETPOST('search_ledger_code', 'array');
 $search_accountancy_code_start = GETPOST('search_accountancy_code_start', 'alpha');
