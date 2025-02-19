@@ -37,11 +37,12 @@ function getListOfAIFeatures()
 		'textgenerationemail' => array('label' => $langs->trans('TextGeneration').' ('.$langs->trans("EmailContent").')', 'picto'=>'', 'status'=>'dolibarr', 'function' => 'TEXT'),
 		'textgenerationwebpage' => array('label' => $langs->trans('TextGeneration').' ('.$langs->trans("WebsitePage").')', 'picto'=>'', 'status'=>'dolibarr', 'function' => 'TEXT'),
 		'textgeneration' => array('label' => $langs->trans('TextGeneration').' ('.$langs->trans("Other").')', 'picto'=>'', 'status'=>'notused', 'function' => 'TEXT'),
+		'texttranslation' => array('label' => $langs->trans('TextTranslation'), 'picto'=>'', 'status'=>'dolibarr', 'function' => 'TEXT'),
 		'imagegeneration' => array('label' => 'ImageGeneration', 'picto'=>'', 'status'=>'notused', 'function' => 'IMAGE'),
 		'videogeneration' => array('label' => 'VideoGeneration', 'picto'=>'', 'status'=>'notused', 'function' => 'VIDEO'),
 		'audiogeneration' => array('label' => 'AudioGeneration', 'picto'=>'', 'status'=>'notused', 'function' => 'AUDIO'),
-		'transcription' => array('label' => 'Transcription', 'picto'=>'', 'status'=>'notused', 'function' => 'TRANSCRIPT'),
-		'translation' => array('label' => 'Translation', 'picto'=>'', 'status'=>'notused', 'function' => 'TRANSLATE')
+		'transcription' => array('label' => 'AudioTranscription', 'picto'=>'', 'status'=>'notused', 'function' => 'TRANSCRIPT'),
+		'translation' => array('label' => 'AudioTranslation', 'picto'=>'', 'status'=>'notused', 'function' => 'TRANSLATE')
 	);
 
 	return $arrayofaifeatures;
