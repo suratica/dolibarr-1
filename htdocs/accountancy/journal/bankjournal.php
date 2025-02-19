@@ -771,7 +771,7 @@ if (!$error && $action == 'writebookkeeping' && $user->hasRight('accounting', 'b
 						if (!empty($val['lib'])) {
 							$reflabel .= dol_string_nohtmltag($val['lib']).($val['soclib'] ? " / " : "");
 						}
-						if ($tabtype[$key] === 'banktransfert') {
+						if ($tabtype[$key] == 'banktransfert') {
 							$reflabel .= dol_string_nohtmltag($langs->transnoentitiesnoconv('TransitionalAccount').' '.$account_transfer);
 						} else {
 							$reflabel .= dol_string_nohtmltag($val['soclib']);
@@ -794,24 +794,24 @@ if (!$error && $action == 'writebookkeeping' && $user->hasRight('accounting', 'b
 						$bookkeeping->fk_user_author = $user->id;
 						$bookkeeping->date_creation = $now;
 
-						if ($tabtype[$key] === 'payment') {	// If payment is payment of customer invoice, we get ref of invoice
+						if ($tabtype[$key] == 'payment') {	// If payment is payment of customer invoice, we get ref of invoice
 							$lettering = true;
 							$bookkeeping->subledger_account = $k; // For payment, the subledger account is stored as $key of $tabtp
 							$bookkeeping->subledger_label = $tabcompany[$key]['name']; // $tabcompany is defined only if we are sure there is 1 thirdparty for the bank transaction
 							$bookkeeping->numero_compte = $tabcompany[$key]['accountancy_code_general'];
 							$bookkeeping->label_compte = $accountingaccountcustomer->label;
-						} elseif ($tabtype[$key] === 'payment_supplier') {	// If payment is payment of supplier invoice, we get ref of invoice
+						} elseif ($tabtype[$key] == 'payment_supplier') {	// If payment is payment of supplier invoice, we get ref of invoice
 							$lettering = true;
 							$bookkeeping->subledger_account = $k; // For payment, the subledger account is stored as $key of $tabtp
 							$bookkeeping->subledger_label = $tabcompany[$key]['name']; // $tabcompany is defined only if we are sure there is 1 thirdparty for the bank transaction
 							$bookkeeping->numero_compte = $tabcompany[$key]['accountancy_code_general'];
 							$bookkeeping->label_compte = $accountingaccountsupplier->label;
-						} elseif ($tabtype[$key] === 'payment_expensereport') {
+						} elseif ($tabtype[$key] == 'payment_expensereport') {
 							$bookkeeping->subledger_account = $tabuser[$key]['accountancy_code'];
 							$bookkeeping->subledger_label = $tabuser[$key]['name'];
 							$bookkeeping->numero_compte = getDolGlobalString('ACCOUNTING_ACCOUNT_EXPENSEREPORT');
 							$bookkeeping->label_compte = $accountingaccountexpensereport->label;
-						} elseif ($tabtype[$key] === 'payment_salary') {
+						} elseif ($tabtype[$key] == 'payment_salary') {
 							$bookkeeping->subledger_account = $tabuser[$key]['accountancy_code'];
 							$bookkeeping->subledger_label = $tabuser[$key]['name'];
 							$bookkeeping->numero_compte = $tabuser[$key]['accountancy_code_general'];
@@ -822,44 +822,44 @@ if (!$error && $action == 'writebookkeeping' && $user->hasRight('accounting', 'b
 							$accountingaccount->fetch(0, $k, true);	// TODO Use a cache
 							$bookkeeping->numero_compte = $k;
 							$bookkeeping->label_compte = $accountingaccount->label;
-						} elseif ($tabtype[$key] === 'payment_vat') {
+						} elseif ($tabtype[$key] == 'payment_vat') {
 							$bookkeeping->subledger_account = '';
 							$bookkeeping->subledger_label = '';
 							$accountingaccount->fetch(0, $k, true);		// TODO Use a cache
 							$bookkeeping->numero_compte = $k;
 							$bookkeeping->label_compte = $accountingaccount->label;
-						} elseif ($tabtype[$key] === 'payment_donation') {
+						} elseif ($tabtype[$key] == 'payment_donation') {
 							$bookkeeping->subledger_account = '';
 							$bookkeeping->subledger_label = '';
 							$accountingaccount->fetch(0, $k, true);		// TODO Use a cache
 							$bookkeeping->numero_compte = $k;
 							$bookkeeping->label_compte = $accountingaccount->label;
-						} elseif ($tabtype[$key] === 'member') {
+						} elseif ($tabtype[$key] == 'member') {
 							$bookkeeping->subledger_account = '';
 							$bookkeeping->subledger_label = '';
 							$accountingaccount->fetch(0, $k, true);		// TODO Use a cache
 							$bookkeeping->numero_compte = $k;
 							$bookkeeping->label_compte = $accountingaccount->label;
-						} elseif ($tabtype[$key] === 'payment_loan') {
+						} elseif ($tabtype[$key] == 'payment_loan') {
 							$bookkeeping->subledger_account = '';
 							$bookkeeping->subledger_label = '';
 							$accountingaccount->fetch(0, $k, true);		// TODO Use a cache
 							$bookkeeping->numero_compte = $k;
 							$bookkeeping->label_compte = $accountingaccount->label;
-						} elseif ($tabtype[$key] === 'payment_various') {
+						} elseif ($tabtype[$key] == 'payment_various') {
 							$bookkeeping->subledger_account = $k;
 							$bookkeeping->subledger_label = $tabcompany[$key]['name'];
 							$accountingaccount->fetch(0, $tabpay[$key]["account_various"], true);	// TODO Use a cache
 							$bookkeeping->numero_compte = $tabpay[$key]["account_various"];
 							$bookkeeping->label_compte = $accountingaccount->label;
-						} elseif ($tabtype[$key] === 'banktransfert') {
+						} elseif ($tabtype[$key] == 'banktransfert') {
 							$bookkeeping->subledger_account = '';
 							$bookkeeping->subledger_label = '';
 							$accountingaccount->fetch(0, $k, true);		// TODO Use a cache
 							$bookkeeping->numero_compte = $k;
 							$bookkeeping->label_compte = $accountingaccount->label;
 						} else {
-							if ($tabtype[$key] === 'unknown') {	// Unknown transaction, we will use a waiting account for thirdparty.
+							if ($tabtype[$key] == 'unknown') {	// Unknown transaction, we will use a waiting account for thirdparty.
 								// Temporary account
 								$bookkeeping->subledger_account = '';
 								$bookkeeping->subledger_label = '';
