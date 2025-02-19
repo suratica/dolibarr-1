@@ -67,7 +67,7 @@ $exclude_list = [
 /**
  * auto detect module name and version from file name
  *
- * @return  array{name:string,version:string}  module name and module version
+ * @return  (string|string)[] module name and module version
  */
 function detectModule()
 {
