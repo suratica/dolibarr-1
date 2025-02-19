@@ -67,10 +67,11 @@ $exclude_list = [
 /**
  * auto detect module name and version from file name
  *
- * @return  array<string,string>  module name, module version
+ * @return  array{name:string,version:string}  module name and module version
  */
 function detectModule()
 {
+	$mod  = $version = "";
 	$tab = glob("core/modules/mod*.class.php");
 	if (count($tab) == 0) {
 		echo "[fail] Error on auto detect data : there is no mod*.class.php file into core/modules dir\n";
@@ -78,7 +79,6 @@ function detectModule()
 	}
 	if (count($tab) == 1) {
 		$file = $tab[0];
-		$mod  = "";
 		$pattern = "/.*mod(?<mod>.*)\.class\.php/";
 		if (preg_match_all($pattern, $file, $matches)) {
 			$mod = strtolower(reset($matches['mod']));
@@ -99,7 +99,6 @@ function detectModule()
 	$pattern = "/^.*this->version\s*=\s*'(?<version>.*)'\s*;.*\$/m";
 
 	// search, and store all matching occurrences in $matches
-	$version = '';
 	if (preg_match_all($pattern, $contents, $matches)) {
 		$version = reset($matches['version']);
 	}
@@ -110,7 +109,7 @@ function detectModule()
 	}
 
 	echo "module name = $mod, version = $version\n";
-	return [$mod, $version];
+	return [(string) $mod, (string) $version];
 }
 
 /**
