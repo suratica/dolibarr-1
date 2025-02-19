@@ -1,4 +1,4 @@
-#!/usr/bin/php -d memory_limit=256M
+#!/usr/bin/env php -d memory_limit=256M
 <?php
 /**
  * buildzip.php
