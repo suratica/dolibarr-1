@@ -51,7 +51,7 @@ function getListOfAIFeatures()
 /**
  * Get list of available ai services
  *
- * @return array<string,array<string,string>>
+ * @return array<int|string,mixed>
  */
 function getListOfAIServices()
 {

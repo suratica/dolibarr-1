@@ -100,7 +100,7 @@ $dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 $currentConfigurationsJson = getDolGlobalString('AI_CONFIGURATIONS_PROMPT');
 $currentConfigurations = json_decode($currentConfigurationsJson, true);
 
-if ($action == 'updatefeaturemodel' && !empty($formSetup) && is_object($formSetup) && !empty($user->admin)) {
+if ($action == 'updatefeaturemodel' && !empty($user->admin)) {
 	$formSetup->saveConfFromPost();
 	$action = 'edit';
 }
