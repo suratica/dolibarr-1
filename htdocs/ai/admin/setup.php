@@ -98,6 +98,36 @@ foreach ($arrayofia as $ia => $ialabel) {
 	$item->defaultFieldValue = '';
 	$item->fieldParams['trClass'] = 'iaservice '.$ia;
 	$item->cssClass = 'minwidth500 input'.$ia;
+
+	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_TEXT');	// Name of constant must end with _KEY so it is encrypted when saved into database.
+	$item->nameText = $langs->trans("AI_API_MODEL_TEXT").' ('.$ialabel.')';
+	$item->defaultFieldValue = '';
+	$item->fieldParams['trClass'] = 'iaservice '.$ia;
+	$item->cssClass = 'minwidth500 input'.$ia;
+
+	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_IMAGE');	// Name of constant must end with _KEY so it is encrypted when saved into database.
+	$item->nameText = $langs->trans("AI_API_MODEL_IMAGE").' ('.$ialabel.')';
+	$item->defaultFieldValue = '';
+	$item->fieldParams['trClass'] = 'iaservice '.$ia;
+	$item->cssClass = 'minwidth500 input'.$ia;
+
+	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_AUDIO');	// Name of constant must end with _KEY so it is encrypted when saved into database.
+	$item->nameText = $langs->trans("AI_API_MODEL_AUDIO").' ('.$ialabel.')';
+	$item->defaultFieldValue = '';
+	$item->fieldParams['trClass'] = 'iaservice '.$ia;
+	$item->cssClass = 'minwidth500 input'.$ia;
+
+	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_TRANSCRIPT');	// Name of constant must end with _KEY so it is encrypted when saved into database.
+	$item->nameText = $langs->trans("AI_API_MODEL_TRANSCRIPT").' ('.$ialabel.')';
+	$item->defaultFieldValue = '';
+	$item->fieldParams['trClass'] = 'iaservice '.$ia;
+	$item->cssClass = 'minwidth500 input'.$ia;
+
+	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_TRANSLATE');	// Name of constant must end with _KEY so it is encrypted when saved into database.
+	$item->nameText = $langs->trans("AI_API_MODEL_TRANSLATE").' ('.$ialabel.')';
+	$item->defaultFieldValue = '';
+	$item->fieldParams['trClass'] = 'iaservice '.$ia;
+	$item->cssClass = 'minwidth500 input'.$ia;
 }
 
 $setupnotempty = + count($formSetup->items);
