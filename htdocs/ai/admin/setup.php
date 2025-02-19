@@ -41,7 +41,6 @@ require_once DOL_DOCUMENT_ROOT."/ai/lib/ai.lib.php";
 
 $langs->loadLangs(array("admin", "website", "other"));
 
-$arrayofaifeatures = getLitOfAIFeatures();
 
 // Parameters
 $action = GETPOST('action', 'aZ09');
@@ -68,13 +67,10 @@ if (!class_exists('FormSetup')) {
 $formSetup = new FormSetup($db);
 
 // List all available IA
-$arrayofia = array(
-	'-1' => $langs->trans('SelectAService'),
-	'chatgpt' => 'ChatGPT',
-	'groq' => 'Groq',
-	'custom' => 'Custom'
-	//'gemini' => 'Gemini'
-);
+$arrayofia = getListOfAIServices();
+
+// List all available features
+$arrayofaifeatures = getListOfAIFeatures();
 
 $item = $formSetup->newItem('AI_API_SERVICE');	// Name of constant must end with _KEY so it is encrypted when saved into database.
 $item->setAsSelect($arrayofia);
@@ -95,36 +91,6 @@ foreach ($arrayofia as $ia => $ialabel) {
 
 	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_URL');	// Name of constant must end with _KEY so it is encrypted when saved into database.
 	$item->nameText = $langs->trans("AI_API_URL").' ('.$ialabel.')';
-	$item->defaultFieldValue = '';
-	$item->fieldParams['trClass'] = 'iaservice '.$ia;
-	$item->cssClass = 'minwidth500 input'.$ia;
-
-	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_TEXT');	// Name of constant must end with _KEY so it is encrypted when saved into database.
-	$item->nameText = $langs->trans("AI_API_MODEL_TEXT").' ('.$ialabel.')';
-	$item->defaultFieldValue = '';
-	$item->fieldParams['trClass'] = 'iaservice '.$ia;
-	$item->cssClass = 'minwidth500 input'.$ia;
-
-	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_IMAGE');	// Name of constant must end with _KEY so it is encrypted when saved into database.
-	$item->nameText = $langs->trans("AI_API_MODEL_IMAGE").' ('.$ialabel.')';
-	$item->defaultFieldValue = '';
-	$item->fieldParams['trClass'] = 'iaservice '.$ia;
-	$item->cssClass = 'minwidth500 input'.$ia;
-
-	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_AUDIO');	// Name of constant must end with _KEY so it is encrypted when saved into database.
-	$item->nameText = $langs->trans("AI_API_MODEL_AUDIO").' ('.$ialabel.')';
-	$item->defaultFieldValue = '';
-	$item->fieldParams['trClass'] = 'iaservice '.$ia;
-	$item->cssClass = 'minwidth500 input'.$ia;
-
-	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_TRANSCRIPT');	// Name of constant must end with _KEY so it is encrypted when saved into database.
-	$item->nameText = $langs->trans("AI_API_MODEL_TRANSCRIPT").' ('.$ialabel.')';
-	$item->defaultFieldValue = '';
-	$item->fieldParams['trClass'] = 'iaservice '.$ia;
-	$item->cssClass = 'minwidth500 input'.$ia;
-
-	$item = $formSetup->newItem('AI_API_'.strtoupper($ia).'_MODEL_TRANSLATE');	// Name of constant must end with _KEY so it is encrypted when saved into database.
-	$item->nameText = $langs->trans("AI_API_MODEL_TRANSLATE").' ('.$ialabel.')';
 	$item->defaultFieldValue = '';
 	$item->fieldParams['trClass'] = 'iaservice '.$ia;
 	$item->cssClass = 'minwidth500 input'.$ia;
