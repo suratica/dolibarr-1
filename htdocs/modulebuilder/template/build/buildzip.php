@@ -143,7 +143,7 @@ function secureUnlink($path)
 		if (unlink($path)) {
 			//then check if really deleted
 			clearstatcache();
-			if (file_exists($path)) {
+			if (file_exists($path)) {	// @phpstan-ignore-line
 				echo "[fail] unlink of $path fail !\n";
 				exit(-5);
 			}
