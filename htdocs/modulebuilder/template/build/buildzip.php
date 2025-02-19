@@ -258,14 +258,23 @@ function zipDir($folder, &$zip, $root = "")
 		$src = $folder . '/' . $f;
 		$dst = substr($f->getPathname(), strlen($root));
 		if ($f->isDir()) {
-			$zip->addEmptyDir($dst);
-			zipDir($src, $zip, $root);
-			continue;
+			if ($zip->addEmptyDir($dst)) {
+				if (zipDir($src, $zip, $root)) {
+					continue;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
 		}
 		if ($f->isFile()) {
-			$zip->addFile($src, $dst);
+			if (! $zip->addFile($src, $dst)) {
+				return false;
+			}
 		}
 	}
+	return true;
 }
 
 /**
