@@ -4,7 +4,7 @@
  * Copyright (C) 2013-2025	Alexandre Spangaro			<alexandre@inovea-conseil.com>
  * Copyright (C) 2022		Lionel Vessiller			<lvessiller@open-dsi.fr>
  * Copyright (C) 2016-2017	Laurent Destailleur			<eldy@users.sourceforge.net>
- * Copyright (C) 2018-2024	Frédéric France				<frederic.france@free.fr>
+ * Copyright (C) 2018-2025	Frédéric France				<frederic.france@free.fr>
  * Copyright (C) 2022		Progiseize					<a.bisotti@progiseiea-conseil.com>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  *
@@ -82,7 +82,7 @@ $search_date_export_start = GETPOSTDATE('search_date_export_start', 'getpost');
 $search_date_export_end = GETPOSTDATE('search_date_export_end', 'getpostend');
 
 $search_date_validation_start = GETPOSTDATE('search_date_validation_start', 'getpost');
-$search_date_validation_start = GETPOSTDATE('search_date_validation_end', 'getpostend');
+$search_date_validation_end = GETPOSTDATE('search_date_validation_end', 'getpostend');
 
 // Due date start
 $search_date_due_start_day = GETPOSTINT('search_date_due_start_day');
