@@ -159,9 +159,9 @@ function secureUnlink($path)
 /**
  * create a directory and check if dir exists
  *
- * @param   [type]  $path  [$path description]
+ * @param   string  $path  path to make
  *
- * @return  [type]         [return description]
+ * @return bool true on success ($path exists at the end of process), else exit
  */
 function mkdirAndCheck($path)
 {
