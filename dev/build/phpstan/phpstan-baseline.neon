@@ -22939,12 +22939,6 @@ parameters:
 			path: ../../../htdocs/projet/activity/index.php
 
 		-
-			message: '#^Variable \$total might not be defined\.$#'
-			identifier: variable.undefined
-			count: 4
-			path: ../../../htdocs/projet/activity/index.php
-
-		-
 			message: '#^Call to function is_array\(\) with array\<mixed\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
