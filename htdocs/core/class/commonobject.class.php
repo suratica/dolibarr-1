@@ -5218,7 +5218,7 @@ abstract class CommonObject
 			}
 			$productstatic = $line->product;
 
-			$this->tpl['label'] .= $productstatic->getNomUrl(1);
+			$this->tpl['label'] .= (is_object($productstatic) ? $productstatic->getNomUrl(1) : $line->ref);
 			$this->tpl['label'] .= ' - '.(!empty($line->label) ? $line->label : $line->product_label);
 			// Dates
 			if ($line->product_type == 1 && ($date_start || $date_end)) {
