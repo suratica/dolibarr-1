@@ -362,13 +362,13 @@ class ExternalModules
 	 */
 	public function buildSorter(string $key): Closure
 	{
-		return function (array $a, array $b) use ($key): int {
-			/** @var array<string, mixed> $a */
-			/** @var array<string, mixed> $b */
-
-			/** @phan-suppress PhanPluginUnknownArrayClosureParamType */
-			/** @phan-suppress PhanTypeMismatchDimFetch */
-
+		return
+		/**
+		 * @param array<string, mixed> $a
+		 * @param array<string, mixed> $b
+		 * @return int
+		 */
+		function (array $a, array $b) use ($key) {
 			$valA = isset($a[$key]) && is_scalar($a[$key]) ? (string) $a[$key] : '';
 			$valB = isset($b[$key]) && is_scalar($b[$key]) ? (string) $b[$key] : '';
 
@@ -489,7 +489,7 @@ class ExternalModules
 	/**
 	 * Check the status code of the request
 	 *
-	 * @param array{status_code:int,response:?string,header:string} $request Response elements of CURL request
+	 * @param array{status_code:int,response:null|string|array{errors:array{code:int,message:string}[]},header:string} $request Response elements of CURL request
 	 *
 	 * @return string|null
 	 */
