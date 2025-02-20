@@ -363,6 +363,8 @@ class ExternalModules
 	public function buildSorter(string $key): Closure
 	{
 		return function (array $a, array $b) use ($key): int {
+			/** @var array<string, mixed> $a */
+			/** @var array<string, mixed> $b */
 			return strnatcmp((string) $a[$key], (string) $b[$key]);
 		};
 	}
@@ -486,42 +488,32 @@ class ExternalModules
 	 */
 	protected function checkStatusCode($request)
 	{
-		$error_message = "";
-		switch ($request['status_code']) {
-			case 200:
-			case 201:
-				return '';
-			case 204:
-				$error_message = 'No content';
-				break;
-			case 400:
-				$error_message = 'Bad Request';
-				break;
-			case 401:
-				$error_message = 'Unauthorized';
-				break;
-			case 404:
-				$error_message = 'Not Found';
-				break;
-			case 405:
-				$error_message = 'Method Not Allowed';
-				break;
-			case 500:
-				$error_message = 'Internal Server Error';
-				break;
-			default:
-				return 'This call to the API returned an unexpected HTTP status of: ' . $request['status_code'];
+		// Define error messages
+		$error_messages = [
+			204 => 'No content',
+			400 => 'Bad Request',
+			401 => 'Unauthorized',
+			404 => 'Not Found',
+			405 => 'Method Not Allowed',
+			500 => 'Internal Server Error',
+		];
+
+		// If status code is 200 or 201, return an empty string
+		if ($request['status_code'] === 200 || $request['status_code'] === 201) {
+			return '';
 		}
 
-		if ($error_message !== "") {
-			$response = $request['response'];
-			if (isset($response['errors']) && is_array($response['errors'])) {
-				foreach ($response['errors'] as $error) {
-					$error_message .= ' - (Code ' . $error['code'] . '): ' . $error['message'];
-				}
+		// Get the predefined error message or use a default one
+		$error_message = $error_messages[$request['status_code']] ?? 'Unexpected HTTP status: ' . $request['status_code'];
+
+		// Append error details if available
+		if (!empty($request['response']) && isset($request['response']['errors']) && is_array($request['response']['errors'])) {
+			foreach ($request['response']['errors'] as $error) {
+				$error_message .= ' - (Code ' . $error['code'] . '): ' . $error['message'];
 			}
-			$error_label = 'This call to the API failed and returned an HTTP status of %d. That means: %s.';
-			return sprintf($error_label, $request['status_code'], $error_message);
 		}
+
+		// Return the formatted error message
+		return sprintf('This call to the API failed and returned an HTTP status of %d. That means: %s.', $request['status_code'], $error_message);
 	}
 }
