@@ -22975,12 +22975,6 @@ parameters:
 			path: ../../../htdocs/projet/activity/perday.php
 
 		-
-			message: '#^Variable \$ref might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/projet/activity/perday.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1
@@ -23011,12 +23005,6 @@ parameters:
 			path: ../../../htdocs/projet/activity/permonth.php
 
 		-
-			message: '#^Variable \$ref might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/projet/activity/permonth.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1
@@ -23043,12 +23031,6 @@ parameters:
 		-
 			message: '#^Variable \$moreforfilter in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
-			count: 1
-			path: ../../../htdocs/projet/activity/perweek.php
-
-		-
-			message: '#^Variable \$ref might not be defined\.$#'
-			identifier: variable.undefined
 			count: 1
 			path: ../../../htdocs/projet/activity/perweek.php
 
