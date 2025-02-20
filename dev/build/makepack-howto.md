@@ -65,21 +65,21 @@ This files describe steps made by Dolibarr packaging team to make a beta version
 * Check all files are committed.
 * Update version/info in ChangeLog, for this you can:
 
-  * To generate a changelog of a major new version x.y.0 (from a repo on branch develop), you can do
+    * To generate a changelog of a major new version x.y.0 (from a repo on branch develop), you can do
 
 ```
 cd ~/git/dolibarr
 git log `diff -u <(git rev-list --first-parent x.(y-1).0)  <(git rev-list --first-parent develop) | sed -ne 's/^ //p' | head -1`.. --no-merges --pretty=short --oneline | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u | sed 's/FIXED:/FIX:/g' | sed 's/FIXED :/FIX:/g' | sed 's/FIX :/FIX:/g' | sed 's/FIX /FIX: /g' | sed 's/NEW :/NEW:/g' | sed 's/NEW /NEW: /g' > /tmp/changelogtocopy
 ```
 
-  * To generate a changelog of a major new version x.y.0 (from a repo on branch x.y repo), you can do
+    * To generate a changelog of a major new version x.y.0 (from a repo on branch x.y repo), you can do
 
 ```
 cd ~/git/dolibarr_x.y
 git log `diff -u <(git rev-list --first-parent x.(y-1).0)  <(git rev-list --first-parent x.y.0) | sed -ne 's/^ //p' | head -1`.. --no-merges --pretty=short --oneline | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u | sed 's/FIXED:/FIX:/g' | sed 's/FIXED :/FIX:/g' | sed 's/FIX :/FIX:/g' | sed 's/FIX /FIX: /g' | sed 's/NEW :/NEW:/g' | sed 's/NEW /NEW: /g' > /tmp/changelogtocopy
 ```
 
-  * To generate a changelog of a maintenance version x.y.z, you can do
+    * To generate a changelog of a maintenance version x.y.z, you can do
 
 ```
 cd ~/git/dolibarr_x.y
@@ -105,21 +105,21 @@ We suppose the branch x.y has already been created during the beta (see previous
 
 * Check all files are committed.
 * Update version/info in ChangeLog, for this:
-  * To generate a changelog of a major new version x.y.0 (from a repo on branch develop), you can do
+    * To generate a changelog of a major new version x.y.0 (from a repo on branch develop), you can do
 
 ```
 cd ~/git/dolibarr
 git log `diff -u <(git rev-list --first-parent x.(y-1).0)  <(git rev-list --first-parent develop) | sed -ne 's/^ //p' | head -1`.. --no-merges --pretty=short --oneline | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u | sed 's/FIXED:/FIX:/g' | sed 's/FIXED :/FIX:/g' | sed 's/FIX :/FIX:/g' | sed 's/FIX /FIX: /g' | sed 's/NEW :/NEW:/g' | sed 's/NEW /NEW: /g' > /tmp/changelogtocopy
 ```
 
-  * To generate a changelog of a major new version x.y.0 (from a repo pn branch x.y), you can do
+    * To generate a changelog of a major new version x.y.0 (from a repo pn branch x.y), you can do
 
 ```
 cd ~/git/dolibarr_x.y
 git log `diff -u <(git rev-list --first-parent x.(y-1).0)  <(git rev-list --first-parent x.y.0) | sed -ne 's/^ //p' | head -1`.. --no-merges --pretty=short --oneline | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u | sed 's/FIXED:/FIX:/g' | sed 's/FIXED :/FIX:/g' | sed 's/FIX :/FIX:/g' | sed 's/FIX /FIX: /g' | sed 's/NEW :/NEW:/g' | sed 's/NEW /NEW: /g' > /tmp/changelogtocopy
 ```
 
-  * To generate a changelog of a maintenance version x.y.z, you can do
+    * To generate a changelog of a maintenance version x.y.z, you can do
 
 ```
 cd ~/git/dolibarr_x.y
