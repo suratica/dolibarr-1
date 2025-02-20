@@ -200,6 +200,8 @@ if (isModEnabled('productbatch')) {
 	$langs->load("productbatch");
 	$disableStockCalculateOn[] = 'BILL';
 	$disableStockCalculateOn[] = 'VALIDATE_ORDER';
+	$disableStockCalculateOn[] = 'SUPPLIER_BILL';
+	$disableStockCalculateOn[] = 'SUPPLIER_VALIDATE_ORDER';
 
 	// STOCK_CALCULATE_ON_SHIPMENT_CLOSE
 	$descmode = $langs->trans('DeStockOnShipmentOnClosing');
@@ -343,7 +345,7 @@ print '<td>'.$langs->trans("ReStockOnBill").'</td>';
 print '<td class="right">';
 if (isModEnabled("supplier_order") || isModEnabled("supplier_invoice")) {
 	if ($conf->use_javascript_ajax) {
-		if (in_array('BILL', $disableStockCalculateOn)) {
+		if (in_array('SUPPLIER_BILL', $disableStockCalculateOn)) {
 			print img_picto($langs->trans("Disabled"), 'off', 'class="opacitymedium"');
 		} else {
 			print ajax_constantonoff('STOCK_CALCULATE_ON_SUPPLIER_BILL', array(), null, 0, 0, 0, 2, 1, 0, '', '', 'reposition');
@@ -365,7 +367,7 @@ print '<td>'.$langs->trans("ReStockOnValidateOrder").'</td>';
 print '<td class="right">';
 if (isModEnabled("supplier_order") || isModEnabled("supplier_invoice")) {
 	if ($conf->use_javascript_ajax) {
-		if (in_array('VALIDATE_ORDER', $disableStockCalculateOn)) {
+		if (in_array('SUPPLIER_VALIDATE_ORDER', $disableStockCalculateOn)) {
 			print img_picto($langs->trans("Disabled"), 'off', 'class="opacitymedium"');
 		} else {
 			print ajax_constantonoff('STOCK_CALCULATE_ON_SUPPLIER_VALIDATE_ORDER', array(), null, 0, 0, 0, 2, 1, 0, '', '', 'reposition');
