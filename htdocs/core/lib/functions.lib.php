@@ -10723,7 +10723,7 @@ function dol_eval_new($s)
 		/*
 		 * Prohibited string tokens
 		 */
-		';',
+		';', '`',
 	];
 
 	$prohibited_variables = [
