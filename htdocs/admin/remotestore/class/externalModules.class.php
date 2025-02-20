@@ -358,9 +358,9 @@ class ExternalModules
 	 * Sort an array by a key
 	 * @param string $key Key to sort by
 	 *
-	 * @return Closure
+	 * @return Closure(array<string, mixed>, array<string, mixed>): int
 	 */
-	public function buildSorter($key)
+	public function buildSorter(string $key): Closure
 	{
 		return function (array $a, array $b) use ($key): int {
 			return strnatcmp((string) $a[$key], (string) $b[$key]);
@@ -478,11 +478,7 @@ class ExternalModules
 	}
 
 	/**
-	 * Take the status code and throw an exception if the server didn't return 200 or 201 code
-	 * <p>Unique parameter must take : <br><br>
-	 * 'status_code' => Status code of an HTTP return<br>
-	 * 'response' => CURL response
-	 * </p>
+	 * Check the status code of the request
 	 *
 	 * @param array{status_code:int,response:?string,header:string} $request Response elements of CURL request
 	 *
@@ -494,7 +490,7 @@ class ExternalModules
 		switch ($request['status_code']) {
 			case 200:
 			case 201:
-				return;
+				return '';
 			case 204:
 				$error_message = 'No content';
 				break;
@@ -517,7 +513,7 @@ class ExternalModules
 				return 'This call to the API returned an unexpected HTTP status of: ' . $request['status_code'];
 		}
 
-		if ($error_message != "") {
+		if ($error_message !== "") {
 			$response = $request['response'];
 			if (isset($response['errors']) && is_array($response['errors'])) {
 				foreach ($response['errors'] as $error) {
