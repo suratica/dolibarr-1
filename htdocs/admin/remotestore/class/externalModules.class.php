@@ -67,8 +67,9 @@ class ExternalModules
 	 * @var string
 	 */
 	public $dolistore_api_key;
+
 	/**
-	 * @var array|null
+	 * @var array<int, mixed>|null
 	 */
 	public $products;
 
@@ -101,8 +102,8 @@ class ExternalModules
 	/**
 	 * Test if we can access to remote Dolistore market place.
 	 *
-	 * @param string $resource Resource name
-	 * @param array|false $options Options for the request
+	 * @param string 						$resource Resource name
+	 * @param array<string, mixed>|false 	$options Options for the request
 	 *
 	 * @return array{status_code:int,response:?string,header:string}
 	 */
@@ -118,7 +119,10 @@ class ExternalModules
 		$httpheader = ['DOLAPIKEY: '.$this->dolistore_api_key];
 
 		// Add basic auth if needed
-		if (!empty(getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_LOGIN')) && !empty(getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_PASSWORD'))) {
+		$basicAuthLogin = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_LOGIN');
+		$basicAuthPassword = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_PASSWORD');
+
+		if (!empty($basicAuthLogin) && !empty($basicAuthPassword)) {
 			curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 			$login = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_LOGIN');
 			$password = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_PASSWORD');
@@ -132,9 +136,9 @@ class ExternalModules
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $httpheader);
-		curl_setopt($curl, CURLOPT_HEADER, 1);
+		curl_setopt($curl, CURLOPT_HEADER, true);
 
 		$response = curl_exec($curl);
 
@@ -171,7 +175,7 @@ class ExternalModules
 			'lang' => $this->lang
 		];
 
-		$resCategories = $this->callAPI('categories', $data);
+		$resCategories = $this->callApi('categories', $data);
 		if (isset($resCategories['response']) && is_array($resCategories['response'])) {
 			$organized_tree = $resCategories['response'];
 		} else {
@@ -203,8 +207,8 @@ class ExternalModules
 
 	/**
 	 * Generate HTML for products.
-	 * @param array $options Options for the request
-	 * @return string HTML string representing the products.
+	 * @param array<string, mixed> $options Options for the request
+	 * @return string|null HTML string representing the products.
 	 */
 	public function getProducts($options)
 	{
@@ -233,7 +237,7 @@ class ExternalModules
 			'lang' 			=> $this->lang
 		];
 
-		$resProducts = $this->callAPI('products', $data);
+		$resProducts = $this->callApi('products', $data);
 		if (!isset($resProducts['response']) || !is_array($resProducts['response']) || ($resProducts['status_code'] != 200 && $resProducts['status_code'] != 201)) {
 			$html = $this->checkStatusCode($resProducts);
 
@@ -482,11 +486,11 @@ class ExternalModules
 	 *
 	 * @param array{status_code:int,response:?string,header:string} $request Response elements of CURL request
 	 *
-	 * @return void
-	 * @throws Exception if HTTP status code is not 200 or 201
+	 * @return string|null
 	 */
 	protected function checkStatusCode($request)
 	{
+		$error_message = '';
 		switch ($request['status_code']) {
 			case 200:
 			case 201:
