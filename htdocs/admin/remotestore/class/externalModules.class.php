@@ -359,20 +359,18 @@ class ExternalModules
 	 * @param string $key Key to sort by
 	 *
 	 * @return Closure(array<string, mixed>, array<string, mixed>): int
-	 * @suppress PhanPluginUnknownArrayClosureParamType
-	 * @suppress PhanTypeMismatchDimFetch
 	 */
 	public function buildSorter(string $key): Closure
 	{
 		return function (array $a, array $b) use ($key): int {
-			if (!isset($a[$key]) || !isset($b[$key])) {
-				return 0;
-			}
+			/** @var array<string, mixed> $a */
+			/** @var array<string, mixed> $b */
 
-			/** @var string $valA */
-			$valA = is_scalar($a[$key]) ? (string) $a[$key] : '';
-			/** @var string $valB */
-			$valB = is_scalar($b[$key]) ? (string) $b[$key] : '';
+			/** @phan-suppress PhanPluginUnknownArrayClosureParamType */
+			/** @phan-suppress PhanTypeMismatchDimFetch */
+
+			$valA = isset($a[$key]) && is_scalar($a[$key]) ? (string) $a[$key] : '';
+			$valB = isset($b[$key]) && is_scalar($b[$key]) ? (string) $b[$key] : '';
 
 			return strnatcmp($valA, $valB);
 		};
