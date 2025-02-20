@@ -22933,12 +22933,6 @@ parameters:
 			path: ../../../htdocs/product/stock/tpl/stockcorrection.tpl.php
 
 		-
-			message: '#^Variable \$object might not be defined\.$#'
-			identifier: variable.undefined
-			count: 9
-			path: ../../../htdocs/product/traduction.php
-
-		-
 			message: '#^Right side of && is always true\.$#'
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 1
