@@ -363,9 +363,16 @@ class ExternalModules
 	public function buildSorter(string $key): Closure
 	{
 		return function (array $a, array $b) use ($key): int {
-			/** @var array<string, mixed> $a */
-			/** @var array<string, mixed> $b */
-			return strnatcmp((string) $a[$key], (string) $b[$key]);
+			if (!isset($a[$key]) || !isset($b[$key])) {
+				return 0;
+			}
+
+			/** @var string $valA */
+			$valA = is_scalar($a[$key]) ? (string) $a[$key] : '';
+			/** @var string $valB */
+			$valB = is_scalar($b[$key]) ? (string) $b[$key] : '';
+
+			return strnatcmp($valA, $valB);
 		};
 	}
 
