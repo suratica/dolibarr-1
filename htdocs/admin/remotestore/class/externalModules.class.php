@@ -359,6 +359,8 @@ class ExternalModules
 	 * @param string $key Key to sort by
 	 *
 	 * @return Closure(array<string, mixed>, array<string, mixed>): int
+	 * @suppress PhanPluginUnknownArrayClosureParamType
+	 * @suppress PhanTypeMismatchDimFetch
 	 */
 	public function buildSorter(string $key): Closure
 	{
