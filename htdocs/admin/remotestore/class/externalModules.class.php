@@ -363,7 +363,7 @@ class ExternalModules
 	public function buildSorter($key)
 	{
 		return function (array $a, array $b) use ($key): int {
-			return strnatcmp($a[$key], $b[$key]);
+			return strnatcmp((string) $a[$key], (string) $b[$key]);
 		};
 	}
 
@@ -490,7 +490,7 @@ class ExternalModules
 	 */
 	protected function checkStatusCode($request)
 	{
-		$error_message = '';
+		$error_message = "";
 		switch ($request['status_code']) {
 			case 200:
 			case 201:
@@ -517,7 +517,7 @@ class ExternalModules
 				return 'This call to the API returned an unexpected HTTP status of: ' . $request['status_code'];
 		}
 
-		if (!empty($error_message) && isset($error_message)) {
+		if ($error_message != "") {
 			$response = $request['response'];
 			if (isset($response['errors']) && is_array($response['errors'])) {
 				foreach ($response['errors'] as $error) {

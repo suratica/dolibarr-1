@@ -87,7 +87,7 @@ $options['per_page']  	= 10;
 $options['no_page']   	= ((int) GETPOSTINT('no_page') ? GETPOSTINT('no_page') : 1);
 $options['categorie'] 	= ((int) (GETPOSTINT('categorie') ? GETPOSTINT('categorie') : 0));
 $options['search']    	= GETPOST('search_keyword', 'alpha');
-$options['source']		= 'dolistore';
+$options['source']		= GETPOST('source', 'alpha');
 
 //$remotestore            = new Dolistore(false);
 $remotestore   		= new ExternalModules();
