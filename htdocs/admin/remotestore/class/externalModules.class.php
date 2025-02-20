@@ -52,7 +52,7 @@ class ExternalModules
 	 */
 	public $shop_url; // the url of the shop
 	/**
-	 * @var int
+	 * @var string
 	 */
 	public $lang; // the integer representing the lang in the store
 	/**
@@ -362,7 +362,7 @@ class ExternalModules
 	 */
 	public function buildSorter($key)
 	{
-		return function ($a, $b) use ($key) {
+		return function (array $a, array $b) use ($key): int {
 			return strnatcmp($a[$key], $b[$key]);
 		};
 	}
@@ -517,7 +517,7 @@ class ExternalModules
 				return 'This call to the API returned an unexpected HTTP status of: ' . $request['status_code'];
 		}
 
-		if (!empty($error_message)) {
+		if (!empty($error_message) && isset($error_message)) {
 			$response = $request['response'];
 			if (isset($response['errors']) && is_array($response['errors'])) {
 				foreach ($response['errors'] as $error) {

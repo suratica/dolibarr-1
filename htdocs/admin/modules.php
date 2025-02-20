@@ -82,11 +82,12 @@ $search_version = GETPOST('search_version', 'alpha');
 
 
 // For remotestore search
-$options              = array();
-$options['per_page']  = 10;
-$options['no_page']   = ((int) GETPOSTINT('no_page') ? GETPOSTINT('no_page') : 1);
-$options['categorie'] = ((int) (GETPOSTINT('categorie') ? GETPOSTINT('categorie') : 0));
-$options['search']    = GETPOST('search_keyword', 'alpha');
+$options              	= array();
+$options['per_page']  	= 10;
+$options['no_page']   	= ((int) GETPOSTINT('no_page') ? GETPOSTINT('no_page') : 1);
+$options['categorie'] 	= ((int) (GETPOSTINT('categorie') ? GETPOSTINT('categorie') : 0));
+$options['search']    	= GETPOST('search_keyword', 'alpha');
+$options['source']		= 'dolistore';
 
 //$remotestore            = new Dolistore(false);
 $remotestore   		= new ExternalModules();
