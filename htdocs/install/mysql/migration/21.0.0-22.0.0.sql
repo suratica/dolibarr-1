@@ -42,6 +42,11 @@ ALTER TABLE llx_societe_account ADD UNIQUE INDEX uk_societe_account_login_websit
 
 
 -- V22 migration
+
+ALTER TABLE llx_c_country ADD COLUMN sepa tinyint DEFAULT 0 NOT NULL;
+
+UPDATE llx_c_country SET sepa = 1 WHERE sepa = 0 AND eec = 1;
+
 -- fix element
 UPDATE llx_c_type_contact set element='shipping' WHERE element='expedition';
 -- Shipment / Expedition
