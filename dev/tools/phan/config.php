@@ -228,12 +228,17 @@ return [
 		'actioncode' => 'string',
 		'badgeStatus0' => 'string',
 		'badgeStatus1' => 'string',
-		'badgeStatus11' => 'string',
 		'badgeStatus3' => 'string',
 		'badgeStatus4' => 'string',
+		'badgeStatus5' => 'string',
 		'badgeStatus6' => 'string',
+		'badgeStatus7' => 'string',
 		'badgeStatus8' => 'string',
 		'badgeStatus9' => 'string',
+		'badgeStatus10' => 'string',
+		'badgeStatus11' => 'string',
+		'badgeStatus4b' => 'string',
+		'badgeStatus8b' => 'string',
 		'classname' => 'string',
 		'conf' => '\Conf',
 		'conffile' => 'string',
@@ -299,6 +304,7 @@ return [
 	// your application should be included in this list.
 	'directory_list' => [
 		'htdocs',
+		'scripts',
 		PHAN_DIR . '/stubs/',
 	],
 
