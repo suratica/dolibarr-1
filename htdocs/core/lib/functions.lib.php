@@ -10815,7 +10815,6 @@ function dol_eval_new($s)
 		) {
 			return "« {$token_value} » is prohibited in « {$s} »";
 		}
-
 	}
 
 	// Prohibited Token IDs
