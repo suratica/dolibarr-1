@@ -215,18 +215,18 @@ if ($object instanceof CommonObject) {
 				}
 
 				// can filter on any field of object
-				if (is_object($object)) {
-					$tags = [];
-					preg_match_all('/\$(.*?)\$/', $InfoFieldList[4], $tags);
-					foreach ($tags[0] as $keytag => $valuetag) {
-						$property = preg_replace('/[^a-z0-9_]/', '', strtolower($tags[1][$keytag]));
-						if (strpos($InfoFieldList[4], $valuetag) !== false && property_exists($object, $property) && !empty($object->$property)) {
-							$InfoFieldList[4] = str_replace($valuetag, (string) $object->$property, $InfoFieldList[4]);
-						} else {
-							$InfoFieldList[4] = str_replace($valuetag, '0', $InfoFieldList[4]);
-						}
+				//if (is_object($object)) {
+				$tags = [];
+				preg_match_all('/\$(.*?)\$/', $InfoFieldList[4], $tags);
+				foreach ($tags[0] as $keytag => $valuetag) {
+					$property = preg_replace('/[^a-z0-9_]/', '', strtolower($tags[1][$keytag]));
+					if (strpos($InfoFieldList[4], $valuetag) !== false && property_exists($object, $property) && !empty($object->$property)) {
+						$InfoFieldList[4] = str_replace($valuetag, (string) $object->$property, $InfoFieldList[4]);
+					} else {
+						$InfoFieldList[4] = str_replace($valuetag, '0', $InfoFieldList[4]);
 					}
 				}
+				//}
 
 				// We have to filter on a field of the extrafield table
 				$errstr = '';
