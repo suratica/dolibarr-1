@@ -101,6 +101,7 @@ session_cache_limiter('public');
 
 require_once __DIR__.'/../../main.inc.php'; // __DIR__ allow this script to be included in custom themes
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+
 /**
  * @var Conf $conf
  * @var DoliDB $db
@@ -110,6 +111,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
  * @var string $badgeDanger
  * @var string $badgeWarning
  * @var string $butactionbg
+ * @var string $badgeStatus4
  * @var string $colorbackbody
  * @var string $colorbackhmenu1
  * @var string $colorbacklinebreak
