@@ -3296,7 +3296,7 @@ function dol_check_secure_access_document($modulepart, $original_file, $entity, 
 		} elseif (isModEnabled("service")) {
 			$original_file = $conf->service->multidir_output[$entity].'/'.$original_file;
 		}
-	} elseif ($modulepart == 'product_batch' || $modulepart == 'produitlot') {
+	} elseif ($modulepart == 'product_batch' || $modulepart == 'productlot') {
 		// Wrapping pour les lots produits
 		if (empty($entity) || (empty($conf->productbatch->multidir_output[$entity]))) {
 			return array('accessallowed' => 0, 'error' => 'Value entity must be provided');
