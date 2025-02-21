@@ -8,7 +8,7 @@
  * Copyright (C) 2012-2016 Marcos García        <marcosgdf@gmail.com>
  * Copyright (C) 2013      Florian Henry        <florian.henry@open-concept.pro>
  * Copyright (C) 2014      Ion Agorria          <ion@agorria.com>
- * Copyright (C) 2018-2024	Frédéric France      <frederic.france@free.fr>
+ * Copyright (C) 2018-2025  Frédéric France      <frederic.france@free.fr>
  * Copyright (C) 2022      Gauthier VERDOL      <gauthier.verdol@atm-consulting.fr>
  * Copyright (C) 2022      Charlene Benke       <charlene@patas-monkey.com>
  * Copyright (C) 2023 	   Joachim Kueter       <git-jk@bloxera.com>
@@ -1329,19 +1329,19 @@ if (empty($reshook)) {
 			$db->begin();
 
 			// Creation commande
-			$object->ref_supplier  	= GETPOST('refsupplier');
-			$object->socid         	= $socid;
+			$object->ref_supplier = GETPOST('refsupplier');
+			$object->socid = $socid;
 			$object->cond_reglement_id = GETPOSTINT('cond_reglement_id');
 			$object->mode_reglement_id = GETPOSTINT('mode_reglement_id');
-			$object->fk_account        = GETPOSTINT('fk_account');
+			$object->fk_account = GETPOSTINT('fk_account');
 			$object->note_private = GETPOST('note_private', 'restricthtml');
-			$object->note_public   	= GETPOST('note_public', 'restricthtml');
+			$object->note_public = GETPOST('note_public', 'restricthtml');
 			$object->delivery_date = $datelivraison;
 			$object->fk_incoterms = GETPOSTINT('incoterm_id');
 			$object->location_incoterms = GETPOST('location_incoterms', 'alpha');
 			$object->multicurrency_code = GETPOST('multicurrency_code', 'alpha');
-			$object->multicurrency_tx = (float) price2num(GETPOSTFLOAT('originmulticurrency_tx'));
-			$object->fk_project       = GETPOSTINT('projectid');
+			$object->multicurrency_tx = GETPOSTFLOAT('originmulticurrency_tx');
+			$object->fk_project = GETPOSTINT('projectid');
 
 			// Fill array 'array_options' with data from add form
 			if (!$error) {
