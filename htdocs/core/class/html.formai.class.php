@@ -157,7 +157,8 @@ class FormAI extends Form
 	 *
 	 * @return 	string      				HTML code to ask AI instruction and autofill result
 	 */
-	public function getAjaxAICallFunction(){
+	public function getAjaxAICallFunction()
+	{
 		$out = "";
 		if ($this->aicallfunctioncalled) {
 			return $out;
