@@ -1,7 +1,7 @@
 # Dolibarr Makepack How To
 
 This documentation describe steps to build a BETA or RELEASE versions of Dolibarr.
-There is a chapter for BETA version and a chapter for RELEASE version.
+There is a chapter for BETA version and a chapter for a RELEASE version.
 
 
 ## Prerequisites on Linux
