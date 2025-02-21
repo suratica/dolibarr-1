@@ -824,7 +824,7 @@ function getFormeJuridiqueLabel($code)
  *  Return list of countries that are inside the EEC (European Economic Community)
  *  Note: Try to keep this function as a "memory only" function for performance reasons.
  *
- *  @return     string[]				Array of countries code in EEC
+ *  @return     string[]				Array of country codes in EEC
  */
 function getCountriesInEEC()
 {
@@ -879,7 +879,7 @@ function isInEEC($object)
  *  Return list of countries that are inside the SEPA zone (Single Euro Payment Area)
  *  Note: Try to keep this function as a "memory only" function for performance reasons.
  *
- *  @return     array					Array of countries code in SEPA
+ *  @return     string[]			Array of country codes in SEPA
  */
 function getCountriesInSEPA()
 {
