@@ -10661,6 +10661,191 @@ function verifCond($strToEvaluate, $onlysimplestring = '1')
  * This function is called by verifCond() or trans() and transnoentitiesnoconv().
  *
  * @param 	string		$s					String to evaluate
+ * @return	void|string						Nothing or return result of eval (even if type can be int, it is safer to assume string and find all potential typing issues as abs(dol_eval(...)).
+ * @see verifCond(), checkPHPCode() to see sanitizing rules that should be very close.
+ * @phan-suppress PhanPluginUnsafeEval
+ */
+function dol_eval_new($s)
+{
+	// Only this global variables can be read by eval function and returned to caller
+	global $conf,	// Read of const is done with getDolGlobalString() but we need $conf->currency for example
+		$db, $langs, $user, $website, $websitepage,
+		$action, $mainmenu, $leftmenu,
+		$mysoc,
+		$objectoffield,	// To allow the use of $objectoffield in computed fields
+
+		// Old variables used
+		$object,
+		$obj; // To get $obj used into list when dol_eval() is used for computed fields and $obj is not yet $object
+
+	// PHP < 7.4.0
+	defined('T_COALESCE_EQUAL') || define('T_COALESCE_EQUAL', PHP_INT_MAX);
+	defined('T_FN') || define('T_FN', PHP_INT_MAX);
+
+	// PHP < 8.0.0
+	defined('T_ATTRIBUTE') || define('T_ATTRIBUTE', PHP_INT_MAX);
+	defined('T_MATCH') || define('T_MATCH', PHP_INT_MAX);
+	defined('T_NAME_FULLY_QUALIFIED') || define('T_NAME_FULLY_QUALIFIED', PHP_INT_MAX);
+	defined('T_NAME_QUALIFIED') || define('T_NAME_QUALIFIED', PHP_INT_MAX);
+	defined('T_NAME_RELATIVE') || define('T_NAME_RELATIVE', PHP_INT_MAX);
+
+	// PHP < 8.1.0
+	defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG') || define('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG', PHP_INT_MAX);
+	defined('T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG') || define('T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG', PHP_INT_MAX);
+	defined('T_ENUM') || define('T_ENUM', PHP_INT_MAX);
+	defined('T_READONLY') || define('T_READONLY', PHP_INT_MAX);
+
+	// PHP < 8.4.0
+	defined('T_PRIVATE_SET') || define('T_PRIVATE_SET', PHP_INT_MAX);
+	defined('T_PROTECTED_SET') || define('T_PROTECTED_SET', PHP_INT_MAX);
+	defined('T_PUBLIC_SET') || define('T_PUBLIC_SET', PHP_INT_MAX);
+
+	$prohibited_token_ids = [
+		/*
+		 * Prohibited int tokens
+		 */
+
+		// T_AND_EQUAL', 'T_ARRAY', 'T_ARRAY_CAST', 'T_AS',
+		'T_ABSTRACT', 'T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG', 'T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG', 'T_ATTRIBUTE',
+		// 'T_BOOLEAN_AND', 'T_BOOLEAN_OR', 'T_BOOL_CAST', 'T_BREAK',
+		'T_BAD_CHARACTER',
+		// 'T_CASE', 'T_CLASS_C', 'T_CLONE', 'T_COALESCE', 'T_COALESCE_EQUAL', 'T_COMMENT', 'T_CONCAT_EQUAL',
+		// 'T_CONSTANT_ENCAPSED_STRING', 'T_CONTINUE', 'T_CURLY_OPEN',
+		'T_CALLABLE', 'T_CATCH', 'T_CLASS', 'T_CLOSE_TAG', 'T_CONST',
+		// 'T_DEC', 'T_DEFAULT', 'T_DIV_EQUAL', 'T_DNUMBER', 'T_DO', 'T_DOC_COMMENT',
+		// 'T_DOLLAR_OPEN_CURLY_BRACES', 'T_DOUBLE_ARROW', 'T_DOUBLE_CAST', 'T_DOUBLE_COLON',
+		'T_DECLARE', 'T_DIR',
+		// 'T_ELLIPSIS', 'T_ELSE', 'T_ELSEIF', 'T_EMPTY', 'T_ENCAPSED_AND_WHITESPACE', 'T_ENDFOR',
+		// 'T_ENDFOREACH', 'T_ENDIF', 'T_ENDSWITCH', 'T_ENDWHILE', 'T_END_HEREDOC',
+		'T_ECHO', 'T_ENDDECLARE', 'T_ENUM', 'T_EVAL', 'T_EXIT', 'T_EXTENDS',
+		// 'T_FOR', 'T_FOREACH',
+		'T_FILE', 'T_FINAL', 'T_FINALLY', 'T_FN', 'T_FUNCTION', 'T_FUNC_C',
+		'T_GLOBAL', 'T_GOTO',
+		'T_HALT_COMPILER',
+		// 'T_IF', 'T_INC', 'T_INLINE_HTML', 'T_INSTANCEOF', 'T_INT_CAST', 'T_ISSET', 'T_IS_EQUAL', 'T_IS_GREATER_OR_EQUAL',
+		// 'T_IS_IDENTICAL', 'T_IS_NOT_EQUAL', 'T_IS_NOT_IDENTICAL', 'T_IS_SMALLER_OR_EQUAL',
+		'T_IMPLEMENTS', 'T_INCLUDE', 'T_INCLUDE_ONCE', 'T_INSTEADOF', 'T_INTERFACE',
+		// 'T_LIST', 'T_LNUMBER', 'T_LOGICAL_AND', 'T_LOGICAL_OR', 'T_LOGICAL_XOR',
+		'T_LINE',
+		// 'T_MINUS_EQUAL', 'T_MOD_EQUAL', 'T_MUL_EQUAL',
+		'T_METHOD_C',
+		// 'T_NEW',
+		// 'T_NS_SEPARATOR', 'T_NUM_STRING',
+		'T_NAMESPACE',
+		// 'T_NAME_FULLY_QUALIFIED', 'T_NAME_QUALIFIED', 'T_NAME_RELATIVE', 'T_NS_C',
+		// 'T_OBJECT_CAST', 'T_OBJECT_OPERATOR', 'T_OR_EQUAL',
+		'T_OPEN_TAG', 'T_OPEN_TAG_WITH_ECHO',
+		// 'T_PAAMAYIM_NEKUDOTAYIM', 'T_PLUS_EQUAL', 'T_POW', 'T_POW_EQUAL',
+		'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC',
+		// 'T_PROPERTY_C',
+		'T_READONLY', 'T_REQUIRE', 'T_REQUIRE_ONCE', 'T_RETURN',
+		// 'T_SL', 'T_SL_EQUAL', 'T_SPACESHIP', 'T_SR', 'T_SR_EQUAL', 'T_START_HEREDOC', 'T_STATIC',
+		// 'T_STRING', 'T_STRING_CAST', 'T_STRING_VARNAME', 'T_SWITCH',
+		'T_STATIC',
+		'T_THROW', 'T_TRAIT', 'T_TRAIT_C', 'T_TRY',
+		'T_UNSET', 'T_UNSET_CAST', 'T_USE',
+		// 'T_VARIABLE',
+		'T_VAR',
+		// 'T_WHILE', 'T_WHITESPACE',
+		// 'T_XOR_EQUAL',
+		// 'T_YIELD', 'T_YIELD_FROM',
+
+		/*
+		 * Prohibited string tokens
+		 */
+		';', '`',
+	];
+
+	$prohibited_variables = [
+		'$_COOKIE', '$_ENV', '$_FILES', '$GLOBALS', '$_GET', '$_POST', '$_REQUEST', '$_SERVER', '$_SESSION',
+	];
+
+	$prohibited_functions = [
+		// 'base64_decode', 'rawurldecode', 'urldecode', 'str_rot13', 'hex2bin', // I haven't managed to inject anything with these functions yet, can someone confirm?
+		// 'get_defined_functions', 'get_defined_vars', 'get_defined_constants', 'get_declared_classes', // Should we really block the admin from viewing these lists?
+		'override_function', 'session_id', 'session_create_id', 'session_regenerate_id',
+		'call_user_func', 'call_user_func_array',  // PREVENT calling forbidden functions
+		'exec', 'passthru', 'shell_exec', 'system', 'proc_open', 'popen',
+		'dol_eval', 'executeCLI', 'verifCond', // Native Dolibarr functions
+		'create_function', 'assert', 'mb_ereg_replace', 'mb_eregi_replace', // function with eval capabilities
+		'dol_compress_dir', 'dol_decode', 'dol_delete_file', 'dol_delete_dir', 'dol_delete_dir_recursive', 'dol_copy', 'archiveOrBackupFile', // more dolibarr functions
+		'fopen', 'file_put_contents', 'fputs', 'fputscsv', 'fwrite', 'fpassthru', 'mkdir', 'rmdir', 'symlink', 'touch', 'unlink', 'umask', // PHP functions related to file operations
+		'invoke', 'invokeArgs', // Method of ReflectionFunction to execute a function
+		'filter_input', 'filter_input_array', 'GETPOST', // PREVENT CODE INJECTION
+	];
+
+	$prohibited_token_arrangements = [
+		// Variable functions « $a( », « "$a"( », « 'FN_NAME'( », ('FN_NAME')()
+		' T_VARIABLE ( ', ' " ( ', ' \' ( ', ' T_CONSTANT_ENCAPSED_STRING ( ', ' ) ( ',
+	];
+
+	$tokens = token_get_all("<?php return {$s};", TOKEN_PARSE);
+
+	$tokens_arrangement = ' ';
+
+	for ($i = 2, $c = count($tokens) - 1; $i < $c; ++$i) { // ignore <?php return and ;
+		if (is_array($tokens[$i])) {
+			$token_id = $tokens[$i][0];
+			$token_value = $tokens[$i][1];
+			$token_name = token_name($tokens[$i][0]);
+		} else {
+			$token_id = $tokens[$i];
+			$token_value = $tokens[$i];
+			$token_name = $tokens[$i];
+		}
+
+		// Ignore whitespaces
+		if (T_WHITESPACE === $token_id) {
+			continue;
+		}
+
+		// Keep history to check arrangements
+		$tokens_arrangement .= "{$token_name} ";
+
+		// Prohibited Variables
+		if (T_VARIABLE === $token_id
+			&& in_array($token_value, $prohibited_variables, true)
+		) {
+			return "« {$token_value} » is prohibited in « {$s} »";
+		}
+
+		// Prohibited Functions
+		if (T_STRING === $token_id
+			&& in_array($token_value, $prohibited_functions, true)
+		) {
+			return "« {$token_value} » is prohibited in « {$s} »";
+		}
+	}
+
+	// Prohibited Token IDs
+	$maxi = count($prohibited_token_ids);
+	for ($i = 0; $i < $maxi; ++$i) {
+		if (false !== strpos($tokens_arrangement, " {$prohibited_token_ids[$i]} ")) {
+			return "« {$prohibited_token_ids[$i]} » is prohibited in « {$s} »";
+		}
+	}
+
+	// Prohibited token arrangements
+	$maxi = count($prohibited_token_arrangements);
+	for ($i = 0; $i < $maxi; ++$i) {
+		if (false !== strpos($tokens_arrangement, $prohibited_token_arrangements[$i])) {
+			return "« {$prohibited_token_arrangements[$i]} » is prohibited in « {$s} »";
+		}
+	}
+
+	// Return result
+	try {
+		return @eval("return {$s};") ?? '';
+	} catch (Throwable $ex) {
+		return "Evaluation Error: {$ex->getMessage()} in {$s}";
+	}
+}
+
+/**
+ * Replace eval function to add more security.
+ * This function is called by verifCond() or trans() and transnoentitiesnoconv().
+ *
+ * @param 	string		$s					String to evaluate
  * @param	int<0,1>	$returnvalue		0=No return (deprecated, used to execute eval($a=something)). 1=Value of eval is returned (used to eval($something)).
  * @param   int<0,1>	$hideerrors     	1=Hide errors
  * @param	string		$onlysimplestring	'0' (deprecated, do not use it anymore)=Accept all chars,
