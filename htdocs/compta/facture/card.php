@@ -2030,7 +2030,7 @@ if (empty($reshook)) {
 						$line->fk_prev_id = $line->id;
 						$line->fetch_optionals();
 						if (getDolGlobalInt('INVOICE_USE_SITUATION') == 2) {
-							$line->situation_percent = $line->getAllPrevProgress($object->id);  // get good progress including credit note
+							$line->situation_percent = 0;  // New situation percent must be 0 (No cumulative)
 						} else {
 							$line->situation_percent = $line->get_prev_progress($object->id); // get good progress including credit note
 						}
