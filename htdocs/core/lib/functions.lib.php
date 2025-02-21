@@ -13502,7 +13502,7 @@ function forgeSQLFromUniversalSearchCriteria($filter, &$errorstr = '', $noand = 
 	$ret = ($noand ? "" : " AND ").($nopar ? "" : '(').preg_replace_callback('/'.$regexstring.'/i', 'dolForgeCriteriaCallback', $filter).($nopar ? "" : ')');
 
 	if (is_object($db)) {
-		$ret = str_replace('__NOW__', $db->idate(dol_now()), $ret);
+		$ret = str_replace('__NOW__', "'".$db->idate(dol_now())."'", $ret);
 	}
 	if (is_object($user)) {
 		$ret = str_replace('__USER_ID__', (string) $user->id, $ret);
@@ -13733,8 +13733,10 @@ function dolForgeCriteriaCallback($matches)
 			$tmpescaped = 'NULL';
 		} elseif (is_int($tmpescaped)) {
 			$tmpescaped = (int) $tmpescaped;
-		} else {
+		} elseif (is_numeric((string) $tmpescaped)) {	// it can be a float with a .
 			$tmpescaped = (float) $tmpescaped;
+		} else {
+			$tmpescaped = preg_replace('/[^a-z0-9_]/i', '', $tmpescaped);	// it can be a name of field or a substitution variable like '__NOW__'
 		}
 	}
 
