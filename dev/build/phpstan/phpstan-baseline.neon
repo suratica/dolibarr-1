@@ -27661,19 +27661,7 @@ parameters:
 			path: ../../../htdocs/ticket/index.php
 
 		-
-			message: '#^Variable \$colorseries might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/ticket/index.php
-
-		-
 			message: '#^Variable \$shownb might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/ticket/index.php
-
-		-
-			message: '#^Variable \$showtot might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
 			path: ../../../htdocs/ticket/index.php
@@ -28161,12 +28149,6 @@ parameters:
 		-
 			message: '#^Ternary operator condition is always false\.$#'
 			identifier: ternary.alwaysFalse
-			count: 1
-			path: ../../../htdocs/variants/combinations.php
-
-		-
-			message: '#^Variable \$prodattr_all might not be defined\.$#'
-			identifier: variable.undefined
 			count: 1
 			path: ../../../htdocs/variants/combinations.php
 
