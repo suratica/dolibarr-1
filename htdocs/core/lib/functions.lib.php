@@ -14182,17 +14182,24 @@ function dolForgeSQLCriteriaCallback($matches)
 
 	$regbis = array();
 
-	if ($operator == 'IN' || $operator == 'NOT IN') {	// IN is allowed for list of ID or code only
+	if ($operator == 'IN' || $operator == 'NOT IN') {	// IN is allowed for list of ID/code/field only (or subrequest if MAIN_DISALLOW_UNSECURED_SELECT_INTO_EXTRAFIELDS_FILTERnot enabled)
 		//if (!preg_match('/^\(.*\)$/', $tmpescaped)) {
 		$tmpescaped2 = '(';
 		// Explode and sanitize each element in list
 		$tmpelemarray = explode(',', $tmpescaped);
 		foreach ($tmpelemarray as $tmpkey => $tmpelem) {
 			$reg = array();
+			$tmpelem = trim($tmpelem);
 			if (preg_match('/^\'(.*)\'$/', $tmpelem, $reg)) {
-				$tmpelemarray[$tmpkey] = "'".$db->escape($db->sanitize($reg[1], 1, 1, 1))."'";
+				$tmpelemarray[$tmpkey] = "'".$db->escape($db->sanitize($reg[1], 1, 1, 1, 1))."'";
+			} elseif (ctype_digit((string) $tmpelem)) {	// if only 0-9 chars, no .
+				$tmpelemarray[$tmpkey] = (int) $tmpelem;
+			} elseif (is_numeric((string) $tmpelem)) {	// it can be a float with a .
+				$tmpelemarray[$tmpkey] = (float) $tmpelem;
+			} elseif (!getDolGlobalString("MAIN_DISALLOW_UNSECURED_SELECT_INTO_EXTRAFIELDS_FILTER")) {
+				$tmpelemarray[$tmpkey] = preg_replace('/[^a-z0-9_<>=!\s]/i', '', $tmpelem);	// it can be a full subrequest
 			} else {
-				$tmpelemarray[$tmpkey] = $db->escape($db->sanitize($tmpelem, 1, 1, 1));
+				$tmpelemarray[$tmpkey] = preg_replace('/[^a-z0-9_]/i', '', $tmpelem);	// it can be a name of field or a substitution variable like '__NOW__'
 			}
 		}
 		$tmpescaped2 .= implode(',', $tmpelemarray);
