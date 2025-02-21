@@ -14,21 +14,21 @@ Prerequisites to build autoexe DoliWamp package from Linux (solution seems broke
 
 `apt-get install wine q4wine`
 
-* Launch "wine cmd" to check a drive Z: pointing to / exists.
-* Install InnoSetup
+- Launch "wine cmd" to check a drive Z: pointing to / exists.
+- Install InnoSetup
 
   For example by running isetup-5.5.8.exe (https://www.jrsoftware.org)  https://files.jrsoftware.org/is/5/
 
-* Install WampServer into "C:\wamp64" to have Apache, PHP and MariaDB
+- Install WampServer into "C:\wamp64" to have Apache, PHP and MariaDB
 
   For example by running wampserver3.2.6_x64.exe (https://www.wampserver.com).
 See file dev/build/exe/doliwamp.iss to know the doliwamp version currently setup.
 
-* Add path to ISCC into PATH windows var:
+- Add path to ISCC into PATH windows var:
 
-  Launch wine cmd, then regedit and add entry int HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment\PATH
+  Launch wine cmd, then regedit and add entry int `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment\PATH`
 
-* To build manually the .exe from Windows
+- To manually build the .exe from Windows
 
   Note: running from makepack-dolibarr.pl script is however recommended
   open file dev/build/exe/doliwamp.iss and click on button "Compile".
@@ -39,17 +39,17 @@ See file dev/build/exe/doliwamp.iss to know the doliwamp version currently setup
 
 Prerequisites to build autoexe DoliWamp package from Windows:
 
-* Install Perl for Windows (https://strawberryperl.com/)
-* Install isetup-5.5.8.exe (https://www.jrsoftware.org)
-* Install Microsoft Visual C++ Redistributable 2017 (https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170)
-* Install WampServer-3.2.6-64.exe (Apache 2.4.51, PHP 7.4.26, MariaDB 10.6.5 for example. Version must match the values found into doliwamp.iss)
-* Install GIT for Windows (https://git-scm.com/ => You must choose option "Add Git bash profile", "Git commit as-is")
-* Install Dolibarr current version:
+- Install Perl for Windows (https://strawberryperl.com/)
+- Install isetup-5.5.8.exe (https://www.jrsoftware.org)
+- Install Microsoft Visual C++ Redistributable 2017 (https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170)
+- Install WampServer-3.2.6-64.exe (Apache 2.4.51, PHP 7.4.26, MariaDB 10.6.5 for example. Version must match the values found into doliwamp.iss)
+- Install GIT for Windows (https://git-scm.com/ => You must choose option "Add Git bash profile", "Git commit as-is")
+- Install Dolibarr current version:
   `git clone https://github.com/dolibarr/dolibarr  or  git clone --branch X.Y https://github.com/dolibarr/dolibarr`
 
-* Add the path of PHP (C:\wamp64\bin\php\php7.4.26) and InnoSetup (C:\Program Files (x86)\Inno Setup 5) into the %PATH% of Windows.
+- Add the path of PHP (C:\wamp64\bin\php\php7.4.26) and InnoSetup (C:\Program Files (x86)\Inno Setup 5) into the %PATH% of Windows.
 
-* Create a config file c:\dolibarr\dolibarr\htdocs\conf\conf.php with content
+- Create a config file `c:\dolibarr\dolibarr\htdocs\conf\conf.php` with content
 
 ```
   <?php
@@ -62,8 +62,8 @@ Prerequisites to build autoexe DoliWamp package from Windows:
 
 This files describe steps made by Dolibarr packaging team to make a beta version of Dolibarr, step by step.
 
-* Check all files are committed.
-* Update version/info in ChangeLog, for this you can:
+- Check all files are committed.
+- Update version/info in ChangeLog, for this you can:
 
 To generate a changelog of a **major new version** x.y.0 (from a repo on branch develop), you can do
 
@@ -72,7 +72,7 @@ cd ~/git/dolibarr
 git log `diff -u <(git rev-list --first-parent x.(y-1).0)  <(git rev-list --first-parent develop) | sed -ne 's/^ //p' | head -1`.. --no-merges --pretty=short --oneline | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u | sed 's/FIXED:/FIX:/g' | sed 's/FIXED :/FIX:/g' | sed 's/FIX :/FIX:/g' | sed 's/FIX /FIX: /g' | sed 's/NEW :/NEW:/g' | sed 's/NEW /NEW: /g' > /tmp/changelogtocopy
 ```
 
-To generate a changelog of a **intermediate new version** x.y.0 (from a repo on branch x.y repo), you can do
+To generate a changelog of a **intermediate new version** x.y.0 (from a repo on branch x.y), you can do
 
 ```
 cd ~/git/dolibarr_x.y
@@ -87,15 +87,15 @@ git log x.y.z-1.. --no-merges --pretty=short --oneline | sed -e "s/^[0-9a-z]* //
 ```
 
 Recopy the content of the output file into the file ChangeLog.
-* Note: To know number of lines changes: git diff --shortstat A B
-* Update version number with x.y.z-w in file htdocs/filefunc.inc.php
-* Commit all changes.
+- Note: To know number of lines changes: git diff --shortstat A B
+- Update version number with x.y.z-w in file htdocs/filefunc.inc.php
+- Commit all changes.
 
-* Run makepack-dolibarr.pl to check the generation of all packages. No need to publish them.
+- Run `makepack-dolibarr.pl` to check the generation of all packages. No need to publish them.
 
-* Post a news on dolibarr.org/dolibarr.fr + social networks about the freeze
+- Post a news message on dolibarr.org about the freeze by cloning a past news + relay the news url on social networks
 
-* Create a branch x.y (but only when version seems stable enough).
+- Create a branch x.y (but only when version seems stable enough).
 
 
 ## Actions to do a RELEASE
@@ -103,8 +103,8 @@ Recopy the content of the output file into the file ChangeLog.
 This files describe steps made by Dolibarr packaging team to make a complete release of Dolibarr, step by step.
 We suppose the branch x.y has already been created during the beta (see previous step) and we want to release a version x.y.z (with z >= 0)
 
-* Check all files are committed.
-* Update version/info in ChangeLog, for this:
+- Check all files are committed.
+- Update version/info in ChangeLog, for this:
 
 To generate a changelog of a **major new version** x.y.0 (from a repo on branch develop), you can do
 
@@ -113,7 +113,7 @@ cd ~/git/dolibarr
 git log `diff -u <(git rev-list --first-parent x.(y-1).0)  <(git rev-list --first-parent develop) | sed -ne 's/^ //p' | head -1`.. --no-merges --pretty=short --oneline | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u | sed 's/FIXED:/FIX:/g' | sed 's/FIXED :/FIX:/g' | sed 's/FIX :/FIX:/g' | sed 's/FIX /FIX: /g' | sed 's/NEW :/NEW:/g' | sed 's/NEW /NEW: /g' > /tmp/changelogtocopy
 ```
 
-To generate a changelog of a **intermediate new version** x.y.0 (from a repo pn branch x.y), you can do
+To generate a changelog of a **intermediate new version** x.y.0 (from a repo on branch x.y), you can do
 
 ```
 cd ~/git/dolibarr_x.y
@@ -127,16 +127,18 @@ cd ~/git/dolibarr_x.y
 git log --ancestry-path x.y.(z-1)..   | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u | sed 's/FIXED:/FIX:/g' | sed 's/FIXED :/FIX:/g' | sed 's/FIX :/FIX:/g' | sed 's/FIX /FIX: /g' | sed 's/NEW :/NEW:/g' | sed 's/NEW /NEW: /g' > /tmp/changelogtocopy
 ```
 
-* Recopy the content of the output file into the file ChangeLog.
-* Note: To know the number of lines changes: git diff --shortstat vA vB
-* Update version number with x.y.z in file htdocs/filefunc.inc.php
-* Commit all changes.
+- Recopy the content of the output file into the file ChangeLog.
+  
+  Note: To know the number of lines changes: git diff --shortstat vA vB
 
-* Run makepack-dolibarr.pl to generate all packages.
+- Update version number with x.y.z in file htdocs/filefunc.inc.php
+- Commit all changes.
 
-* Check content of built packages.
+- Run makepack-dolibarr.pl to generate all packages.
 
-* Run makepack-dolibarr.pl again with option to publish files on dolibarr foundation server (Dir /home/dolibarr/wwwroot/files/stable on www.dolibarr.org).
-* Run makepack-dolibarr.pl again with option to publish files on sourceforge. This will also add the official tag x.y.z.
+- Check content of built packages.
 
-* Post a news in english dolibarr.org/dolibarr.fr web site by cloning a past news (the news will be propagated on social networks)
+- Run makepack-dolibarr.pl again with option to publish files on dolibarr foundation server (Dir /home/dolibarr/wwwroot/files/stable on www.dolibarr.org).
+- Run makepack-dolibarr.pl again with option to publish files on sourceforge. This will also add the official tag x.y.z.
+
+- Post a news message in dolibarr.org web site by cloning a past news + relay the news url on social networks
