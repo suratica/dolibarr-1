@@ -5240,7 +5240,8 @@ if ($action == 'create') {
 		// List of previous situation invoices
 		if (($object->situation_cycle_ref > 0) && getDolGlobalString('INVOICE_USE_SITUATION')) {
 			print '<!-- List of situation invoices -->';
-			print '<table class="noborder situationstable" width="100%">';
+			print '<div class="div-table-responsive-no-min">';
+			print '<table class="noborder paymenttable centpercent situationstable">';
 
 			print '<tr class="liste_titre">';
 			print '<td>'.$langs->trans('ListOfSituationInvoices').'</td>';
@@ -5378,6 +5379,7 @@ if ($action == 'create') {
 			}
 
 			print '</table>';
+			print '</div>';
 		}
 
 		$sign = 1;
@@ -5719,15 +5721,16 @@ if ($action == 'create') {
 		if (getDolGlobalString('INVOICE_USE_SITUATION')) {
 			if ($object->situation_cycle_ref && $object->status == 0) {
 				print '<!-- Area to change globally the situation percent -->'."\n";
-				print '<div class="div-table-responsive">';
+				print '<div class="div-table-responsive-no-min">';
 
 				print '<form name="updatealllines" id="updatealllines" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'#updatealllines" method="POST">';
 				print '<input type="hidden" name="token" value="'.newToken().'" />';
 				print '<input type="hidden" name="action" value="updatealllines" />';
 				print '<input type="hidden" name="id" value="'.$object->id.'" />';
+				print '<input type="hidden" name="page_y" value="" />';
 				print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 
-				print '<table id="tablelines_all_progress" class="noborder noshadow" width="100%">';
+				print '<table id="tablelines_all_progress" class="noborder noshadow centpercent">';
 
 				print '<tr class="liste_titre nodrag nodrop">';
 
@@ -5747,7 +5750,7 @@ if ($action == 'create') {
 				}
 				print '<td>&nbsp;</td>';
 				print '<td class="nowrap right"><input type="text" size="1" value="" name="all_progress">%</td>';
-				print '<td class="right"><input type="submit" class="button" name="all_percent" value="Modifier" /></td>';
+				print '<td class="right"><input type="submit" class="button reposition small" name="all_percent" value="'.$langs->trans("Modify").'" /></td>';
 				print '</tr>';
 
 				print '</table>';
@@ -5772,7 +5775,7 @@ if ($action == 'create') {
 		}
 
 		print '<div class="div-table-responsive-no-min">';
-		print '<table id="tablelines" class="noborder noshadow" width="100%">';
+		print '<table id="tablelines" class="noborder noshadow centpercent">';
 
 		// Show object lines
 		if (!empty($object->lines)) {
