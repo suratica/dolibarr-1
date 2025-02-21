@@ -38,6 +38,7 @@ $leftmenuwidth = 240;
  * @var int<0,1> $dol_no_mouse_hover
  * @var string $badgeDanger
  * @var string $badgeWarning
+ * @var string $badgeStatus4
  * @var string $borderwidth
  * @var string $colorbackbody
  * @var string $colorbackhmenu1
