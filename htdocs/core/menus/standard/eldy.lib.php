@@ -1059,9 +1059,9 @@ function print_left_eldy_menu($db, $menu_array_before, $menu_array_after, &$tabM
 					print '<div class="menu_contenu'.$cssmenu.'">';
 					print $tabstring;
 					if ($shorturlwithoutparam) {
-						print '<a class="vsmenu" title="'.dol_escape_htmltag(dol_string_nohtmltag($menu_array[$i]['titre'])).'" href="'.$url.'"'.($menu_array[$i]['target'] ? ' target="'.$menu_array[$i]['target'].'"' : '').'>';
+						print '<a class="vsmenu" title="'.dolPrintHTMLForAttribute($menu_array[$i]['titre']).'" href="'.$url.'"'.($menu_array[$i]['target'] ? ' target="'.$menu_array[$i]['target'].'"' : '').'>';
 					} else {
-						print '<span class="vsmenu" title="'.dol_escape_htmltag($menu_array[$i]['titre']).'">';
+						print '<span class="vsmenu" title="'.dolPrintHTMLForAttribute($menu_array[$i]['titre']).'">';
 					}
 					print $menu_array[$i]['titre'];
 					if ($shorturlwithoutparam) {
@@ -2502,7 +2502,7 @@ function get_left_menu_tools($mainmenu, &$newmenu, $usemenuhider = 1, $leftmenu 
 			//$newmenu->add("/exports/export.php?leftmenu=export",$langs->trans("List"),1, $user->hasRight('export',  'lire'));
 		}
 
-		$newmenu->add("/core/customreports.php?leftmenu=customreports", $langs->trans("CustomReports"), 0, 1, '', $mainmenu, 'customreports', 0, '', '', '', img_picto('', 'graph', 'class="paddingright pictofixedwidth"'));
+		$newmenu->add("/core/customreports.php?leftmenu=customreports", $langs->trans("BICustomReports"), 0, 1, '', $mainmenu, 'customreports', 0, '', '', '', img_picto('', 'graph', 'class="paddingright pictofixedwidth"'));
 	}
 }
 
