@@ -4794,9 +4794,9 @@ td.evenodd, tr.nohoverpair td, #trlinefordates td {
 .trforbreak.nobold td a, .trforbreak.nobold span.secondary {
 	font-weight: normal !important;
 }
-.trforbreaknobg td {
+tr.trforbreaknobg:nth-of-type(n+3) td {
 	font-weight: 500;
-	border-top: 1pt solid #aaa !important;
+	border-top: 1pt dashed #aaa !important;
 }
 
 table.dataTable td {
