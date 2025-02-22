@@ -535,7 +535,7 @@ if ($result) {
 			// Permission and tick (2 columns)
 			if (($caneditperms && empty($objMod->rights_admin_allowed)) || empty($object->admin)) {
 				if ($caneditperms) {
-					print '<td class="center wraponsmartphone">';
+					print '<td class="tdforbreakperms tdforbreakpermsifnotempty center width50 nowraponall" data-hide-perms="'.dol_escape_htmltag($obj->module).'">';
 					print '<span class="permtohide_'.$obj->module.'" '.(!$isexpanded ? ' style="display:none"' : '').'>';
 					print '<a class="reposition alink addexpandedmodulesinparamlist" title="'.dol_escape_htmltag($langs->trans("All")).'" alt="'.dol_escape_htmltag($langs->trans("All")).'" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=addrights&token='.newToken().'&entity='.$entity.'&module='.$obj->module.'&confirm=yes&updatedmodulename='.$obj->module.'">'.$langs->trans("All")."</a>";
 					print ' / ';
@@ -545,12 +545,12 @@ if ($result) {
 					print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'">';
 					print '</td>';
 				} else {
-					print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'">&nbsp;</td>';
-					print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'">&nbsp;</td>';
+					print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'"></td>';
+					print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'"></td>';
 				}
 			} else {
 				if ($caneditperms) {
-					print '<td class="center wraponsmartphone">';
+					print '<td class="tdforbreakperms center wraponsmartphone" data-hide-perms="'.dol_escape_htmltag($obj->module).'">';
 					/*print '<a class="reposition alink" title="'.dol_escape_htmltag($langs->trans("All")).'" alt="'.dol_escape_htmltag($langs->trans("All")).'" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=addrights&token='.newToken().'&entity='.$entity.'&module='.$obj->module.'&confirm=yes&updatedmodulename='.$obj->module.'">'.$langs->trans("All")."</a>";
 					print ' / ';
 					print '<a class="reposition alink" title="'.dol_escape_htmltag($langs->trans("None")).'" alt="'.dol_escape_htmltag($langs->trans("None")).'" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=delrights&token='.newToken().'&entity='.$entity.'&module='.$obj->module.'&confirm=yes&updatedmodulename='.$obj->module.'">'.$langs->trans("None")."</a>";
@@ -560,12 +560,12 @@ if ($result) {
 					print '</td>';
 				} else {
 					print '<td class="right tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'"></td>';
-					print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'">&nbsp;</td>';
+					print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'"></td>';
 				}
 			}
 
 			// Description of permission (2 columns)
-			print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'">&nbsp;</td>';
+			print '<td class="tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'"></td>';
 			print '<td class="maxwidthonsmartphone right tdforbreakperms" data-hide-perms="'.dol_escape_htmltag($obj->module).'">';
 
 			print '<div class="switchfolderperms inline-block marginrightonly folderperms_'.$obj->module.'"'.($isexpanded ? ' style="display:none;"' : '').'>';
@@ -738,15 +738,15 @@ print '$(".tdforbreakperms:not(.alink)").on("click", function(){
 	moduletohide = $(this).data("hide-perms");
 	j = $(this).data("j");
 	if ($("#idforbreakperms_"+moduletohide).val() == 1) {
-		console.log("idforbreakperms_"+moduletohide+" has value hidden=1");
+		console.log("idforbreakperms_"+moduletohide+" has value hidden=1, so we show all lines");
 		$(".trtohide_"+moduletohide).show();
 		$(".permtoshow_"+moduletohide).hide();
 		$(".permtohide_"+moduletohide).show();
 		$(".folderperms_"+moduletohide).hide();
 		$(".folderopenperms_"+moduletohide).show();
 		$("#idforbreakperms_"+moduletohide).val("0");
-	} else {
-		console.log("idforbreakperms_"+moduletohide+" has value hidden=0");
+	} else if (! $(this).hasClass("tdforbreakpermsifnotempty")) {
+		console.log("idforbreakperms_"+moduletohide+" has value hidden=0, so we hide all lines");
 		$(".trtohide_"+moduletohide).hide();
 		$(".folderopenperms_"+moduletohide).hide();
 		$(".folderperms_"+moduletohide).show();
