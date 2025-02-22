@@ -22,6 +22,9 @@
  * @var DoliDB $db
  * @var Form $form
  * @var Translate $langs
+ *
+ * @var int	$trforbreaknobg
+ * @var array{nbfield:int,type?:array<int,string>,pos?:array<int,int>,val?:array<int,float>} $totalarray
  */
 '
 @phan-var-force array{nbfield:int,type?:array<int,string>,pos?:array<int,int>,val?:array<int,float>} $totalarray
@@ -78,7 +81,7 @@ if (!empty($totalarray['totalizable']) && is_array($totalarray['totalizable'])) 
 // Show total line
 if (isset($totalarray['pos'])) {
 	//print '<tfoot>';
-	print '<tr class="liste_total">';
+	print '<tr class="liste_total'.(empty($trforbreaknobg) ? '' : ' trforbreaknobg').'">';
 	$i = 0;
 	while ($i < $totalarray['nbfield']) {
 		$i++;
