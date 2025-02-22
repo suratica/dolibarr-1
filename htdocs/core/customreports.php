@@ -39,8 +39,11 @@
  * @var Translate $langs
  * @var User $user
  *
- * @var array	$toselect
+ * @var ?int[]	$toselect  Items selected on page, only used to see if not empty here
  */
+'
+@phan-var-force ?int[] $toselect
+';
 
 // Initialise values
 $search_groupby = array();
