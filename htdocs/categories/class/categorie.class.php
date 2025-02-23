@@ -74,7 +74,7 @@ class Categorie extends CommonObject
 	/**
 	 * @var array<string,int> 	Table of mapping between type string and ID used for field 'type' in table llx_categories
 	 */
-	protected $MAP_ID = array(
+	public $MAP_ID = array(
 		'product'             => 0,
 		'supplier'            => 1,
 		'customer'            => 2,
