@@ -24,10 +24,10 @@
  * @var Translate $langs
  *
  * @var int	$trforbreaknobg
- * @var array{nbfield:int,type?:array<int,string>,pos?:array<int,int>,val?:array<int,float>} $totalarray
+ * @var array{nbfield:int,type?:array<int,string>,pos?:array<int,string>,val?:array<int,float>} $totalarray
  */
 '
-@phan-var-force array{nbfield:int,type?:array<int,string>,pos?:array<int,int>,val?:array<int,float>} $totalarray
+@phan-var-force array{nbfield:int,type?:array<int,string>,pos?:array<int,string>,val?:array<int,float>} $totalarray
 @phan-var-force ?string $sqlfields
 ';
 
@@ -86,7 +86,7 @@ if (isset($totalarray['pos'])) {
 	while ($i < $totalarray['nbfield']) {
 		$i++;
 		if (!empty($totalarray['pos'][$i])) {
-			printTotalValCell($totalarray['type'][$i] ?? '', empty($totalarray['val'][$totalarray['pos'][$i]]) ? 0 : $totalarray['val'][$totalarray['pos'][$i]]);
+			printTotalValCell($totalarray['type'][$i] ?? '', empty($totalarray['val'][$totalarray['pos'][$i]]) ? '0' : (string) $totalarray['val'][$totalarray['pos'][$i]]);
 		} else {
 			if ($i == 1) {
 				if ((is_null($limit) || $num < $limit) && empty($offset)) {

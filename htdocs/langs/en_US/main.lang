@@ -1343,6 +1343,7 @@ addToFilter=Add
 FilterAssistance=Filter editor
 Operator=Operator
 AllFieldsRequired=All fields are required.
+QuestionSendManualTrigger=Send all manual webhook targets for this triggercode ?
 IsDefined=Is defined
 IsNotDefined=Is not defined
 SpecialLine=Special Line
