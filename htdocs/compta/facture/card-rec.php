@@ -150,6 +150,7 @@ if (GETPOST('cancel', 'alpha')) {
 		$action = 'list';
 		$massaction = '';
 	} else {
+		$action = '';
 		$cancel = '';
 	}
 }
