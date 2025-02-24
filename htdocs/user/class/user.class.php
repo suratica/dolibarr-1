@@ -2175,7 +2175,7 @@ class User extends CommonObject
 
 		// Check if login already exists in same entity or into entity 0.
 		if (is_object($this->oldcopy) && !$this->oldcopy->isEmpty() && $this->oldcopy->login != $this->login) {
-			$sqltochecklogin = "SELECT COUNT(*) as nb FROM ".$this->db->prefix()."user WHERE entity IN (".((int) $this->entity).", 0) AND login = '".$this->db->escape($this->login)."'";
+			$sqltochecklogin = "SELECT COUNT(*) as nb FROM ".$this->db->prefix()."user WHERE entity IN (".$this->db->sanitize(((int) $this->entity).", 0").") AND login = '".$this->db->escape($this->login)."'";
 			$resqltochecklogin = $this->db->query($sqltochecklogin);
 			if ($resqltochecklogin) {
 				$objtochecklogin = $this->db->fetch_object($resqltochecklogin);
@@ -2189,7 +2189,7 @@ class User extends CommonObject
 			}
 		}
 		if (is_object($this->oldcopy) && !$this->oldcopy->isEmpty() && !empty($this->email) && $this->oldcopy->email != $this->email) {
-			$sqltochecklogin = "SELECT COUNT(*) as nb FROM ".$this->db->prefix()."user WHERE entity IN (".((int) $this->entity).", 0) AND email = '".$this->db->escape($this->email)."'";
+			$sqltochecklogin = "SELECT COUNT(*) as nb FROM ".$this->db->prefix()."user WHERE entity IN (".$this->db->sanitize(((int) $this->entity).", 0").") AND email = '".$this->db->escape($this->email)."'";
 			$resqltochecklogin = $this->db->query($sqltochecklogin);
 			if ($resqltochecklogin) {
 				$objtochecklogin = $this->db->fetch_object($resqltochecklogin);
