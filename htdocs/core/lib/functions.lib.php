@@ -11896,6 +11896,7 @@ function dolExplodeKeepIfQuotes($input)
 
 	// Merge result and delete empty values
 	return array_filter(array_map(function ($a, $b, $c) {
+		// @phan-suppress-current-line PhanPluginUnknownClosureParamType
 		return $a ?: ($b ?: $c);
 	}, $matches[1], $matches[2], $matches[3]));
 }
