@@ -11885,6 +11885,24 @@ function dol_getmypid()
 /**
  * Generate natural SQL search string for a criteria (this criteria can be tested on one or several fields)
  *
+ * @param	string				$input		String to explode
+ * @return	array<string>					Array of string values
+ */
+function dolExplodeKeepIfQuotes($input)
+{
+	// Use regexp to capture words and section in quotes
+	$matches = array();
+	preg_match_all('/"([^"]*)"|\'([^\']*)\'|(\S+)/', $input, $matches);
+
+	// Merge result and delete empty values
+	return array_filter(array_map(function ($a, $b, $c) {
+		return $a ?: ($b ?: $c);
+	}, $matches[1], $matches[2], $matches[3]));
+}
+
+/**
+ * Generate natural SQL search string for a criteria (this criteria can be tested on one or several fields)
+ *
  * @param   string|string[]	$fields 	String or array of strings, filled with the name of all fields in the SQL query we must check (combined with a OR). Example: array("p.field1","p.field2")
  * @param   string 			$value 		The value to look for.
  *                          		    If param $mode is 0, can contains several keywords separated with a space or |
@@ -11918,7 +11936,9 @@ function natural_search($fields, $value, $mode = 0, $nofirstand = 0)
 
 	$value = preg_replace('/\s*\|\s*/', '|', $value);
 
-	$crits = explode(' ', $value);
+	// Split criteria on ' ' but not if we are inside quotes
+	$crits = dolExplodeKeepIfQuotes($value);
+
 	$res = '';
 	if (!is_array($fields)) {
 		$fields = array($fields);
