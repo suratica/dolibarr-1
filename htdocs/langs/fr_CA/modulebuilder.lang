@@ -81,7 +81,7 @@ TriggerDefDesc=Définissez dans le fichier déclencheur le code que vous souhait
 SeeIDsInUse=Voir les identifiants utilisés dans votre installation
 SeeReservedIDsRangeHere=Voir la gamme d'identifiants réservés
 ToolkitForDevelopers=Boîte à outils pour les développeurs Dolibarr
-TryToUseTheModuleBuilder=Si vous avez des connaissances en SQL et PHP, vous pouvez utiliser l'assistant de création de module natif.<br>Activez le module <strong>%s</strong> et utilisez l'assistant en cliquant sur <span class="fa fa-bug"></span> dans le menu en haut à droite.<br>Avertissement : il s'agit d'une fonctionnalité de développement avancée, ne le faites pas. class='notranslate'><b></span>ne pas</b> expérimenter sur votre site de production !
+TryToUseTheModuleBuilder=Si vous avez des connaissances en SQL et PHP, vous pouvez utiliser l'assistant de création de module natif.<br>Activez le module <strong>%s</strong> et utilisez l'assistant en cliquant sur <span class="fa fa-bug"></span> dans le menu en haut à droite.<br>Avertissement : il s'agit d'une fonctionnalité de développement avancée, <b>ne pas</b> expérimenter sur votre site de production !
 SeeTopRightMenu=Voir <span class="fa fa-bug"></span> dans le menu en haut à droite
 AddLanguageFile=Ajouter un fichier de langue
 YouCanUseTranslationKey=Vous pouvez utiliser ici une clé qui est la clé de traduction trouvée dans le fichier de langue (voir onglet « Langues »)
