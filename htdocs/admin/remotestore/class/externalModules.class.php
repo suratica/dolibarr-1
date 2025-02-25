@@ -94,7 +94,7 @@ class ExternalModules
 	public $dolistoreApiError;
 
 	/**
-	 * @var bool
+	 * @var int
 	 */
 	public $githubFileStatus;
 
@@ -211,7 +211,7 @@ class ExternalModules
 	 * Fetch modules from a cache YAML file
 	 * @param array<string, mixed> $options Options for filter
 	 *
-	 * @return array<string, mixed> List of modules
+	 * @return list<array<string, array<string, string|null>|string|null>> List of modules
 	 */
 	public function fetchModulesFromFile($options = array())
 	{
