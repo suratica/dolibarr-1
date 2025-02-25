@@ -9,7 +9,7 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 1360+ occurrences
+    // PhanTypeMismatchArgument : 1320+ occurrences
     // PhanUndeclaredProperty : 640+ occurrences
     // PhanTypeMismatchArgumentNullable : 310+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 170+ occurrences
@@ -17,9 +17,9 @@ return [
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
     // PhanUndeclaredGlobalVariable : 100+ occurrences
     // PhanTypeMismatchArgumentProbablyReal : 35+ occurrences
-    // PhanTypeExpectedObjectPropAccess : 30+ occurrences
     // PhanPossiblyUndeclaredGlobalVariable : 25+ occurrences
-    // PhanTypeInvalidDimOffset : 25+ occurrences
+    // PhanTypeExpectedObjectPropAccess : 25+ occurrences
+    // PhanTypeInvalidDimOffset : 20+ occurrences
     // PhanTypeMismatchDimFetch : 20+ occurrences
     // PhanPluginUndeclaredVariableIsset : 15+ occurrences
     // PhanUndeclaredConstant : 15+ occurrences
@@ -359,7 +359,6 @@ return [
         'htdocs/core/lib/date.lib.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/lib/expedition.lib.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/lib/files.lib.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable', 'PhanUndeclaredProperty'],
-        'htdocs/core/lib/functions.lib.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/lib/functions2.lib.php' => ['PhanUndeclaredProperty'],
         'htdocs/core/lib/functionsnumtoword.lib.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/lib/images.lib.php' => ['PhanTypeMismatchArgumentNullable'],
