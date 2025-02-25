@@ -57,7 +57,11 @@ class ExternalModules
 	 */
 	public $cache_file;
 
-	public $url; // the url of this page
+	/**
+	 * // the url of this page
+	 * @var string
+	 */
+	public $url;
 	/**
 	 * @var string
 	 */
@@ -100,7 +104,7 @@ class ExternalModules
 	public $numberOfProviders;
 
 	/**
-	 * @var array<int, mixed>|null
+	 * @var array
 	 */
 	public $products;
 
@@ -179,8 +183,8 @@ class ExternalModules
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $httpheader);
 		curl_setopt($curl, CURLOPT_HEADER, true);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
 
 		$response = curl_exec($curl);
 
@@ -343,7 +347,7 @@ class ExternalModules
 			// add image or default ?
 			if ($product["cover_photo_url"] != '') {
 				$images = '<a href="'.$product["cover_photo_url"].'" class="documentpreview" target="_blank" rel="noopener noreferrer" mime="image/png" title="'.dol_escape_htmltag($product["label"].', '.$langs->trans('Version').' '.$product["module_version"]).'">';
-				$images .= '<img class="imgstore" src="'.$urldolibarrmodules.$product["cover_photo_url"].'" alt="" /></a>';
+				$images .= '<img class="imgstore" src="'.$product["cover_photo_url"].'" alt="" /></a>';
 			} else {
 				$images = '<img class="imgstore" src="'.DOL_URL_ROOT.'/admin/dolistore/img/NoImageAvailable.png" />';
 			}
@@ -614,8 +618,8 @@ class ExternalModules
 
 	/**
 	 * get YAML file from remote source and put it in cache file for one day
-	 * @param string $file_source_url URL of the remote source
-	 * @param string $cache_time Cache time
+	 * @param string 	$file_source_url URL of the remote source
+	 * @param int 		$cache_time Cache time
 	 *
 	 * @return string Uri of the cache file
 	 */
@@ -642,7 +646,8 @@ class ExternalModules
 	/**
 	 * Read a YAML string and convert it to an array
 	 * @param string $yaml YAML string
-	 * @return array<string, mixed> Parsed array representation
+	 *
+	 * @return array Parsed array representation
 	 */
 	public function readYaml($yaml)
 	{
@@ -708,7 +713,7 @@ class ExternalModules
 	 * @param array<string, mixed> $data Data fetched from github remote source
 	 * @param string $source Source of the data
 	 *
-	 * @return array<string, mixed> Data adapted to the expected format
+	 * @return list<array<string, mixed>> Data adapted to the expected format
 	 */
 	public function adaptData($data, $source)
 	{
@@ -793,7 +798,7 @@ class ExternalModules
 	 * @param array<string, mixed> $data Data to filter
 	 * @param array<string, mixed> $options Options for the filter
 	 *
-	 * @return array<string, mixed> Filtered data
+	 * @return list<array<string, mixed>> Filtered data
 	 */
 	public function applyFilters($data, $options)
 	{
@@ -826,7 +831,7 @@ class ExternalModules
 	/**
 	 * Check if an Dolistore API is up
 	 *
-	 * @return bool
+	 * @return int
 	 */
 	public function checkApiStatus()
 	{

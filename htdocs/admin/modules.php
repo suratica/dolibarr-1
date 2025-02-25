@@ -126,10 +126,10 @@ if (!GETPOST('buttonreset', 'alpha')) {
 		$param .= '&search_keyword='.urlencode($search_keyword);
 	}
 	if ($search_source_dolistore) {
-		$param .= '&search_source_dolistore='.urlencode($search_source_dolistore);
+		$param .= '&search_source_dolistore='.$search_source_dolistore;
 	}
 	if ($search_source_github) {
-		$param .= '&search_source_github='.urlencode($search_source_github);
+		$param .= '&search_source_github='.$search_source_github;
 	}
 	if ($search_status && $search_status != '-1') {
 		$param .= '&search_status='.urlencode($search_status);
@@ -190,8 +190,8 @@ if (GETPOST('buttonreset', 'alpha')) {
 	$search_status = '';
 	$search_nature = '';
 	$search_version = '';
-	$search_source_dolistore = '';
-	$search_source_github = '';
+	$search_source_dolistore = 0;
+	$search_source_github = 0;
 }
 
 if ($action == 'install' && $allowonlineinstall) {
