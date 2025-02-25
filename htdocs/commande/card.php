@@ -887,7 +887,7 @@ if (empty($reshook)) {
 									$price_min_ttc = price($custprice_line->price_min_ttc);
 									$price_base_type = $custprice_line->price_base_type;
 									$tva_tx = $custprice_line->tva_tx;
-									if ($custprice_line->default_vat_code && !preg_match('/\(.*\)/', (string)$tva_tx)) {
+									if ($custprice_line->default_vat_code && !preg_match('/\(.*\)/', (string) $tva_tx)) {
 										$tva_tx .= ' (' . $custprice_line->default_vat_code . ')';
 									}
 									$tva_npr = $custprice_line->recuperableonly;

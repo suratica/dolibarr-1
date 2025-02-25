@@ -940,9 +940,9 @@ if (!empty($usemargins) && $user->hasRight('margins', 'creer')) {
 								<?php
 								// Price by customer
 								if ((getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_AND_MULTIPRICES')) && !empty($object->socid)) {
-								?>
+									?>
 							$("#remise_percent").val(data.discount);
-								<?php
+									<?php
 								}
 
 								if (getDolGlobalInt('PRODUIT_AUTOFILL_DESC') == 1) {
