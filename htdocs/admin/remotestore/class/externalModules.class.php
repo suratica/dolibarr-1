@@ -743,9 +743,9 @@ class ExternalModules
 						? $package['description'][substr($this->lang, 0, 2)]
 						: (!empty($package['description']['en']) ? $package['description']['en'] : ''),
 					'datec' => isset($package['created_at'])
-						&& !empty($package['created_at']) ? date('Y-m-d H:i:s', strtotime($package['created_at']))
+						&& !empty($package['created_at'] && is_string($package['created_at'])) ? date('Y-m-d H:i:s', strtotime($package['created_at']))
 						: '',
-					'tms' => isset($package['last_updated_at']) && !empty($package['last_updated_at'])
+					'tms' => isset($package['last_updated_at']) && !empty($package['last_updated_at'] && is_string($package['last_updated_at']))
 						? date('Y-m-d H:i:s', strtotime($package['last_updated_at']))
 						: '',
 					'price_ttc' => 0,
@@ -761,7 +761,7 @@ class ExternalModules
 					'cover_photo_url' => !empty($package['cover'])
 						? $package['cover']
 						: '#',
-					'category' => !empty($package['category'] && isset($package['category']))
+					'category' => !empty($package['category'] && is_string($package['category']))
 						? explode(',', (string) str_replace(' ', '', $package['category']))
 						: array(),
 					'link' => !empty($package['git'])
@@ -879,6 +879,9 @@ class ExternalModules
 		if ($status == 0) {
 			$statusType = 'status6';
 		}
+
+		$labelStatus = [];
+		$labelStatusShort = [];
 
 		$labelStatus[0] = $this->dolistoreApiError;
 		$labelStatus[1] = $langs->transnoentitiesnoconv("online");
