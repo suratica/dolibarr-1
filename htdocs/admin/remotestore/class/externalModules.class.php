@@ -710,7 +710,7 @@ class ExternalModules
 
 	/**
 	 * Adapter data fetched from github remote source to the expected format
-	 * @param list<array<string, array<string, string|null>|string|null>> $data Data fetched from github remote source
+	 * @param array<string, mixed>|list<array<string, array<string, string|null>|string|null>> $data Data fetched from github remote source
 	 * @param string $source Source of the data
 	 *
 	 * @return list<array<string, array<string, string|null>|string|null>> Data adapted to the expected format
