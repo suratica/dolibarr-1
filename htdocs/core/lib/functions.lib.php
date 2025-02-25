@@ -11852,7 +11852,8 @@ function dolExplodeIntoArray($string, $delimiter = ';', $kv = '=')
 }
 
 /**
- * Generate natural SQL search string for a criteria (this criteria can be tested on one or several fields)
+ * Explode a search string into an array but do not explode with keys are inside quotes.
+ * For example "a 'b c'" will be array("a", "b c").
  *
  * @param	string				$input		String to explode
  * @return	array<string>					Array of string values
@@ -11864,7 +11865,7 @@ function dolExplodeKeepIfQuotes($input)
 	preg_match_all('/"([^"]*)"|\'([^\']*)\'|(\S+)/', $input, $matches);
 
 	// Merge result and delete empty values
-	// @phan-suppress-next-line PhanPluginUnknownClosureParamType
+	// @phan-suppress-next-line PhanPluginUnknownClosureParamType, PhanPluginUnknownClosureReturnType
 	return array_filter(array_map(function ($a, $b, $c) {
 		return $a ?: ($b ?: $c);
 	}, $matches[1], $matches[2], $matches[3]));
