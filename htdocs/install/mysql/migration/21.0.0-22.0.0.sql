@@ -161,3 +161,18 @@ CREATE TABLE llx_bank_record_link
 
 ALTER TABLE llx_bank_record_link ADD CONSTRAINT fk_bank_record_bank_record FOREIGN KEY (fk_bank_record) REFERENCES llx_bank_record (rowid);
 ALTER TABLE llx_bank_record_link ADD CONSTRAINT fk_bank_import_bank_import FOREIGN KEY (fk_bank_import) REFERENCES llx_bank_import (rowid);
+
+ALTER TABLE llx_product_customer_price ADD COLUMN date_begin date AFTER ref_customer;
+ALTER TABLE llx_product_customer_price ADD COLUMN date_end date AFTER date_begin;
+ALTER TABLE llx_product_customer_price ADD COLUMN remise_percent real DEFAULT 0 AFTER localtax2_type;
+ALTER TABLE llx_product_customer_price_log ADD COLUMN date_begin date AFTER ref_customer;
+ALTER TABLE llx_product_customer_price_log ADD COLUMN date_end date AFTER date_begin;
+ALTER TABLE llx_product_customer_price_log ADD COLUMN remise_percent real DEFAULT 0 AFTER localtax2_type;
+ALTER TABLE llx_product_customer_price DROP CONSTRAINT fk_product_customer_price_fk_product;
+ALTER TABLE llx_product_customer_price DROP CONSTRAINT fk_product_customer_price_fk_soc;
+ALTER TABLE llx_product_customer_price DROP INDEX uk_customer_price_fk_product_fk_soc;
+ALTER TABLE llx_product_customer_price ADD UNIQUE INDEX uk_customer_price_fk_product_fk_soc (fk_product, fk_soc, date_begin);
+ALTER TABLE llx_product_customer_price ADD CONSTRAINT fk_product_customer_price_fk_product FOREIGN KEY (fk_product) REFERENCES llx_product(rowid);
+ALTER TABLE llx_product_customer_price ADD CONSTRAINT fk_product_customer_price_fk_soc FOREIGN KEY (fk_soc) REFERENCES llx_societe(rowid);
+UPDATE llx_product_customer_price SET date_begin = datec WHERE date_begin IS NULL;
+UPDATE llx_product_customer_price_log SET date_begin = datec WHERE date_begin IS NULL;
