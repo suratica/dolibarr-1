@@ -116,8 +116,8 @@ if (empty($reshook)) {
 			$prodcustprice->price_min = price2num(GETPOST("price_min"), 'MU');
 			$prodcustprice->price_base_type = GETPOST("price_base_type", 'alpha');
 			$prodcustprice->remise_percent = price2num(GETPOST("remise_percent"));
-			$prodcustprice->date_begin = dol_mktime(0, 0, 0, GETPOST('date_beginmonth', 'int'), GETPOST('date_beginday', 'int'), GETPOST('date_beginyear', 'int'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server;
-			$prodcustprice->date_end = dol_mktime(0, 0, 0, GETPOST('date_endmonth', 'int'), GETPOST('date_endday', 'int'), GETPOST('date_endyear', 'int'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server
+			$prodcustprice->date_begin = dol_mktime(0, 0, 0, GETPOSTINT('date_beginmonth'), GETPOSTINT('date_beginday'), GETPOSTINT('date_beginyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server;
+			$prodcustprice->date_end = dol_mktime(0, 0, 0, GETPOSTINT('date_endmonth'), GETPOSTINT('date_endday'), GETPOSTINT('date_endyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server
 
 			$tva_tx_txt = GETPOST('tva_tx', 'alpha'); // tva_tx can be '8.5'  or  '8.5*'  or  '8.5 (XXX)' or '8.5* (XXX)'
 
@@ -217,8 +217,8 @@ if (empty($reshook)) {
 		$prodcustprice->tva_tx = str_replace('*', '', GETPOST("tva_tx"));
 		$prodcustprice->recuperableonly = (preg_match('/\*/', GETPOST("tva_tx")) ? 1 : 0);
 		$prodcustprice->remise_percent = price2num(GETPOST("remise_percent"));
-		$prodcustprice->date_begin = dol_mktime(0, 0, 0, GETPOST('date_beginmonth', 'int'), GETPOST('date_beginday', 'int'), GETPOST('date_beginyear', 'int'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server;
-		$prodcustprice->date_end = dol_mktime(0, 0, 0, GETPOST('date_endmonth', 'int'), GETPOST('date_endday', 'int'), GETPOST('date_endyear', 'int'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server
+		$prodcustprice->date_begin = dol_mktime(0, 0, 0, GETPOSTINT('date_beginmonth'), GETPOSTINT('date_beginday'), GETPOSTINT('date_beginyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server;
+		$prodcustprice->date_end = dol_mktime(0, 0, 0, GETPOSTINT('date_endmonth'), GETPOSTINT('date_endday'), GETPOSTINT('date_endyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server
 
 		$result = $prodcustprice->update($user, 0, $update_child_soc);
 		if ($result > 0) {
@@ -383,13 +383,13 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 		print '<td><input name="ref_customer" size="12"></td></tr>';
 
 		// Applied Prices From
-		$date_begin = dol_mktime(0, 0, 0, GETPOST('date_beginmonth', 'int'), GETPOST('date_beginday', 'int'), GETPOST('date_beginyear', 'int'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server;
+		$date_begin = dol_mktime(0, 0, 0, GETPOSTINT('date_beginmonth'), GETPOSTINT('date_beginday'), GETPOSTINT('date_beginyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server;
 		print '<tr><td>'.$langs->trans("AppliedPricesFrom").'</td><td>';
 		print $form->selectDate(!empty($date_begin) ? $date_begin : dol_now(), "date_begin", 0, 0, 1, "date_begin");
 		print '</td></tr>';
 
 		// Applied Prices To
-		$date_end = dol_mktime(0, 0, 0, GETPOST('date_endmonth', 'int'), GETPOST('date_endday', 'int'), GETPOST('date_endyear', 'int'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server
+		$date_end = dol_mktime(0, 0, 0, GETPOSTINT('date_endmonth'), GETPOSTINT('date_endday'), GETPOSTINT('date_endyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server
 		print '<tr><td>'.$langs->trans("AppliedPricesTo").'</td><td>';
 		print $form->selectDate($date_end, "date_end", 0, 0, 1, "date_end");
 		print '</td></tr>';

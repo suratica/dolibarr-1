@@ -143,11 +143,11 @@ class ProductCustomerPrice extends CommonObject
 	 */
 	public $remise_percent;
 	/**
-	 * @var string
+	 * @var string|int
 	 */
 	public $date_begin = '';
 	/**
-	 * @var string
+	 * @var string|int
 	 */
 	public $date_end = '';
 
@@ -896,7 +896,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " localtax2_tx=".(isset($this->localtax2_tx) ? (empty($this->localtax2_tx) ? 0 : $this->localtax2_tx) : "null").",";
 		$sql .= " localtax1_type=".(!empty($this->localtax1_type) ? "'".$this->db->escape($this->localtax1_type)."'" : "'0'").",";
 		$sql .= " localtax2_type=".(!empty($this->localtax2_type) ? "'".$this->db->escape($this->localtax2_type)."'" : "'0'").",";
-		$sql .= " remise_percent=".(isset($this->remise_percent) ? price2num($this->remise_percent) : "null").",";
+		$sql .= " remise_percent=".(!empty($this->remise_percent) ? "'".price2num($this->remise_percent)."'" : "0").",";
 		$sql .= " date_begin='".$this->db->idate(!empty($this->date_begin) ? $this->date_begin : $now)."',";
 		$sql .= " date_end=".(!empty($this->date_end) ? "'".$this->db->idate($this->date_end)."'" : "null").",";
 		$sql .= " fk_user=".((int) $user->id).",";
@@ -1252,7 +1252,7 @@ class PriceByCustomerLine extends CommonObjectLine
 	 */
 	public $localtax2_tx;
 	/**
-	 * @var float
+	 * @var float|string|''
 	 */
 	public $remise_percent;
 	/**
