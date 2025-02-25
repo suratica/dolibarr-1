@@ -742,10 +742,10 @@ class ExternalModules
 					'description' => !empty($package['description'][substr($this->lang, 0, 2)])
 						? $package['description'][substr($this->lang, 0, 2)]
 						: (!empty($package['description']['en']) ? $package['description']['en'] : ''),
-					'datec' => isset($package['created_at'])
-						&& !empty($package['created_at'] && is_string($package['created_at'])) ? date('Y-m-d H:i:s', strtotime($package['created_at']))
+					'datec' => (!empty($package['created_at']) && is_string($package['created_at']))
+						? date('Y-m-d H:i:s', strtotime($package['created_at']))
 						: '',
-					'tms' => isset($package['last_updated_at']) && !empty($package['last_updated_at'] && is_string($package['last_updated_at']))
+					'tms' => (!empty($package['last_updated_at']) && is_string($package['last_updated_at']))
 						? date('Y-m-d H:i:s', strtotime($package['last_updated_at']))
 						: '',
 					'price_ttc' => 0,
@@ -761,8 +761,8 @@ class ExternalModules
 					'cover_photo_url' => !empty($package['cover'])
 						? $package['cover']
 						: '#',
-					'category' => !empty($package['category'] && is_string($package['category']))
-						? explode(',', (string) str_replace(' ', '', $package['category']))
+					'category' => (!empty($package['category']) && is_string($package['category']))
+						? explode(',', str_replace(' ', '', (string) $package['category']))
 						: array(),
 					'link' => !empty($package['git'])
 						? $package['git']
