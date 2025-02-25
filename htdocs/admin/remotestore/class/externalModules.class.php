@@ -325,7 +325,12 @@ class ExternalModules
 		$this->products = array_values(array_merge($dolistoreProducts, $fileProducts));
 
 		// Sort products list by datec
-		usort($this->products, function ($a, $b) {
+		usort($this->products,
+		/**
+		 * @param array<string, mixed> $a First product for comparison.
+		 * @param array<string, mixed> $b Second product for comparison.
+		 */
+		function ($a, $b) {
 			return strtotime($b['datec'] ?? '0') - strtotime($a['datec'] ?? '0');
 		});
 
@@ -737,10 +742,10 @@ class ExternalModules
 					'description' => !empty($package['description'][substr($this->lang, 0, 2)])
 						? $package['description'][substr($this->lang, 0, 2)]
 						: (!empty($package['description']['en']) ? $package['description']['en'] : ''),
-					'datec' => !empty($package['created_at'])
-						? date('Y-m-d H:i:s', strtotime($package['created_at']))
+					'datec' => isset($package['created_at'])
+						&& !empty($package['created_at']) ? date('Y-m-d H:i:s', strtotime($package['created_at']))
 						: '',
-					'tms' => !empty($package['last_updated_at'])
+					'tms' => isset($package['last_updated_at']) && !empty($package['last_updated_at'])
 						? date('Y-m-d H:i:s', strtotime($package['last_updated_at']))
 						: '',
 					'price_ttc' => 0,
@@ -756,8 +761,8 @@ class ExternalModules
 					'cover_photo_url' => !empty($package['cover'])
 						? $package['cover']
 						: '#',
-					'category' => !empty($package['category'])
-						? explode(',', str_replace(' ', '', $package['category']))
+					'category' => !empty($package['category'] && isset($package['category']))
+						? explode(',', (string) str_replace(' ', '', $package['category']))
 						: array(),
 					'link' => !empty($package['git'])
 						? $package['git']
@@ -795,28 +800,41 @@ class ExternalModules
 
 	/**
 	 * Apply filters to the data
-	 * @param list<array<string, mixed>> $data Data to filter
+	 * @param list<array<string, mixed>> $list Data to filter
 	 * @param array<string, mixed> $options Options for the filter
 	 *
 	 * @return list<array<string, mixed>> Filtered data
 	 */
-	public function applyFilters($data, $options)
+	public function applyFilters($list, $options)
 	{
-		$filteredData = $data;
+		$filteredData = $list;
 
 		// Sort products list by datec
-		usort($filteredData, function ($a, $b) {
+		usort($filteredData,
+		/**
+		 * @param array<string, mixed> $a First product for comparison.
+		 * @param array<string, mixed> $b Second product for comparison.
+		 */
+		function ($a, $b) {
 			return strtotime($b['datec'] ?? '0') - strtotime($a['datec'] ?? '0');
 		});
 
 		if (!empty($options['search'])) {
-			$filteredData = array_filter($filteredData, function ($package) use ($options) {
+			$filteredData = array_filter($filteredData,
+			/**
+			 * @param array<string, mixed> $package
+			 */
+			function ($package) use ($options) {
 				return stripos($package['label'], $options['search']) !== false || stripos($package['description'], $options['search']) !== false;
 			});
 		}
 
 		if (!empty($options['categorieid'])) {
-			$filteredData = array_filter($filteredData, function ($package) use ($options) {
+			$filteredData = array_filter($filteredData,
+			/**
+			 * @param array<string, mixed> $package
+			 */
+			function ($package) use ($options) {
 				return in_array($options['categorieid'], $package['category']);
 			});
 		}
