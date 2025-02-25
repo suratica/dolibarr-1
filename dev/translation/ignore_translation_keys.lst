@@ -1002,8 +1002,6 @@ Dimension
 Don
 ECM
 EmptyMessageNotAllowedError
-ErrorBarcodeNotFoundForProductWarehouse
-ErrorCodeScannedIsBothProductAndSerial
 ErrorInputRequired
 ErrorLDAPFunctionsAreDisabledOnThisPHP
 ErrorUpdating
