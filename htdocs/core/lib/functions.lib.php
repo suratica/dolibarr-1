@@ -11852,7 +11852,8 @@ function dolExplodeIntoArray($string, $delimiter = ';', $kv = '=')
 }
 
 /**
- * Generate natural SQL search string for a criteria (this criteria can be tested on one or several fields)
+ * Explode a search string into an array but do not explode with keys are inside quotes.
+ * For example "a 'b c'" will be array("a", "b c").
  *
  * @param	string				$input		String to explode
  * @return	array<string>					Array of string values
