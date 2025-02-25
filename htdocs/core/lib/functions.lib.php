@@ -11864,7 +11864,7 @@ function dolExplodeKeepIfQuotes($input)
 	preg_match_all('/"([^"]*)"|\'([^\']*)\'|(\S+)/', $input, $matches);
 
 	// Merge result and delete empty values
-	// @phan-suppress-next-line PhanPluginUnknownClosureParamType
+	// @phan-suppress-next-line PhanPluginUnknownClosureParamType, PhanPluginUnknownClosureReturnType
 	return array_filter(array_map(function ($a, $b, $c) {
 		return $a ?: ($b ?: $c);
 	}, $matches[1], $matches[2], $matches[3]));
