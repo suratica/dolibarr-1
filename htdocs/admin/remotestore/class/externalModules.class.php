@@ -84,7 +84,7 @@ class ExternalModules
 	public $dolistore_api_key;
 
 	/**
-	 * @var bool
+	 * @var int
 	 */
 	public $dolistoreApiStatus;
 
@@ -104,7 +104,7 @@ class ExternalModules
 	public $numberOfProviders;
 
 	/**
-	 * @var array
+	 * @var array<int, mixed>|null
 	 */
 	public $products;
 
@@ -137,7 +137,7 @@ class ExternalModules
 
 		// Check access to Dolistore API
 		$this->dolistoreApiStatus = $this->checkApiStatus();
-		$this->githubFileStatus = file_exists($this->cache_file);
+		$this->githubFileStatus = file_exists($this->cache_file) ? 1 : 0;
 
 		// Count the number of online providers
 		$this->numberOfProviders = $this->dolistoreApiStatus + $this->githubFileStatus;
@@ -183,7 +183,7 @@ class ExternalModules
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $httpheader);
 		curl_setopt($curl, CURLOPT_HEADER, true);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
 
 		$response = curl_exec($curl);
@@ -322,7 +322,7 @@ class ExternalModules
 		}
 
 		// merge both sources
-		$this->products = array_merge($dolistoreProducts, $fileProducts);
+		$this->products = array_values(array_merge($dolistoreProducts, $fileProducts));
 
 		// Sort products list by datec
 		usort($this->products, function ($a, $b) {
@@ -647,7 +647,7 @@ class ExternalModules
 	 * Read a YAML string and convert it to an array
 	 * @param string $yaml YAML string
 	 *
-	 * @return array Parsed array representation
+	 * @return list<array<string, array<string, string|null>|string|null>> Parsed array representation
 	 */
 	public function readYaml($yaml)
 	{
@@ -795,7 +795,7 @@ class ExternalModules
 
 	/**
 	 * Apply filters to the data
-	 * @param array<string, mixed> $data Data to filter
+	 * @param list<array<string, mixed>> $data Data to filter
 	 * @param array<string, mixed> $options Options for the filter
 	 *
 	 * @return list<array<string, mixed>> Filtered data
