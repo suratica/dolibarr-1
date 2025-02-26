@@ -27187,12 +27187,6 @@ parameters:
 			path: ../../../htdocs/theme/eldy/btn.inc.php
 
 		-
-			message: '#^Variable \$theme might not be defined\.$#'
-			identifier: variable.undefined
-			count: 22
-			path: ../../../htdocs/theme/eldy/global.inc.php
-
-		-
 			message: '#^Variable \$left might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
