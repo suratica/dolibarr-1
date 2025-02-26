@@ -1035,7 +1035,8 @@ class Categorie extends CommonObject
 	}
 
 	/**
-	 * List categories of an element id
+	 * Return the list of categories of an element id.
+	 * Warning, this load/fetch all qualified categories.
 	 *
 	 * @param	int		$id			Id of element
 	 * @param	string	$type		Type of category ('member', 'customer', 'supplier', 'product', 'contact')
