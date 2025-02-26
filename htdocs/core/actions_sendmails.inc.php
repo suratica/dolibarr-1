@@ -123,7 +123,7 @@ if (GETPOST('removeAll', 'alpha')) {
 /*
  * Send mail
  */
-if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPOST('removAll') && !GETPOST('removedfile') && !GETPOST('cancel') && !GETPOST('modelselected')) {
+if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPOST('removeAll') && !GETPOST('removedfile') && !GETPOST('cancel') && !GETPOST('modelselected')) {
 	if (empty($trackid)) {
 		$trackid = GETPOST('trackid', 'aZ09');
 	}
