@@ -1068,25 +1068,35 @@ class Categorie extends CommonObject
 		$idoftype = array_search($type, self::$MAP_ID_TO_CODE);
 
 		$sql = "SELECT s.rowid";
+		$sqlfields = $sql; // $sql fields to remove for count total
 		$sql .= " FROM ".MAIN_DB_PREFIX."categorie as s, ".MAIN_DB_PREFIX."categorie_".$sub_type." as sub";
 		$sql .= ' WHERE s.entity IN ('.getEntity('category').')';
-		$sql .= ' AND s.type='.((int) $idoftype);
+		$sql .= ' AND s.type = '.((int) $idoftype);
 		$sql .= ' AND s.rowid = sub.fk_categorie';
 		$sql .= " AND sub.".$subcol_name." = ".((int) $id);
-
-		$sql .= $this->db->order($sortfield, $sortorder);
 
 		$offset = 0;
 		$nbtotalofrecords = '';
 		if (!getDolGlobalInt('MAIN_DISABLE_FULL_SCANLIST')) {
-			$result = $this->db->query($sql);
-			$nbtotalofrecords = $this->db->num_rows($result);
+			$sqlforcount = preg_replace('/^'.preg_quote($sqlfields, '/').'/', 'SELECT COUNT(*) as nbtotalofrecords', $sql);
+			$sqlforcount = preg_replace('/GROUP BY .*$/', '', $sqlforcount);
+
+			$resql = $this->db->query($sqlforcount);
+			if ($resql) {
+				$objforcount = $this->db->fetch_object($resql);
+				$nbtotalofrecords = $objforcount->nbtotalofrecords;
+			} else {
+				dol_print_error($this->db);
+			}
+
 			if (($page * $limit) > $nbtotalofrecords) {	// if total resultset is smaller then paging size (filtering), goto and load page 0
 				$page = 0;
 				$offset = 0;
 			}
+			$this->db->free($resql);
 		}
 
+		$sql .= $this->db->order($sortfield, $sortorder);
 		if ($limit) {
 			if ($page < 0) {
 				$page = 0;
