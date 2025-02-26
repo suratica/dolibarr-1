@@ -1091,7 +1091,6 @@ RefNewContract
 Societe
 Stable
 Suggested
-TaskModifieddInDolibarr
 TicketMessageMailSignatureText
 TicketSetupPage
 Tiers
@@ -1116,7 +1115,6 @@ id
 multicurrency_buyPriceInCurrency
 multicurrency_modifyRateApplication
 ref
-sendEmailsReminder
 smsing
 societe
 target
