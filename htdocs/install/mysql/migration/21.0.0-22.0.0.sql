@@ -176,3 +176,6 @@ ALTER TABLE llx_fichinterdet_rec ADD COLUMN extraparams varchar(255);
 ALTER TABLE llx_propaldet ADD COLUMN extraparams varchar(255);
 ALTER TABLE llx_receptiondet_batch ADD COLUMN extraparams varchar(255);
 ALTER TABLE llx_supplier_proposaldet ADD COLUMN extraparams varchar(255);
+
+ALTER TABLE llx_facture_rec ADD COLUMN rule_for_lines_dates varchar(255) DEFAULT 'prepaid';
+
