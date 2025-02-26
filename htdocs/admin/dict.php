@@ -1881,6 +1881,7 @@ if ($id > 0) {
 				if ($id == DICT_COUNTRY) {
 					print '<td></td>';
 					print '<td></td>';
+					print '<td></td>';
 				}
 				print '<td colspan="3" class="center">';
 				if ($action != 'edit') {
@@ -1978,6 +1979,8 @@ if ($id > 0) {
 			}
 		}
 		if ($id == DICT_COUNTRY) {
+			print '<td></td>';
+			$colspan++;
 			print '<td></td>';
 			$colspan++;
 			print '<td></td>';
