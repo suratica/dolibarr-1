@@ -7,6 +7,7 @@ if (!defined('ISLOADEDBYSTEELSHEET')) {
 }
 /**
  * @var Conf $conf
+ * @var User $user
  *
  * @var int $dol_optimize_smallscreen
  * @var string $colortextlink
