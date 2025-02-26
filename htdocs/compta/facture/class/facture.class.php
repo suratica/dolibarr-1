@@ -3874,7 +3874,12 @@ class Facture extends CommonInvoice
 				$fk_prev_id = 'null';
 			}
 			if (!isset($situation_percent) || $situation_percent > 100 || (string) $situation_percent == '' || $situation_percent == null) {
-				$situation_percent = 100;
+				// INVOICE_USE_SITUATION = 2 - Lines situation percent on new lines must be 0 (No cumulative)
+				if ($this->type == Facture::TYPE_SITUATION && getDolGlobalInt('INVOICE_USE_SITUATION') == 2 && (int) $situation_percent < 100) {
+					$situation_percent = 0;
+				} else {
+					$situation_percent = 100;
+				}
 			}
 			if (empty($ref_ext)) {
 				$ref_ext = '';
