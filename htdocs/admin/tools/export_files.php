@@ -51,7 +51,7 @@ $export_type = GETPOST('export_type', 'alpha');
 $file = trim(GETPOST('zipfilename_template', 'alpha'));
 $compression = GETPOST('compression', 'aZ09');
 
-$file = dol_sanitizeFileName($file);
+$file = dol_sanitizeFileName($file, '_', 1, 1);
 $file = preg_replace('/(\.zip|\.tar|\.tgz|\.gz|\.tar\.gz|\.bz2|\.zst)$/i', '', $file);
 
 $sortfield = GETPOST('sortfield', 'aZ09comma');
@@ -178,7 +178,7 @@ if ($compression == 'zip') {
 } elseif (in_array($compression, array('gz', 'bz', 'zstd'))) {
 	$userlogin = ($user->login ? $user->login : 'unknown');
 
-	$outputfile = $conf->admin->dir_temp.'/export_files.'.$userlogin.'.out'; // File used with popen method
+	$outputfile = $conf->admin->dir_temp.'/'.dol_sanitizeFileName('export_files.'.$userlogin.'.out'); // File used with popen method
 
 	$file .= '.tar';
 
