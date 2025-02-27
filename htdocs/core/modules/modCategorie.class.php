@@ -170,7 +170,7 @@ class modCategorie extends DolibarrModules
 		if (isModEnabled('order')) {
 			$typeexample .= ($typeexample ? " / " : "")."16=Order";
 		}
-		if (isModEnabled('facture')) {
+		if (isModEnabled('invoice')) {
 			$typeexample .= ($typeexample ? " / " : "")."17=Invoice";
 		}
 
@@ -496,13 +496,13 @@ class modCategorie extends DolibarrModules
 		}
 
 		// 17 Invoice
-		if (isModEnabled("facture")) {
+		if (isModEnabled("invoice")) {
 			++$r;
 			$this->exportTagLinks(
 				$r,
-				17,
+				'invoice',
 				'Facture',
-				'isModEnabled("facture")',
+				'isModEnabled("invoice")',
 				['facture', 'facture', 'export'],
 				[
 					'rowid' => [
