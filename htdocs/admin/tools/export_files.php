@@ -172,7 +172,7 @@ if ($compression == 'zip') {
 			$errormsg = $langs->trans("ErrNoZipEngine");
 		} else {
 			$langs->load("errors");
-			$errormsg = $langs->trans("ErrorFailedToWriteInDir", $outputdir);
+			$errormsg = $langs->trans("ErrorFailedToWriteInDir", $outputdir).($errormsg ? "\n" . $errormsg : "");
 		}
 	}
 } elseif (in_array($compression, array('gz', 'bz', 'zstd'))) {
