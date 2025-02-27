@@ -714,11 +714,11 @@ class modCategorie extends DolibarrModules
 		}
 
 		// 17 Invoice
-		if (isModEnabled("facture")) {
+		if (isModEnabled("invoice")) {
 			++$r;
 			$this->importTagLinks(
 				$r,
-				'facture',
+				'invoice',
 				'/compta/facture/class/facture.class.php',
 				'Facture',
 				'Facture'
