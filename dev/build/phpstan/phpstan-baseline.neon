@@ -3487,12 +3487,6 @@ parameters:
 			path: ../../../htdocs/categories/class/api_categories.class.php
 
 		-
-			message: '#^Left side of && is always true\.$#'
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 1
-			path: ../../../htdocs/categories/class/categorie.class.php
-
-		-
 			message: '#^Method Categorie\:\:get_full_arbo\(\) should return \-1\|array\<int, array\{rowid\: int, id\: int, fk_parent\: int, label\: string, description\: string, color\: string, position\: string, visible\: int, \.\.\.\}\> but returns array\<array\{rowid\: mixed, id\: mixed, fk_parent\: mixed, label\: mixed, description\: mixed, color\: mixed, position\: mixed, visible\: mixed, \.\.\.\}\>\.$#'
 			identifier: return.type
 			count: 1

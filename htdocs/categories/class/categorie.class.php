@@ -1839,7 +1839,7 @@ class Categorie extends CommonObject
 			if ($save_lastsearch_value == -1 && isset($_SERVER["PHP_SELF"]) && preg_match('/list\.php/', $_SERVER["PHP_SELF"])) {
 				$add_save_lastsearch_values = 1;
 			}
-			if ($url && $add_save_lastsearch_values) {
+			if (/* $url && */ $add_save_lastsearch_values) {
 				$url .= '&save_lastsearch_values=1';
 			}
 		}
