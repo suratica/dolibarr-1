@@ -336,9 +336,9 @@ class ExportExcel2007 extends ModeleExports
 				continue;
 			}
 
-			$newvalue = !empty($objp->$alias) ? $objp->$alias : '';
+			// $newvalue = !empty($objp->$alias) ? $objp->$alias : '';
 
-			$newvalue = $this->excel_clean($newvalue);
+			$newvalue = $this->excel_clean($objp->$alias);
 			$typefield = isset($array_types[$code]) ? $array_types[$code] : '';
 
 			if (preg_match('/^Select:/i', $typefield) && $typefield = substr($typefield, 7)) {
