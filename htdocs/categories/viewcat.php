@@ -1519,7 +1519,7 @@ if ($type == Categorie::TYPE_INVOICE) {
 		dol_print_error($db, $object->error, $object->errors);
 	} else {
 		// Form to add record into a category
-		$showclassifyform = 1;
+		$showclassifyform = $user->hasRight('facture', 'write');
 		if ($showclassifyform) {
 			print '<br>';
 			print '<form method="post" action="'.$_SERVER["PHP_SELF"].'">';
@@ -1548,6 +1548,7 @@ if ($type == Categorie::TYPE_INVOICE) {
 		print '<br>';
 		$param = '&limit='.$limit.'&id='.$id.'&type='.$type; $num = count($objects); $nbtotalofrecords = ''; $newcardbutton = '';
 
+		// @phan-suppress-next-line PhanPluginSuspiciousParamOrder
 		print_barre_liste($langs->trans("BillsCustomers"), $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'bill', 0, $newcardbutton, '', $limit);
 
 		print "<table class='noborder' width='100%'>\n";
@@ -1571,7 +1572,7 @@ if ($type == Categorie::TYPE_INVOICE) {
 				if ($permission) {
 					print "<a href= '".$_SERVER['PHP_SELF']."?".(empty($socid) ? 'id' : 'socid')."=".$object->id."&amp;type=".$typeid."&amp;removeelem=".$invoice->id."'>";
 					print $langs->trans("DeleteFromCat");
-					print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', false, 0, 0, '', 'paddingleft');
+					print img_picto($langs->trans("DeleteFromCat"), 'unlink', '', 0, 0, 0, '', 'paddingleft');
 					print "</a>";
 				}
 				print "</tr>\n";

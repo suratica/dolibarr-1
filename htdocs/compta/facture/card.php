@@ -601,7 +601,7 @@ if (empty($reshook)) {
 		}
 	} elseif ($action == 'set_incoterms' && isModEnabled('incoterm') && $usercancreate) {		// Set incoterm
 		$result = $object->setIncoterms(GETPOSTINT('incoterm_id'), GETPOST('location_incoterms'));
-	} elseif ($action == 'settags' && isModEnabled('categorie')) {		// Set tags
+	} elseif ($action == 'settags' && isModEnabled('category')) {		// Set tags
 		$result = $object->setCategories(GETPOST('categories', 'array'));
 	} elseif ($action == 'setbankaccount' && $usercancreate) {	// bank account
 		$result = $object->setBankAccount(GETPOSTINT('fk_account'));
@@ -2112,7 +2112,7 @@ if (empty($reshook)) {
 
 		// End of object creation, we show it
 		if ($id > 0 && !$error) {
-			if (isModEnabled('categorie')) {
+			if (isModEnabled('category')) {
 				$categories = GETPOST('categories', 'array');
 				if (method_exists($object, 'setCategories')) {
 					$object->setCategories($categories);
@@ -4107,7 +4107,7 @@ if ($action == 'create') {
 		}
 
 		// Category
-		if (isModEnabled('categorie')) {
+		if (isModEnabled('category')) {
 			// Categories
 			print '<tr><td>'.$langs->trans("Categories").'</td><td colspan="3">';
 			$cate_arbo = $form->select_all_categories(Categorie::TYPE_INVOICE, '', 'parent', 64, 0, 1);
@@ -4996,7 +4996,7 @@ if ($action == 'create') {
 		}
 
 		// Categories
-		if (isModEnabled('categorie')) {
+		if (isModEnabled('category')) {
 			print '<tr><td>';
 			print '<table class="nobordernopadding centpercent"><tr><td>';
 			print $langs->trans("Categories");
