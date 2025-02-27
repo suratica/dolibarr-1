@@ -4718,14 +4718,14 @@ class Facture extends CommonInvoice
 	*/
 
 	/**
-	 * Sets object to supplied categories.
+	 * Sets object to given categories.
 	 *
-	 * Deletes object from existing categories not supplied.
 	 * Adds it to non existing supplied categories.
 	 * Existing categories are left untouch.
 	 *
 	 * @param int[]|int $categories Category or categories IDs
-	 * @return void
+	 *
+	 * @return int Return integer <0 if KO, >0 if OK
 	 */
 	public function setCategories($categories)
 	{
