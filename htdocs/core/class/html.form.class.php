@@ -2995,7 +2995,7 @@ class Form
 		//Price by customer
 		if ((getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_AND_MULTIPRICES')) && !empty($socid)) {
 			$sql .= ', pcp.rowid as idprodcustprice, pcp.price as custprice, pcp.price_ttc as custprice_ttc,';
-			$sql .= ' pcp.price_base_type as custprice_base_type, pcp.tva_tx as custtva_tx, pcp.default_vat_code as custdefault_vat_code, pcp.ref_customer as custref, pcp.remise_percent as custdiscount_percent';
+			$sql .= ' pcp.price_base_type as custprice_base_type, pcp.tva_tx as custtva_tx, pcp.default_vat_code as custdefault_vat_code, pcp.ref_customer as custref, pcp.discount_percent as custdiscount_percent';
 			$selectFields .= ", idprodcustprice, custprice, custprice_ttc, custprice_base_type, custtva_tx, custdefault_vat_code, custref, custdiscount_percent";
 		}
 		// Units
