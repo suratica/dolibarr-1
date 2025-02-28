@@ -9,17 +9,17 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 1320+ occurrences
-    // PhanUndeclaredProperty : 640+ occurrences
+    // PhanTypeMismatchArgument : 1300+ occurrences
+    // PhanUndeclaredProperty : 480+ occurrences
     // PhanTypeMismatchArgumentNullable : 310+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 170+ occurrences
     // PhanTypeMismatchProperty : 160+ occurrences
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
     // PhanUndeclaredGlobalVariable : 100+ occurrences
-    // PhanTypeMismatchArgumentProbablyReal : 35+ occurrences
     // PhanPossiblyUndeclaredGlobalVariable : 25+ occurrences
     // PhanTypeExpectedObjectPropAccess : 25+ occurrences
     // PhanTypeInvalidDimOffset : 20+ occurrences
+    // PhanTypeMismatchArgumentProbablyReal : 20+ occurrences
     // PhanTypeMismatchDimFetch : 20+ occurrences
     // PhanPluginUndeclaredVariableIsset : 15+ occurrences
     // PhanUndeclaredConstant : 15+ occurrences
@@ -33,6 +33,7 @@ return [
     // PhanEmptyFQSENInClasslike : 3 occurrences
     // PhanInvalidFQSENInClasslike : 3 occurrences
     // PhanPluginSuspiciousParamPosition : 2 occurrences
+    // PhanTypeMismatchArgumentInternal : 2 occurrences
     // PhanTypeMismatchDimAssignment : 2 occurrences
     // PhanTypeSuspiciousStringExpression : 2 occurrences
     // PhanAccessMethodProtected : 1 occurrence
@@ -337,7 +338,6 @@ return [
         'htdocs/core/class/extrafields.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/class/fileupload.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/class/fiscalyear.class.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/core/class/hookmanager.class.php' => ['PhanUndeclaredProperty'],
         'htdocs/core/class/html.form.class.php' => ['PhanTypeMismatchArgumentNullable'],
         'htdocs/core/class/html.formcompany.class.php' => ['PhanTypeMismatchArgument', 'PhanUndeclaredProperty'],
         'htdocs/core/class/html.formfile.class.php' => ['PhanTypeMismatchArgument'],
