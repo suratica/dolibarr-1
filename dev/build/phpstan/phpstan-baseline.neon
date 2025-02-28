@@ -3403,12 +3403,6 @@ parameters:
 			path: ../../../htdocs/bookmarks/bookmarks.lib.php
 
 		-
-			message: '#^Ternary operator condition is always false\.$#'
-			identifier: ternary.alwaysFalse
-			count: 1
-			path: ../../../htdocs/bookmarks/bookmarks.lib.php
-
-		-
 			message: '#^Variable \$contextpage in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
 			count: 1
@@ -3487,21 +3481,9 @@ parameters:
 			path: ../../../htdocs/categories/class/api_categories.class.php
 
 		-
-			message: '#^Left side of && is always true\.$#'
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 1
-			path: ../../../htdocs/categories/class/categorie.class.php
-
-		-
 			message: '#^Method Categorie\:\:get_full_arbo\(\) should return \-1\|array\<int, array\{rowid\: int, id\: int, fk_parent\: int, label\: string, description\: string, color\: string, position\: string, visible\: int, \.\.\.\}\> but returns array\<array\{rowid\: mixed, id\: mixed, fk_parent\: mixed, label\: mixed, description\: mixed, color\: mixed, position\: mixed, visible\: mixed, \.\.\.\}\>\.$#'
 			identifier: return.type
 			count: 1
-			path: ../../../htdocs/categories/class/categorie.class.php
-
-		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 3
 			path: ../../../htdocs/categories/class/categorie.class.php
 
 		-
@@ -3520,12 +3502,6 @@ parameters:
 			message: '#^Return type of call to function dol_sort_array contains unresolvable type\.$#'
 			identifier: function.unresolvableReturnType
 			count: 1
-			path: ../../../htdocs/categories/class/categorie.class.php
-
-		-
-			message: '#^Variable \$url in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 2
 			path: ../../../htdocs/categories/class/categorie.class.php
 
 		-
@@ -8140,12 +8116,6 @@ parameters:
 			message: '#^Variable \$newlang in empty\(\) always exists and is always falsy\.$#'
 			identifier: empty.variable
 			count: 3
-			path: ../../../htdocs/core/actions_massactions.inc.php
-
-		-
-			message: '#^Variable \$permissiontoadd might not be defined\.$#'
-			identifier: variable.undefined
-			count: 10
 			path: ../../../htdocs/core/actions_massactions.inc.php
 
 		-
