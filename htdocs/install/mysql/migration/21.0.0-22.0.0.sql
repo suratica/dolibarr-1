@@ -162,6 +162,23 @@ CREATE TABLE llx_bank_record_link
 ALTER TABLE llx_bank_record_link ADD CONSTRAINT fk_bank_record_bank_record FOREIGN KEY (fk_bank_record) REFERENCES llx_bank_record (rowid);
 ALTER TABLE llx_bank_record_link ADD CONSTRAINT fk_bank_import_bank_import FOREIGN KEY (fk_bank_import) REFERENCES llx_bank_import (rowid);
 
+ALTER TABLE llx_commandedet ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_commande_fournisseurdet ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_contratdet ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_deliverydet ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_expeditiondet ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_facturedet ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_facturedet_rec ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_facture_fourn_det ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_facture_fourn_det_rec ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_fichinterdet ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_fichinterdet_rec ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_propaldet ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_receptiondet_batch ADD COLUMN extraparams varchar(255);
+ALTER TABLE llx_supplier_proposaldet ADD COLUMN extraparams varchar(255);
+
+ALTER TABLE llx_facture_rec ADD COLUMN rule_for_lines_dates varchar(255) DEFAULT 'prepaid';
+
 ALTER TABLE llx_product_customer_price ADD COLUMN date_begin date AFTER ref_customer;
 ALTER TABLE llx_product_customer_price ADD COLUMN date_end date AFTER date_begin;
 ALTER TABLE llx_product_customer_price ADD COLUMN remise_percent real DEFAULT 0 AFTER localtax2_type;
