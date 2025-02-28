@@ -27199,33 +27199,9 @@ parameters:
 			path: ../../../htdocs/theme/eldy/style.css.php
 
 		-
-			message: '#^Variable \$fontlist might not be defined\.$#'
-			identifier: variable.undefined
-			count: 4
-			path: ../../../htdocs/theme/md/btn.inc.php
-
-		-
-			message: '#^Variable \$left might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/theme/md/btn.inc.php
-
-		-
 			message: '#^Variable \$nbtopmenuentries might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2
-			path: ../../../htdocs/theme/md/btn.inc.php
-
-		-
-			message: '#^Variable \$right might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/theme/md/btn.inc.php
-
-		-
-			message: '#^Variable \$user might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
 			path: ../../../htdocs/theme/md/btn.inc.php
 
 		-
@@ -28363,12 +28339,6 @@ parameters:
 			path: ../../../htdocs/webportal/class/html.formwebportal.class.php
 
 		-
-			message: '#^Parameter \#3 \$preselectedvalue of method FormWebPortal\:\:selectForForms\(\) expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/webportal/class/html.formwebportal.class.php
-
-		-
 			message: '#^Call to function method_exists\(\) with \$this\(WebPortalInvoice\) and ''getLibStatut'' will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -28487,12 +28457,6 @@ parameters:
 			identifier: identical.alwaysTrue
 			count: 1
 			path: ../../../htdocs/webportal/class/webportalpropal.class.php
-
-		-
-			message: '#^Parameter \#1 \$authentication of function check_authentication expects array\{login\: string, password\: string, entity\: int\|null, dolibarrkey\: string\}, array\{login\: string, entity\: int\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/webservices/server_category.php
 
 		-
 			message: '#^Negated boolean expression is always true\.$#'
