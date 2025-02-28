@@ -183,11 +183,11 @@ if (empty($reshook)) {
 
 			if ($result < 0) {
 				setEventMessages($prodcustprice->error, $prodcustprice->errors, 'errors');
+				$action = 'add_customer_price';
 			} else {
 				setEventMessages($langs->trans("Save"), null, 'mesgs');
+				$action = '';
 			}
-
-			$action = '';
 		}
 	}
 
@@ -243,11 +243,11 @@ if (empty($reshook)) {
 		}
 		if ($result < 0) {
 			setEventMessages($prodcustprice->error, $prodcustprice->errors, 'errors');
+			$action = 'edit_customer_price';
 		} else {
 			setEventMessages($langs->trans("Save"), null, 'mesgs');
+			$action = '';
 		}
-
-		$action = '';
 	}
 }
 
@@ -374,7 +374,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 		print '<tr>';
 		print '<td>'.$langs->trans('Product').'</td>';
 		print '<td>';
-		$form->select_produits(0, 'prodid', '', 0);
+		$form->select_produits(GETPOSTINT('prodid'), 'prodid', '', 0);
 		print '</td>';
 		print '</tr>';
 

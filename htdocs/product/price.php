@@ -867,11 +867,11 @@ if (empty($reshook)) {
 
 			if ($result < 0) {
 				setEventMessages($prodcustprice->error, $prodcustprice->errors, 'errors');
+				$action = 'add_customer_price';
 			} else {
 				setEventMessages($langs->trans('RecordSaved'), null, 'mesgs');
+				$action = '';
 			}
-
-			$action = '';
 		}
 	}
 
@@ -1015,11 +1015,11 @@ if (empty($reshook)) {
 
 			if ($result < 0) {
 				setEventMessages($prodcustprice->error, $prodcustprice->errors, 'errors');
+				$action = 'update_customer_price';
 			} else {
 				setEventMessages($langs->trans("Save"), null, 'mesgs');
+				$action = '';
 			}
-
-			$action = '';
 		}
 	}
 }
@@ -2040,7 +2040,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 		print '<td class="fieldrequired">'.$langs->trans('ThirdParty').'</td>';
 		print '<td>';
 		$filter = '(s.client:IN:1,2,3)';
-		print img_picto('', 'company').$form->select_company('', 'socid', $filter, 'SelectThirdParty', 0, 0, array(), 0, 'minwidth300');
+		print img_picto('', 'company').$form->select_company(GETPOSTINT('socid'), 'socid', $filter, 'SelectThirdParty', 0, 0, array(), 0, 'minwidth300');
 		print '</td>';
 		print '</tr>';
 

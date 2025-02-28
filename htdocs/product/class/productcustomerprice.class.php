@@ -173,6 +173,46 @@ class ProductCustomerPrice extends CommonObject
 	}
 
 	/**
+	 * Check if begin and end dates intersect other dates periods
+	 *
+	 * @return 	int 			Result <0 if KO, >0 if OK
+	 */
+	public function verifyDates()
+	{
+		global $langs;
+
+		$sql = "SELECT COUNT(*) AS nb";
+		$sql .= " FROM " . $this->db->prefix() . "product_customer_price as t";
+		$sql .= " WHERE (t.date_begin = '" . $this->db->idate($this->date_begin) . "' OR t.date_end = '" . $this->db->idate($this->date_begin) . "'";
+		$sql .= "  OR t.date_begin = '" . $this->db->idate($this->date_end) . "' OR t.date_end = '" . $this->db->idate($this->date_end) . "'";
+		$sql .= "  OR (t.date_begin <= '" . $this->db->idate($this->date_begin) . "' AND '" . $this->db->idate($this->date_begin) . "' <= t.date_end)";
+		$sql .= "  OR (t.date_begin <= '" . $this->db->idate($this->date_end) . "' AND '" . $this->db->idate($this->date_end) . "' <= t.date_end))";
+		if ($this->fk_product > 0) $sql .= " AND t.fk_product = " . ((int) $this->fk_product);
+		if ($this->fk_soc > 0) $sql .= " AND t.fk_soc = " . ((int) $this->fk_soc);
+		if ($this->id > 0) $sql .= " AND t.rowid != " . ((int) $this->id);
+
+		dol_syslog(get_class($this) . "::fetch", LOG_DEBUG);
+		$resql = $this->db->query($sql);
+		if (!$resql) {
+			$this->errors[] = "Error " . $this->db->lasterror();
+			return -1;
+		}
+
+		$nb = 0;
+		if ($obj = $this->db->fetch_object($resql)) {
+			$nb = (int) $obj->nb;
+		}
+		$this->db->free($resql);
+
+		if ($nb > 0) {
+			$this->errors[] = $langs->trans('ErrorAppliedPricesIntersectAnotherPeriod');
+			return -1;
+		}
+
+		return 1;
+	}
+
+	/**
 	 * Create object into database
 	 *
 	 * @param User $user that creates
@@ -184,6 +224,7 @@ class ProductCustomerPrice extends CommonObject
 	{
 		global $conf, $langs;
 		$error = 0;
+		$now = dol_now();
 
 		// Clean parameters
 
@@ -229,6 +270,9 @@ class ProductCustomerPrice extends CommonObject
 		if (empty($this->discount_percent) || !is_numeric($this->discount_percent)) {
 			$this->discount_percent = 0;
 		}
+		if (empty($this->date_begin)) {
+			$this->date_begin = $now;
+		}
 		if (isset($this->fk_user)) {
 			$this->fk_user = (int) $this->fk_user;
 		}
@@ -241,6 +285,10 @@ class ProductCustomerPrice extends CommonObject
 
 		// Check parameters
 		// Put here code to add control on parameters values
+		$result = $this->verifyDates();
+		if ($result < 0) {
+			return -1;
+		}
 
 		if ($this->price != '' || $this->price == 0) {
 			$vatRate = (float) $this->tva_tx;
@@ -273,8 +321,6 @@ class ProductCustomerPrice extends CommonObject
 				}
 			}
 		}
-
-		$now = dol_now();
 
 		// Insert request
 		$sql = "INSERT INTO ".$this->db->prefix()."product_customer_price(";
@@ -320,7 +366,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " ".(empty($this->localtax2_type) ? "'0'" : "'".$this->db->escape($this->localtax2_type)."'").",";
 		$sql .= " ".(!isset($this->localtax2_tx) ? 'NULL' : (empty($this->localtax2_tx) ? 0 : $this->localtax2_tx)).",";
 		$sql .= " ".(empty($this->discount_percent) ? '0' : "'".$this->db->escape(price2num($this->discount_percent))."'").",";
-		$sql .= " '".$this->db->idate(empty($this->date_begin) ? $now : $this->date_begin)."',";
+		$sql .= " '".$this->db->idate($this->date_begin)."',";
 		$sql .= " ".(empty($this->date_end) ? 'NULL' : "'".$this->db->idate($this->date_end)."'").",";
 		$sql .= " ".((int) $user->id).",";
 		$sql .=  " ".(!isset($this->price_label) ? 'NULL' : "'".$this->db->escape($this->price_label)."'").",";
@@ -717,6 +763,7 @@ class ProductCustomerPrice extends CommonObject
 	{
 		global $conf, $langs;
 		$error = 0;
+		$now = dol_now();
 
 		// Clean parameters
 
@@ -762,6 +809,9 @@ class ProductCustomerPrice extends CommonObject
 		if (empty($this->discount_percent) || !is_numeric($this->discount_percent)) {
 			$this->discount_percent = 0;
 		}
+		if (empty($this->date_begin)) {
+			$this->date_begin = $now;
+		}
 		if (isset($this->fk_user)) {
 			$this->fk_user = (int) $this->fk_user;
 		}
@@ -774,6 +824,10 @@ class ProductCustomerPrice extends CommonObject
 
 		// Check parameters
 		// Put here code to add a control on parameters values
+		$result = $this->verifyDates();
+		if ($result < 0) {
+			return -1;
+		}
 
 		if ($this->price != '' || $this->price == 0) {
 			$vatRate = (float) $this->tva_tx;
@@ -873,8 +927,6 @@ class ProductCustomerPrice extends CommonObject
 			$this->errors [] = "Error ".$this->db->lasterror();
 		}
 
-		$now = dol_now();
-
 		// Update request
 		$sql = "UPDATE ".$this->db->prefix()."product_customer_price SET";
 
@@ -897,7 +949,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " localtax1_type=".(!empty($this->localtax1_type) ? "'".$this->db->escape($this->localtax1_type)."'" : "'0'").",";
 		$sql .= " localtax2_type=".(!empty($this->localtax2_type) ? "'".$this->db->escape($this->localtax2_type)."'" : "'0'").",";
 		$sql .= " discount_percent=".(!empty($this->discount_percent) ? "'".price2num($this->discount_percent)."'" : "0").",";
-		$sql .= " date_begin='".$this->db->idate(!empty($this->date_begin) ? $this->date_begin : $now)."',";
+		$sql .= " date_begin='".$this->db->idate($this->date_begin)."',";
 		$sql .= " date_end=".(!empty($this->date_end) ? "'".$this->db->idate($this->date_end)."'" : "null").",";
 		$sql .= " fk_user=".((int) $user->id).",";
 		$sql .= " price_label=".(isset($this->price_label) ? "'".$this->db->escape($this->price_label)."'" : "null").",";
