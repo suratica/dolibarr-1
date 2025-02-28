@@ -178,3 +178,17 @@ ALTER TABLE llx_supplier_proposaldet ADD COLUMN extraparams varchar(255);
 
 ALTER TABLE llx_facture_rec ADD COLUMN rule_for_lines_dates varchar(255) DEFAULT 'prepaid';
 
+ALTER TABLE llx_product_customer_price ADD COLUMN date_begin date AFTER ref_customer;
+ALTER TABLE llx_product_customer_price ADD COLUMN date_end date AFTER date_begin;
+ALTER TABLE llx_product_customer_price ADD COLUMN discount_percent real DEFAULT 0 AFTER localtax2_type;
+ALTER TABLE llx_product_customer_price_log ADD COLUMN date_begin date AFTER ref_customer;
+ALTER TABLE llx_product_customer_price_log ADD COLUMN date_end date AFTER date_begin;
+ALTER TABLE llx_product_customer_price_log ADD COLUMN discount_percent real DEFAULT 0 AFTER localtax2_type;
+ALTER TABLE llx_product_customer_price DROP CONSTRAINT fk_product_customer_price_fk_product;
+ALTER TABLE llx_product_customer_price DROP CONSTRAINT fk_product_customer_price_fk_soc;
+ALTER TABLE llx_product_customer_price DROP INDEX uk_customer_price_fk_product_fk_soc;
+ALTER TABLE llx_product_customer_price ADD UNIQUE INDEX uk_customer_price_fk_product_fk_soc (fk_product, fk_soc, date_begin);
+ALTER TABLE llx_product_customer_price ADD CONSTRAINT fk_product_customer_price_fk_product FOREIGN KEY (fk_product) REFERENCES llx_product(rowid);
+ALTER TABLE llx_product_customer_price ADD CONSTRAINT fk_product_customer_price_fk_soc FOREIGN KEY (fk_soc) REFERENCES llx_societe(rowid);
+UPDATE llx_product_customer_price SET date_begin = datec WHERE date_begin IS NULL;
+UPDATE llx_product_customer_price_log SET date_begin = datec WHERE date_begin IS NULL;
