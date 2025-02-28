@@ -1549,7 +1549,7 @@ class Propal extends CommonObject
 													if ($custprice_line->default_vat_code && !preg_match('/\(.*\)/', $tva_tx)) {
 														$tva_tx .= ' (' . $custprice_line->default_vat_code . ')';
 													}
-													$remise_percent = $custprice_line->remise_percent;
+													$remise_percent = $custprice_line->discount_percent;
 													break;
 												}
 											}

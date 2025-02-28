@@ -230,7 +230,7 @@ if ($action == 'fetch' && !empty($id)) {
 							$outtva_tx_formated = price($custprice_line->tva_tx);
 							$outtva_tx = price2num($custprice_line->tva_tx);
 							$outdefault_vat_code = $custprice_line->default_vat_code;
-							$outdiscount = $custprice_line->remise_percent;
+							$outdiscount = $custprice_line->discount_percent;
 							break;
 						}
 					}

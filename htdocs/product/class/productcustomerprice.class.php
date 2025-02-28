@@ -47,7 +47,7 @@ class ProductCustomerPrice extends CommonObject
 		'price_min' => array('type' => 'decimal(20,6)', 'label' => 'MinPriceHT', 'enabled' => 1, 'visible' => 1, 'position' => 9, 'notnull' => -1, 'comment' => 'Minimum Price'),
 		'price_min_ttc' => array('type' => 'decimal(20,6)', 'label' => 'MinPriceTTC', 'enabled' => 1, 'visible' => 1, 'position' => 10, 'notnull' => -1, 'comment' => 'Minimum Price TTC'),
 		'price_label' => array('type' => 'varchar(255)', 'label' => 'PriceLabel', 'enabled' => 1, 'visible' => 1, 'position' => 20, 'notnull' => -1, 'comment' => 'Price Label'),
-		'remise_percent' => array('type' => 'decimal(20,6)', 'label' => 'Discount', 'enabled' => 1, 'visible' => 1, 'position' => 30, 'notnull' => -1, 'comment' => 'Discount'),
+		'discount_percent' => array('type' => 'decimal(20,6)', 'label' => 'Discount', 'enabled' => 1, 'visible' => 1, 'position' => 30, 'notnull' => -1, 'comment' => 'Discount'),
 		'fk_user' => array('type' => 'integer:User:user/class/user.class.php', 'label' => 'UserModif', 'enabled' => 1, 'visible' => 1, 'position' => 510, 'notnull' => 1, 'foreignkey' => 'user.rowid', 'csslist' => 'tdoverflowmax100'),
 	);
 
@@ -141,7 +141,7 @@ class ProductCustomerPrice extends CommonObject
 	/**
 	 * @var float|string|''
 	 */
-	public $remise_percent;
+	public $discount_percent;
 	/**
 	 * @var string|int
 	 */
@@ -226,8 +226,8 @@ class ProductCustomerPrice extends CommonObject
 		if (isset($this->localtax2_tx)) {
 			$this->localtax2_tx = trim($this->localtax2_tx);
 		}
-		if (empty($this->remise_percent) || !is_numeric($this->remise_percent)) {
-			$this->remise_percent = 0;
+		if (empty($this->discount_percent) || !is_numeric($this->discount_percent)) {
+			$this->discount_percent = 0;
 		}
 		if (isset($this->fk_user)) {
 			$this->fk_user = (int) $this->fk_user;
@@ -295,7 +295,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= "localtax1_tx,";
 		$sql .= "localtax2_type,";
 		$sql .= "localtax2_tx,";
-		$sql .= "remise_percent,";
+		$sql .= "discount_percent,";
 		$sql .= "date_begin,";
 		$sql .= "date_end,";
 		$sql .= "fk_user,";
@@ -319,7 +319,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " ".(!isset($this->localtax1_tx) ? 'NULL' : (empty($this->localtax1_tx) ? 0 : $this->localtax1_tx)).",";
 		$sql .= " ".(empty($this->localtax2_type) ? "'0'" : "'".$this->db->escape($this->localtax2_type)."'").",";
 		$sql .= " ".(!isset($this->localtax2_tx) ? 'NULL' : (empty($this->localtax2_tx) ? 0 : $this->localtax2_tx)).",";
-		$sql .= " ".(empty($this->remise_percent) ? '0' : "'".$this->db->escape(price2num($this->remise_percent))."'").",";
+		$sql .= " ".(empty($this->discount_percent) ? '0' : "'".$this->db->escape(price2num($this->discount_percent))."'").",";
 		$sql .= " '".$this->db->idate(empty($this->date_begin) ? $now : $this->date_begin)."',";
 		$sql .= " ".(empty($this->date_end) ? 'NULL' : "'".$this->db->idate($this->date_end)."'").",";
 		$sql .= " ".((int) $user->id).",";
@@ -396,7 +396,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " t.recuperableonly,";
 		$sql .= " t.localtax1_tx,";
 		$sql .= " t.localtax2_tx,";
-		$sql .= " t.remise_percent,";
+		$sql .= " t.discount_percent,";
 		$sql .= " t.date_begin,";
 		$sql .= " t.date_end,";
 		$sql .= " t.fk_user,";
@@ -429,7 +429,7 @@ class ProductCustomerPrice extends CommonObject
 				$this->recuperableonly = $obj->recuperableonly;
 				$this->localtax1_tx = $obj->localtax1_tx;
 				$this->localtax2_tx = $obj->localtax2_tx;
-				$this->remise_percent = $obj->remise_percent;
+				$this->discount_percent = $obj->discount_percent;
 				$this->date_begin = $this->db->jdate($obj->date_begin);
 				$this->date_end = $this->db->jdate($obj->date_end);
 				$this->fk_user = $obj->fk_user;
@@ -490,7 +490,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " t.localtax2_tx,";
 		$sql .= " t.localtax1_type,";
 		$sql .= " t.localtax2_type,";
-		$sql .= " t.remise_percent,";
+		$sql .= " t.discount_percent,";
 		$sql .= " t.date_begin,";
 		$sql .= " t.date_end,";
 		$sql .= " t.fk_user,";
@@ -516,7 +516,7 @@ class ProductCustomerPrice extends CommonObject
 						$sql .= " AND ".$this->db->sanitize($key)." LIKE '%".$this->db->escape($this->db->escapeforlike($value))."%'";
 					} elseif ($key == 'prod.ref' || $key == 'prod.label') {
 						$sql .= " AND ".$this->db->sanitize($key)." LIKE '%".$this->db->escape($this->db->escapeforlike($value))."%'";
-					} elseif ($key == 't.price' || $key == 't.price_ttc' || $key == 't.remise_percent') {
+					} elseif ($key == 't.price' || $key == 't.price_ttc' || $key == 't.discount_percent') {
 						$sql .= " AND ".$this->db->sanitize($key)." = ".((float) price2num($value));
 					} else {
 						$sql .= " AND ".$this->db->sanitize($key)." = ".((int) $value);
@@ -570,7 +570,7 @@ class ProductCustomerPrice extends CommonObject
 				$line->localtax2_tx = $obj->localtax2_tx;
 				$line->localtax1_type = $obj->localtax1_type;
 				$line->localtax2_type = $obj->localtax2_type;
-				$line->remise_percent = $obj->remise_percent;
+				$line->discount_percent = $obj->discount_percent;
 				$line->date_begin = $this->db->jdate($obj->date_begin);
 				$line->date_end = $this->db->jdate($obj->date_end);
 				$line->fk_user = $obj->fk_user;
@@ -626,7 +626,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " t.recuperableonly,";
 		$sql .= " t.localtax1_tx,";
 		$sql .= " t.localtax2_tx,";
-		$sql .= " t.remise_percent,";
+		$sql .= " t.discount_percent,";
 		$sql .= " t.date_begin,";
 		$sql .= " t.date_end,";
 		$sql .= " t.fk_user,";
@@ -685,7 +685,7 @@ class ProductCustomerPrice extends CommonObject
 				$line->recuperableonly = $obj->recuperableonly;
 				$line->localtax1_tx = $obj->localtax1_tx;
 				$line->localtax2_tx = $obj->localtax2_tx;
-				$line->remise_percent = $obj->remise_percent;
+				$line->discount_percent = $obj->discount_percent;
 				$line->date_begin = $this->db->jdate($obj->date_begin);
 				$line->date_end = $this->db->jdate($obj->date_end);
 				$line->fk_user = $obj->fk_user;
@@ -759,8 +759,8 @@ class ProductCustomerPrice extends CommonObject
 		if (isset($this->localtax2_tx)) {
 			$this->localtax2_tx = trim((string) $this->localtax2_tx);
 		}
-		if (empty($this->remise_percent) || !is_numeric($this->remise_percent)) {
-			$this->remise_percent = 0;
+		if (empty($this->discount_percent) || !is_numeric($this->discount_percent)) {
+			$this->discount_percent = 0;
 		}
 		if (isset($this->fk_user)) {
 			$this->fk_user = (int) $this->fk_user;
@@ -828,7 +828,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= "localtax2_tx,";
 		$sql .= "localtax1_type,";
 		$sql .= "localtax2_type,";
-		$sql .= "remise_percent,";
+		$sql .= "discount_percent,";
 		$sql .= "date_begin,";
 		$sql .= "date_end,";
 		$sql .= "fk_user,";
@@ -855,7 +855,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " t.localtax2_tx,";
 		$sql .= " t.localtax1_type,";
 		$sql .= " t.localtax2_type,";
-		$sql .= " t.remise_percent,";
+		$sql .= " t.discount_percent,";
 		$sql .= " t.date_begin,";
 		$sql .= " t.date_end,";
 		$sql .= " t.fk_user,";
@@ -896,7 +896,7 @@ class ProductCustomerPrice extends CommonObject
 		$sql .= " localtax2_tx=".(isset($this->localtax2_tx) ? (empty($this->localtax2_tx) ? 0 : $this->localtax2_tx) : "null").",";
 		$sql .= " localtax1_type=".(!empty($this->localtax1_type) ? "'".$this->db->escape($this->localtax1_type)."'" : "'0'").",";
 		$sql .= " localtax2_type=".(!empty($this->localtax2_type) ? "'".$this->db->escape($this->localtax2_type)."'" : "'0'").",";
-		$sql .= " remise_percent=".(!empty($this->remise_percent) ? "'".price2num($this->remise_percent)."'" : "0").",";
+		$sql .= " discount_percent=".(!empty($this->discount_percent) ? "'".price2num($this->discount_percent)."'" : "0").",";
 		$sql .= " date_begin='".$this->db->idate(!empty($this->date_begin) ? $this->date_begin : $now)."',";
 		$sql .= " date_end=".(!empty($this->date_end) ? "'".$this->db->idate($this->date_end)."'" : "null").",";
 		$sql .= " fk_user=".((int) $user->id).",";
@@ -996,7 +996,7 @@ class ProductCustomerPrice extends CommonObject
 							$prodsocpriceupd->tva_tx = $this->tva_tx;
 							$prodsocpriceupd->recuperableonly = $this->recuperableonly;
 							$prodsocpriceupd->price_label = $this->price_label;
-							$prodsocpriceupd->remise_percent = $this->remise_percent;
+							$prodsocpriceupd->discount_percent = $this->discount_percent;
 							$prodsocpriceupd->date_begin = $this->date_begin;
 							$prodsocpriceupd->date_end = $this->date_end;
 
@@ -1018,7 +1018,7 @@ class ProductCustomerPrice extends CommonObject
 						$prodsocpricenew->tva_tx = $this->tva_tx;
 						$prodsocpricenew->recuperableonly = $this->recuperableonly;
 						$prodsocpricenew->price_label = $this->price_label;
-						$prodsocpricenew->remise_percent = $this->remise_percent;
+						$prodsocpricenew->discount_percent = $this->discount_percent;
 						$prodsocpricenew->date_begin = $this->date_begin;
 						$prodsocpricenew->date_end = $this->date_end;
 
@@ -1165,7 +1165,7 @@ class ProductCustomerPrice extends CommonObject
 		$this->recuperableonly = '';
 		$this->localtax1_tx = '';
 		$this->localtax2_tx = '';
-		$this->remise_percent = '';
+		$this->discount_percent = '';
 		$this->date_begin = '';
 		$this->date_end = '';
 		$this->fk_user = 0;
@@ -1254,7 +1254,7 @@ class PriceByCustomerLine extends CommonObjectLine
 	/**
 	 * @var float|string|''
 	 */
-	public $remise_percent;
+	public $discount_percent;
 	/**
 	 * @var string|int
 	 */

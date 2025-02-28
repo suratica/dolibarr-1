@@ -754,7 +754,7 @@ if (empty($reshook)) {
 		$prodcustprice->price_min = price2num(GETPOST("price_min"), 'MU');
 		$prodcustprice->price_base_type = GETPOST("price_base_type", 'alpha');
 		$prodcustprice->price_label = GETPOST("price_label", 'alpha');
-		$prodcustprice->remise_percent = price2num(GETPOST("remise_percent"));
+		$prodcustprice->discount_percent = price2num(GETPOST("discount_percent"));
 		$prodcustprice->date_begin = dol_mktime(0, 0, 0, GETPOSTINT('date_beginmonth'), GETPOSTINT('date_beginday'), GETPOSTINT('date_beginyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server;
 		$prodcustprice->date_end = dol_mktime(0, 0, 0, GETPOSTINT('date_endmonth'), GETPOSTINT('date_endday'), GETPOSTINT('date_endyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server
 
@@ -909,7 +909,7 @@ if (empty($reshook)) {
 		$prodcustprice->price_min = price2num(GETPOST("price_min"), 'MU');
 		$prodcustprice->price_base_type = GETPOST("price_base_type", 'alpha');
 		$prodcustprice->price_label = GETPOST("price_label", 'alpha');
-		$prodcustprice->remise_percent = price2num(GETPOST("remise_percent"));
+		$prodcustprice->discount_percent = price2num(GETPOST("discount_percent"));
 		$prodcustprice->date_begin = dol_mktime(0, 0, 0, GETPOSTINT('date_beginmonth'), GETPOSTINT('date_beginday'), GETPOSTINT('date_beginyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server;
 		$prodcustprice->date_end = dol_mktime(0, 0, 0, GETPOSTINT('date_endmonth'), GETPOSTINT('date_endday'), GETPOSTINT('date_endyear'), 'tzserver');	// If we enter the 02 january, we need to save the 02 january for server
 
@@ -2109,9 +2109,9 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 		print '</tr>';
 
 		// Discount
-		$remise_percent = price2num(GETPOST("remise_percent"));
+		$discount_percent = price2num(GETPOST("discount_percent"));
 		print '<tr><td>'.$langs->trans("Discount").'</td><td>';
-		print '<input name="remise_percent" size="10" value="'.price($remise_percent).'">';
+		print '<input name="discount_percent" size="10" value="'.price($discount_percent).'">';
 		print '</td></tr>';
 
 		// Extrafields
@@ -2245,7 +2245,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 
 		// Discount
 		print '<tr><td>'.$langs->trans("Discount").'</td><td>';
-		print '<input name="remise_percent" size="10" value="'.price($prodcustprice->remise_percent).'">';
+		print '<input name="discount_percent" size="10" value="'.price($prodcustprice->discount_percent).'">';
 		print '</td></tr>';
 
 		// Extrafields
@@ -2434,7 +2434,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 				print '<td class="right">'.price($line->price_min).'</td>';
 				print '<td class="right">'.price($line->price_min_ttc).'</td>';
 				print '<td class="right">'.$line->price_label.'</td>';
-				print '<td class="right">'.price($line->remise_percent).'</td>';
+				print '<td class="right">'.price($line->discount_percent).'</td>';
 
 				// User
 				$userstatic = new User($db);
@@ -2693,7 +2693,7 @@ if (getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT
 				print '<td class="right">'.price($line->price_min).'</td>';
 				print '<td class="right">'.price($line->price_min_ttc).'</td>';
 				print '<td class="right">'.$line->price_label.'</td>';
-				print '<td class="right">'.price($line->remise_percent).'</td>';
+				print '<td class="right">'.price($line->discount_percent).'</td>';
 
 				// Extrafields
 				$extrafields->fetch_name_optionals_label("product_customer_price");

@@ -2995,8 +2995,8 @@ class Form
 		//Price by customer
 		if ((getDolGlobalString('PRODUIT_CUSTOMER_PRICES') || getDolGlobalString('PRODUIT_CUSTOMER_PRICES_AND_MULTIPRICES')) && !empty($socid)) {
 			$sql .= ', pcp.rowid as idprodcustprice, pcp.price as custprice, pcp.price_ttc as custprice_ttc,';
-			$sql .= ' pcp.price_base_type as custprice_base_type, pcp.tva_tx as custtva_tx, pcp.default_vat_code as custdefault_vat_code, pcp.ref_customer as custref, pcp.remise_percent as custremise_percent';
-			$selectFields .= ", idprodcustprice, custprice, custprice_ttc, custprice_base_type, custtva_tx, custdefault_vat_code, custref, custremise_percent";
+			$sql .= ' pcp.price_base_type as custprice_base_type, pcp.tva_tx as custtva_tx, pcp.default_vat_code as custdefault_vat_code, pcp.ref_customer as custref, pcp.remise_percent as custdiscount_percent';
+			$selectFields .= ", idprodcustprice, custprice, custprice_ttc, custprice_base_type, custtva_tx, custdefault_vat_code, custref, custdiscount_percent";
 		}
 		// Units
 		if (getDolGlobalInt('PRODUCT_USE_UNITS')) {
@@ -3601,7 +3601,7 @@ class Form
 				$outpricebasetype = $objp->custprice_base_type;
 				$outtva_tx = $objp->custtva_tx;
 				$outdefault_vat_code = $objp->custdefault_vat_code;
-				$outdiscount = $objp->custremise_percent;
+				$outdiscount = $objp->custdiscount_percent;
 			}
 		}
 

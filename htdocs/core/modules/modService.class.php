@@ -334,7 +334,7 @@ class modService extends DolibarrModules
 					'pr.price_min' => "MinPriceUnitPriceHT", 'pr.price_min_ttc' => "MinPriceUnitPriceTTC",
 					'pr.tva_tx' => 'PriceVATRate',
 					'pr.default_vat_code' => 'PriceVATCode',
-					'pr.remise_percent' => 'Discount',
+					'pr.discount_percent' => 'Discount',
 					'pr.datec' => 'DateCreation');
 				if (is_object($mysoc) && $usenpr) {
 					$this->export_fields_array[$r]['pr.recuperableonly'] = 'NPR';
@@ -348,7 +348,7 @@ class modService extends DolibarrModules
 					'pr.price_min' => "product", 'pr.price_min_ttc' => "product",
 					'pr.tva_tx' => 'product',
 					'pr.default_vat_code' => 'product',
-					'pr.remise_percent' => 'product',
+					'pr.discount_percent' => 'product',
 					'pr.recuperableonly' => 'product',
 					'pr.datec' => "product");
 				$this->export_sql_start[$r] = 'SELECT DISTINCT ';
