@@ -28,7 +28,7 @@ create table llx_product_customer_price_log
   fk_product			integer NOT NULL,
   fk_soc				integer DEFAULT 0 NOT NULL,
   ref_customer			varchar(30),
-  date_begin			date NOT NULL,
+  date_begin			date,
   date_end				date,
   price					double(24,8) DEFAULT 0,
   price_ttc				double(24,8) DEFAULT 0,
