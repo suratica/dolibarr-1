@@ -1,8 +1,8 @@
 <?php
 /*
- * Copyright (C) 2025		 Mohamed DAOUD       <mdaoud@dolicloud.com>
+ * Copyright (C) 2025		Mohamed DAOUD       <mdaoud@dolicloud.com>
  * Copyright (C) 2025		MDW					<mdeweerd@users.noreply.github.com>
- * Copyright (C) 2025       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2025       Frédéric France     <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modifyion 2.0 (the "License");
  * it under the terms of the GNU General Public License as published bypliance with the License.
