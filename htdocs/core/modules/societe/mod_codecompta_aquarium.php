@@ -196,7 +196,7 @@ class mod_codecompta_aquarium extends ModeleAccountancyCode
 		}
 		// Apply a regex replacement pattern on code if COMPANY_AQUARIUM_CLEAN_REGEX is set. Value must be a regex with parenthesis. The part into parenthesis is kept, the rest removed.
 		if (getDolGlobalString('COMPANY_AQUARIUM_CLEAN_REGEX')) {	// Example: $conf->global->COMPANY_AQUARIUM_CLEAN_REGEX='^..(..)..';
-			$codetouse = preg_replace('/' . getDolGlobalString('COMPANY_AQUARIUM_CLEAN_REGEX').'/', '\1\2\3', $codetouse);
+			$codetouse = preg_replace('/' . getDolGlobalString('COMPANY_AQUARIUM_CLEAN_REGEX').'/', '\1\2\3', (string) $codetouse);
 		}
 
 		$codetouse = $prefix.strtoupper($codetouse);
