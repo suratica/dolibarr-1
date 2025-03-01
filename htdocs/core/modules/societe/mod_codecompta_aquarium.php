@@ -192,7 +192,7 @@ class mod_codecompta_aquarium extends ModeleAccountancyCode
 		}
 		// Remove special alpha if COMPANY_AQUARIUM_REMOVE_ALPHA is set to 1
 		if (getDolGlobalString('COMPANY_AQUARIUM_REMOVE_ALPHA')) {
-			$codetouse = preg_replace('/([a-z])/i', '', $codetouse);
+			$codetouse = preg_replace('/([a-z])/i', '', (string) $codetouse);
 		}
 		// Apply a regex replacement pattern on code if COMPANY_AQUARIUM_CLEAN_REGEX is set. Value must be a regex with parenthesis. The part into parenthesis is kept, the rest removed.
 		if (getDolGlobalString('COMPANY_AQUARIUM_CLEAN_REGEX')) {	// Example: $conf->global->COMPANY_AQUARIUM_CLEAN_REGEX='^..(..)..';
