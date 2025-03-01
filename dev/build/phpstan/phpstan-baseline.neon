@@ -11077,12 +11077,6 @@ parameters:
 			path: ../../../htdocs/core/lib/functions.lib.php
 
 		-
-			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 24
-			path: ../../../htdocs/core/lib/functions.lib.php
-
-		-
 			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
 			identifier: greater.alwaysTrue
 			count: 1
@@ -11188,12 +11182,6 @@ parameters:
 			message: '#^Property CommonObject\:\:\$multicurrency_total_ttc \(float\) in isset\(\) is not nullable\.$#'
 			identifier: isset.property
 			count: 3
-			path: ../../../htdocs/core/lib/functions.lib.php
-
-		-
-			message: '#^Property CommonObject\:\:\$state \(string\) in isset\(\) is not nullable\.$#'
-			identifier: isset.property
-			count: 1
 			path: ../../../htdocs/core/lib/functions.lib.php
 
 		-
@@ -25525,12 +25513,6 @@ parameters:
 			path: ../../../htdocs/resource/class/dolresource.class.php
 
 		-
-			message: '#^Property Dolresource\:\:\$address \(string\) in isset\(\) is not nullable\.$#'
-			identifier: isset.property
-			count: 2
-			path: ../../../htdocs/resource/class/dolresource.class.php
-
-		-
 			message: '#^Property Dolresource\:\:\$busy \(int\) in isset\(\) is not nullable\.$#'
 			identifier: isset.property
 			count: 2
@@ -25555,12 +25537,6 @@ parameters:
 			path: ../../../htdocs/resource/class/dolresource.class.php
 
 		-
-			message: '#^Property Dolresource\:\:\$email \(string\) in isset\(\) is not nullable\.$#'
-			identifier: isset.property
-			count: 2
-			path: ../../../htdocs/resource/class/dolresource.class.php
-
-		-
 			message: '#^Property Dolresource\:\:\$fk_code_type_resource \(string\) in isset\(\) is not nullable\.$#'
 			identifier: isset.property
 			count: 2
@@ -25580,24 +25556,6 @@ parameters:
 
 		-
 			message: '#^Property Dolresource\:\:\$resource_type \(string\) in isset\(\) is not nullable\.$#'
-			identifier: isset.property
-			count: 2
-			path: ../../../htdocs/resource/class/dolresource.class.php
-
-		-
-			message: '#^Property Dolresource\:\:\$town \(string\) in isset\(\) is not nullable\.$#'
-			identifier: isset.property
-			count: 2
-			path: ../../../htdocs/resource/class/dolresource.class.php
-
-		-
-			message: '#^Property Dolresource\:\:\$url \(string\) in isset\(\) is not nullable\.$#'
-			identifier: isset.property
-			count: 2
-			path: ../../../htdocs/resource/class/dolresource.class.php
-
-		-
-			message: '#^Property Dolresource\:\:\$zip \(string\) in isset\(\) is not nullable\.$#'
 			identifier: isset.property
 			count: 2
 			path: ../../../htdocs/resource/class/dolresource.class.php
