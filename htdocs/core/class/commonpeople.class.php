@@ -389,8 +389,8 @@ trait CommonPeople
 			}
 		}
 		if (getDolGlobalString('MAIN_ALL_TOWN_TO_UPPER')) {
-			$this->address = dol_strtoupper($this->address);
-			$this->town = dol_strtoupper($this->town);
+			$this->address = dol_strtoupper($this->address ?? '');
+			$this->town = dol_strtoupper($this->town ?? '');
 		}
 		if (!empty($this->email)) {
 			$this->email = dol_strtolower($this->email);
