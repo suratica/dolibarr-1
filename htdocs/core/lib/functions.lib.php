@@ -1180,7 +1180,9 @@ function GETPOSTDATE($prefix, $hourTime = '', $gm = 'auto', $saverestore = '')
 		$minute = intval($m[2]);
 		$second = intval($m[3]);
 	} elseif ($hourTime === 'end') {
-		$hour = 23; $minute = 59; $second = 59;
+		$hour = 23;
+		$minute = 59;
+		$second = 59;
 	} else {
 		$hour = $minute = $second = 0;
 	}
@@ -2432,7 +2434,7 @@ function dol_syslog($message, $level = LOG_INFO, $ident = 0, $suffixinfilename =
 
 		if (!array_key_exists($level, $logLevels)) {
 			dol_syslog('Error Bad Log Level '.$level, LOG_ERR);
-			$level = $logLevels[LOG_ERR];
+			$level = LOG_ERR;
 		}
 		if ($level > getDolGlobalInt('SYSLOG_LEVEL')) {
 			return;
@@ -2461,12 +2463,12 @@ function dol_syslog($message, $level = LOG_INFO, $ident = 0, $suffixinfilename =
 
 		$data = array(
 			'message' => $message,
-			'script' => (isset($_SERVER['PHP_SELF']) ? basename($_SERVER['PHP_SELF'], '.php') : false),
+			'script' => (isset($_SERVER['PHP_SELF']) ? basename($_SERVER['PHP_SELF'], '.php') : ''),
 			'level' => $level,
-			'user' => ((is_object($user) && $user->id) ? $user->login : false),
-			'ip' => false,
-			'osuser' => function_exists('posix_getuid') ? posix_getuid() : false,
-			'ospid' => getmypid()	// on linux, max value is defined into cat /proc/sys/kernel/pid_max
+			'user' => ((is_object($user) && $user->id) ? $user->login : ''),
+			'ip' => '',
+			'osuser' => function_exists('posix_getuid') ? (string) posix_getuid() : '',
+			'ospid' => (string) getmypid()	// on linux, max value is defined into cat /proc/sys/kernel/pid_max
 		);
 
 		$remoteip = getUserRemoteIP(); // Get ip when page run on a web server
@@ -2480,20 +2482,20 @@ function dol_syslog($message, $level = LOG_INFO, $ident = 0, $suffixinfilename =
 			}
 		} elseif (!empty($_SERVER['SERVER_ADDR'])) {
 			// This is when PHP session is ran inside a web server but not inside a client request (example: init code of apache)
-			$data['ip'] = $_SERVER['SERVER_ADDR'];
+			$data['ip'] = (string) $_SERVER['SERVER_ADDR'];
 		} elseif (!empty($_SERVER['COMPUTERNAME'])) {
 			// This is when PHP session is ran outside a web server, like from Windows command line (Not always defined, but useful if OS defines it).
-			$data['ip'] = $_SERVER['COMPUTERNAME'];
+			$data['ip'] = (string) $_SERVER['COMPUTERNAME'];
 		} else {
 			$data['ip'] = '???';
 		}
 
 		if (!empty($_SERVER['USERNAME'])) {
 			// This is when PHP session is ran outside a web server, like from Linux command line (Not always defined, but useful if OS defines it).
-			$data['osuser'] = $_SERVER['USERNAME'];
+			$data['osuser'] = (string) $_SERVER['USERNAME'];
 		} elseif (!empty($_SERVER['LOGNAME'])) {
 			// This is when PHP session is ran outside a web server, like from Linux command line (Not always defined, but useful if OS defines it).
-			$data['osuser'] = $_SERVER['LOGNAME'];
+			$data['osuser'] = (string) $_SERVER['LOGNAME'];
 		}
 
 		// Loop on each log handler and send output
@@ -3149,7 +3151,7 @@ function dol_banner_tab($object, $paramid, $morehtml = '', $shownav = 1, $fieldi
 						}
 					}
 				} elseif (!$phototoshow) { // example if modulepart = 'societe' or 'photo' or 'memberphoto'
-					$phototoshow .= $form->showphoto($modulepart, $object, 0, 0, 0, 'photowithmargin photoref', 'small', 1, 0, $maxvisiblephotos);
+					$phototoshow .= $form->showphoto($modulepart, $object, 0, 0, 0, 'photowithmargin photoref', 'small', 1, 0);
 				}
 
 				if ($phototoshow) {
@@ -3211,12 +3213,14 @@ function dol_banner_tab($object, $paramid, $morehtml = '', $shownav = 1, $fieldi
 			$morehtmlstatus .= '<span class="statusrefbuy">'.$object->getLibStatut(6, 1).'</span>';
 		}
 	} elseif (in_array($object->element, array('salary'))) {
+		'@phan-var-force Salary $object';
 		$tmptxt = $object->getLibStatut(6, $object->alreadypaid);
 		if (empty($tmptxt) || $tmptxt == $object->getLibStatut(3)) {
 			$tmptxt = $object->getLibStatut(5, $object->alreadypaid);
 		}
 		$morehtmlstatus .= $tmptxt;
 	} elseif (in_array($object->element, array('facture', 'invoice', 'invoice_supplier'))) {	// TODO Move this to use ->alreadypaid
+		'@phan-var-force Facture|FactureFournisseur|CommonInvoice $object';
 		$totalallpayments = $object->getSommePaiement(0);
 		$totalallpayments += $object->getSumCreditNotesUsed(0);
 		$totalallpayments += $object->getSumDepositsUsed(0);
@@ -3226,6 +3230,7 @@ function dol_banner_tab($object, $paramid, $morehtml = '', $shownav = 1, $fieldi
 		}
 		$morehtmlstatus .= $tmptxt;
 	} elseif (in_array($object->element, array('chargesociales', 'loan', 'tva'))) {	// TODO Move this to use ->alreadypaid
+		'@phan-var-force ChargeSociales|Loan|Tva $object';
 		$tmptxt = $object->getLibStatut(6, $object->totalpaid);
 		if (empty($tmptxt) || $tmptxt == $object->getLibStatut(3)) {
 			$tmptxt = $object->getLibStatut(5, $object->totalpaid);
@@ -4769,9 +4774,9 @@ function dol_print_address($address, $htmlid, $element, $id, $noprint = 0, $char
 		}
 		if (empty($reshook)) {
 			if (empty($charfornl)) {
-				$out .= nl2br($address);
+				$out .= nl2br((string) $address);
 			} else {
-				$out .= preg_replace('/[\r\n]+/', $charfornl, $address);
+				$out .= preg_replace('/[\r\n]+/', $charfornl, (string) $address);
 			}
 
 			// TODO Remove this block, we can add this using the hook now
@@ -6412,9 +6417,9 @@ function getTitleFieldOfList($name, $thead = 0, $file = "", $field = "", $begin 
 		} else {
 			$tmptooltip = array($tooltip);
 		}
-		$out .= $form->textwithpicto($langs->trans($name), $langs->trans($tmptooltip[0]), (empty($tmptooltip[2]) ? 1 : $tmptooltip[2]), 'help', '', 0, 3, (empty($tmptooltip[1]) ? '' : 'extra_'.str_replace('.', '_', $field).'_'.$tmptooltip[1]));
+		$out .= $form->textwithpicto($langs->trans((string) $name), $langs->trans($tmptooltip[0]), (empty($tmptooltip[2]) ? '1' : $tmptooltip[2]), 'help', '', 0, 3, (empty($tmptooltip[1]) ? '' : 'extra_'.str_replace('.', '_', $field).'_'.$tmptooltip[1]));
 	} else {
-		$out .= $langs->trans($name);
+		$out .= $langs->trans((string) $name);
 	}
 
 	if (empty($thead) && $field && empty($disablesortlink)) {    // If this is a sort field
@@ -7188,7 +7193,7 @@ function showDimensionInBestUnit($dimension, $unit, $type, $outputlangs, $round 
  * 	@param  int			$local		         	Local tax to search and return (1 or 2 return only tax rate 1 or tax rate 2)
  *  @param  ?Societe	$thirdparty_buyer    	Object of buying third party
  *  @param	?Societe	$thirdparty_seller		Object of selling third party ($mysoc if not defined)
- *  @param	int			$vatnpr					If vat rate is NPR or not
+ *  @param	int<0,1>		$vatnpr					If vat rate is NPR or not
  * 	@return	int<0,0>|string	   					0 if not found, localtax rate if found (Can be '20', '-19:-15:-9')
  *  @see get_default_tva()
  */
@@ -7298,7 +7303,7 @@ function get_localtax($vatrate, $local, $thirdparty_buyer = null, $thirdparty_se
 	if (!empty($vatratecode)) {
 		$sql .= " AND t.code ='".$db->escape($vatratecode)."'"; // If we have the code, we use it in priority
 	} else {
-		$sql .= " AND t.recuperableonly = '".$db->escape($vatnpr)."'";
+		$sql .= " AND t.recuperableonly = '".$db->escape((string) $vatnpr)."'";
 	}
 
 	$resql = $db->query($sql);
@@ -7545,7 +7550,7 @@ function get_product_vat_for_country($idprod, $thirdpartytouse, $idprodfournpric
 		) {
 			// If country of thirdparty to consider is ours
 			if ($idprodfournprice > 0) {     // We want vat for product for a "supplier" object
-				$result = $product->get_buyprice($idprodfournprice, 0, 0, 0);
+				$result = $product->get_buyprice($idprodfournprice, 0, 0, '');
 				if ($result > 0) {
 					$ret = $product->vatrate_supplier;
 					if ($product->default_vat_code_supplier) {
@@ -10153,7 +10158,7 @@ function setEventMessages($mesg, $mesgs, $style = 'mesgs', $messagekey = '', $no
 				dol_print_error(null, 'Bad parameter style='.$style.' for setEventMessages');
 			}
 			if (empty($mesgs)) {
-				setEventMessage($mesg, $style, $noduplicate, $attop);
+				setEventMessage((string) $mesg, $style, $noduplicate, $attop);
 			} else {
 				if (!empty($mesg) && !in_array($mesg, $mesgs)) {
 					setEventMessage($mesg, $style, $noduplicate, $attop); // Add message string if not already into array
@@ -10675,14 +10680,14 @@ function dol_eval_new($s)
 {
 	// Only this global variables can be read by eval function and returned to caller
 	global $conf,	// Read of const is done with getDolGlobalString() but we need $conf->currency for example
-		$db, $langs, $user, $website, $websitepage,
-		$action, $mainmenu, $leftmenu,
-		$mysoc,
-		$objectoffield,	// To allow the use of $objectoffield in computed fields
+	$db, $langs, $user, $website, $websitepage,
+	$action, $mainmenu, $leftmenu,
+	$mysoc,
+	$objectoffield,	// To allow the use of $objectoffield in computed fields
 
-		// Old variables used
-		$object,
-		$obj; // To get $obj used into list when dol_eval() is used for computed fields and $obj is not yet $object
+	// Old variables used
+	$object,
+	$obj; // To get $obj used into list when dol_eval() is used for computed fields and $obj is not yet $object
 
 	// PHP < 7.4.0
 	defined('T_COALESCE_EQUAL') || define('T_COALESCE_EQUAL', PHP_INT_MAX);
@@ -11871,10 +11876,23 @@ function dolExplodeKeepIfQuotes($input)
 	preg_match_all('/"([^"]*)"|\'([^\']*)\'|(\S+)/', $input, $matches);
 
 	// Merge result and delete empty values
-	// @phan-suppress-next-line PhanPluginUnknownClosureParamType, PhanPluginUnknownClosureReturnType
-	return array_filter(array_map(function ($a, $b, $c) {
-		return $a ?: ($b ?: $c);
-	}, $matches[1], $matches[2], $matches[3]));
+	return array_filter(array_map(
+		/**
+		 * Return first non-empty item, or empty string
+		 *
+		 * @param string $a Possibly empty item - match ""
+		 * @param string $b Possibly empty item - match ''
+		 * @param string $c Non empty string if $a and $b are empty
+		 *
+		 * @return string
+		 */
+		static function ($a, $b, $c) {
+			return $a ?: ($b ?: $c);
+		},
+		$matches[1],
+		$matches[2],
+		$matches[3]
+	));
 }
 
 
@@ -12902,7 +12920,7 @@ function dolGetStatus($statusLabel = '', $statusLabelShort = '', $html = '', $st
 		} else {	// If a title was forced from $params['badgeParams']['attr']['title'], we set the class to get it as a tooltip.
 			$dolGetBadgeParams['attr']['class'] .= ' classfortooltip';
 			// And if we use tooltip, we can output title in HTML  @phan-suppress-next-line PhanTypeInvalidDimOffset
-			$dolGetBadgeParams['attr']['title'] = dol_htmlentitiesbr($dolGetBadgeParams['attr']['title'], 1);
+			$dolGetBadgeParams['attr']['title'] = dol_htmlentitiesbr((string) $dolGetBadgeParams['attr']['title'], 1);
 		}
 
 		if ($displayMode == 3) {
