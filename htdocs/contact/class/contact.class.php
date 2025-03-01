@@ -235,13 +235,13 @@ class Contact extends CommonObject
 
 	/**
 	 * Email
-	 * @var string
+	 * @var ?string
 	 */
 	public $email;
 
 	/**
 	 * Email
-	 * @var string
+	 * @var ?string
 	 * @deprecated Use $email
 	 * @see $email
 	 */
@@ -249,7 +249,7 @@ class Contact extends CommonObject
 
 	/**
 	 * URL
-	 * @var string
+	 * @var ?string
 	 */
 	public $url;
 

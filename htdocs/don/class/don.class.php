@@ -113,7 +113,7 @@ class Don extends CommonObject
 	public $town;
 
 	/**
-	 * @var string Email
+	 * @var ?string Email
 	 */
 	public $email;
 
