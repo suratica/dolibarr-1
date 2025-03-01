@@ -1472,9 +1472,9 @@ class Societe extends CommonObject
 		$this->phone		= trim((string) $this->phone);
 		$this->phone		= preg_replace("/\s/", "", $this->phone);
 		$this->phone		= preg_replace("/\./", "", $this->phone);
-		$this->phone_mobile		= trim((string) $this->phone_mobile);
-		$this->phone_mobile		= preg_replace("/\s/", "", $this->phone_mobile);
-		$this->phone_mobile		= preg_replace("/\./", "", $this->phone_mobile);
+		$this->phone_mobile = trim((string) $this->phone_mobile);
+		$this->phone_mobile = preg_replace("/\s/", "", $this->phone_mobile);
+		$this->phone_mobile = preg_replace("/\./", "", $this->phone_mobile);
 		$this->fax			= trim((string) $this->fax);
 		$this->fax			= preg_replace("/\s/", "", $this->fax);
 		$this->fax			= preg_replace("/\./", "", $this->fax);
@@ -1488,14 +1488,14 @@ class Societe extends CommonObject
 		$this->idprof4		= trim((string) $this->idprof4);
 		$this->idprof5		= (!empty($this->idprof5) ? trim($this->idprof5) : '');
 		$this->idprof6		= (!empty($this->idprof6) ? trim($this->idprof6) : '');
-		$this->prefix_comm 	= trim((string) $this->prefix_comm);
+		$this->prefix_comm = trim((string) $this->prefix_comm);
 		$this->outstanding_limit = price2num($this->outstanding_limit);
 		$this->order_min_amount = price2num($this->order_min_amount);
 		$this->supplier_order_min_amount = price2num($this->supplier_order_min_amount);
 
-		$this->tva_assuj			= (is_numeric($this->tva_assuj)) ? (int) trim((string) $this->tva_assuj) : 0;
-		$this->tva_intra			= dol_sanitizeFileName($this->tva_intra, '');
-		$this->vat_reverse_charge	= empty($this->vat_reverse_charge) ? 0 : 1;
+		$this->tva_assuj = (is_numeric($this->tva_assuj)) ? (int) trim((string) $this->tva_assuj) : 0;
+		$this->tva_intra = dol_sanitizeFileName($this->tva_intra ?? '', '');
+		$this->vat_reverse_charge = empty($this->vat_reverse_charge) ? 0 : 1;
 		if (empty($this->status)) {
 			$this->status = 0;
 		}

@@ -332,7 +332,7 @@ class pdf_sepamandate extends ModeleBankAccountDoc
 
 				$sepavatid = '__________________________________________________';
 				if (!is_null($thirdparty->idprof1) && !empty($thirdparty->idprof1)) {
-					$sepavatid = $thirdparty->idprof1;
+					$sepavatid = (string) $thirdparty->idprof1;
 				}
 				$posY = $pdf->GetY();
 				$posY += 1;
