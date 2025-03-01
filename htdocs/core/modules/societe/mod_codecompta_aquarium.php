@@ -188,7 +188,7 @@ class mod_codecompta_aquarium extends ModeleAccountancyCode
 
 		// Remove special char if COMPANY_AQUARIUM_REMOVE_SPECIAL is set to 1 or not set (default)
 		if (!isset($conf->global->COMPANY_AQUARIUM_REMOVE_SPECIAL) || getDolGlobalString('COMPANY_AQUARIUM_REMOVE_SPECIAL')) {
-			$codetouse = preg_replace('/([^a-z0-9])/i', '', $codetouse);
+			$codetouse = preg_replace('/([^a-z0-9])/i', '', (string) $codetouse);
 		}
 		// Remove special alpha if COMPANY_AQUARIUM_REMOVE_ALPHA is set to 1
 		if (getDolGlobalString('COMPANY_AQUARIUM_REMOVE_ALPHA')) {
