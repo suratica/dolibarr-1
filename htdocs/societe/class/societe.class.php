@@ -1004,7 +1004,7 @@ class Societe extends CommonObject
 
 		$this->accountancy_code_customer_general = trim($this->accountancy_code_customer_general ?? '');
 		$this->accountancy_code_customer = trim((string) $this->code_compta_client);
-		$this->accountancy_code_supplier_general = trim($this->accountancy_code_supplier_general);
+		$this->accountancy_code_supplier_general = trim($this->accountancy_code_supplier_general ?? '');
 		$this->accountancy_code_supplier = trim((string) $this->code_compta_fournisseur);
 		$this->accountancy_code_buy = trim((string) $this->accountancy_code_buy);
 		$this->accountancy_code_sell = trim((string) $this->accountancy_code_sell);
