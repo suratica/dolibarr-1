@@ -181,11 +181,11 @@ function dolSavePageContent($filetpl, Website $object, WebsitePage $objectpage, 
 		$tplcontent .= '	$pathdepth = count(explode(\'/\', $_SERVER[\'SCRIPT_NAME\'])) - 2;'."\n";
 		$tplcontent .= '	require_once ($pathdepth ? str_repeat(\'../\', $pathdepth) : \'./\').\'master.inc.php\';'."\n";
 		$tplcontent .= "} // Not already loaded\n";
-		if (in_array($objectpage->type_container, array('page', 'blogpost'))) {
-			$tplcontent .= 'dol_syslog("----- Prepare content of page '.((int) $objectpage->id).'");'."\n";
-		}
 		$tplcontent .= "require_once DOL_DOCUMENT_ROOT.'/core/lib/website.lib.php';\n";
 		$tplcontent .= "require_once DOL_DOCUMENT_ROOT.'/core/website.inc.php';\n";
+		if (in_array($objectpage->type_container, array('page', 'blogpost'))) {
+			$tplcontent .= 'dol_syslog("----- Prepare content of page '.((int) $objectpage->id).' - '.$objectpage->pageurl.'");'."\n";
+		}
 		$tplcontent .= "ob_start();\n";
 		$tplcontent .= "// END PHP ?>\n";
 		if (getDolGlobalString('WEBSITE_FORCE_DOCTYPE_HTML5')) {
@@ -371,11 +371,11 @@ function dolSavePageContent($filetpl, Website $object, WebsitePage $objectpage, 
 		$tplcontent .= '	$pathdepth = count(explode(\'/\', $_SERVER[\'SCRIPT_NAME\'])) - 2;'."\n";
 		$tplcontent .= '	require_once ($pathdepth ? str_repeat(\'../\', $pathdepth) : \'./\').\'master.inc.php\';'."\n";
 		$tplcontent .= "} // Not already loaded\n";
-		if (in_array($objectpage->type_container, array('page', 'blogpost'))) {
-			$tplcontent .= 'dol_syslog("----- Prepare content of page '.((int) $objectpage->id).'");'."\n";
-		}
 		$tplcontent .= "require_once DOL_DOCUMENT_ROOT.'/core/lib/website.lib.php';\n";
 		$tplcontent .= "require_once DOL_DOCUMENT_ROOT.'/core/website.inc.php';\n";
+		if (in_array($objectpage->type_container, array('page', 'blogpost'))) {
+			$tplcontent .= 'dol_syslog("----- Prepare content of page '.((int) $objectpage->id).' - '.$objectpage->pageurl.'");'."\n";
+		}
 		$tplcontent .= "// END PHP ?>\n";
 
 		$tplcontent .= $objectpage->content;
