@@ -9,21 +9,21 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 1300+ occurrences
+    // PhanTypeMismatchArgument : 1240+ occurrences
     // PhanUndeclaredProperty : 480+ occurrences
-    // PhanTypeMismatchArgumentNullable : 310+ occurrences
+    // PhanTypeMismatchArgumentNullable : 290+ occurrences
     // PhanPluginUnknownArrayMethodReturnType : 170+ occurrences
     // PhanTypeMismatchProperty : 160+ occurrences
     // PhanPluginUnknownArrayMethodParamType : 110+ occurrences
     // PhanUndeclaredGlobalVariable : 100+ occurrences
-    // PhanPossiblyUndeclaredGlobalVariable : 25+ occurrences
     // PhanTypeExpectedObjectPropAccess : 25+ occurrences
     // PhanTypeInvalidDimOffset : 20+ occurrences
-    // PhanTypeMismatchArgumentProbablyReal : 20+ occurrences
     // PhanTypeMismatchDimFetch : 20+ occurrences
     // PhanPluginUndeclaredVariableIsset : 15+ occurrences
+    // PhanTypeMismatchArgumentProbablyReal : 15+ occurrences
     // PhanUndeclaredConstant : 15+ occurrences
     // PhanTypeMismatchArgumentNullableInternal : 10+ occurrences
+    // PhanPossiblyUndeclaredGlobalVariable : 9 occurrences
     // PhanUndeclaredMethod : 9 occurrences
     // PhanTypeComparisonFromArray : 7 occurrences
     // PhanPluginDuplicateExpressionBinaryOp : 6 occurrences
@@ -33,7 +33,6 @@ return [
     // PhanEmptyFQSENInClasslike : 3 occurrences
     // PhanInvalidFQSENInClasslike : 3 occurrences
     // PhanPluginSuspiciousParamPosition : 2 occurrences
-    // PhanTypeMismatchArgumentInternal : 2 occurrences
     // PhanTypeMismatchDimAssignment : 2 occurrences
     // PhanTypeSuspiciousStringExpression : 2 occurrences
     // PhanAccessMethodProtected : 1 occurrence
@@ -48,11 +47,9 @@ return [
         'htdocs/accountancy/admin/account.php' => ['PhanTypeMismatchArgument'],
         'htdocs/accountancy/admin/card.php' => ['PhanTypeMismatchArgument'],
         'htdocs/accountancy/admin/categories.php' => ['PhanTypeMismatchArgumentNullable'],
-        'htdocs/accountancy/admin/categories_list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
+        'htdocs/accountancy/admin/categories_list.php' => ['PhanTypeMismatchArgumentNullable'],
         'htdocs/accountancy/admin/fiscalyear_card.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/accountancy/admin/journals_list.php' => ['PhanTypeMismatchArgument'],
         'htdocs/accountancy/admin/productaccount.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/accountancy/admin/report_list.php' => ['PhanTypeMismatchArgument'],
         'htdocs/accountancy/admin/subaccount.php' => ['PhanTypeMismatchArgument'],
         'htdocs/accountancy/bookkeeping/card.php' => ['PhanTypeMismatchArgument'],
         'htdocs/accountancy/bookkeeping/export.php' => ['PhanTypeMismatchArgument'],
@@ -77,7 +74,6 @@ return [
         'htdocs/accountancy/supplier/list.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
         'htdocs/accountancy/tpl/export_journal.tpl.php' => ['PhanTypeMismatchArgument'],
         'htdocs/adherents/admin/member.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/adherents/admin/website.php' => ['PhanTypeMismatchArgument'],
         'htdocs/adherents/canvas/actions_adherentcard_common.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/adherents/card.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchProperty'],
         'htdocs/adherents/class/adherent.class.php' => ['PhanTypeMismatchArgumentNullable'],
@@ -94,7 +90,6 @@ return [
         'htdocs/admin/bom.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/company.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/defaultvalues.php' => ['PhanTypeMismatchArgumentProbablyReal'],
-        'htdocs/admin/dict.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/emailcollector_card.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/emailcollector_list.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/eventorganization.php' => ['PhanTypeMismatchArgument'],
@@ -122,7 +117,6 @@ return [
         'htdocs/admin/ticket.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/tools/export.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/webhook.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/admin/website.php' => ['PhanTypeMismatchArgument'],
         'htdocs/api/class/api_access.class.php' => ['PhanPluginUnknownArrayMethodParamType', 'PhanUndeclaredProperty'],
         'htdocs/api/class/api_documents.class.php' => ['PhanPluginDuplicateExpressionBinaryOp', 'PhanPluginUnknownArrayMethodParamType', 'PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgument'],
         'htdocs/api/class/api_login.class.php' => ['PhanPluginUnknownArrayMethodReturnType', 'PhanTypeMismatchArgument'],
@@ -310,7 +304,6 @@ return [
         'htdocs/core/ajax/ajaxdirtree.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchProperty', 'PhanUndeclaredGlobalVariable'],
         'htdocs/core/ajax/ajaxstatusprospect.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/ajax/contacts.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/core/ajax/editinline.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/ajax/loadinplace.php' => ['PhanTypeMismatchArgument'],
         'htdocs/core/ajax/saveinplace.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
         'htdocs/core/ajax/selectobject.php' => ['PhanTypeMismatchArgumentNullable'],
