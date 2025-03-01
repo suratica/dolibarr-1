@@ -199,7 +199,7 @@ class mod_codecompta_aquarium extends ModeleAccountancyCode
 			$codetouse = preg_replace('/' . getDolGlobalString('COMPANY_AQUARIUM_CLEAN_REGEX').'/', '\1\2\3', (string) $codetouse);
 		}
 
-		$codetouse = $prefix.strtoupper($codetouse);
+		$codetouse = $prefix.strtoupper((string) $codetouse);
 
 		$is_dispo = $this->verif($db, $codetouse, $societe, $type);
 		$this->code = $codetouse;

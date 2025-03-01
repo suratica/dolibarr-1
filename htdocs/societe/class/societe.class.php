@@ -1000,9 +1000,9 @@ class Societe extends CommonObject
 		}
 		$this->import_key = trim((string) $this->import_key);
 
-		$this->code_compta_client = trim($this->code_compta_client);
+		$this->code_compta_client = trim($this->code_compta_client ?? '');
 
-		$this->accountancy_code_customer_general = trim($this->accountancy_code_customer_general);
+		$this->accountancy_code_customer_general = trim($this->accountancy_code_customer_general ?? '');
 		$this->accountancy_code_customer = trim((string) $this->code_compta_client);
 		$this->accountancy_code_supplier_general = trim($this->accountancy_code_supplier_general);
 		$this->accountancy_code_supplier = trim((string) $this->code_compta_fournisseur);
