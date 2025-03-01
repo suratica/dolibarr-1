@@ -55,12 +55,6 @@ parameters:
 			path: ../../../htdocs/accountancy/admin/categories_list.php
 
 		-
-			message: '#^Parameter \#12 \$tabcomplete of function complete_dictionary_with_modules expects array\<string, array\<string, array\<string, string\>\>\>, array\<int, array\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/accountancy/admin/categories_list.php
-
-		-
 			message: '#^Right side of && is always true\.$#'
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 4
@@ -103,12 +97,6 @@ parameters:
 			path: ../../../htdocs/accountancy/admin/journals_list.php
 
 		-
-			message: '#^Parameter \#12 \$tabcomplete of function complete_dictionary_with_modules expects array\<string, array\<string, array\<string, string\>\>\>, array\<int, array\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/accountancy/admin/journals_list.php
-
-		-
 			message: '#^Ternary operator condition is always true\.$#'
 			identifier: ternary.alwaysTrue
 			count: 1
@@ -141,12 +129,6 @@ parameters:
 		-
 			message: '#^Loose comparison using \=\= between 45 and 45 will always evaluate to true\.$#'
 			identifier: equal.alwaysTrue
-			count: 1
-			path: ../../../htdocs/accountancy/admin/report_list.php
-
-		-
-			message: '#^Parameter \#12 \$tabcomplete of function complete_dictionary_with_modules expects array\<string, array\<string, array\<string, string\>\>\>, array\<int, array\> given\.$#'
-			identifier: argument.type
 			count: 1
 			path: ../../../htdocs/accountancy/admin/report_list.php
 
@@ -1161,12 +1143,6 @@ parameters:
 		-
 			message: '#^Loose comparison using \!\= between ''create'' and ''edit'' will always evaluate to true\.$#'
 			identifier: notEqual.alwaysTrue
-			count: 1
-			path: ../../../htdocs/admin/dict.php
-
-		-
-			message: '#^Parameter \#12 \$tabcomplete of function complete_dictionary_with_modules expects array\<string, array\<string, array\<string, string\>\>\>, array\<string, array\<string, array\<string, string\>\|string\>\> given\.$#'
-			identifier: argument.type
 			count: 1
 			path: ../../../htdocs/admin/dict.php
 
@@ -3403,12 +3379,6 @@ parameters:
 			path: ../../../htdocs/bookmarks/bookmarks.lib.php
 
 		-
-			message: '#^Ternary operator condition is always false\.$#'
-			identifier: ternary.alwaysFalse
-			count: 1
-			path: ../../../htdocs/bookmarks/bookmarks.lib.php
-
-		-
 			message: '#^Variable \$contextpage in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
 			count: 1
@@ -3487,21 +3457,9 @@ parameters:
 			path: ../../../htdocs/categories/class/api_categories.class.php
 
 		-
-			message: '#^Left side of && is always true\.$#'
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 1
-			path: ../../../htdocs/categories/class/categorie.class.php
-
-		-
 			message: '#^Method Categorie\:\:get_full_arbo\(\) should return \-1\|array\<int, array\{rowid\: int, id\: int, fk_parent\: int, label\: string, description\: string, color\: string, position\: string, visible\: int, \.\.\.\}\> but returns array\<array\{rowid\: mixed, id\: mixed, fk_parent\: mixed, label\: mixed, description\: mixed, color\: mixed, position\: mixed, visible\: mixed, \.\.\.\}\>\.$#'
 			identifier: return.type
 			count: 1
-			path: ../../../htdocs/categories/class/categorie.class.php
-
-		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 3
 			path: ../../../htdocs/categories/class/categorie.class.php
 
 		-
@@ -3520,12 +3478,6 @@ parameters:
 			message: '#^Return type of call to function dol_sort_array contains unresolvable type\.$#'
 			identifier: function.unresolvableReturnType
 			count: 1
-			path: ../../../htdocs/categories/class/categorie.class.php
-
-		-
-			message: '#^Variable \$url in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 2
 			path: ../../../htdocs/categories/class/categorie.class.php
 
 		-
@@ -8140,12 +8092,6 @@ parameters:
 			message: '#^Variable \$newlang in empty\(\) always exists and is always falsy\.$#'
 			identifier: empty.variable
 			count: 3
-			path: ../../../htdocs/core/actions_massactions.inc.php
-
-		-
-			message: '#^Variable \$permissiontoadd might not be defined\.$#'
-			identifier: variable.undefined
-			count: 10
 			path: ../../../htdocs/core/actions_massactions.inc.php
 
 		-
@@ -19927,12 +19873,6 @@ parameters:
 			path: ../../../htdocs/master.inc.php
 
 		-
-			message: '#^Call to function is_array\(\) with array\<array\{modulenamewithcase\: mixed, moduledescriptorrelpath\: string, moduledescriptorfullpath\: mixed, moduledescriptorrootpath\: mixed, moduletype\?\: ''external''\|''internal''\}\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../../htdocs/modulebuilder/index.php
-
-		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array\<mixed\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -19942,12 +19882,6 @@ parameters:
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 2
-			path: ../../../htdocs/modulebuilder/index.php
-
-		-
-			message: '#^Parameter \#2 \$arrayreplacement of function dolReplaceInFile expects array\<string, string\>, array\<int\|string, array\<mixed\>\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
 			path: ../../../htdocs/modulebuilder/index.php
 
 		-
@@ -26661,7 +26595,7 @@ parameters:
 		-
 			message: '#^Variable \$prodcustprice might not be defined\.$#'
 			identifier: variable.undefined
-			count: 36
+			count: 3
 			path: ../../../htdocs/societe/price.php
 
 		-
@@ -27199,33 +27133,9 @@ parameters:
 			path: ../../../htdocs/theme/eldy/style.css.php
 
 		-
-			message: '#^Variable \$fontlist might not be defined\.$#'
-			identifier: variable.undefined
-			count: 4
-			path: ../../../htdocs/theme/md/btn.inc.php
-
-		-
-			message: '#^Variable \$left might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/theme/md/btn.inc.php
-
-		-
 			message: '#^Variable \$nbtopmenuentries might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2
-			path: ../../../htdocs/theme/md/btn.inc.php
-
-		-
-			message: '#^Variable \$right might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/theme/md/btn.inc.php
-
-		-
-			message: '#^Variable \$user might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
 			path: ../../../htdocs/theme/md/btn.inc.php
 
 		-
@@ -28363,12 +28273,6 @@ parameters:
 			path: ../../../htdocs/webportal/class/html.formwebportal.class.php
 
 		-
-			message: '#^Parameter \#3 \$preselectedvalue of method FormWebPortal\:\:selectForForms\(\) expects int, array\<mixed\>\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/webportal/class/html.formwebportal.class.php
-
-		-
 			message: '#^Call to function method_exists\(\) with \$this\(WebPortalInvoice\) and ''getLibStatut'' will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -28489,12 +28393,6 @@ parameters:
 			path: ../../../htdocs/webportal/class/webportalpropal.class.php
 
 		-
-			message: '#^Parameter \#1 \$authentication of function check_authentication expects array\{login\: string, password\: string, entity\: int\|null, dolibarrkey\: string\}, array\{login\: string, entity\: int\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../../htdocs/webservices/server_category.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1
@@ -28528,12 +28426,6 @@ parameters:
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 2
-			path: ../../../htdocs/website/class/website.class.php
-
-		-
-			message: '#^Parameter \#2 \$arrayreplacement of function dolReplaceInFile expects array\<string, string\>, array\<string, int\|string\> given\.$#'
-			identifier: argument.type
-			count: 3
 			path: ../../../htdocs/website/class/website.class.php
 
 		-
@@ -28615,12 +28507,6 @@ parameters:
 			path: ../../../htdocs/website/index.php
 
 		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: ../../../htdocs/website/index.php
-
-		-
 			message: '#^Left side of && is always true\.$#'
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1
@@ -28635,7 +28521,7 @@ parameters:
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
-			count: 2
+			count: 1
 			path: ../../../htdocs/website/index.php
 
 		-
@@ -28657,26 +28543,8 @@ parameters:
 			path: ../../../htdocs/website/index.php
 
 		-
-			message: '#^Variable \$cate_arbo might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/website/index.php
-
-		-
-			message: '#^Variable \$containertype might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/website/index.php
-
-		-
 			message: '#^Variable \$contextpage in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
-			count: 1
-			path: ../../../htdocs/website/index.php
-
-		-
-			message: '#^Variable \$disabled might not be defined\.$#'
-			identifier: variable.undefined
 			count: 1
 			path: ../../../htdocs/website/index.php
 
@@ -28690,36 +28558,6 @@ parameters:
 			message: '#^Variable \$fileoldalias in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
 			count: 1
-			path: ../../../htdocs/website/index.php
-
-		-
-			message: '#^Variable \$langcode might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/website/index.php
-
-		-
-			message: '#^Variable \$otherfilters might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/website/index.php
-
-		-
-			message: '#^Variable \$tmpobject might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/website/index.php
-
-		-
-			message: '#^Variable \$urltograbdirrootwithoutslash might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: ../../../htdocs/website/index.php
-
-		-
-			message: '#^Variable \$urltograbdirwithoutslash might not be defined\.$#'
-			identifier: variable.undefined
-			count: 4
 			path: ../../../htdocs/website/index.php
 
 		-
@@ -28769,12 +28607,6 @@ parameters:
 			identifier: variable.undefined
 			count: 1
 			path: ../../../htdocs/website/websiteaccount_card.php
-
-		-
-			message: '#^Method Workstations\:\:index\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: ../../../htdocs/workstation/class/api_workstations.class.php
 
 		-
 			message: '#^Call to function method_exists\(\) with \$this\(Workstation\) and ''getLibStatut'' will always evaluate to true\.$#'
