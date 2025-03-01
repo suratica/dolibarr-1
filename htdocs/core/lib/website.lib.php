@@ -286,12 +286,12 @@ function dolWebsiteOutput($content, $contenttype = 'html', $containerid = 0)
 	global $db, $langs, $conf, $user;
 	global $dolibarr_main_url_root, $dolibarr_main_data_root;
 	global $website;
-	global $includehtmlcontentopened;
+	global $includehtmlcontentopened;	// $includehtmlcontentopened is the level of includes (start at 1)
 	'@phan-var-force Website $website';
 
 	$nbrep = 0;
 
-	dol_syslog("dolWebsiteOutput start - contenttype=".$contenttype." containerid=".$containerid." USEDOLIBARREDITOR=".(defined('USEDOLIBARREDITOR') ? '1' : '')." USEDOLIBARRSERVER=".(defined('USEDOLIBARRSERVER') ? '1' : '').' includehtmlcontentopened='.$includehtmlcontentopened);
+	dol_syslog("dolWebsiteOutput start - contenttype=".$contenttype." containerid=".$containerid.(defined('USEDOLIBARREDITOR') ? ' USEDOLIBARREDITOR=1' : '').(defined('USEDOLIBARRSERVER') ? ' USEDOLIBARRSERVER=1' : '').' includehtmlcontentopened='.$includehtmlcontentopened);
 
 	//print $containerid.' '.$content;
 
