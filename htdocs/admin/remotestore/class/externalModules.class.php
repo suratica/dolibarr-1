@@ -1,7 +1,8 @@
 <?php
 /*
- * Copyright (C) 2025		 Mohamed DAOUD       <mdaoud@dolicloud.com>
+ * Copyright (C) 2025		Mohamed DAOUD       <mdaoud@dolicloud.com>
  * Copyright (C) 2025		MDW					<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2025       Frédéric France     <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modifyion 2.0 (the "License");
  * it under the terms of the GNU General Public License as published bypliance with the License.
@@ -126,7 +127,7 @@ class ExternalModules
 		$this->debug_api = $debug;
 
 		$this->file_source_url = "https://raw.githubusercontent.com/Dolibarr/dolibarr-community-modules/refs/heads/main/index.yaml";
-		$this->cache_file = DOL_DOCUMENT_ROOT.'/admin/remotestore/sources/github_modules_file.yaml';
+		$this->cache_file = DOL_DATA_ROOT.'/admin/remotestore/sources/github_modules_file.yaml';
 		$this->getRemoteYamlFile($this->file_source_url, 86400);
 
 		$lang       = $langs->defaultlang;
