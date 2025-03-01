@@ -24,7 +24,8 @@ To report a vulnerability, for a private report, you can:
 
 We believe that the future of software is online SaaS. This means software are more and more critical and no technology is perfect. Working with skilled security researchers is crucial in identifying weaknesses in our technology.
 
-If you believe you've found a security bug in our service, we are happy to work with you to resolve the issue promptly and ensure you are fairly rewarded for your discovery.
+If you believe you've found a security bug in our service, we are happy to work with you to resolve the issue promptly.
+We plan to re-open our bug bounty program (closed in end of 2024) in the future, but this is not yet available.
 
 Any type of denial-of-service attack is strictly forbidden, as well as any interference with network equipment and Dolibarr infrastructure.
 
