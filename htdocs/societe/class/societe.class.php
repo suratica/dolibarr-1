@@ -680,13 +680,13 @@ class Societe extends CommonObject
 
 	/**
 	 * Accounting general account for supplier
-	 * @var string
+	 * @var ?string
 	 */
 	public $accountancy_code_supplier_general;
 
 	/**
 	 * Accounting auxiliary account for supplier
-	 * @var string
+	 * @var ?string
 	 */
 	public $accountancy_code_supplier;
 
