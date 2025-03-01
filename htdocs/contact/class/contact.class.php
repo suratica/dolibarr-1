@@ -11,7 +11,7 @@
  * Copyright (C) 2015      Marcos García               <marcosgdf@gmail.com>
  * Copyright (C) 2019      Nicolas ZABOURI 	           <info@inovea-conseil.com>
  * Copyright (C) 2020      Open-Dsi  	               <support@open-dsi.fr>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+ * Copyright (C) 2024-2025  Frédéric France             <frederic.france@free.fr>
  * Copyright (C) 2024-2025	MDW							<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -175,17 +175,17 @@ class Contact extends CommonObject
 	public $name_alias;
 
 	/**
-	 * @var string Address
+	 * @var ?string Address
 	 */
 	public $address;
 
 	/**
-	 * @var string zip code
+	 * @var ?string zip code
 	 */
 	public $zip;
 
 	/**
-	 * @var string Town
+	 * @var ?string Town
 	 */
 	public $town;
 
