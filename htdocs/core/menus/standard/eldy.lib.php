@@ -75,9 +75,9 @@ function print_eldy_menu($db, $atarget, $type_user, &$tabMenu, &$menu, $noout = 
 	$menu_arr = array();
 
 	// Home
-	$landingpage = (empty($user->conf->MAIN_LANDING_PAGE) ? (!getDolGlobalString('MAIN_LANDING_PAGE') ? '' : $conf->global->MAIN_LANDING_PAGE) : $user->conf->MAIN_LANDING_PAGE);
-	if (! empty($landingpage)) {
-		$landingpage = str_replace(DOL_URL_ROOT, '', dol_buildpath($landingpage, 1));
+	$landingpage = getDolUserString('MAIN_LANDING_PAGE', getDolGlobalString('MAIN_LANDING_PAGE'));
+	if (!empty($landingpage)) {
+		$landingpage = dol_buildpath($landingpage, 1);
 	} else {
 		$landingpage = '/index.php?mainmenu=home&amp;leftmenu=home';
 	}
