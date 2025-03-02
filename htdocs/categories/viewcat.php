@@ -9,7 +9,7 @@
  * Copyright (C) 2022-2023	Solution Libre SAS			<contact@solution-libre.fr>
  * Copyright (C) 2024		MDW							<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
- * Copyright (C) 2024		Alexandre Spangaro			<alexandre@inovea-conseil.com>
+ * Copyright (C) 2024-2025	Alexandre Spangaro			<alexandre@inovea-conseil.com>
  * Copyright (C) 2023-2024	Charlene Benke				<charlene@patas-monkey.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -256,7 +256,7 @@ if ($elemid && $action == 'addintocategory') {	// Test on permission not require
 	} elseif ($type == Categorie::TYPE_INVOICE && $user->hasRight('facture', 'creer')) {
 		require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
 		$newobject = new Facture($db);
-		$elementtype = 'order';
+		$elementtype = 'invoice';
 	} else {
 		dol_print_error(null, "Not supported value of type = ".$type);
 	}
