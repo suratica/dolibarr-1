@@ -1,7 +1,8 @@
 <?php
 /*
- * Copyright (C) 2025		 Mohamed DAOUD       <mdaoud@dolicloud.com>
+ * Copyright (C) 2025		Mohamed DAOUD       <mdaoud@dolicloud.com>
  * Copyright (C) 2025		MDW					<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2025       Frédéric France     <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modifyion 2.0 (the "License");
  * it under the terms of the GNU General Public License as published bypliance with the License.
@@ -118,6 +119,8 @@ class ExternalModules
 	{
 		global $langs;
 
+		$cachedelayforgithubrepo = getDolGlobalInt('MAIN_REMOTE_GITHUBREPO_CACHE_DELAY', 86400);
+
 		$this->dolistore_api_url = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV');
 		$this->dolistore_api_key = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_KEY');
 
@@ -126,8 +129,9 @@ class ExternalModules
 		$this->debug_api = $debug;
 
 		$this->file_source_url = "https://raw.githubusercontent.com/Dolibarr/dolibarr-community-modules/refs/heads/main/index.yaml";
-		$this->cache_file = DOL_DOCUMENT_ROOT.'/admin/remotestore/sources/github_modules_file.yaml';
-		$this->getRemoteYamlFile($this->file_source_url, 86400);
+		$this->cache_file = DOL_DATA_ROOT.'/admin/temp/remote_github_modules_file.yaml';
+
+		$this->getRemoteYamlFile($this->file_source_url, $cachedelayforgithubrepo);
 
 		$lang       = $langs->defaultlang;
 		$lang_array = array('en_US', 'fr_FR', 'es_ES', 'it_IT', 'de_DE');
@@ -138,7 +142,7 @@ class ExternalModules
 
 		// Check access to Dolistore API
 		$this->dolistoreApiStatus = $this->checkApiStatus();
-		$this->githubFileStatus = file_exists($this->cache_file) ? 1 : 0;
+		$this->githubFileStatus = dol_is_file($this->cache_file) ? 1 : 0;
 
 		// Count the number of online providers
 		$this->numberOfProviders = $this->dolistoreApiStatus + $this->githubFileStatus;
@@ -639,11 +643,11 @@ class ExternalModules
 		$cache_file = $this->cache_file;
 
 		// Check if cache directory exists
-		if (!file_exists(dirname($cache_file))) {
-			mkdir(dirname($cache_file), 0777, true);
+		if (!dol_is_dir($cache_file)) {
+			dol_mkdir($cache_file, DOL_DATA_ROOT);
 		}
 
-		if (!file_exists($cache_file) || filemtime($cache_file) < dol_now() - $cache_time) {
+		if (!file_exists($cache_file) || filemtime($cache_file) < (dol_now() - $cache_time)) {
 			$yaml = file_get_contents($file_source_url);
 			if (!empty($yaml)) {
 				file_put_contents($cache_file, $yaml);
