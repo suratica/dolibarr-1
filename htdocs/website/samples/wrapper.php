@@ -133,8 +133,10 @@ $cachestring = GETPOST("cache", 'aZ09');	// May be 1, or an int, or a hash
 if ($cachestring || image_format_supported($original_file) >= 0) {
 	// Important: Following code is to avoid page request by browser and PHP CPU at
 	// each Dolibarr page access.
-	header('Cache-Control: max-age='.((is_numeric($cachestring) && (int) $cachestring > 1 && (int) $cachestring < 999999) ? $cachestring : '3600').', public, must-revalidate');
+	$delaycache = ((is_numeric($cachestring) && (int) $cachestring > 1 && (int) $cachestring < 999999) ? $cachestring : '3600');
+	header('Cache-Control: max-age='.$cachedelay.', public, must-revalidate');
 	header('Pragma: cache'); // This is to avoid having Pragma: no-cache
+	header('Expires: '.gmdate('D, d M Y H:i:s', time() + (int) $delaycache).' GMT');	// This is to avoid to have Expires set by proxy or web server
 }
 
 $refname = basename(dirname($original_file)."/");
