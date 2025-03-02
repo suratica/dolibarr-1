@@ -461,7 +461,7 @@ return [
 
 		'PhanPluginUnknownClosureReturnType',	// When we use closure (we must avoid), we do not have PHP doc
 
-		// 'PhanPluginUnknownArrayMethodParamType',	// All fixed, except in api_*
+		// 'PhanPluginUnknownArrayMethodParamType',	// All fixed
 		// 'PhanPluginUnknownArrayMethodReturnType',	// All fixed, except in api_*
 		// 'PhanUndeclaredGlobalVariable',			// Helps identify variables that are not set/defined - add '@phan-var-force TYPE $varname' in tpl or includes to help type the variable
 		// 'PhanPluginUnknownObjectMethodCall',	// False positive for some class. Is enabled in config_extended only.

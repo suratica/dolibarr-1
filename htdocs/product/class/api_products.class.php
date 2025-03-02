@@ -523,6 +523,8 @@ class Products extends DolibarrApi
 	 *
 	 * @param  int		$id			Product ID
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -830,6 +832,8 @@ class Products extends DolibarrApi
 	 * @param	int			$delivery_time_days				Delay in days for delivery (max). May be '' if not defined.
 	 * @param   string      $supplier_reputation            Reputation with this product to the defined supplier (empty, FAVORITE, DONOTORDER)
 	 * @param   array		$localtaxes_array				Array with localtaxes info array('0'=>type1,'1'=>rate1,'2'=>type2,'3'=>rate2) (loaded by getLocalTaxesFromRate(vatrate, 0, ...) function).
+	 * @phan-param		array{0:string,1:string,2:string,3:string}|array{}	$localtaxes_array
+	 * @phpstan-param	array{0:string,1:string,2:string,3:string}|array{}	$localtaxes_array
 	 * @param   string		$newdefaultvatcode              Default vat code
 	 * @param	float		$multicurrency_buyprice			Purchase price for the quantity min in currency
 	 * @param	string		$multicurrency_price_base_type	HT or TTC in currency
@@ -1805,6 +1809,8 @@ class Products extends DolibarrApi
 	 * @param  float $price_impact Price impact of variant
 	 * @param  bool $price_impact_is_percent Price impact in percent (true or false)
 	 * @param  array $features List of attributes pairs id_attribute->id_value. Example: array(id_color=>id_Blue, id_size=>id_small, id_option=>id_val_a, ...)
+	 * @phan-param array<string,string> $features
+	 * @phpstan-param array<string,string> $features
 	 * @param  string $reference Customized reference of variant
 	 * @param  string $ref_ext External reference of variant
 	 * @return int
@@ -1868,6 +1874,8 @@ class Products extends DolibarrApi
 	 * @param  float  $price_impact             Price impact of variant
 	 * @param  bool   $price_impact_is_percent  Price impact in percent (true or false)
 	 * @param  array  $features                 List of attributes pairs id_attribute->id_value. Example: array(id_color=>id_Blue, id_size=>id_small, id_option=>id_val_a, ...)
+	 * @phan-param array<string,string> $features
+	 * @phpstan-param array<string,string> $features
 	 * @return int
 	 *
 	 * @throws RestException 500	System error
@@ -2100,12 +2108,15 @@ class Products extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param  array $data Datas to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$product = array();
 		foreach (Products::$FIELDS as $field) {
 			if (!isset($data[$field])) {

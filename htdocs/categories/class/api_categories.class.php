@@ -265,6 +265,8 @@ class Categories extends DolibarrApi
 	 *
 	 * @param int $id   Category ID
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -731,13 +733,16 @@ class Categories extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param array|null    $data   Data to validate
-	 * @return array				Return array with validated mandatory fields and their value
+	 * @param ?array<string,string>    $data	Data to validate
+	 * @return array<string,string>				Return array with validated mandatory fields and their value
 	 *
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$category = array();
 		foreach (Categories::$FIELDS as $field) {
 			if (!isset($data[$field])) {

@@ -291,6 +291,8 @@ class MultiCurrencies extends DolibarrApi
 	 *
 	 * @param   int     $id	Currency ID
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @throws RestException
 	 */

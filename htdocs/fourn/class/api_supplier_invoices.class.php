@@ -232,7 +232,7 @@ class SupplierInvoices extends DolibarrApi
 			throw new RestException(403, "Insuffisant rights");
 		}
 		// Check mandatory fields
-		$result = $this->_validate($request_data);
+		$request_data = $this->_validate($request_data);
 
 		foreach ($request_data as $field => $value) {
 			if ($field === 'caller') {
@@ -280,6 +280,10 @@ class SupplierInvoices extends DolibarrApi
 			throw new RestException(404, 'Supplier invoice not found');
 		}
 
+		if (!is_array($request_data)) {
+			$request_data = array();
+		}
+
 		foreach ($request_data as $field => $value) {
 			if ($field == 'id') {
 				continue;
@@ -312,6 +316,8 @@ class SupplierInvoices extends DolibarrApi
 	 * @param int   $id Supplier invoice ID
 	 *
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @throws RestException 403
 	 * @throws RestException 404
@@ -352,6 +358,8 @@ class SupplierInvoices extends DolibarrApi
 	 * @url POST    {id}/validate
 	 *
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @throws RestException 304
 	 * @throws RestException 403
@@ -715,6 +723,8 @@ class SupplierInvoices extends DolibarrApi
 	 * @url     DELETE {id}/lines/{lineid}
 	 *
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @throws RestException 400 Bad parameters
 	 * @throws RestException 403 Not allowed
@@ -778,13 +788,16 @@ class SupplierInvoices extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param array $data   Datas to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$invoice = array();
 		foreach (SupplierInvoices::$FIELDS as $field) {
 			if (!isset($data[$field])) {

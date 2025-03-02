@@ -494,6 +494,8 @@ class Tasks extends DolibarrApi
 	 * @param   int     $id         Task ID
 	 *
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -537,6 +539,8 @@ class Tasks extends DolibarrApi
 	 *      NOTE: Should be "POST {id}/timespent", since POST already implies "add"
 	 *
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function addTimeSpent($id, $date, $duration, $user_id = 0, $note = '')
 	{
@@ -596,6 +600,8 @@ class Tasks extends DolibarrApi
 	 * @url PUT    {id}/timespent/{timespent_id}
 	 *
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function putTimeSpent($id, $timespent_id, $date, $duration, $user_id = 0, $note = '')
 	{
@@ -641,6 +647,8 @@ class Tasks extends DolibarrApi
 	 * @url DELETE    {id}/timespent/{timespent_id}
 	 *
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function deleteTimeSpent($id, $timespent_id)
 	{
@@ -739,12 +747,15 @@ class Tasks extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param   array           $data   Array with data to verify
-	 * @return  array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 * @throws  RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$object = array();
 		foreach (self::$FIELDS as $field) {
 			if (!isset($data[$field])) {

@@ -661,6 +661,9 @@ class Members extends DolibarrApi
 		if (!DolibarrApiAccess::$user->hasRight('adherent', 'cotisation', 'creer')) {
 			throw new RestException(403);
 		}
+		if (is_numeric($start_date) || !is_numeric($end_date) || !is_numeric($amount)) {
+			throw new RestException(422, 'Malformed data');
+		}
 
 		$member = new Adherent($this->db);
 		$result = $member->fetch($id);
@@ -668,7 +671,7 @@ class Members extends DolibarrApi
 			throw new RestException(404, 'member not found');
 		}
 
-		return $member->subscription($start_date, $amount, 0, '', $label, '', '', '', $end_date);
+		return $member->subscription((int) $start_date, (float) $amount, 0, '', $label, '', '', '', (int) $end_date);
 	}
 
 	/**

@@ -108,6 +108,8 @@ class ExpenseReports extends DolibarrApi
 	 * @param string    $properties			Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
 	 * @param bool      $pagination_data    If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0*
 	 * @return  array                       Array of order objects
+	 * @phan-return ExpenseReport[]
+	 * @phpstan-return ExpenseReport[]
 	 */
 	public function index($sortfield = "t.rowid", $sortorder = 'ASC', $limit = 100, $page = 0, $user_ids = '', $sqlfilters = '', $properties = '', $pagination_data = false)
 	{
@@ -492,6 +494,8 @@ class ExpenseReports extends DolibarrApi
 	 * @param   int     $id         Expense Report ID
 	 *
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -573,6 +577,8 @@ class ExpenseReports extends DolibarrApi
 	 * @param int       $limit      Limit for list
 	 * @param int       $page       Page number
 	 * @return array                List of paymentExpenseReport objects
+	 * @phan-return PaymentExpenseReport[]
+	 * @phpstan-return PaymentExpenseReport[]
 	 *
 	 * @url     GET /payments
 	 *
@@ -814,12 +820,15 @@ class ExpenseReports extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param   array           $data   Array with data to verify
-	 * @return  array
+	 * @param ?array<string,string> $data   Array with data to verify
+	 * @return array<string,string>
 	 * @throws  RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$expensereport = array();
 		foreach (ExpenseReports::$FIELDS as $field) {
 			if (!isset($data[$field])) {
@@ -833,12 +842,15 @@ class ExpenseReports extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param   array           $data   Array with data to verify
-	 * @return  array
+	 * @param ?array<string,string> $data   Array with data to verify
+	 * @return array<string,string>
 	 * @throws  RestException
 	 */
 	private function _validatepayment($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$expensereport = array();
 		foreach (ExpenseReports::$FIELDSPAYMENT as $field) {
 			if (!isset($data[$field])) {

@@ -433,6 +433,8 @@ class Tickets extends DolibarrApi
 	 *
 	 * @param   int     $id   Ticket ID
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -463,13 +465,16 @@ class Tickets extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param array $data   Data to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$ticket = array();
 		foreach (Tickets::$FIELDS as $field) {
 			if (!isset($data[$field])) {
@@ -483,13 +488,16 @@ class Tickets extends DolibarrApi
 	/**
 	 * Validate fields before create or update object message
 	 *
-	 * @param array $data   Data to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validateMessage($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$ticket = array();
 		foreach (Tickets::$FIELDS_MESSAGES as $field) {
 			if (!isset($data[$field])) {

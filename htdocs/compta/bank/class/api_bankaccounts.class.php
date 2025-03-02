@@ -196,6 +196,8 @@ class BankAccounts extends DolibarrApi
 	 * @url POST    /transfer
 	 *
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string,bank_id_from:int,bank_id_to:int}}
+	 * @phpstan-return array{success:array{code:int,message:string,bank_id_from:int,bank_id_to:int}}
 	 *
 	 * @status 201
 	 *
@@ -373,6 +375,8 @@ class BankAccounts extends DolibarrApi
 	 *
 	 * @param int    $id    ID of account
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -400,13 +404,16 @@ class BankAccounts extends DolibarrApi
 	/**
 	 * Validate fields before creating an object
 	 *
-	 * @param array|null    $data    Data to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$account = array();
 		foreach (BankAccounts::$FIELDS as $field) {
 			if (!isset($data[$field])) {
@@ -668,6 +675,8 @@ class BankAccounts extends DolibarrApi
 	 * @param int    $id    		ID of account
 	 * @param int    $line_id       ID of account line
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @url DELETE {id}/lines/{line_id}
 	 */

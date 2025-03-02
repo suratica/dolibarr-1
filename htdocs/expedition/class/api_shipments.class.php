@@ -98,6 +98,8 @@ class Shipments extends DolibarrApi
 	 * @param string		   $properties			Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
 	 * @param bool             $pagination_data     If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0*
 	 * @return  array                               Array of shipment objects
+	 * @phan-return Expedition[]
+	 * @phpstan-return Expedition[]
 	 *
 	 * @throws RestException
 	 */
@@ -198,8 +200,8 @@ class Shipments extends DolibarrApi
 	 * Create shipment object
 	 *
 	 * @param   array   $request_data   Request data
-	 * @phan-param ?array<string,string> $request_data
-	 * @phpstan-param ?array<string,string> $request_data
+	 * @phan-param ?array<string,string|array<string,string|array<string,string>>> $request_data
+	 * @phpstan-param ?array<string,string|array<string,string|array<string,string>>> $request_data
 	 * @return  int     				ID of shipment created
 	 */
 	public function post($request_data = null)
@@ -224,14 +226,14 @@ class Shipments extends DolibarrApi
 			foreach ($request_data["lines"] as $line) {
 				$shipmentline = new ExpeditionLigne($this->db);
 
-				$shipmentline->entrepot_id = $line['entrepot_id'];
-				$shipmentline->fk_element = $line['fk_element'] ?? $line['origin_id'];				// example: order id.  this->origin is 'commande'
-				$shipmentline->origin_line_id = $line['fk_elementdet'] ?? $line['origin_line_id'];	// example: order id
-				$shipmentline->fk_elementdet = $line['fk_elementdet'] ?? $line['origin_line_id'];	// example: order line id
+				$shipmentline->entrepot_id = (int) $line['entrepot_id'];
+				$shipmentline->fk_element = (int) ($line['fk_element'] ?? $line['origin_id']);				// example: order id.  this->origin is 'commande'
+				$shipmentline->origin_line_id = (int) ($line['fk_elementdet'] ?? $line['origin_line_id']);	// example: order id
+				$shipmentline->fk_elementdet = (int) ($line['fk_elementdet'] ?? $line['origin_line_id']);	// example: order line id
 				$shipmentline->origin_type = $line['element_type'] ?? $line['origin_type'];			// example 'commande' or 'order'
 				$shipmentline->element_type = $line['element_type'] ?? $line['origin_type'];		// example 'commande' or 'order'
-				$shipmentline->qty = $line['qty'];
-				$shipmentline->rang = $line['rang'];
+				$shipmentline->qty = (float) $line['qty'];
+				$shipmentline->rang = (string) $line['rang'];
 				$shipmentline->array_options = $line['array_options'];
 				$shipmentline->detail_batch = $line['detail_batch'];
 
@@ -424,6 +426,8 @@ class Shipments extends DolibarrApi
 	 * @url	DELETE {id}/lines/{lineid}
 	 *
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @throws RestException 401
 	 * @throws RestException 404
@@ -513,6 +517,8 @@ class Shipments extends DolibarrApi
 	 * @param   int     $id         Shipment ID
 	 *
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -761,12 +767,15 @@ class Shipments extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param   array           $data   Array with data to verify
-	 * @return  array
+	 * @param ?array<string,string> $data   Array with data to verify
+	 * @return array<string,string>
 	 * @throws  RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$shipment = array();
 		foreach (Shipments::$FIELDS as $field) {
 			if (!isset($data[$field])) {

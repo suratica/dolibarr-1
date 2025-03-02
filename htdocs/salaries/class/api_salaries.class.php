@@ -424,13 +424,16 @@ class Salaries extends DolibarrApi
 	/**
 	 * Validate fields before creating an object
 	 *
-	 * @param array|null    $data    Data to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$salary = array();
 		foreach (Salaries::$FIELDS as $field) {
 			if (!isset($data[$field])) {
@@ -444,13 +447,16 @@ class Salaries extends DolibarrApi
 	/**
 	 * Validate fields before creating an object
 	 *
-	 * @param array|null    $data    Data to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validatepayments($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$paymentsalary = array();
 		$fields = Salaries::$FIELDSPAYMENT;
 		if (isModEnabled("bank")) {

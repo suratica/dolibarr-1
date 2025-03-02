@@ -97,6 +97,8 @@ class Zapier extends DolibarrApi
 	 * Return an array with hook information
 	 *
 	 * @return  array     data
+	 * @phan-return array<string,string>
+	 * @phpstan-return array<string,string>
 	 *
 	 * @url GET /getmoduleschoices/
 	 * @throws  RestException
@@ -110,7 +112,7 @@ class Zapier extends DolibarrApi
 		$arraychoices = array(
 			'invoices' => 'Invoices',
 			'orders' => 'Orders',
-			'thirdparties' => 'Thirparties',
+			'thirdparties' => 'ThirdParties',
 			'contacts' => 'Contacts',
 			'users' => 'Users',
 		);
@@ -138,6 +140,8 @@ class Zapier extends DolibarrApi
 	 * @param string           $sqlfilters          Other criteria to filter answers separated by a comma. Syntax example "(t.ref:like:'SO-%') and (t.date_creation:<:'20160101')"
 	 * @param string		   $properties			Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
 	 * @return  array                               Array of order objects
+	 * @phan-return Hook[]
+	 * @phpstan-return Hook[]
 	 *
 	 * @throws RestException
 	 *
@@ -224,6 +228,8 @@ class Zapier extends DolibarrApi
 	 * @phan-param ?array<string,string> $request_data
 	 * @phpstan-param ?array<string,string> $request_data
 	 * @return array  ID of hook
+	 * @phan-return array{id:int}
+	 * @phpstan-return array{id:int}
 	 *
 	 * @url	POST /hook/
 	 */
@@ -239,7 +245,7 @@ class Zapier extends DolibarrApi
 		$fields = array(
 			'url',
 		);
-		$result = $this->validate($request_data, $fields);
+		$request_data = $this->validate($request_data, $fields);
 
 		foreach ($request_data as $field => $value) {
 			if ($field === 'caller') {
@@ -266,6 +272,8 @@ class Zapier extends DolibarrApi
 	 *
 	 * @param   int     $id   Hook ID
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @url DELETE /hook/{id}
 	 */
@@ -314,8 +322,8 @@ class Zapier extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param   array<string,mixed>	$data       Array of data to validate
-	 * @param   string[]			$fields     Array of fields needed
+	 * @param   ?array<string,mixed>	$data       Array of data to validate
+	 * @param   string[]				$fields     Array of fields needed
 	 * @return  array<string,mixed>
 	 *
 	 * @throws  RestException

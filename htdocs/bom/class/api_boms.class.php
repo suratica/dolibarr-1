@@ -61,6 +61,8 @@ class Boms extends DolibarrApi
 	 *
 	 * @param	int		$id				ID of bom
 	 * @return  Object					Object with cleaned properties
+	 * @phan-return BOM
+	 * @phpstan-return BOM
 	 *
 	 * @url	GET {id}
 	 *
@@ -98,6 +100,8 @@ class Boms extends DolibarrApi
 	 * @param string           $sqlfilters          Other criteria to filter answers separated by a comma. Syntax example "(t.ref:like:'SO-%') and (t.date_creation:<:'20160101')"
 	 * @param string		   $properties			Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
 	 * @return  array                               Array of order objects
+	 * @phan-return BOM[]
+	 * @phpstan-return BOM[]
 	 *
 	 * @throws	RestException	400		Bad sqlfilters
 	 * @throws	RestException	403		Access denied
@@ -222,6 +226,8 @@ class Boms extends DolibarrApi
 	 * @phan-param ?array<string,string> $request_data
 	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Object after update
+	 * @phan-return BOM
+	 * @phpstan-return BOM
 	 *
 	 * @throws	RestException	403		Access denied
 	 * @throws	RestException	404		BOM not found
@@ -275,6 +281,8 @@ class Boms extends DolibarrApi
 	 *
 	 * @param   int     $id   BOM ID
 	 * @return  array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @throws	RestException	403		Access denied
 	 * @throws	RestException	404		BOM not found
@@ -314,6 +322,8 @@ class Boms extends DolibarrApi
 	 * @url	GET {id}/lines
 	 *
 	 * @return array
+	 * @phan-return BOMLine[]
+	 * @phpstan-return BOMLine[]
 	 *
 	 * @throws	RestException	403		Access denied
 	 * @throws	RestException	404		BOM not found
@@ -458,6 +468,8 @@ class Boms extends DolibarrApi
 	 * @url	DELETE {id}/lines/{lineid}
 	 *
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @throws	RestException	403		Access denied
 	 * @throws	RestException	404		BOM not found
@@ -576,13 +588,16 @@ class Boms extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param	array		$data   Array of data to validate
-	 * @return	array
+	 * @param	?array<string,string>		$data   Array of data to validate
+	 * @return	array<string,string>
 	 *
 	 * @throws	RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$myobject = array();
 		foreach ($this->bom->fields as $field => $propfield) {
 			if (in_array($field, array('rowid', 'entity', 'date_creation', 'tms', 'fk_user_creat')) || $propfield['notnull'] != 1) {

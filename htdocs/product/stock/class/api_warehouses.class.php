@@ -244,6 +244,8 @@ class Warehouses extends DolibarrApi
 	 *
 	 * @param int $id   Warehouse ID
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -294,13 +296,16 @@ class Warehouses extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param array|null    $data    Data to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$warehouse = array();
 		foreach (Warehouses::$FIELDS as $field) {
 			if (!isset($data[$field])) {

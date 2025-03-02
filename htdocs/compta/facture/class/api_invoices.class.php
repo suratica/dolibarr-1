@@ -330,7 +330,7 @@ class Invoices extends DolibarrApi
 			throw new RestException(403, "Insuffisant rights");
 		}
 		// Check mandatory fields
-		$result = $this->_validate($request_data);
+		$request_data = $this->_validate($request_data);
 
 		foreach ($request_data as $field => $value) {
 			if ($field === 'caller') {
@@ -552,6 +552,8 @@ class Invoices extends DolibarrApi
 	 * @param	int    $contactid      Id of contact to add
 	 * @param	string $type           Type of the contact (BILLING, SHIPPING, CUSTOMER)
 	 * @return	array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @url	POST {id}/contact/{contactid}/{type}
 	 *
@@ -744,6 +746,8 @@ class Invoices extends DolibarrApi
 	 *
 	 * @param	int		$id		Invoice ID
 	 * @return	array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -1602,6 +1606,8 @@ class Invoices extends DolibarrApi
 	 * Example of value for parameter arrayofamounts: {"1": {"amount": "99.99", "multicurrency_amount": ""}, "2": {"amount": "", "multicurrency_amount": "10"}}
 	 *
 	 * @param array   $arrayofamounts     {@from body}  Array with id of invoices with amount to pay for each invoice
+	 * @phan-param array<string,array{amount:string,multicurrency_amount:string}> $arrayofamounts
+	 * @phpstan-param array<string,array{amount:string,multicurrency_amount:string}> $arrayofamounts
 	 * @param string  $datepaye           {@from body}  Payment date
 	 * @param int     $paymentid           {@from body}  Payment mode Id {@min 1}
 	 * @param string  $closepaidinvoices   {@from body}  Close paid invoices {@choice yes,no}
@@ -1755,6 +1761,8 @@ class Invoices extends DolibarrApi
 	 * @url     PUT payments/{id}
 	 *
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @throws RestException 400 Bad parameters
 	 * @throws RestException 401 Not allowed
@@ -1819,13 +1827,16 @@ class Invoices extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param	array|null    $data       Datas to validate
-	 * @return	array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$invoice = array();
 		foreach (Invoices::$FIELDS as $field) {
 			if (!isset($data[$field])) {

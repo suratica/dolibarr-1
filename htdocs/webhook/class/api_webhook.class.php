@@ -168,7 +168,7 @@ class Webhook extends DolibarrApi
 			throw new RestException(403);
 		}
 		// Check mandatory fields
-		$this->_validate($request_data);
+		$request_data = $this->_validate($request_data);
 
 		foreach ($request_data as $field => $value) {
 			$this->target->$field = $this->_checkValForAPI($field, $value, $this->target);
@@ -228,6 +228,8 @@ class Webhook extends DolibarrApi
 	 *
 	 * @param int $id   Target ID
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 */
 	public function delete($id)
 	{
@@ -288,13 +290,16 @@ class Webhook extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param array $data   Datas to validate
-	 * @return array
+	 * @param ?array<string,string> $data   Data to validate
+	 * @return array<string,string>
 	 *
 	 * @throws RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$target = array();
 		foreach (self::$FIELDS as $field) {
 			if (!isset($data[$field])) {
