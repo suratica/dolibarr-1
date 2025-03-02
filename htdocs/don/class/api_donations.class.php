@@ -1,6 +1,7 @@
 <?php
 /* Copyright (C) 2019       Thibault FOUCART        <support@ptibogxiv.net>
  * Copyright (C) 2019       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2025		MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,14 +30,14 @@ require_once DOL_DOCUMENT_ROOT.'/don/class/don.class.php';
 class Donations extends DolibarrApi
 {
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'amount'
 	);
 
 	/**
-	 * @var Don $don {@type Don}
+	 * @var Don {@type Don}
 	 */
 	public $don;
 
@@ -190,6 +191,8 @@ class Donations extends DolibarrApi
 	 * Create donation object
 	 *
 	 * @param   array   $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return  int     ID of order
 	 */
 	public function post($request_data = null)
@@ -229,7 +232,9 @@ class Donations extends DolibarrApi
 	 * Update order general fields (won't touch lines of order)
 	 *
 	 * @param 	int   	$id             	Id of order to update
-	 * @param 	array 	$request_data   	Datas
+	 * @param 	array 	$request_data   	Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Updated object
 	 */
 	public function put($id, $request_data = null)

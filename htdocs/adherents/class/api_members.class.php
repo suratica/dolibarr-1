@@ -508,7 +508,7 @@ class Members extends DolibarrApi
 	/**
 	 * Validate fields before creating an object
 	 *
-	 * @param array<string,null|int|float|string>	$data   Data to validate
+	 * @param ?array<string,null|int|float|string>	$data   Data to validate
 	 * @return array<string,null|int|float|string>			Return array with validated mandatory fields and their value
 	 * @phan-return array<string,?int|?float|?string>			Return array with validated mandatory fields and their value
 	 *
@@ -516,6 +516,9 @@ class Members extends DolibarrApi
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$member = array();
 
 		$mandatoryfields = array(

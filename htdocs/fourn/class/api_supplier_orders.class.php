@@ -1,6 +1,7 @@
 <?php
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016   Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2025		MDW					<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,15 +30,14 @@ require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.commande.class.php';
 class SupplierOrders extends DolibarrApi
 {
 	/**
-	 *
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'socid'
 	);
 
 	/**
-	 * @var CommandeFournisseur $order {@type CommandeFournisseur}
+	 * @var CommandeFournisseur {@type CommandeFournisseur}
 	 */
 	public $order;
 
@@ -237,7 +237,9 @@ class SupplierOrders extends DolibarrApi
 	 *
 	 * Example: {"ref": "auto", "ref_supplier": "1234", "socid": "1", "multicurrency_code": "SEK", "multicurrency_tx": 1, "tva_tx": 25, "note": "Imported via the REST API"}
 	 *
-	 * @param array $request_data   Request datas
+	 * @param array $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int  ID of supplier order
 	 */
 	public function post($request_data = null)
@@ -279,7 +281,9 @@ class SupplierOrders extends DolibarrApi
 	 * Update supplier order
 	 *
 	 * @param 	int   	$id             	Id of supplier order to update
-	 * @param 	array 	$request_data   	Datas
+	 * @param 	array 	$request_data   	Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object|false				Updated object
 	 */
 	public function put($id, $request_data = null)
@@ -683,7 +687,6 @@ class SupplierOrders extends DolibarrApi
 	 * @return  array
 	 * FIXME An error 403 is returned if the request has an empty body.
 	 * Error message: "Forbidden: Content type `text/plain` is not supported."
-	 *
 	 */
 	public function receiveOrder($id, $closeopenorder, $comment, $lines)
 	{
@@ -700,9 +703,9 @@ class SupplierOrders extends DolibarrApi
 		}
 
 		foreach ($lines as $line) {
-			$lineObj =(object) $line;
+			$lineObj = (object) $line;
 
-			$result=$this->order->dispatchProduct(
+			$result = $this->order->dispatchProduct(
 				DolibarrApiAccess::$user,
 				$lineObj->fk_product,
 				$lineObj->qty,

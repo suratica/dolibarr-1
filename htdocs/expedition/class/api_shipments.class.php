@@ -1,6 +1,7 @@
 <?php
 /* Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016       Laurent Destailleur     <eldy@users.sourceforge.net>
+ * Copyright (C) 2025		MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
- use Luracast\Restler\RestException;
+use Luracast\Restler\RestException;
 
- require_once DOL_DOCUMENT_ROOT.'/expedition/class/expedition.class.php';
+require_once DOL_DOCUMENT_ROOT.'/expedition/class/expedition.class.php';
 
 /**
  * API class for shipments
@@ -29,7 +30,7 @@
 class Shipments extends DolibarrApi
 {
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'socid',
@@ -38,7 +39,7 @@ class Shipments extends DolibarrApi
 	);
 
 	/**
-	 * @var Expedition $shipment {@type Expedition}
+	 * @var Expedition {@type Expedition}
 	 */
 	public $shipment;
 
@@ -197,6 +198,8 @@ class Shipments extends DolibarrApi
 	 * Create shipment object
 	 *
 	 * @param   array   $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return  int     				ID of shipment created
 	 */
 	public function post($request_data = null)
@@ -282,6 +285,8 @@ class Shipments extends DolibarrApi
 	//  *
 	//  * @param int   $id             Id of shipment to update
 	//  * @param array $request_data   ShipmentLine data
+	//  * @phan-param ?array<string,string> $request_data
+	//  * @phpstan-param ?array<string,string> $request_data
 	//  *
 	//  * @url	POST {id}/lines
 	//  *
@@ -457,7 +462,9 @@ class Shipments extends DolibarrApi
 	 * Update shipment general fields (won't touch lines of shipment)
 	 *
 	 * @param 	int   	$id             	Id of shipment to update
-	 * @param 	array 	$request_data   	Datas
+	 * @param 	array 	$request_data   	Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Updated object
 	 */
 	public function put($id, $request_data = null)
@@ -665,15 +672,15 @@ class Shipments extends DolibarrApi
 	*/
 
 	/**
-	* Close a shipment (Classify it as "Delivered")
-	*
-	* @param   int     $id             Expedition ID
-	* @param   int     $notrigger      Disabled triggers
-	*
-	* @url POST    {id}/close
-	*
-	* @return  object
-	*/
+	 * Close a shipment (Classify it as "Delivered")
+	 *
+	 * @param   int     $id             Expedition ID
+	 * @param   int     $notrigger      Disabled triggers
+	 *
+	 * @url POST    {id}/close
+	 *
+	 * @return  object
+	 */
 	public function close($id, $notrigger = 0)
 	{
 		if (!DolibarrApiAccess::$user->hasRight('expedition', 'creer')) {

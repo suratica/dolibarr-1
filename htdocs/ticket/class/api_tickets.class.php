@@ -32,7 +32,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/ticket.lib.php';
 class Tickets extends DolibarrApi
 {
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'subject',
@@ -40,7 +40,7 @@ class Tickets extends DolibarrApi
 	);
 
 	/**
-	 * @var array   $FIELDS_MESSAGES     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS_MESSAGES = array(
 		'track_id',
@@ -48,7 +48,7 @@ class Tickets extends DolibarrApi
 	);
 
 	/**
-	 * @var Ticket $ticket {@type Ticket}
+	 * @var Ticket {@type Ticket}
 	 */
 	public $ticket;
 
@@ -202,7 +202,6 @@ class Tickets extends DolibarrApi
 	 * @param bool             $pagination_data     If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0*
 	 *
 	 * @return array Array of ticket objects
-	 *
 	 */
 	public function index($socid = 0, $sortfield = "t.rowid", $sortorder = "ASC", $limit = 100, $page = 0, $sqlfilters = '', $properties = '', $pagination_data = false)
 	{
@@ -303,7 +302,9 @@ class Tickets extends DolibarrApi
 	/**
 	 * Create ticket object
 	 *
-	 * @param array $request_data   Request datas
+	 * @param array $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int  ID of ticket
 	 */
 	public function post($request_data = null)
@@ -341,9 +342,10 @@ class Tickets extends DolibarrApi
 	/**
 	 * Add a new message to an existing ticket identified by property ->track_id into request.
 	 *
-	 * @param array $request_data   Request datas
+	 * @param array $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int  ID of ticket
-	 *
 	 */
 	public function postNewMessage($request_data = null)
 	{
@@ -379,7 +381,9 @@ class Tickets extends DolibarrApi
 	 * Update ticket
 	 *
 	 * @param 	int   	$id             	Id of ticket to update
-	 * @param 	array 	$request_data   	Datas
+	 * @param 	array 	$request_data   	Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Updated object
 	 */
 	public function put($id, $request_data = null)
@@ -429,7 +433,6 @@ class Tickets extends DolibarrApi
 	 *
 	 * @param   int     $id   Ticket ID
 	 * @return  array
-	 *
 	 */
 	public function delete($id)
 	{
@@ -505,7 +508,6 @@ class Tickets extends DolibarrApi
 	 * @return  Object              Object with cleaned properties
 	 *
 	 * @todo use an array for properties to clean
-	 *
 	 */
 	protected function _cleanObjectDatas($object)
 	{

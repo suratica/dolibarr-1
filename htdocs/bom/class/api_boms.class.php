@@ -3,6 +3,7 @@
  * Copyright (C) 2019 Maxime Kohlhaas <maxime@atm-consulting.fr>
  * Copyright (C) 2020-2024  Frédéric France		<frederic.france@free.fr>
  * Copyright (C) 2022		Christian Humpel		<christian.humpel@live.com>
+ * Copyright (C) 2025		MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +39,7 @@ require_once DOL_DOCUMENT_ROOT.'/bom/class/bom.class.php';
 class Boms extends DolibarrApi
 {
 	/**
-	 * @var BOM $bom {@type BOM}
+	 * @var BOM {@type BOM}
 	 */
 	public $bom;
 
@@ -179,7 +180,9 @@ class Boms extends DolibarrApi
 	/**
 	 * Create bom object
 	 *
-	 * @param array $request_data   Request datas
+	 * @param array $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int  				ID of bom
 	 *
 	 * @throws	RestException	403		Access denied
@@ -215,7 +218,9 @@ class Boms extends DolibarrApi
 	 * Update bom
 	 *
 	 * @param 	int   		$id             Id of bom to update
-	 * @param 	array 		$request_data   Datas
+	 * @param 	array 		$request_data   Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Object after update
 	 *
 	 * @throws	RestException	403		Access denied
@@ -340,6 +345,8 @@ class Boms extends DolibarrApi
 	 *
 	 * @param int   $id             Id of BOM to update
 	 * @param array $request_data   BOMLine data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url	POST {id}/lines
 	 *
@@ -393,6 +400,8 @@ class Boms extends DolibarrApi
 	 * @param int   $id             Id of BOM to update
 	 * @param int   $lineid         Id of line to update
 	 * @param array $request_data   BOMLine data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url	PUT {id}/lines/{lineid}
 	 *

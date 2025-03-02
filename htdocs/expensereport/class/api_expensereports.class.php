@@ -2,6 +2,7 @@
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016   Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2020-2024  Frédéric France		<frederic.france@free.fr>
+ * Copyright (C) 2025		MDW					<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +33,14 @@ require_once DOL_DOCUMENT_ROOT.'/expensereport/class/paymentexpensereport.class.
 class ExpenseReports extends DolibarrApi
 {
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'fk_user_author'
 	);
 
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDSPAYMENT = array(
 		"fk_typepayment",
@@ -48,7 +49,7 @@ class ExpenseReports extends DolibarrApi
 	);
 
 	/**
-	 * @var ExpenseReport $expensereport {@type ExpenseReport}
+	 * @var ExpenseReport {@type ExpenseReport}
 	 */
 	public $expensereport;
 
@@ -190,6 +191,8 @@ class ExpenseReports extends DolibarrApi
 	 * Create Expense Report object
 	 *
 	 * @param   array   $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return  int                     ID of Expense Report
 	 */
 	public function post($request_data = null)
@@ -262,6 +265,8 @@ class ExpenseReports extends DolibarrApi
 	 *
 	 * @param int   $id             Id of Expense Report to update
 	 * @param array $request_data   Expense Report data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url	POST {id}/lines
 	 *
@@ -330,6 +335,8 @@ class ExpenseReports extends DolibarrApi
 	 * @param int   $id             Id of Expense Report to update
 	 * @param int   $lineid         Id of line to update
 	 * @param array $request_data   Expense Report data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url	PUT {id}/lines/{lineid}
 	 *
@@ -430,6 +437,8 @@ class ExpenseReports extends DolibarrApi
 	 *
 	 * @param 	int   	$id             	Id of Expense Report to update
 	 * @param 	array 	$request_data   	Datas
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Updated object
 	 *
 	 * @throws	RestException	401		Not allowed
@@ -641,6 +650,8 @@ class ExpenseReports extends DolibarrApi
 	 *
 	 * @param 	int 	$id   							ID of expense report
 	 * @param 	array 	$request_data   {@from body}  	Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	int 									ID of paymentExpenseReport
 	 *
 	 * @url     POST {id}/payments
@@ -681,6 +692,8 @@ class ExpenseReports extends DolibarrApi
 	 *
 	 * @param   int     $id              ID of paymentExpenseReport
 	 * @param   array   $request_data    data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return  object
 	 *
 	 * @url     PUT {id}/payments

@@ -2,6 +2,7 @@
 /* Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2024       Jose MARTINEZ			<jose.martinez@pichinov.com>
  * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2025		MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +39,7 @@ require_once DOL_DOCUMENT_ROOT.'/projet/class/api_projects.class.php';
 class Categories extends DolibarrApi
 {
 	/**
-	 * @var string[]   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var string[]       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'label',
@@ -46,7 +47,7 @@ class Categories extends DolibarrApi
 	);
 
 	/**
-	 * @var Categorie $category {@type Categorie}
+	 * @var Categorie {@type Categorie}
 	 */
 	public $category;
 
@@ -180,6 +181,8 @@ class Categories extends DolibarrApi
 	 * Create category object
 	 *
 	 * @param array $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int  ID of category
 	 */
 	public function post($request_data = null)
@@ -210,7 +213,9 @@ class Categories extends DolibarrApi
 	 * Update category
 	 *
 	 * @param 	int   		$id             Id of category to update
-	 * @param 	array 		$request_data   Datas
+	 * @param 	array 		$request_data   Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Updated object
 	 */
 	public function put($id, $request_data = null)

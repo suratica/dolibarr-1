@@ -4,7 +4,7 @@
  * Copyright (C) 2020       Thibault FOUCART        <support@ptibogxiv.net>
  * Copyright (C) 2022       ATM Consulting          <contact@atm-consulting.fr>
  * Copyright (C) 2022       OpenDSI                 <support@open-dsi.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024		Frédéric France			<frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -35,14 +35,14 @@ require_once DOL_DOCUMENT_ROOT.'/comm/propal/class/propal.class.php';
 class Proposals extends DolibarrApi
 {
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'socid'
 	);
 
 	/**
-	 * @var Propal $propal {@type Propal}
+	 * @var Propal {@type Propal}
 	 */
 	public $propal;
 
@@ -271,6 +271,8 @@ class Proposals extends DolibarrApi
 	 * Create commercial proposal object
 	 *
 	 * @param   array   $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return  int     ID of proposal
 	 */
 	public function post($request_data = null)
@@ -351,6 +353,8 @@ class Proposals extends DolibarrApi
 	 *
 	 * @param int   $id             Id of commercial proposal to update
 	 * @param array $request_data   Commercial proposal line data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url	POST {id}/line
 	 *
@@ -417,6 +421,8 @@ class Proposals extends DolibarrApi
 	 *
 	 * @param int   $id             Id of commercial proposal to update
 	 * @param array $request_data   Commercial proposal line data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url	POST {id}/lines
 	 *
@@ -499,6 +505,8 @@ class Proposals extends DolibarrApi
 	 * @param	int				$id             Id of commercial proposal to update
 	 * @param	int				$lineid         Id of line to update
 	 * @param	array			$request_data   Commercial proposal line data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return  Object|false					Object with cleaned properties
 	 *
 	 * @url	PUT {id}/lines/{lineid}
@@ -710,6 +718,8 @@ class Proposals extends DolibarrApi
 	 *
 	 * @param	int		$id             Id of commercial proposal to update
 	 * @param	array	$request_data   Datas
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return	Object					Object with cleaned properties
 	 */
 	public function put($id, $request_data = null)

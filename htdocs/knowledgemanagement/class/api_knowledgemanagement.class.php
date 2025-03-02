@@ -1,6 +1,7 @@
 <?php
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2021 SuperAdmin <test@dolibarr.com>
+ * Copyright (C) 2025		MDW					<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +39,7 @@ dol_include_once('/categories/class/categorie.class.php');
 class KnowledgeManagement extends DolibarrApi
 {
 	/**
-	 * @var KnowledgeRecord $knowledgerecord {@type KnowledgeRecord}
+	 * @var KnowledgeRecord {@type KnowledgeRecord}
 	 */
 	public $knowledgerecord;
 
@@ -46,7 +47,6 @@ class KnowledgeManagement extends DolibarrApi
 	 * Constructor
 	 *
 	 * @url     GET /
-	 *
 	 */
 	public function __construct()
 	{
@@ -240,7 +240,9 @@ class KnowledgeManagement extends DolibarrApi
 	/**
 	 * Create knowledgerecord object
 	 *
-	 * @param array $request_data   Request datas
+	 * @param array $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int  ID of knowledgerecord
 	 *
 	 * @throws RestException
@@ -269,7 +271,7 @@ class KnowledgeManagement extends DolibarrApi
 		// Clean data
 		// $this->knowledgerecord->abc = sanitizeVal($this->knowledgerecord->abc, 'alphanohtml');
 
-		if ($this->knowledgerecord->create(DolibarrApiAccess::$user)<0) {
+		if ($this->knowledgerecord->create(DolibarrApiAccess::$user) < 0) {
 			throw new RestException(500, "Error creating KnowledgeRecord", array_merge(array($this->knowledgerecord->error), $this->knowledgerecord->errors));
 		}
 		return $this->knowledgerecord->id;
@@ -279,7 +281,9 @@ class KnowledgeManagement extends DolibarrApi
 	 * Update knowledgerecord
 	 *
 	 * @param 	int   	$id             	Id of knowledgerecord to update
-	 * @param 	array 	$request_data  		Datas
+	 * @param 	array 	$request_data  		Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Updated object
 	 *
 	 * @throws RestException

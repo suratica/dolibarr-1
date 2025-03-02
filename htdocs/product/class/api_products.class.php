@@ -2,7 +2,7 @@
 /* Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2019		Cedric Ancelin			<icedo.anc@gmail.com>
  * Copyright (C) 2024		Frédéric France			<frederic.france@free.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ require_once DOL_DOCUMENT_ROOT.'/variants/class/ProductCombination2ValuePair.cla
 class Products extends DolibarrApi
 {
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'ref',
@@ -45,12 +45,12 @@ class Products extends DolibarrApi
 	);
 
 	/**
-	 * @var Product $product {@type Product}
+	 * @var Product {@type Product}
 	 */
 	public $product;
 
 	/**
-	 * @var ProductFournisseur $productsupplier {@type ProductFournisseur}
+	 * @var ProductFournisseur {@type ProductFournisseur}
 	 */
 	public $productsupplier;
 
@@ -304,6 +304,8 @@ class Products extends DolibarrApi
 	 * Create product object
 	 *
 	 * @param  array $request_data Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int     ID of product
 	 */
 	public function post($request_data = null)
@@ -359,7 +361,9 @@ class Products extends DolibarrApi
 	 * See other APIs for other price modes.
 	 *
 	 * @param  	int   	$id           		Id of product to update
-	 * @param  	array 	$request_data 		Datas
+	 * @param  	array 	$request_data 		Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Updated object
 	 *
 	 * @throws RestException 401
@@ -897,7 +901,6 @@ class Products extends DolibarrApi
 	 *
 	 * @throws RestException 401
 	 * @throws RestException 404
-	 *
 	 */
 	public function deletePurchasePrice($id, $priceid)
 	{
@@ -1043,7 +1046,6 @@ class Products extends DolibarrApi
 	 * @throws RestException 401
 	 * @throws RestException 403
 	 * @throws RestException 404
-	 *
 	 */
 	public function getPurchasePrices($id, $ref = '', $ref_ext = '', $barcode = '')
 	{
@@ -1329,7 +1331,9 @@ class Products extends DolibarrApi
 	 * Update attributes by id.
 	 *
 	 * @param	int		$id				ID of Attribute
-	 * @param	array	$request_data	Datas
+	 * @param	array	$request_data	Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return	Object					Object with cleaned properties
 	 *
 	 * @throws RestException
@@ -1643,7 +1647,9 @@ class Products extends DolibarrApi
 	 * Update attribute value.
 	 *
 	 * @param	int		$id				ID of Attribute
-	 * @param	array	$request_data	Datas
+	 * @param	array	$request_data	Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return	Object					Object with cleaned properties
 	 *
 	 * @throws RestException 401
@@ -1916,7 +1922,9 @@ class Products extends DolibarrApi
 	 * Put product variants.
 	 *
 	 * @param  int $id ID of Variant
-	 * @param  array $request_data Datas
+	 * @param  array $request_data Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int
 	 *
 	 * @throws RestException 500	System error

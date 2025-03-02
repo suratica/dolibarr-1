@@ -2,6 +2,7 @@
 /* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
+ * Copyright (C) 2025		MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 class Tasks extends DolibarrApi
 {
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'ref',
@@ -41,7 +42,7 @@ class Tasks extends DolibarrApi
 	);
 
 	/**
-	 * @var Task $task {@type Task}
+	 * @var Task {@type Task}
 	 */
 	public $task;
 
@@ -186,6 +187,8 @@ class Tasks extends DolibarrApi
 	 * Create task object
 	 *
 	 * @param   array   $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return  int     ID of project
 	 */
 	public function post($request_data = null)
@@ -269,7 +272,6 @@ class Tasks extends DolibarrApi
 	 * @return	array				Array of roles
 	 *
 	 * @url	GET {id}/roles
-	 *
 	 */
 	public function getRoles($id, $userid = 0)
 	{
@@ -308,6 +310,8 @@ class Tasks extends DolibarrApi
 	//  *
 	//  * @param int   $id             Id of project to update
 	//  * @param array $request_data   Projectline data
+	//  * @phan-param ?array<string,string> $request_data
+	//  * @phpstan-param ?array<string,string> $request_data
 	//  *
 	//  * @url	POST {id}/tasks
 	//  *
@@ -375,6 +379,8 @@ class Tasks extends DolibarrApi
 	//  * @param int   $id             Id of project to update
 	//  * @param int   $taskid         Id of task to update
 	//  * @param array $request_data   Projectline data
+	//  * @phan-param ?array<string,string> $request_data
+	//  * @phpstan-param ?array<string,string> $request_data
 	//  *
 	//  * @url	PUT {id}/tasks/{taskid}
 	//  *
@@ -437,7 +443,9 @@ class Tasks extends DolibarrApi
 	 * Update task general fields (won't touch time spent of task)
 	 *
 	 * @param 	int   	$id             	Id of task to update
-	 * @param 	array 	$request_data   	Datas
+	 * @param 	array 	$request_data   	Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object						Updated object
 	 */
 	public function put($id, $request_data = null)

@@ -2,7 +2,7 @@
 /* Copyright (C) 2015	Jean-François Ferry		<jfefe@aternatik.fr>
  * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
  * Copyright (C) 2023	Joachim Kueter			<git-jk@bloxera.com>
- * Copyright (C) 2024	MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW					<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024	Frédéric France			<frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -34,15 +34,14 @@ require_once DOL_DOCUMENT_ROOT . '/fourn/class/paiementfourn.class.php';
 class SupplierInvoices extends DolibarrApi
 {
 	/**
-	 *
-	 * @var string[]   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var string[]       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'socid',
 	);
 
 	/**
-	 * @var FactureFournisseur $invoice {@type FactureFournisseur}
+	 * @var FactureFournisseur {@type FactureFournisseur}
 	 */
 	public $invoice;
 
@@ -218,7 +217,9 @@ class SupplierInvoices extends DolibarrApi
 	 *
 	 * Example: {'ref': 'auto', 'ref_supplier': '7985630', 'socid': 1, 'note': 'Inserted with Python', 'order_supplier': 1, 'date': '2021-07-28'}
 	 *
-	 * @param array $request_data Request datas
+	 * @param array $request_data Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @return int  ID of supplier invoice
 	 *
@@ -256,7 +257,9 @@ class SupplierInvoices extends DolibarrApi
 	 * Update supplier invoice
 	 *
 	 * @param 	int   	$id             	Id of supplier invoice to update
-	 * @param 	array 	$request_data  		Datas
+	 * @param 	array 	$request_data  		Data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return 	Object|false				Updated object
 	 *
 	 * @throws RestException 403
@@ -572,6 +575,8 @@ class SupplierInvoices extends DolibarrApi
 	 *
 	 * @param int   $id             Id of supplier invoice to update
 	 * @param array $request_data   supplier invoice line data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url	POST {id}/lines
 	 *
@@ -638,6 +643,8 @@ class SupplierInvoices extends DolibarrApi
 	 * @param int   $id             Id of supplier invoice to update
 	 * @param int   $lineid         Id of line to update
 	 * @param array $request_data   InvoiceLine data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url	PUT {id}/lines/{lineid}
 	 *

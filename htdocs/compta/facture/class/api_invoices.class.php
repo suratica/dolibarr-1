@@ -3,7 +3,7 @@
  * Copyright (C) 2020   	Thibault FOUCART		<support@ptibogxiv.net>
  * Copyright (C) 2023		Joachim Kueter			<git-jk@bloxera.com>
  * Copyright (C) 2024		Frédéric France			<frederic.france@free.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,20 +34,19 @@ require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture-rec.class.php';
 class Invoices extends DolibarrApi
 {
 	/**
-	 *
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'socid',
 	);
 
 	/**
-	 * @var Facture $invoice {@type Facture}
+	 * @var Facture {@type Facture}
 	 */
 	private $invoice;
 
 	/**
-	 * @var FactureRec $template_invoice {@type FactureRec}
+	 * @var FactureRec {@type FactureRec}
 	 */
 	private $template_invoice;
 
@@ -321,6 +320,8 @@ class Invoices extends DolibarrApi
 	 * Create invoice object
 	 *
 	 * @param array $request_data   Request datas
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return int                  ID of invoice
 	 */
 	public function post($request_data = null)
@@ -400,18 +401,18 @@ class Invoices extends DolibarrApi
 	}
 
 	/**
-	* Create an invoice using a contract.
-	*
-	* @param int   $contractid       Id of the contract
-	* @return     Object                          Object with cleaned properties
-	*
-	* @url     POST /createfromcontract/{contractid}
-	*
-	* @throws RestException 400
-	* @throws RestException 401
-	* @throws RestException 404
-	* @throws RestException 405
-	*/
+	 * Create an invoice using a contract.
+	 *
+	 * @param int   $contractid       Id of the contract
+	 * @return     Object                          Object with cleaned properties
+	 *
+	 * @url     POST /createfromcontract/{contractid}
+	 *
+	 * @throws RestException 400
+	 * @throws RestException 401
+	 * @throws RestException 404
+	 * @throws RestException 405
+	 */
 	public function createInvoiceFromContract($contractid)
 	{
 		require_once DOL_DOCUMENT_ROOT.'/contrat/class/contrat.class.php';
@@ -476,6 +477,8 @@ class Invoices extends DolibarrApi
 	 * @param	int   $id             Id of invoice to update
 	 * @param	int   $lineid         Id of line to update
 	 * @param	array $request_data   InvoiceLine data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return	Object				  Object with cleaned properties
 	 *
 	 * @url	PUT {id}/lines/{lineid}
@@ -679,6 +682,8 @@ class Invoices extends DolibarrApi
 	 *
 	 * @param	int				$id             Id of invoice to update
 	 * @param	array			$request_data   Datas
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return	Object|false					Object with cleaned properties
 	 */
 	public function put($id, $request_data = null)
@@ -782,6 +787,8 @@ class Invoices extends DolibarrApi
 	 *
 	 * @param int   $id             Id of invoice
 	 * @param array $request_data   InvoiceLine data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 *
 	 * @url     POST {id}/lines
 	 *
@@ -878,7 +885,6 @@ class Invoices extends DolibarrApi
 	 * @throws RestException 401
 	 * @throws RestException 404
 	 * @throws RestException 500 System error
-	 *
 	 */
 	public function addContact($id, $fk_socpeople, $type_contact, $source, $notrigger = 0)
 	{
@@ -926,7 +932,6 @@ class Invoices extends DolibarrApi
 	 * @throws RestException 401
 	 * @throws RestException 404
 	 * @throws RestException 500 System error
-	 *
 	 */
 	public function settodraft($id, $idwarehouse = -1)
 	{

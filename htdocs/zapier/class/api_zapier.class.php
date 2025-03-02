@@ -1,7 +1,7 @@
 <?php
 /* Copyright (C) 2015       Jean-François Ferry     <jfefe@aternatik.fr>
  * Copyright (C) 2019-2024	Frédéric France         <frederic.france@free.fr>
- * Copyright (C) 2024		MDW						<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ require_once DOL_DOCUMENT_ROOT.'/zapier/class/hook.class.php';
 class Zapier extends DolibarrApi
 {
 	/**
-	 * @var array   $FIELDS     Mandatory fields, checked when create and update object
+	 * @var array       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'url',
@@ -45,7 +45,7 @@ class Zapier extends DolibarrApi
 
 
 	/**
-	 * @var Hook $hook {@type Hook}
+	 * @var Hook {@type Hook}
 	 */
 	public $hook;
 
@@ -53,7 +53,6 @@ class Zapier extends DolibarrApi
 	 * Constructor
 	 *
 	 * @url     GET /
-	 *
 	 */
 	public function __construct()
 	{
@@ -221,7 +220,9 @@ class Zapier extends DolibarrApi
 	/**
 	 * Create hook object
 	 *
-	 * @param array $request_data   Request datas
+	 * @param array $request_data   Request data
+	 * @phan-param ?array<string,string> $request_data
+	 * @phpstan-param ?array<string,string> $request_data
 	 * @return array  ID of hook
 	 *
 	 * @url	POST /hook/
