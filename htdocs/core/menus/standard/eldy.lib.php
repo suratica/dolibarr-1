@@ -79,7 +79,7 @@ function print_eldy_menu($db, $atarget, $type_user, &$tabMenu, &$menu, $noout = 
 	if (!empty($landingpage)) {
 		$landingpage = dol_buildpath($landingpage, 1);
 	} else {
-		$landingpage = '/index.php?mainmenu=home&amp;leftmenu=home';
+		$landingpage = '/index.php?mainmenu=home&leftmenu=home';
 	}
 	$menu_arr[] = array(
 		'name' => 'Home',
@@ -1126,11 +1126,11 @@ function get_left_menu_home($mainmenu, &$newmenu, $usemenuhider = 1, $leftmenu =
 		$langs->load("users");
 
 		// Home - dashboard
-		$landingpage = (empty($user->conf->MAIN_LANDING_PAGE) ? (!getDolGlobalString('MAIN_LANDING_PAGE') ? '' : $conf->global->MAIN_LANDING_PAGE) : $user->conf->MAIN_LANDING_PAGE);
-		if (! empty($landingpage)) {
-			$landingpage = str_replace(DOL_URL_ROOT, '', dol_buildpath($landingpage, 1));
+		$landingpage = getDolUserString('MAIN_LANDING_PAGE', getDolGlobalString('MAIN_LANDING_PAGE'));
+		if (!empty($landingpage)) {
+			$landingpage = dol_buildpath($landingpage, 1);
 		} else {
-			$landingpage = '/index.php?mainmenu=home&amp;leftmenu=home';
+			$landingpage = '/index.php?mainmenu=home&leftmenu=home';
 		}
 		$newmenu->add($landingpage, $langs->trans("MyDashboard"), 0, 1, '', $mainmenu, 'home', 0, '', '', '', '<i class="fas fa-chart-bar fa-fw paddingright pictofixedwidth"></i>');
 
