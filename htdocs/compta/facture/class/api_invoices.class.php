@@ -1639,7 +1639,7 @@ class Invoices extends DolibarrApi
 			if (empty($id)) {
 				throw new RestException(400, 'Invoice ID is mandatory. Fill the invoice id and amount into arrayofamounts parameter. For example: {"1": "99.99", "2": "10"}');
 			}
-			if (!DolibarrApi::_checkAccessToResource('facture', $id)) {
+			if (!DolibarrApi::_checkAccessToResource('facture', (int) $id)) {
 				throw new RestException(403, 'Access not allowed on invoice ID '.$id.' for login '.DolibarrApiAccess::$user->login);
 			}
 		}

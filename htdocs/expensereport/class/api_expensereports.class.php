@@ -33,14 +33,14 @@ require_once DOL_DOCUMENT_ROOT.'/expensereport/class/paymentexpensereport.class.
 class ExpenseReports extends DolibarrApi
 {
 	/**
-	 * @var array       Mandatory fields, checked when create and update object
+	 * @var string[]	Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'fk_user_author'
 	);
 
 	/**
-	 * @var array       Mandatory fields, checked when create and update object
+	 * @var string[]	Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDSPAYMENT = array(
 		"fk_typepayment",

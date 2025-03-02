@@ -673,7 +673,9 @@ class Documents extends DolibarrApi
 	 * @param   int 	$createdirifnotexists  	Create subdirectories if the doesn't exists (1 by default)
 	 * @param   int     $position               Position
 	 * @param   string  $cover                  Cover info
-	 * @param   array<string,string>   $array_options          array of options
+	 * @param   array   $array_options          array of options
+	 * @phan-param   array<string,string>   $array_options
+	 * @phpstan-param   array<string,string>   $array_options
 	 * @return  string
 	 *
 	 * @url POST /upload
