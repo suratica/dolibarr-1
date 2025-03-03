@@ -641,10 +641,11 @@ class ExternalModules
 	public function getRemoteYamlFile($file_source_url, $cache_time)
 	{
 		$cache_file = $this->cache_file;
+		$cache_folder = dirname($cache_file);
 
 		// Check if cache directory exists
-		if (!dol_is_dir($cache_file)) {
-			dol_mkdir($cache_file, DOL_DATA_ROOT);
+		if (!dol_is_dir($cache_folder)) {
+			dol_mkdir($cache_folder, DOL_DATA_ROOT);
 		}
 
 		if (!file_exists($cache_file) || filemtime($cache_file) < (dol_now() - $cache_time)) {
