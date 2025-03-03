@@ -276,8 +276,8 @@ class modProjet extends DolibarrModules
 		$keyforaliasextra = 'extra2';
 		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
 		// End add extra fields
-		$this->export_fields_array[$r] = array_merge($this->export_fields_array[$r], array('ptt.rowid'=>'IdTaskTime', 'ptt.element_date'=>'TaskTimeDate', 'ptt.element_duration'=>"TimeSpent", 'ptt.fk_user'=>"TaskTimeUser", 'ptt.note'=>"TaskTimeNote"));
-		$this->export_entities_array[$r] = array_merge($this->export_entities_array[$r], array('ptt.rowid'=>'task_time', 'ptt.element_date'=>'task_time', 'ptt.element_duration'=>"task_time", 'ptt.fk_user'=>"task_time", 'ptt.note'=>"task_time"));
+		$this->export_fields_array[$r] = array_merge($this->export_fields_array[$r], array('ptt.rowid'=>'IdTaskTime', 'ptt.element_date'=>'TaskTimeDate', 'ptt.element_duration'=>"TimeSpent", 'ptt.fk_user'=>"TaskTimeUser",'u.firstname'=>"TaskTimeUserFirstName",'u.lastname'=>"TaskTimeUserLastName", 'ptt.note'=>"TaskTimeNote"));
+		$this->export_entities_array[$r] = array_merge($this->export_entities_array[$r], array('ptt.rowid'=>'task_time', 'ptt.element_date'=>'task_time', 'ptt.element_duration'=>"task_time", 'ptt.fk_user'=>"task_time",'u.firstname'=>"task_time",'u.lastname'=>"task_time", 'ptt.note'=>"task_time"));
 		if (!getDolGlobalString('PROJECT_HIDE_TASKS')) {
 			$this->export_fields_array[$r] = array_merge($this->export_fields_array[$r], array('f.ref'=>"Billed"));
 			$this->export_entities_array[$r] = array_merge($this->export_entities_array[$r], array('f.ref'=>"task_time"));
@@ -290,6 +290,7 @@ class modProjet extends DolibarrModules
 		$this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'projet_task_extrafields as extra2 ON pt.rowid = extra2.fk_object';
 		$this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX."element_time as ptt ON (pt.rowid = ptt.fk_element AND ptt.elementtype = 'task')";
 		$this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'societe as s ON p.fk_soc = s.rowid';
+		$this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'user as u ON ptt.fk_user = u.rowid';
 		if (!getDolGlobalString('PROJECT_HIDE_TASKS')) {
 			$this->export_sql_end[$r] .= ' LEFT JOIN '.MAIN_DB_PREFIX.'facture as f ON ptt.invoice_id = f.rowid';
 		}
