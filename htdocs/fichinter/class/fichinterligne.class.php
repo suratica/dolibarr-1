@@ -138,7 +138,7 @@ class FichinterLigne extends CommonObjectLine
 			$this->datei = $this->db->jdate($objp->date);	// For backward compatibility
 			$this->desc           	= $objp->description;
 			$this->duration       	= $objp->duree;
-			$this->rang           	= $objfetchp->rang;
+			$this->rang           	= $objp->rang;
 
 			$this->extraparams = !empty($objp->extraparams) ? (array) json_decode($objp->extraparams, true) : array();
 
