@@ -2113,6 +2113,12 @@ parameters:
 			path: ../../../htdocs/api/class/api_login.class.php
 
 		-
+			message: '#^Method Setup\:\:getModules\(\) should return array\<string, string\> but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: ../../../htdocs/api/class/api_setup.class.php
+
+		-
 			message: '#^Comparison operation "\<\=" between 0 and 0 is always true\.$#'
 			identifier: smallerOrEqual.alwaysTrue
 			count: 1
