@@ -2149,7 +2149,7 @@ if ($num > 0) {
 
 		if ($mode == 'kanban') {
 			if ($i == 0) {
-				print '<tr class="trkanban"><td colspan="'.$savnbfield.'">';
+				print '<tr class="trkanban status'.$facturestatic->status.'"><td colspan="'.$savnbfield.'">';
 				print '<div class="box-flex-container kanban">';
 			}
 			// Output Kanban
@@ -2169,7 +2169,7 @@ if ($num > 0) {
 		} else {
 			// Show line of result
 			$j = 0;
-			print '<tr data-rowid="'.$object->id.'" class="oddeven"';
+			print '<tr data-rowid="'.$object->id.'" class="oddeven status'.$facturestatic->status.'"';
 			if ($contextpage == 'poslist') {
 				print ' onclick="parent.$(\'#poslines\').load(\'invoice.php?action=history&placeid='.$obj->id.'\', function() {parent.$.colorbox.close();';
 				if (strpos($obj->ref, 'PROV') !== false) {
