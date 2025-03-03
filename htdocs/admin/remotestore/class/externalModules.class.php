@@ -937,9 +937,9 @@ class ExternalModules
 		$labelStatus = [];
 		$labelStatusShort = [];
 
-		$labelStatus[0] = $langs->transnoentitiesnoconv("offline");
+		$labelStatus[0] = $langs->transnoentitiesnoconv("NotConnected");
 		$labelStatus[1] = $langs->transnoentitiesnoconv("online");
-		$labelStatusShort[0] = $langs->transnoentitiesnoconv("offline");
+		$labelStatusShort[0] = $langs->transnoentitiesnoconv("NotConnected");
 		$labelStatusShort[1] = $langs->transnoentitiesnoconv("online");
 
 		return dolGetStatus($labelStatus[$status], $labelStatusShort[$status], '', $statusType, $mode, '', array('badgeParams' => array('attr' => array('class' => 'classfortooltip', 'title' => $labelStatusShort[$status].$moretext))));
