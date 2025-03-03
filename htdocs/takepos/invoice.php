@@ -257,7 +257,7 @@ if (empty($reshook)) {
 		} elseif ($invoice->status != Facture::STATUS_DRAFT) {
 			//If invoice is validated but it is not fully paid is not error and make the payment
 			$remaintopay = $invoice->getRemainToPay();
-			if (($remaintopay > 0 && $invoice->type != Facture::TYPE_CREDITNOTE) || ($remaintopay < 0 && $invoice->type == Facture::TYPE_CREDITNOTE)) {
+			if (($remaintopay > 0 && $invoice->type != Facture::TYPE_CREDIT_NOTE) || ($remaintopay < 0 && $invoice->type == Facture::TYPE_CREDIT_NOTE)) {
 				$res = 1;
 			} else {
 				dol_syslog("Sale already validated");

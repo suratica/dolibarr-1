@@ -8124,12 +8124,10 @@ function dol_mkdir($dir, $dataroot = '', $newmask = '')
  */
 function dolChmod($filepath, $newmask = '')
 {
-	global $conf;
-
 	if (!empty($newmask)) {
 		@chmod($filepath, octdec($newmask));
 	} elseif (getDolGlobalString('MAIN_UMASK')) {
-		@chmod($filepath, octdec($conf->global->MAIN_UMASK));
+		@chmod($filepath, octdec(getDolGlobalString('MAIN_UMASK')));
 	}
 }
 
