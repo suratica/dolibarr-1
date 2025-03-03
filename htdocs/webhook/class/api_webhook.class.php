@@ -261,6 +261,8 @@ class Webhook extends DolibarrApi
 	 * Get the list of all available triggers
 	 *
 	 * @return array
+	 * @phan-return array<string,string>
+	 * @phpstan-return array<string,string>
 	 *
 	 * @url GET triggers
 	 */

@@ -41,7 +41,7 @@ class Salaries extends DolibarrApi
 	);
 
 	/**
-	 * string[] $FIELDS Mandatory fields, checked when creating an object
+	 * @var string[] Mandatory fields for mayment, checked when creating an object
 	 */
 	public static $FIELDSPAYMENT = array(
 		"paiementtype",
@@ -68,6 +68,8 @@ class Salaries extends DolibarrApi
 	 * @param int       $limit      Limit for list
 	 * @param int       $page       Page number
 	 * @return array                List of salary objects
+	 * @phan-return Salary[]
+	 * @phpstan-return Salary[]
 	 *
 	 * @throws RestException
 	 */
@@ -235,6 +237,8 @@ class Salaries extends DolibarrApi
 	 * @param int       $limit      Limit for list
 	 * @param int       $page       Page number
 	 * @return array                List of paymentsalary objects
+	 * @phan-return PaymentSalary[]
+	 * @phpstan-return PaymentSalary[]
 	 *
 	 * @url     GET /payments
 	 *

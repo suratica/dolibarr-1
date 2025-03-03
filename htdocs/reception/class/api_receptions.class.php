@@ -765,12 +765,15 @@ class Receptions extends DolibarrApi
 	/**
 	 * Validate fields before create or update object
 	 *
-	 * @param   array<string,mixed|mixed[]>	$data   Array with data to verify
+	 * @param   ?array<string,mixed|mixed[]>	$data   Array with data to verify
 	 * @return  array<string,mixed|mixed[]>
 	 * @throws  RestException
 	 */
 	private function _validate($data)
 	{
+		if ($data === null) {
+			$data = array();
+		}
 		$reception = array();
 		foreach (Receptions::$FIELDS as $field) {
 			if (!isset($data[$field])) {

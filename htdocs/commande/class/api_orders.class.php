@@ -338,6 +338,8 @@ class Orders extends DolibarrApi
 	 * @url	GET {id}/lines
 	 *
 	 * @return array
+	 * @phan-return OrderLine[]
+	 * @phpstan-return OrderLine[]
 	 */
 	public function getLines($id)
 	{
@@ -1037,6 +1039,8 @@ class Orders extends DolibarrApi
 	 * @url     GET {id}/shipment
 	 *
 	 * @return array
+	 * @phan-return Expedition[]
+	 * @phpstan-return Expedition[]
 	 *
 	 * @throws RestException 401
 	 * @throws RestException 404

@@ -317,6 +317,8 @@ class Proposals extends DolibarrApi
 	 * @url	GET {id}/lines
 	 *
 	 * @return array
+	 * @phan-return PropaleLigne[]
+	 * @phpstan-return PropaleLigne[]
 	 */
 	public function getLines($id, $sqlfilters = '')
 	{
@@ -622,6 +624,8 @@ class Proposals extends DolibarrApi
 	 * @param string $type           Type of the external contact (BILLING, SHIPPING, CUSTOMER), internal contact (SALESREPFOLL)
 	 * @param string $source         Source of the contact (internal, external)
 	 * @return array
+	 * @phan-return array{success:array{code:int,message:string}}
+	 * @phpstan-return array{success:array{code:int,message:string}}
 	 *
 	 * @url	POST {id}/contact/{contactid}/{type}/{source}
 	 *

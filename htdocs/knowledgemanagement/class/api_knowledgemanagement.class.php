@@ -330,7 +330,7 @@ class KnowledgeManagement extends DolibarrApi
 		// Clean data
 		// $this->knowledgerecord->abc = sanitizeVal($this->knowledgerecord->abc, 'alphanohtml');
 
-		if ($this->knowledgerecord->update(DolibarrApiAccess::$user, false) > 0) {
+		if ($this->knowledgerecord->update(DolibarrApiAccess::$user, 0) > 0) {
 			return $this->get($id);
 		} else {
 			throw new RestException(500, $this->knowledgerecord->error);
