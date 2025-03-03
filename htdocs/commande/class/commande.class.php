@@ -1535,19 +1535,19 @@ class Commande extends CommonOrder
 	 *	@param      float			$pu_ttc    		    Prix unitaire TTC
 	 *	@param      int|string		$date_start       	Start date of the line - Added by Matelli (See http://matelli.fr/showcases/patchs-dolibarr/add-dates-in-order-lines.html)
 	 *	@param      int|string		$date_end         	End date of the line - Added by Matelli (See http://matelli.fr/showcases/patchs-dolibarr/add-dates-in-order-lines.html)
-	 *	@param      int				$type				Type of line (0=product, 1=service). Not used if fk_product is defined, the type of product is used.
+	 *	@param      int<0,1>		$type				Type of line (0=product, 1=service). Not used if fk_product is defined, the type of product is used.
 	 *	@param      int				$rang             	Position of line
 	 *	@param		int				$special_code		Special code (also used by externals modules!)
 	 *	@param		int				$fk_parent_line		Parent line
 	 *  @param		int				$fk_fournprice		Id supplier price
-	 *  @param		int				$pa_ht				Buying price (without tax)
+	 *  @param		float			$pa_ht				Buying price (without tax)
 	 *  @param		string			$label				Label
-	 *  @param		array<string,mixed>	$array_options		extrafields array. Example array('options_codeforfield1'=>'valueforfield1', 'options_codeforfield2'=>'valueforfield2', ...)
+	 *  @param		array<string,mixed>	$array_options	Extrafields array. Example array('options_codeforfield1'=>'valueforfield1', 'options_codeforfield2'=>'valueforfield2', ...)
 	 * 	@param 		?int			$fk_unit 			Code of the unit to use. Null to use the default one
 	 * 	@param		string		    $origin				Depend on global conf MAIN_CREATEFROM_KEEP_LINE_ORIGIN_INFORMATION can be 'orderdet', 'propaldet'..., else 'order','propal,'....
 	 *  @param		int			    $origin_id			Depend on global conf MAIN_CREATEFROM_KEEP_LINE_ORIGIN_INFORMATION can be Id of origin object (aka line id), else object id
 	 * 	@param		float			$pu_ht_devise		Unit price in currency
-	 * 	@param		string			$ref_ext		    line external reference
+	 * 	@param		string			$ref_ext		    Line external reference
 	 *  @param		int				$noupdateafterinsertline	No update after insert of line
 	 *	@return     int             					>0 if OK, <0 if KO
 	 *
