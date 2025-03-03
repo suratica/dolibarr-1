@@ -286,7 +286,7 @@ abstract class CommonInvoice extends CommonObject
 		$alreadypaid += $this->getSumDepositsUsed($multicurrency);
 		$alreadypaid += $this->getSumCreditNotesUsed($multicurrency);
 
-		if((int) $multicurrency > 0){
+		if ((int) $multicurrency > 0) {
 			$totalamount = $this->multicurrency_total_ttc;
 		} else {
 			$totalamount = $this->total_ttc;
