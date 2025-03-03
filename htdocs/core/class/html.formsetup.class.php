@@ -615,7 +615,7 @@ class FormSetupItem
 	/** @var string $picto */
 	public $picto = '';
 
-	/** @var string $fieldValue */
+	/** @var string|null $fieldValue */
 	public $fieldValue;
 
 	/** @var string $defaultFieldValue */
