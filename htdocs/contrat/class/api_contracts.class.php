@@ -31,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT.'/contrat/class/contrat.class.php';
 class Contracts extends DolibarrApi
 {
 	/**
-	 * @var array       Mandatory fields, checked when create and update object
+	 * @var string[]       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'socid',
@@ -97,6 +97,8 @@ class Contracts extends DolibarrApi
 	 * @param string		   $properties			Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
 	 * @param bool             $pagination_data     If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0*
 	 * @return  array                               Array of order objects
+	 * @phan-return Contrat[]|array{data:Contrat[],pagination:array{total:int,page:int,page_count:int,limit:int}}
+	 * @phpstan-return Contrat[]|array{data:Contrat[],pagination:array{total:int,page:int,page_count:int,limit:int}}
 	 *
 	 * @throws RestException 404 Not found
 	 * @throws RestException 503 Error

@@ -98,8 +98,8 @@ class Receptions extends DolibarrApi
 	 * @param string           $properties	        Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
 	 * @param bool             $pagination_data     If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0*
 	 * @return  array                               Array of reception objects
-	 * @phan-return array<array<string,mixed>>
-	 * @phpstan-return array<array<string,mixed>>
+	 * @phan-return Reception[]|array{data:Reception[],pagination:array{total:int,page:int,page_count:int,limit:int}}
+	 * @phpstan-return Reception[]|array{data:Reception[],pagination:array{total:int,page:int,page_count:int,limit:int}}
 	 *
 	 * @throws RestException
 	 */

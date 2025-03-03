@@ -31,7 +31,7 @@ require_once DOL_DOCUMENT_ROOT.'/commande/class/commande.class.php';
 class Orders extends DolibarrApi
 {
 	/**
-	 * @var array       Mandatory fields, checked when create and update object
+	 * @var string[]       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'socid',
@@ -164,6 +164,8 @@ class Orders extends DolibarrApi
 	 * @param bool             $pagination_data     If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0*
 	 * @param int			   $loadlinkedobjects	Load also linked object
 	 * @return  array                               Array of order objects
+	 * @phan-return Commande[]|array{data:Commande[],pagination:array{total:int,page:int,page_count:int,limit:int}}
+	 * @phpstan-return Commande[]|array{data:Commande[],pagination:array{total:int,page:int,page_count:int,limit:int}}
 	 *
 	 * @throws RestException 404 Not found
 	 * @throws RestException 503 Error

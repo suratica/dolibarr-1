@@ -37,7 +37,7 @@ require_once DOL_DOCUMENT_ROOT.'/variants/class/ProductCombination2ValuePair.cla
 class Products extends DolibarrApi
 {
 	/**
-	 * @var array       Mandatory fields, checked when create and update object
+	 * @var string[]       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'ref',
@@ -177,6 +177,8 @@ class Products extends DolibarrApi
 	 * @param  int    $includestockdata		Load also information about stock (slower)
 	 * @param string  $properties			Restrict the data returned to these properties. Ignored if empty. Comma separated list of properties names
 	 * @return array						Array of product objects
+	 * @phan-return Product[]|array{data:Product[],pagination:array{total:int,page:int,page_count:int,limit:int}}
+	 * @phpstan-return Product[]|array{data:Product[],pagination:array{total:int,page:int,page_count:int,limit:int}}
 	 */
 	public function index($sortfield = "t.ref", $sortorder = 'ASC', $limit = 100, $page = 0, $mode = 0, $category = 0, $sqlfilters = '', $ids_only = false, $variant_filter = 0, $pagination_data = false, $includestockdata = 0, $properties = '')
 	{

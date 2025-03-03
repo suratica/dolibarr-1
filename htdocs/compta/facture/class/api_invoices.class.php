@@ -34,7 +34,7 @@ require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture-rec.class.php';
 class Invoices extends DolibarrApi
 {
 	/**
-	 * @var array       Mandatory fields, checked when create and update object
+	 * @var string[]       Mandatory fields, checked when create and update object
 	 */
 	public static $FIELDS = array(
 		'socid',
@@ -184,6 +184,8 @@ class Invoices extends DolibarrApi
 	 * @param bool      $pagination_data  	If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0
 	 * @param int		$loadlinkedobjects	Load also linked object
 	 * @return array                      	Array of invoice objects
+	 * @phan-return Facture[]|array{data:Facture[],pagination:array{total:int,page:int,page_count:int,limit:int}}
+	 * @phpstan-return Facture[]|array{data:Facture[],pagination:array{total:int,page:int,page_count:int,limit:int}}
 	 *
 	 * @throws RestException 404 Not found
 	 * @throws RestException 503 Error

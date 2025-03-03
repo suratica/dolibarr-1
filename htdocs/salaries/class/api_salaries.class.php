@@ -32,7 +32,7 @@ require_once DOL_DOCUMENT_ROOT.'/salaries/class/paymentsalary.class.php';
 class Salaries extends DolibarrApi
 {
 	/**
-	 * @var array Mandatory fields, checked when creating an object
+	 * @var string[] Mandatory fields, checked when creating an object
 	 */
 	public static $FIELDS = array(
 		'fk_user',
@@ -41,7 +41,7 @@ class Salaries extends DolibarrApi
 	);
 
 	/**
-	 * array $FIELDS Mandatory fields, checked when creating an object
+	 * string[] $FIELDS Mandatory fields, checked when creating an object
 	 */
 	public static $FIELDSPAYMENT = array(
 		"paiementtype",
