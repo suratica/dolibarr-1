@@ -328,7 +328,8 @@ function pdf_getHeightForLogo($logo, $url = false)
 }
 
 /**
- * Function to try to calculate height of a HTML Content
+ * Function to try to calculate height of a HTML Content.
+ * WARNING: Do not use this function inside a TCPDF transaction.
  *
  * @param 	TCPDF     $pdf				PDF initialized object
  * @param 	string    $htmlcontent		HTML Content
@@ -340,6 +341,7 @@ function pdfGetHeightForHtmlContent(&$pdf, $htmlcontent)
 	// store current object
 	$pdf->startTransaction();
 	// To avoid pagebreak effect or strange behavior of writeHTMLCell when we are out of page, we imagine we are at the begin of page to test the height of the text
+	// Another solution would be to do the test on another PDF instance with samefont, width...
 	$pdf->setY(0);
 	// store starting values
 	$start_y = $pdf->GetY();
