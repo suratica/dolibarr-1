@@ -79,6 +79,19 @@ class Tasks extends DolibarrApi
 		if (!DolibarrApi::_checkAccessToResource('task', $this->task->id)) {
 			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
+		//stk trick
+		$hasAccess = false;
+		foreach (array('internal', 'external') as $source) {
+			$tab = $this->task->liste_contact(-1, $source);
+			foreach ($tab as $contact) {
+				if ($contact['id'] == DolibarrApiAccess::$user->id) {
+					$hasAccess = true;
+				}
+			}
+		}
+		if (!$hasAccess) {
+			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
+		}
 
 		if ($includetimespent == 1) {
 			$timespent = $this->task->getSummaryOfTimeSpent(0);
@@ -555,6 +568,7 @@ class Tasks extends DolibarrApi
 		$this->task->timespent_duration = $duration;
 		$this->task->timespent_fk_user  = $uid;
 		$this->task->timespent_note     = $note;
+		$this->task->fk_product = $this->task->getExtraField('servicio') ?? -1;
 
 		$result = $this->task->addTimeSpent(DolibarrApiAccess::$user, 0);
 		if ($result == 0) {
