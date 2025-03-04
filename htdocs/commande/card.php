@@ -1136,7 +1136,7 @@ if (empty($reshook)) {
 			$localtax2_tx = get_localtax($tva_tx, 2, $object->thirdparty);
 
 			// Margin
-			$fournprice = price2num(GETPOST('fournprice'.$predef) ? GETPOSTINT('fournprice'.$predef) : '');
+			$fournprice = price2num(GETPOST('fournprice'.$predef) ? GETPOSTINT('fournprice'.$predef) : 0);
 			$buyingprice = price2num(GETPOST('buying_price'.$predef) != '' ? GETPOST('buying_price'.$predef) : ''); // If buying_price is '0', we must keep this value
 
 			// Prepare a price equivalent for minimum price check
