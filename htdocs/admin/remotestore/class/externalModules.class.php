@@ -166,7 +166,7 @@ class ExternalModules
 	 *
 	 * @param string 						$resource Resource name
 	 * @param array<string, mixed>|false 	$options Options for the request
-	 * @return array{status_code:int,response:null|string|array<string,mixed>,header:string}
+	 * @return array{status_code:int,response:null|string|array<string,mixed>}
 	 */
 	public function callApi($resource, $options = false)
 	{
@@ -645,10 +645,11 @@ class ExternalModules
 	 *
 	 * @param 	string 		$file_source_url 	URL of the remote source
 	 * @param 	int 		$cache_time 		Cache time
-	 * @return 	string 							Uri of the cache file
+	 * @return 	bool|string 					File content
 	 */
 	public function getRemoteYamlFile($file_source_url, $cache_time)
 	{
+		$yaml = '';
 		$cache_file = $this->cache_file;
 		$cache_folder = dirname($cache_file);
 
