@@ -280,12 +280,11 @@ class ExternalModules
 	 */
 	public function getProducts($options)
 	{
-
 		global $langs;
 
 		$html       = "";
 		$last_month = dol_now() - (30 * 24 * 60 * 60);
-		$dolibarrversiontouse = DOL_VERSION;
+		$dolibarrversiontouse = (float) DOL_VERSION;
 
 		$this->products = array();
 
@@ -304,7 +303,7 @@ class ExternalModules
 
 		// Fetch the products from Dolistore source
 		$dolistoreProducts = array();
-		if ($this->dolistoreApiStatus > 0 && $options['search_source_dolistore'] == 1) {
+		if ($this->dolistoreApiStatus > 0 && getDolGlobalInt('MAIN_ENABLE_EXTERNALMODULES_DOLISTORE')) {
 			$getDolistoreProducts = $this->callApi('products', $data);
 
 			if (!isset($getDolistoreProducts['response']) || !is_array($getDolistoreProducts['response']) || ($getDolistoreProducts['status_code'] != 200 && $getDolistoreProducts['status_code'] != 201)) {
@@ -316,7 +315,7 @@ class ExternalModules
 
 		// fetch from github repo
 		$fileProducts = array();
-		if (!empty($this->githubFileStatus) && $options['search_source_github'] == 1) {
+		if (!empty($this->githubFileStatus) && getDolGlobalInt('MAIN_ENABLE_EXTERNALMODULES_COMMUNITY')) {
 			$fileProducts = $this->fetchModulesFromFile($data);			// Return an array with all modules from the cache filecontent in $data
 
 			$fileProducts = $this->adaptData($fileProducts, 'githubcommunity');

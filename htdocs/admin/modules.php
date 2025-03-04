@@ -75,8 +75,6 @@ $action = GETPOST('action', 'aZ09');
 $value = GETPOST('value', 'alpha');
 $page_y = GETPOSTINT('page_y');
 $search_keyword = GETPOST('search_keyword', 'alpha');
-$search_source_dolistore = GETPOSTINT('search_source_dolistore');
-$search_source_github = GETPOSTINT('search_source_github');
 $search_status = GETPOST('search_status', 'alpha');
 $search_nature = GETPOST('search_nature', 'alpha');
 $search_version = GETPOST('search_version', 'alpha');
@@ -88,14 +86,9 @@ $options['per_page']  		= 10;
 $options['no_page']   		= ((int) GETPOSTINT('no_page') ? GETPOSTINT('no_page') : 1);
 $options['categorie'] 		= ((int) (GETPOSTINT('categorie') ? GETPOSTINT('categorie') : 0));
 $options['search']    		= GETPOST('search_keyword', 'alpha');
-$options['search_source_dolistore']	= GETPOSTINT('search_source_dolistore');
-$options['search_source_github']	= GETPOSTINT('search_source_github');
 
-// Set default values
-if (empty($options['search_source_dolistore']) && empty($options['search_source_github'])) {
-	$options['search_source_dolistore'] = 1;
-	$options['search_source_github'] = 1;
-}
+$options['search_source_dolistore']	= getDolGlobalInt('MAIN_ENABLE_EXTERNALMODULES_DOLISTORE');
+$options['search_source_github']	= getDolGlobalInt('MAIN_ENABLE_EXTERNALMODULES_COMMUNITY');
 
 //$remotestore = new Dolistore(false);
 $remotestore = new ExternalModules();
@@ -125,12 +118,6 @@ $param = '';
 if (!GETPOST('buttonreset', 'alpha')) {
 	if ($search_keyword) {
 		$param .= '&search_keyword='.urlencode($search_keyword);
-	}
-	if ($search_source_dolistore) {
-		$param .= '&search_source_dolistore='.$search_source_dolistore;
-	}
-	if ($search_source_github) {
-		$param .= '&search_source_github='.$search_source_github;
 	}
 	if ($search_status && $search_status != '-1') {
 		$param .= '&search_status='.urlencode($search_status);
@@ -191,8 +178,6 @@ if (GETPOST('buttonreset', 'alpha')) {
 	$search_status = '';
 	$search_nature = '';
 	$search_version = '';
-	$search_source_dolistore = 0;
-	$search_source_github = 0;
 }
 
 if ($action == 'install' && $allowonlineinstall) {
@@ -1360,24 +1345,6 @@ if ($mode == 'marketplace') {
 					<input type="hidden" name="page_y" value="">
 					<div class="divsearchfield">
 						<input name="search_keyword" placeholder="<?php echo $langs->trans('Keyword') ?>" id="search_keyword" type="text" class="minwidth200" value="<?php echo dol_escape_htmltag($options['search']) ?>">
-							<!-- Add a check box to filter by source -->
-							<?php
-							$checkAllSources = 0;
-							if (empty($search_source_dolistore) && empty($search_source_github)) {
-								$checkAllSources = 1;
-							}
-							?>
-							<?php if ($remotestore->dolistoreApiStatus > 0 && $remotestore->numberOfProviders > 1) : ?>
-								<input type="checkbox" name="search_source_dolistore" id="search_source_dolistore" value="1" <?php if (!empty($search_source_dolistore) || $checkAllSources == 1) { echo 'checked'; } ?>>
-								<label for="search_source_dolistore"><?php echo "Dolistore"; ?></label>
-							<?php endif ?>
-
-							<?php if ($remotestore->githubFileStatus > 0 && $remotestore->numberOfProviders > 1) : ?>
-								<input type="checkbox" name="search_source_github" id="search_source_github" value="1" <?php if (!empty($search_source_github) || $checkAllSources == 1) echo 'checked'; ?>>
-								<label for="search_source_github"><?php print $langs->trans("communityRepo"); ?></label>
-							<?php endif ?>
-
-
 					</div>
 					<div class="divsearchfield">
 						<input class="button buttongen reposition" value="<?php echo $langs->trans('Rechercher') ?>" type="submit">
