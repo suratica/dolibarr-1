@@ -41,7 +41,6 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/geturl.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/modules/DolibarrModules.class.php';
-require_once DOL_DOCUMENT_ROOT.'/admin/remotestore/class/dolistore.class.php';
 require_once DOL_DOCUMENT_ROOT.'/admin/remotestore/class/externalModules.class.php';
 
 '
@@ -1273,7 +1272,6 @@ if ($mode == 'marketplace') {
 	print '<tr class="liste_titre">'."\n";
 	print '<td class="hideonsmartphone">'.$form->textwithpicto($langs->trans("Provider"), $langs->trans("WebSiteDesc")).'</td>';
 	print '<td></td>';
-	print '<td>'.$langs->trans("URL").'</td>';
 	print '<td></td>';
 	print '</tr>';
 
@@ -1281,21 +1279,26 @@ if ($mode == 'marketplace') {
 	print '<tr class="oddeven">'."\n";
 	$url = 'https://www.dolistore.com';
 	print '<td class="hideonsmartphone center"><a href="'.$url.'" target="_blank" rel="noopener noreferrer external"><img border="0" class="imgautosize imgmaxwidth180" src="'.DOL_URL_ROOT.'/theme/dolistore_logo.svg"></a></td>';
-	print '<td><span class="opacitymedium">'.$langs->trans("DoliStoreDesc").'</span></td>';
-	print '<td>'.img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
+	print '<td><span class="opacitymedium">'.$langs->trans("DoliStoreDesc").'</span><br>';
+	print img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
 	print '<td class="center">';
 	if (!getDolGlobalString('MAIN_DISABLE_DOLISTORE_SEARCH') && getDolGlobalInt('MAIN_ENABLE_DOLISTORE')) {
-		$messagetoadd = '';
+		$messagetoadd = '<br><span class="small">';
 		if ($remotestore->dolistoreApiStatus <= 0) {
-			$messagetoadd = '<br>'.$remotestore->dolistoreApiError.'<br>Failed to login to: '.$remotestore->dolistore_api_url;
-			$messagetoadd .= '<br>using API public key: '.$remotestore->dolistore_api_key;
-			// Add basic auth if needed
-			$basicAuthLogin = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_LOGIN');
-			$basicAuthPassword = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_PASSWORD');
-			if ($basicAuthLogin) {
-				$messagetoadd .= '<br>using basic auth login: base64('.$basicAuthLogin.':'.$basicAuthPassword.')';
-			}
+			$messagetoadd = '<br>'.$remotestore->dolistoreApiError.'<br>Failed to get answer of remote API server<br>';
 		}
+
+		$messagetoadd .= '<br>Using Shop address MAIN_MODULE_DOLISTORE_SHOP_URL = '.$remotestore->shop_url;
+		$messagetoadd .= '<br>Using Remote API addtess MAIN_MODULE_DOLISTORE_API_URL = '.$remotestore->dolistore_api_url;
+		$messagetoadd .= '<br>Using API public key MAIN_MODULE_DOLISTORE_API_KEY = '.$remotestore->dolistore_api_key;
+		// Add basic auth if needed
+		$basicAuthLogin = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_LOGIN');
+		$basicAuthPassword = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_PASSWORD');
+		if ($basicAuthLogin) {
+			$messagetoadd .= '<br>Using basic auth login: base64('.$basicAuthLogin.':'.$basicAuthPassword.')';
+		}
+		$messagetoadd .= '</span>';
+
 		print $remotestore->libStatus($remotestore->dolistoreApiStatus, 2, $messagetoadd);
 	}
 	print '</td>';
@@ -1305,11 +1308,12 @@ if ($mode == 'marketplace') {
 	print '<tr class="oddeven">'."\n";
 	$url = 'https://github.com/Dolibarr/dolibarr-community-modules';
 	print '<td class="hideonsmartphone center"><a href="'.$url.'" target="_blank" rel="noopener noreferrer external"><img border="0" class="imgautosize imgmaxwidth180" src="'.DOL_URL_ROOT.'/theme/dolibarr_logo.svg"></a></td>';
-	print '<td><span class="opacitymedium">'.$langs->trans("CommunityModulesDesc").'</span></td>';
-	print '<td>'.img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
+	print '<td><span class="opacitymedium">'.$langs->trans("CommunityModulesDesc").'</span><br>';
+	print img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
 	print '<td class="center">';
 	if (!getDolGlobalString('MAIN_DISABLE_DOLISTORE_SEARCH') && getDolGlobalInt('MAIN_ENABLE_COMMUNITY_REPO')) {
-		print $remotestore->libStatus($remotestore->githubFileStatus, 2, '<br><small>Content of repository file '.$remotestore->file_source_url.' is in the cache file '.$remotestore->cache_file.'</small>');
+		$messagetoadd = '<br><br><span class="small">Content of the repository index file '.$remotestore->file_source_url.' is in the local cache file '.$remotestore->cache_file.'</span>';
+		print $remotestore->libStatus($remotestore->githubFileStatus, 2, $messagetoadd);
 	}
 	print '</td>';
 	print '</tr>';
@@ -1335,19 +1339,21 @@ if ($mode == 'marketplace') {
 
 			print '<span class="opacitymedium">'.$langs->trans('DOLISTOREdescriptionLong').'</span><br><br>';
 
-			//$previouslink = $remotestore->get_previous_link();
-			//$nextlink = $remotestore->get_next_link();
+			$categories_tree = $remotestore->getCategories();		// Call API to get the categories
 
-			$categories_tree = $remotestore->getCategories();
 			$products_list = $remotestore->getProducts($options);
+
 			$previouslink = $remotestore->get_previous_link();
+
 			$nextlink = $remotestore->get_next_link();
+
 
 			print '<div class="liste_titre liste_titre_bydiv centpercent"><div class="divsearchfield">';
 
 			print '<form method="POST" class="centpercent" id="searchFormList" action="'.$remotestore->url.'">'; ?>
 						<input type="hidden" name="token" value="<?php echo newToken(); ?>">
 						<input type="hidden" name="mode" value="marketplace">
+						<input type="hidden" name="page_y" value="">
 						<div class="divsearchfield">
 							<input name="search_keyword" placeholder="<?php echo $langs->trans('Keyword') ?>" id="search_keyword" type="text" class="minwidth200" value="<?php echo dol_escape_htmltag($options['search']) ?>">
 								<!-- Add a check box to filter by source -->
@@ -1370,8 +1376,8 @@ if ($mode == 'marketplace') {
 
 						</div>
 						<div class="divsearchfield">
-							<input class="button buttongen" value="<?php echo $langs->trans('Rechercher') ?>" type="submit">
-							<a class="buttonreset" href="<?php echo $_SERVER["PHP_SELF"].'?mode=marketplace'; ?>"><?php echo $langs->trans('Reset') ?></a>
+							<input class="button buttongen reposition" value="<?php echo $langs->trans('Rechercher') ?>" type="submit">
+							<a class="buttonreset reposition" href="<?php echo $_SERVER["PHP_SELF"].'?mode=marketplace'; ?>"><?php echo $langs->trans('Reset') ?></a>
 
 							&nbsp;
 						</div>

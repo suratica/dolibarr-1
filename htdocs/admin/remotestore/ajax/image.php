@@ -29,7 +29,6 @@ if (!defined('NOTOKENRENEWAL')) {
  */
 
 require "../../../main.inc.php";
-require_once DOL_DOCUMENT_ROOT.'/admin/remotestore/class/dolistore.class.php';
 
 
 /*
