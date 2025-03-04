@@ -166,14 +166,14 @@ class ExternalModules
 	 *
 	 * @param string 						$resource Resource name
 	 * @param array<string, mixed>|false 	$options Options for the request
-	 * @return array{status_code:int,response:null|string|array<string,mixed>,header:string}
+	 * @return array{status_code:int,response:null|string|array<string,mixed>}
 	 */
 	public function callApi($resource, $options = false)
 	{
 
 		// If no dolistore_api_key is set, we can't access the API
 		if (empty($this->dolistore_api_key) || empty($this->dolistore_api_url)) {
-			return array('status_code' => 0, 'response' => null, 'header' => '');
+			return array('status_code' => 0, 'response' => null);
 		}
 
 		// Add basic auth if needed
@@ -603,8 +603,7 @@ class ExternalModules
 	/**
 	 * Check the status code of the request
 	 *
-	 * @param array{status_code:int,response:null|string|array{errors:array{code:int,message:string}[]},header:string} $request Response elements of CURL request
-	 *
+	 * @param array{status_code:int,response:null|string|array{errors:array{code:int,message:string}[]}} $request Response elements of CURL request
 	 * @return string|null
 	 */
 	protected function checkStatusCode($request)
@@ -654,6 +653,8 @@ class ExternalModules
 		if (!dol_is_dir($cache_folder)) {
 			dol_mkdir($cache_folder, DOL_DATA_ROOT);
 		}
+
+		$yaml = '';
 
 		if (!file_exists($cache_file) || filemtime($cache_file) < (dol_now() - $cache_time)) {
 			// We get remote url
