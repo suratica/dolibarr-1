@@ -146,15 +146,19 @@ class ExternalModules
 	 */
 	public function loadRemoteSources($debug = false)
 	{
-		$cachedelayforgithubrepo = getDolGlobalInt('MAIN_REMOTE_GITHUBREPO_CACHE_DELAY', 86400);
+		// Check access to Community repo
+		if (getDolGlobalString('MAIN_ENABLE_EXTERNALMODULES_COMMUNITY')) {
+			$cachedelayforgithubrepo = getDolGlobalInt('MAIN_REMOTE_GITHUBREPO_CACHE_DELAY', 86400);
 
-		$this->getRemoteYamlFile($this->file_source_url, $cachedelayforgithubrepo);
+			$this->getRemoteYamlFile($this->file_source_url, $cachedelayforgithubrepo);
 
+			$this->githubFileStatus = dol_is_file($this->cache_file) ? 1 : 0;
+		}
 
 		// Check access to Dolistore API
-		$this->dolistoreApiStatus = $this->checkApiStatus();
-
-		$this->githubFileStatus = dol_is_file($this->cache_file) ? 1 : 0;
+		if (getDolGlobalString('MAIN_ENABLE_EXTERNALMODULES_DOLISTORE')) {
+			$this->dolistoreApiStatus = $this->checkApiStatus();
+		}
 
 		// Count the number of online providers
 		$this->numberOfProviders = $this->dolistoreApiStatus + $this->githubFileStatus;
