@@ -2635,3 +2635,4 @@ SelectFeatureToTest=Select the feature to test
 AIModelForFeature=AI model for features (AI service %s)
 communityRepo=Community repository
 online=Online
+NotConnected=Not connected
