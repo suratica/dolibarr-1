@@ -41,7 +41,6 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/geturl.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/modules/DolibarrModules.class.php';
-require_once DOL_DOCUMENT_ROOT.'/admin/remotestore/class/dolistore.class.php';
 require_once DOL_DOCUMENT_ROOT.'/admin/remotestore/class/externalModules.class.php';
 
 '
@@ -1284,12 +1283,13 @@ if ($mode == 'marketplace') {
 	print img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
 	print '<td class="center">';
 	if (!getDolGlobalString('MAIN_DISABLE_DOLISTORE_SEARCH') && getDolGlobalInt('MAIN_ENABLE_DOLISTORE')) {
-		$messagetoadd = '';
+		$messagetoadd = '<br><span class="small">';
 		if ($remotestore->dolistoreApiStatus <= 0) {
 			$messagetoadd = '<br>'.$remotestore->dolistoreApiError.'<br>Failed to get answer of remote API server<br>';
 		}
 
-		$messagetoadd .= '<br>Using Remote API URL MAIN_MODULE_DOLISTORE_API_URL: '.$remotestore->dolistore_api_url;
+		$messagetoadd .= '<br>Using Shop address MAIN_MODULE_DOLISTORE_SHOP_URL = '.$remotestore->shop_url;
+		$messagetoadd .= '<br>Using Remote API addtess MAIN_MODULE_DOLISTORE_API_URL = '.$remotestore->dolistore_api_url;
 		$messagetoadd .= '<br>Using API public key MAIN_MODULE_DOLISTORE_API_KEY = '.$remotestore->dolistore_api_key;
 		// Add basic auth if needed
 		$basicAuthLogin = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_LOGIN');
@@ -1297,6 +1297,8 @@ if ($mode == 'marketplace') {
 		if ($basicAuthLogin) {
 			$messagetoadd .= '<br>Using basic auth login: base64('.$basicAuthLogin.':'.$basicAuthPassword.')';
 		}
+		$messagetoadd .= '</span>';
+
 		print $remotestore->libStatus($remotestore->dolistoreApiStatus, 2, $messagetoadd);
 	}
 	print '</td>';
@@ -1310,7 +1312,8 @@ if ($mode == 'marketplace') {
 	print img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
 	print '<td class="center">';
 	if (!getDolGlobalString('MAIN_DISABLE_DOLISTORE_SEARCH') && getDolGlobalInt('MAIN_ENABLE_COMMUNITY_REPO')) {
-		print $remotestore->libStatus($remotestore->githubFileStatus, 2, '<br><small>Content of repository file '.$remotestore->file_source_url.' is in the cache file '.$remotestore->cache_file.'</small>');
+		$messagetoadd = '<br><br><span class="small">Content of the repository index file '.$remotestore->file_source_url.' is in the local cache file '.$remotestore->cache_file.'</span>';
+		print $remotestore->libStatus($remotestore->githubFileStatus, 2, $messagetoadd);
 	}
 	print '</td>';
 	print '</tr>';
