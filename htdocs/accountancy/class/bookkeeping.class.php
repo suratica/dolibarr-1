@@ -1711,7 +1711,7 @@ class BookKeeping extends CommonObject
 	 *
 	 * @param 	int 	$piecenum 	Piecenum to delete
 	 * @param 	string 	$mode 		Mode ('' or '_tmp')
-  	 * @param 	int 	$notrigger 	0=launch triggers after, 1=disable triggers
+  	 * @param	int		$notrigger	0=launch triggers after, 1=disable triggers
 	 * @return 	int 				Nb of record deleted
 	 */
 	public function deleteMvtNum($piecenum, $mode = '', $notrigger = 0)
@@ -1744,9 +1744,9 @@ class BookKeeping extends CommonObject
 			$sql .= " AND date_validated IS NULL";		// For security, exclusion of validated entries at the time of deletion
 			$sql .= " AND entity = " . ((int) $conf->entity); // Do not use getEntity for accounting features
 			$sql .= $sql_filter;
-	
+
 			$resql = $this->db->query($sql);
-	
+
 			if (!$resql) {
 				$this->errors[] = "Error ".$this->db->lasterror();
 				foreach ($this->errors as $errmsg) {
