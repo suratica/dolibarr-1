@@ -1273,7 +1273,6 @@ if ($mode == 'marketplace') {
 	print '<tr class="liste_titre">'."\n";
 	print '<td class="hideonsmartphone">'.$form->textwithpicto($langs->trans("Provider"), $langs->trans("WebSiteDesc")).'</td>';
 	print '<td></td>';
-	print '<td>'.$langs->trans("URL").'</td>';
 	print '<td></td>';
 	print '</tr>';
 
@@ -1281,8 +1280,8 @@ if ($mode == 'marketplace') {
 	print '<tr class="oddeven">'."\n";
 	$url = 'https://www.dolistore.com';
 	print '<td class="hideonsmartphone center"><a href="'.$url.'" target="_blank" rel="noopener noreferrer external"><img border="0" class="imgautosize imgmaxwidth180" src="'.DOL_URL_ROOT.'/theme/dolistore_logo.svg"></a></td>';
-	print '<td><span class="opacitymedium">'.$langs->trans("DoliStoreDesc").'</span></td>';
-	print '<td>'.img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
+	print '<td><span class="opacitymedium">'.$langs->trans("DoliStoreDesc").'</span><br>';
+	print img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
 	print '<td class="center">';
 	if (!getDolGlobalString('MAIN_DISABLE_DOLISTORE_SEARCH') && getDolGlobalInt('MAIN_ENABLE_DOLISTORE')) {
 		$messagetoadd = '';
@@ -1305,8 +1304,8 @@ if ($mode == 'marketplace') {
 	print '<tr class="oddeven">'."\n";
 	$url = 'https://github.com/Dolibarr/dolibarr-community-modules';
 	print '<td class="hideonsmartphone center"><a href="'.$url.'" target="_blank" rel="noopener noreferrer external"><img border="0" class="imgautosize imgmaxwidth180" src="'.DOL_URL_ROOT.'/theme/dolibarr_logo.svg"></a></td>';
-	print '<td><span class="opacitymedium">'.$langs->trans("CommunityModulesDesc").'</span></td>';
-	print '<td>'.img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
+	print '<td><span class="opacitymedium">'.$langs->trans("CommunityModulesDesc").'</span><br>';
+	print img_picto('', 'url', 'class="pictofixedwidth"').'<a href="'.$url.'" target="_blank" rel="noopener noreferrer external">'.$url.'</a></td>';
 	print '<td class="center">';
 	if (!getDolGlobalString('MAIN_DISABLE_DOLISTORE_SEARCH') && getDolGlobalInt('MAIN_ENABLE_COMMUNITY_REPO')) {
 		print $remotestore->libStatus($remotestore->githubFileStatus, 2, '<br><small>Content of repository file '.$remotestore->file_source_url.' is in the cache file '.$remotestore->cache_file.'</small>');
