@@ -605,7 +605,7 @@ class ExternalModules
 	/**
 	 * Check the status code of the request
 	 *
-	 * @param array{status_code:int,response:null|string|array{errors:array{code:int,message:string}[]},header:string} $request Response elements of CURL request
+	 * @param array{status_code:int,response:null|string|array{errors:array{code:int,message:string}[]}} $request Response elements of CURL request
 	 *
 	 * @return string|null
 	 */
