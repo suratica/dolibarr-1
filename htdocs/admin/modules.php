@@ -1286,14 +1286,16 @@ if ($mode == 'marketplace') {
 	if (!getDolGlobalString('MAIN_DISABLE_DOLISTORE_SEARCH') && getDolGlobalInt('MAIN_ENABLE_DOLISTORE')) {
 		$messagetoadd = '';
 		if ($remotestore->dolistoreApiStatus <= 0) {
-			$messagetoadd = '<br>'.$remotestore->dolistoreApiError.'<br>Failed to login to: '.$remotestore->dolistore_api_url;
-			$messagetoadd .= '<br>using API public key: '.$remotestore->dolistore_api_key;
-			// Add basic auth if needed
-			$basicAuthLogin = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_LOGIN');
-			$basicAuthPassword = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_PASSWORD');
-			if ($basicAuthLogin) {
-				$messagetoadd .= '<br>using basic auth login: base64('.$basicAuthLogin.':'.$basicAuthPassword.')';
-			}
+			$messagetoadd = '<br>'.$remotestore->dolistoreApiError.'<br>Failed to get answer of remote API server<br>';
+		}
+
+		$messagetoadd .= '<br>Using Remote API URL MAIN_MODULE_DOLISTORE_API_URL: '.$remotestore->dolistore_api_url;
+		$messagetoadd .= '<br>Using API public key MAIN_MODULE_DOLISTORE_API_KEY = '.$remotestore->dolistore_api_key;
+		// Add basic auth if needed
+		$basicAuthLogin = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_LOGIN');
+		$basicAuthPassword = getDolGlobalString('MAIN_MODULE_DOLISTORE_BASIC_PASSWORD');
+		if ($basicAuthLogin) {
+			$messagetoadd .= '<br>Using basic auth login: base64('.$basicAuthLogin.':'.$basicAuthPassword.')';
 		}
 		print $remotestore->libStatus($remotestore->dolistoreApiStatus, 2, $messagetoadd);
 	}
@@ -1334,19 +1336,21 @@ if ($mode == 'marketplace') {
 
 			print '<span class="opacitymedium">'.$langs->trans('DOLISTOREdescriptionLong').'</span><br><br>';
 
-			//$previouslink = $remotestore->get_previous_link();
-			//$nextlink = $remotestore->get_next_link();
+			$categories_tree = $remotestore->getCategories();		// Call API to get the categories
 
-			$categories_tree = $remotestore->getCategories();
 			$products_list = $remotestore->getProducts($options);
+
 			$previouslink = $remotestore->get_previous_link();
+
 			$nextlink = $remotestore->get_next_link();
+
 
 			print '<div class="liste_titre liste_titre_bydiv centpercent"><div class="divsearchfield">';
 
 			print '<form method="POST" class="centpercent" id="searchFormList" action="'.$remotestore->url.'">'; ?>
 						<input type="hidden" name="token" value="<?php echo newToken(); ?>">
 						<input type="hidden" name="mode" value="marketplace">
+						<input type="hidden" name="page_y" value="">
 						<div class="divsearchfield">
 							<input name="search_keyword" placeholder="<?php echo $langs->trans('Keyword') ?>" id="search_keyword" type="text" class="minwidth200" value="<?php echo dol_escape_htmltag($options['search']) ?>">
 								<!-- Add a check box to filter by source -->
@@ -1369,8 +1373,8 @@ if ($mode == 'marketplace') {
 
 						</div>
 						<div class="divsearchfield">
-							<input class="button buttongen" value="<?php echo $langs->trans('Rechercher') ?>" type="submit">
-							<a class="buttonreset" href="<?php echo $_SERVER["PHP_SELF"].'?mode=marketplace'; ?>"><?php echo $langs->trans('Reset') ?></a>
+							<input class="button buttongen reposition" value="<?php echo $langs->trans('Rechercher') ?>" type="submit">
+							<a class="buttonreset reposition" href="<?php echo $_SERVER["PHP_SELF"].'?mode=marketplace'; ?>"><?php echo $langs->trans('Reset') ?></a>
 
 							&nbsp;
 						</div>
