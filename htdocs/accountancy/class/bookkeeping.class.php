@@ -1711,7 +1711,7 @@ class BookKeeping extends CommonObject
 	 *
 	 * @param 	int 	$piecenum 	Piecenum to delete
 	 * @param 	string 	$mode 		Mode ('' or '_tmp')
-  	 * @param	int		$notrigger	0=launch triggers after, 1=disable triggers
+	 * @param	int		$notrigger	0=launch triggers after, 1=disable triggers
 	 * @return 	int 				Nb of record deleted
 	 */
 	public function deleteMvtNum($piecenum, $mode = '', $notrigger = 0)
