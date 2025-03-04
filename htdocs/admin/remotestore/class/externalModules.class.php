@@ -284,7 +284,7 @@ class ExternalModules
 
 		$html       = "";
 		$last_month = dol_now() - (30 * 24 * 60 * 60);
-		$dolibarrversiontouse = (float) DOL_VERSION;
+		$dolibarrversiontouse = DOL_VERSION;	// full string with version
 
 		$this->products = array();
 
