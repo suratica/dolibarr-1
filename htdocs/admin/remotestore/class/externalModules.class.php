@@ -187,11 +187,13 @@ class ExternalModules
 
 		$url = $this->dolistore_api_url . (preg_match('/\/$/', $this->dolistore_api_url) ? '' : '/') . $resource;
 
+		$options['apikey'] = $this->dolistore_api_key;
+
 		if ($options) {
 			$url .= '?' . http_build_query($options);
 		}
 
-		$response = getURLContent($url, 'POST', '', 1, $httpheader);
+		$response = getURLContent($url, 'GET', '', 1, $httpheader);
 
 		$body = $response['content'];
 		$body = json_decode($body, true);
