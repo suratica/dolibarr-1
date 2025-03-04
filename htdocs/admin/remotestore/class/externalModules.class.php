@@ -120,14 +120,13 @@ class ExternalModules
 	{
 		global $langs;
 
-		$this->dolistore_api_url = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV');
-		$this->dolistore_api_key = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_KEY');
-
-		$this->url       = DOL_URL_ROOT.'/admin/modules.php?mode=marketplace';
-		$this->shop_url  = 'https://www.dolistore.com/product.php?id=';
+		$this->dolistore_api_url = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV', 'https://admin2.dolibarr.org/api/index.php/marketplace');
+		$this->dolistore_api_key = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_KEY', 'dolistorepublicapi');
+		$this->shop_url  = getDolGlobalString('MAIN_MODULE_DOLISTORE_SHOP_URL', 'https://www.dolistore.com');
 
 		$this->debug_api = $debug;
 
+		$this->url       = DOL_URL_ROOT.'/admin/modules.php?mode=marketplace';
 		$this->file_source_url = "https://raw.githubusercontent.com/Dolibarr/dolibarr-community-modules/refs/heads/main/index.yaml";
 		$this->cache_file = DOL_DATA_ROOT.'/admin/temp/remote_github_modules_file.yaml';
 
@@ -166,14 +165,14 @@ class ExternalModules
 	 *
 	 * @param string 						$resource Resource name
 	 * @param array<string, mixed>|false 	$options Options for the request
-	 * @return array{status_code:int,response:null|string|array<string,mixed>,header:string}
+	 * @return array{status_code:int,response:null|string|array<string,mixed>}
 	 */
 	public function callApi($resource, $options = false)
 	{
 
 		// If no dolistore_api_key is set, we can't access the API
 		if (empty($this->dolistore_api_key) || empty($this->dolistore_api_url)) {
-			return array('status_code' => 0, 'response' => null, 'header' => '');
+			return array('status_code' => 0, 'response' => null);
 		}
 
 		// Add basic auth if needed
@@ -190,13 +189,16 @@ class ExternalModules
 		if ($options) {
 			$url .= '?' . http_build_query($options);
 		}
-
-		$response = getURLContent($url, 'POST', '', 1, $httpheader);
-
-		$body = $response['content'];
-		$body = json_decode($body, true);
+		$url .= (preg_match('/\?/', $url) ? '&' : '?').'apikey='.$this->dolistore_api_key;
+		$response = getURLContent($url, 'GET', '', 1, $httpheader);
 
 		$status_code = $response['http_code'];
+		$body = 'Error';
+
+		if ($status_code == 200) {
+			$body = $response['content'];
+			$body = json_decode($body, true);
+		}
 
 		return array('status_code' => $status_code, 'response' => $body);
 	}
@@ -300,6 +302,7 @@ class ExternalModules
 		$dolistoreProducts = array();
 		if ($this->dolistoreApiStatus > 0 && $options['search_source_dolistore'] == 1) {
 			$getDolistoreProducts = $this->callApi('products', $data);
+
 			if (!isset($getDolistoreProducts['response']) || !is_array($getDolistoreProducts['response']) || ($getDolistoreProducts['status_code'] != 200 && $getDolistoreProducts['status_code'] != 201)) {
 				$dolistoreProducts = array();
 			} else {
@@ -311,7 +314,9 @@ class ExternalModules
 		$fileProducts = array();
 		if (!empty($this->githubFileStatus) && $options['search_source_github'] == 1) {
 			$fileProducts = $this->fetchModulesFromFile($data);			// Return an array with all modules from the cache filecontent in $data
+
 			$fileProducts = $this->adaptData($fileProducts, 'githubcommunity');
+
 			$fileProducts = $this->applyFilters($fileProducts, $data);
 		}
 
@@ -359,7 +364,7 @@ class ExternalModules
 			// free or pay ?
 			if ($product["price_ttc"] > 0) {
 				$price = '<h3>'.price(price2num($product["price_ttc"], 'MT'), 0, $langs, 1, -1, -1, 'EUR').' '.$langs->trans("TTC").'</h3>';
-				$download_link = '<a target="_blank" href="'.$this->shop_url.urlencode($product['id']).'"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/follow.png" /></a>';
+				$download_link = '<a target="_blank" href="'.$this->shop_url.'/product.php?id='.((int) $product['id']).'"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/follow.png" /></a>';
 			} else {
 				$download_link = '#';
 				$price         = '<h3>'.$langs->trans('Free').'</h3>';
@@ -377,7 +382,7 @@ class ExternalModules
 				}
 
 				if ($product['source'] === 'dolistore') {
-					$download_link = '<a class="paddingleft paddingright" target="_blank" href="'.$this->shop_url.urlencode($product["id"]).'"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/follow.png" /></a>';
+					$download_link = '<a class="paddingleft paddingright" target="_blank" href="'.$this->shop_url.'/product.php?id='.((int) $product["id"]).'"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/follow.png" /></a>';
 					if (!empty($product['direct-download']) && $product['direct-download'] == 'yes') {
 						$download_link .= '<a class="paddingleft paddingright" target="_blank" href="'.$product["download_link"].'" rel="noopener noreferrer"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/Download-128.png" /></a>';
 					}
@@ -603,8 +608,7 @@ class ExternalModules
 	/**
 	 * Check the status code of the request
 	 *
-	 * @param array{status_code:int,response:null|string|array{errors:array{code:int,message:string}[]},header:string} $request Response elements of CURL request
-	 *
+	 * @param array{status_code:int,response:null|string|array{errors:array{code:int,message:string}[]}} $request Response elements of CURL request
 	 * @return string|null
 	 */
 	protected function checkStatusCode($request)
@@ -654,6 +658,8 @@ class ExternalModules
 		if (!dol_is_dir($cache_folder)) {
 			dol_mkdir($cache_folder, DOL_DATA_ROOT);
 		}
+
+		$yaml = '';
 
 		if (!file_exists($cache_file) || filemtime($cache_file) < (dol_now() - $cache_time)) {
 			// We get remote url
@@ -746,7 +752,6 @@ class ExternalModules
 	public function adaptData($data, $source)
 	{
 		$adaptedData = [];
-		$urldolibarrmodules = 'https://www.dolistore.com';
 
 		if (!is_array($data) || empty($data) || empty($source)) {
 			return $adaptedData;
@@ -824,7 +829,7 @@ class ExternalModules
 					'phpmin' => $package['phpmin'],
 					'phpmax' => $package['phpmax'],
 					'module_version' => $package['module_version'],
-					'cover_photo_url' => $urldolibarrmodules.$package['cover_photo_url'],
+					'cover_photo_url' => $this->shop_url.$package['cover_photo_url'],
 					'source' => 'dolistore'
 				];
 
