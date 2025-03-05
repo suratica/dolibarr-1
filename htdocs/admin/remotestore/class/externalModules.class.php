@@ -146,15 +146,19 @@ class ExternalModules
 	 */
 	public function loadRemoteSources($debug = false)
 	{
-		$cachedelayforgithubrepo = getDolGlobalInt('MAIN_REMOTE_GITHUBREPO_CACHE_DELAY', 86400);
+		// Check access to Community repo
+		if (getDolGlobalString('MAIN_ENABLE_EXTERNALMODULES_COMMUNITY')) {
+			$cachedelayforgithubrepo = getDolGlobalInt('MAIN_REMOTE_GITHUBREPO_CACHE_DELAY', 86400);
 
-		$this->getRemoteYamlFile($this->file_source_url, $cachedelayforgithubrepo);
+			$this->getRemoteYamlFile($this->file_source_url, $cachedelayforgithubrepo);
 
+			$this->githubFileStatus = dol_is_file($this->cache_file) ? 1 : 0;
+		}
 
 		// Check access to Dolistore API
-		$this->dolistoreApiStatus = $this->checkApiStatus();
-
-		$this->githubFileStatus = dol_is_file($this->cache_file) ? 1 : 0;
+		if (getDolGlobalString('MAIN_ENABLE_EXTERNALMODULES_DOLISTORE')) {
+			$this->dolistoreApiStatus = $this->checkApiStatus();
+		}
 
 		// Count the number of online providers
 		$this->numberOfProviders = $this->dolistoreApiStatus + $this->githubFileStatus;
@@ -276,12 +280,11 @@ class ExternalModules
 	 */
 	public function getProducts($options)
 	{
-
 		global $langs;
 
 		$html       = "";
 		$last_month = dol_now() - (30 * 24 * 60 * 60);
-		$dolibarrversiontouse = DOL_VERSION;
+		$dolibarrversiontouse = DOL_VERSION;	// full string with version
 
 		$this->products = array();
 
@@ -300,7 +303,7 @@ class ExternalModules
 
 		// Fetch the products from Dolistore source
 		$dolistoreProducts = array();
-		if ($this->dolistoreApiStatus > 0 && $options['search_source_dolistore'] == 1) {
+		if ($this->dolistoreApiStatus > 0 && getDolGlobalInt('MAIN_ENABLE_EXTERNALMODULES_DOLISTORE')) {
 			$getDolistoreProducts = $this->callApi('products', $data);
 
 			if (!isset($getDolistoreProducts['response']) || !is_array($getDolistoreProducts['response']) || ($getDolistoreProducts['status_code'] != 200 && $getDolistoreProducts['status_code'] != 201)) {
@@ -312,7 +315,7 @@ class ExternalModules
 
 		// fetch from github repo
 		$fileProducts = array();
-		if (!empty($this->githubFileStatus) && $options['search_source_github'] == 1) {
+		if (!empty($this->githubFileStatus) && getDolGlobalInt('MAIN_ENABLE_EXTERNALMODULES_COMMUNITY')) {
 			$fileProducts = $this->fetchModulesFromFile($data);			// Return an array with all modules from the cache filecontent in $data
 
 			$fileProducts = $this->adaptData($fileProducts, 'githubcommunity');
