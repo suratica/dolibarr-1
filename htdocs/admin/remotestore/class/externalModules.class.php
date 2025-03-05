@@ -666,8 +666,6 @@ class ExternalModules
 			dol_mkdir($cache_folder, DOL_DATA_ROOT);
 		}
 
-		$yaml = '';
-
 		if (!file_exists($cache_file) || filemtime($cache_file) < (dol_now() - $cache_time)) {
 			// We get remote url
 			$result = getURLContent($file_source_url);
