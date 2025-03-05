@@ -3075,8 +3075,6 @@ class Societe extends CommonObject
 		} else {
 			$label = implode($this->getTooltipContentArray($params));
 		}
-		print "\n";
-		//var_dump($label);exit;
 		$linkstart = '';
 		$linkend = '';
 
