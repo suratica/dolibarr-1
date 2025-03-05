@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2024		Frédéric France			<frederic.france@free.fr>
+/* Copyright (C) 2024-2025  Frédéric France			<frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -127,8 +127,10 @@ if (GETPOSTISSET('type')) {
 // Security: Delete string ../ into $original_file
 $original_file = str_replace("../", "/", $original_file);
 
+
 // Cache or not
 $cachestring = GETPOST("cache", 'aZ09');	// May be 1, or an int (delay in second of the cache if < 999999, or a timestamp), or a hash
+$cachedelay = 0;
 if ($cachestring || image_format_supported($original_file) >= 0) {
 	// Important: Following code is to avoid page request by browser and PHP CPU at each Dolibarr page access.
 	$cachedelay = GETPOSTINT('cachedelay') ? GETPOSTINT('cachedelay') : ((is_numeric($cachestring) && (int) $cachestring > 1 && (int) $cachestring < 999999) ? $cachestring : '3600');
