@@ -12521,20 +12521,20 @@ function dolGetButtonAction($label, $text = '', $actionType = 'default', $url = 
 	}
 
 	// Escape all attributes
-	if (!empty($params['use_unsecured_unescapedattr'])) {
+	if (!empty($params['use_unsecured_unescapedattr'])) {	// Not recommended.
 		if (is_array($params['use_unsecured_unescapedattr'])) {
 			foreach ($attr as $attrK => $attrV) {
 				if (in_array($attrK, $params['use_unsecured_unescapedattr'])) {
 					$attr[$attrK] = dol_htmlentities($attrV, ENT_QUOTES | ENT_SUBSTITUTE);
 				} else {
-					$attr[$attrK] = dolPrintHtmlForAttribute($attrV);
+					$attr[$attrK] = dolPrintHTMLForAttribute($attrV);
 				}
 			}
 		} else {
 			$attr = array_map('dol_htmlentities', $attr);
 		}
 	} else {
-		$attr = array_map('dolPrintHtmlForAttribute', $attr);
+		$attr = array_map('dolPrintHTMLForAttribute', $attr);
 	}
 
 	$TCompiledAttr = array();
