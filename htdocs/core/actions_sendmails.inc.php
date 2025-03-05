@@ -306,7 +306,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
 
 			$reg = array();
 			$fromtype = GETPOST('fromtype', 'alpha');
-			$emailsendersignature = null;
+			$emailsendersignature = '';
 			if ($fromtype === 'robot') {
 				$from = dol_string_nospecial($conf->global->MAIN_MAIL_EMAIL_FROM, ' ', array(",")).' <' . getDolGlobalString('MAIN_MAIL_EMAIL_FROM').'>';
 			} elseif ($fromtype === 'user') {
@@ -326,7 +326,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
 				$obj = $db->fetch_object($resql);
 				if ($obj) {
 					$from = dol_string_nospecial($obj->label, ' ', array(",")).' <'.$obj->email.'>';
-					$emailsendersignature = $obj->signature;
+					 = $obj->signature;
 				}
 			} elseif (preg_match('/from_template_(\d+)/', $fromtype, $reg)) {
 				$sql = 'SELECT rowid, email_from FROM '.MAIN_DB_PREFIX.'c_email_templates';
@@ -386,9 +386,8 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
 
 			// Make substitution in email content
 			$substitutionarray = getCommonSubstitutionArray($langs, 0, null, $object);
-			if (!empty($emailsendersignature)) {
-				$substitutionarray['__SENDEREMAIL_SIGNATURE__'] = $emailsendersignature;
-			}
+
+			$substitutionarray['__SENDEREMAIL_SIGNATURE__'] = (empty($emailsendersignature) ? '' : $emailsendersignature);
 			$substitutionarray['__EMAIL__'] = $sendto;
 			$substitutionarray['__CHECK_READ__'] = (is_object($object) && is_object($object->thirdparty)) ? '<img src="'.DOL_MAIN_URL_ROOT.'/public/emailing/mailing-read.php?tag=undefined&securitykey='.dol_hash(getDolGlobalString('MAILING_EMAIL_UNSUBSCRIBE_KEY')."-undefined", 'md5').'" width="1" height="1" style="width:1px;height:1px" border="0"/>' : '';
 
