@@ -313,6 +313,7 @@ class RecruitmentCandidature extends CommonObject
 			// @phan-suppress-next-line PhanTypeMismatchProperty
 			$object->ref = empty($this->fields['ref']['default']) ? "Copy_Of_".$object->ref : $this->fields['ref']['default'];
 		}
+
 		$object->status = self::STATUS_DRAFT;
 		$object->date_creation = dol_now();
 		$object->date_modification = null;
