@@ -370,7 +370,7 @@ class BookKeeping extends CommonObject
 				$resqlnum = $this->db->query($sqlnum);
 				if ($resqlnum) {
 					$num = $this->db->num_rows($resqlnum);
-					if ($num>0) {
+					if ($num > 0) {
 						$objnum = $this->db->fetch_object($resqlnum);
 						$this->piece_num = $objnum->piece_num;
 					} else {
