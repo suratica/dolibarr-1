@@ -387,7 +387,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
 			// Make substitution in email content
 			$substitutionarray = getCommonSubstitutionArray($langs, 0, null, $object);
 
-			$substitutionarray['__SENDEREMAIL_SIGNATURE__'] = (empty($emailsendersignature) ? '' : $emailsendersignature);
+			$substitutionarray['__SENDEREMAIL_SIGNATURE__'] = (empty($emailsendersignature) ? $user->signature : $emailsendersignature);
 			$substitutionarray['__EMAIL__'] = $sendto;
 			$substitutionarray['__CHECK_READ__'] = (is_object($object) && is_object($object->thirdparty)) ? '<img src="'.DOL_MAIN_URL_ROOT.'/public/emailing/mailing-read.php?tag=undefined&securitykey='.dol_hash(getDolGlobalString('MAILING_EMAIL_UNSUBSCRIBE_KEY')."-undefined", 'md5').'" width="1" height="1" style="width:1px;height:1px" border="0"/>' : '';
 
