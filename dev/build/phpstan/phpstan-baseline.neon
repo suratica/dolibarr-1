@@ -7489,12 +7489,6 @@ parameters:
 			path: ../../../htdocs/core/actions_sendmails.inc.php
 
 		-
-			message: '#^Variable \$paramname2 might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: ../../../htdocs/core/actions_sendmails.inc.php
-
-		-
 			message: '#^Variable \$result might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1

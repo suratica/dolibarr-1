@@ -24,24 +24,25 @@
  *  \brief			Code for actions on sending mails from object page
  */
 
-// $mysoc must be defined
-// $id must be defined
-// $paramname may be defined
-// $autocopy may be defined (used to know the automatic BCC to add)
-// $triggersendname must be set (can be '')
-// $actiontypecode can be set
-// $object and $subject may be defined
 /**
+ * @var Societe $mysoc
  * @var CommonObject $object
  * @var Conf $conf
  * @var DoliDB $db
  * @var HookManager $hookmanager
  * @var Societe $mysoc
  * @var Translate $langs
+ * @var User $user
  *
- * @var string $dolibarr_main_url_root
- * @var string $action
+ * @var int		$id
+ * @var string 	$dolibarr_main_url_root
+ * @var string 	$action
  * @var ?string $subject
+ * @var ?string $triggersendname (can be '')
+ * @var ?string	$sendcontext
+ * @var ?string	$autocopy (used to know the automatic BCC to add)
+ * @var ?string	$actiontypecode
+ * @var ?string $paramname
  */
 '
 @phan-var-force Societe      $mysoc
@@ -442,9 +443,9 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
 						$object->email_tocc = $sendtocc;
 						$object->email_tobcc = $sendtobcc;
 
-						// Call of triggers (you should have set $triggersendname to execute trigger. $trigger_name is deprecated)
-						if (!empty($triggersendname) || !empty($trigger_name)) {
-							$result = $object->call_trigger(empty($triggersendname) ? $trigger_name : $triggersendname, $user);  // @phan-suppress-current-line PhanPossiblyUndeclaredGlobalVariable
+						// Call of triggers (you should have set $triggersendname to execute trigger.
+						if (!empty($triggersendname)) {
+							$result = $object->call_trigger($triggersendname, $user);  // @phan-suppress-current-line PhanPossiblyUndeclaredGlobalVariable
 							if ($result < 0) {
 								$error++;
 							}
@@ -460,12 +461,7 @@ if (($action == 'send' || $action == 'relance') && !GETPOST('addfile') && !GETPO
 					$mesg = $langs->trans('MailSuccessfulySent', $mailfile->getValidAddress($from, 2), $mailfile->getValidAddress($sendto, 2));
 					setEventMessages($mesg, null, 'mesgs');
 
-					$moreparam = '';
-					if (isset($paramval2)) { // @phan-var-suppress-current-line PhanPluginUndeclaredVariableIsset
-						// @phan-var-suppress-next-line PhanUndeclaredGlobalVariable
-						$moreparam .= '&'.($paramname2 ? $paramname2 : 'mid').'='.$paramval2;
-					}
-					header('Location: '.$_SERVER["PHP_SELF"].'?'.($paramname ?? 'id').'='.(is_object($object) ? $object->id : '').$moreparam);
+					header('Location: '.$_SERVER["PHP_SELF"].'?'.($paramname ?? 'id').'='.(is_object($object) ? $object->id : ''));
 					exit;
 				} else {
 					$langs->load("other");
