@@ -2713,7 +2713,7 @@ class Propal extends CommonObject
 
 			if (!$notrigger && empty($error)) {
 				// Call trigger
-				$result = $this->call_trigger($trigger_name, $user);
+				$result = $this->call_trigger($triggersendname, $user);
 				if ($result < 0) {
 					$error++;
 				}
