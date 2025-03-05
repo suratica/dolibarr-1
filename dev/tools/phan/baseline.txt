@@ -9,12 +9,12 @@
  */
 return [
     // # Issue statistics:
-    // PhanTypeMismatchArgument : 1200+ occurrences
-    // PhanUndeclaredProperty : 480+ occurrences
-    // PhanTypeMismatchArgumentNullable : 300+ occurrences
+    // PhanTypeMismatchArgument : 1110+ occurrences
+    // PhanUndeclaredProperty : 470+ occurrences
+    // PhanTypeMismatchArgumentNullable : 270+ occurrences
     // PhanTypeMismatchProperty : 150+ occurrences
     // PhanUndeclaredGlobalVariable : 100+ occurrences
-    // PhanTypeExpectedObjectPropAccess : 25+ occurrences
+    // PhanTypeExpectedObjectPropAccess : 20+ occurrences
     // PhanTypeInvalidDimOffset : 20+ occurrences
     // PhanTypeMismatchDimFetch : 20+ occurrences
     // PhanPluginUndeclaredVariableIsset : 15+ occurrences
@@ -106,8 +106,6 @@ return [
         'htdocs/admin/pdf_other.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/prelevement.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/receiptprinter.php' => ['PhanTypeMismatchArgument'],
-        'htdocs/admin/remotestore/class/PSWebServiceLibrary.class.php' => ['PhanTypeMismatchArgument', 'PhanTypeMismatchArgumentNullable'],
-        'htdocs/admin/remotestore/class/dolistore.class.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/system/filecheck.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/system/modules.php' => ['PhanTypeMismatchArgument'],
         'htdocs/admin/taxes.php' => ['PhanTypeMismatchArgumentNullable'],
@@ -588,7 +586,6 @@ return [
         'htdocs/societe/card.php' => ['PhanTypeMismatchProperty'],
         'htdocs/societe/class/societe.class.php' => ['PhanTypeMismatchProperty'],
         'htdocs/societe/paymentmodes.php' => ['PhanPossiblyUndeclaredGlobalVariable', 'PhanTypeMismatchArgument'],
-        'htdocs/stripe/class/stripe.class.php' => ['PhanTypeExpectedObjectPropAccess'],
         'htdocs/supplier_proposal/card.php' => ['PhanTypeMismatchProperty', 'PhanUndeclaredGlobalVariable', 'PhanUndeclaredProperty'],
         'htdocs/supplier_proposal/class/api_supplier_proposals.class.php' => ['PhanUndeclaredProperty'],
         'htdocs/supplier_proposal/class/supplier_proposal.class.php' => ['PhanUndeclaredProperty'],
