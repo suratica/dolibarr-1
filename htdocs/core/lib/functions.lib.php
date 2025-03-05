@@ -12344,6 +12344,7 @@ function dolGetStatus($statusLabel = '', $statusLabelShort = '', $html = '', $st
  *                                      'xxxxx' => '', // your xxxxx attribute you want
  *                                      'class' => 'reposition', // to add more css class to the button class attribute
  *                                      'classOverride' => '' // to replace class attribute of the button
+ *                                      'use_unsecured_unescapedattr' => [] | bool // on true will use unsecured fonction to escape all attributes, if use array it will use unsecured fonction to escape attribute key present in this array
  *                                      ],
  *                                      'confirm' => [
  *                                      'url' => 'http://', // Override Url to go when user click on action btn, if empty default url is $url.?confirm=yes, for no js compatibility use $url for fallback confirm.
@@ -12519,8 +12520,22 @@ function dolGetButtonAction($label, $text = '', $actionType = 'default', $url = 
 		unset($attr['href']);
 	}
 
-	// escape all attribute
-	$attr = array_map('dol_htmlentities', $attr);
+	// Escape all attributes
+	if (!empty($params['use_unsecured_unescapedattr'])) {
+		if (is_array($params['use_unsecured_unescapedattr'])) {
+			foreach ($attr as $attrK => $attrV) {
+				if (in_array($attrK, $params['use_unsecured_unescapedattr'])) {
+					$attr[$attrK] = dol_htmlentities($attrV, ENT_QUOTES | ENT_SUBSTITUTE);
+				} else {
+					$attr[$attrK] = dolPrintHtmlForAttribute($attrV);
+				}
+			}
+		} else {
+			$attr = array_map('dol_htmlentities', $attr);
+		}
+	} else {
+		$attr = array_map('dolPrintHtmlForAttribute', $attr);
+	}
 
 	$TCompiledAttr = array();
 	foreach ($attr as $key => $value) {
