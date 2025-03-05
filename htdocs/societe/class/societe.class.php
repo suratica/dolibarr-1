@@ -4767,7 +4767,7 @@ class Societe extends CommonObject
 	}
 
 	/**
-	 *  Check if we must use revenue stamps feature or not according to country (country of $mysocin most cases).
+	 *  Check if we must use revenue stamps feature or not according to country (country of $mysoc in most cases).
 	 *  Table c_revenuestamp contains the country and value of stamp per invoice.
 	 *
 	 *  @return		boolean			true or false
