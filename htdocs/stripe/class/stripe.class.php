@@ -263,14 +263,14 @@ class Stripe extends CommonObject
 							$isineec = isInEEC($object);
 							if ($object->country_code && $isineec) {
 								//$taxids = $customer->allTaxIds($customer);
-								$customer->createTaxId($customer, array('type' => 'eu_vat', 'value' => $vatcleaned));
+								$customer->createTaxId($customer->id, array('type' => 'eu_vat', 'value' => $vatcleaned));
 							}
 						}
 					}
 
 					// Create customer in Dolibarr
 					$sql = "INSERT INTO ".MAIN_DB_PREFIX."societe_account (fk_soc, login, key_account, site, site_account, status, entity, date_creation, fk_user_creat)";
-					$sql .= " VALUES (".((int) $object->id).", '', '".$this->db->escape($customer)."', 'stripe', '".$this->db->escape($stripearrayofkeysbyenv[$status]['publishable_key'])."', ".((int) $status).", ".((int) $conf->entity).", '".$this->db->idate(dol_now())."', ".((int) $user->id).")";
+					$sql .= " VALUES (".((int) $object->id).", '', '".$this->db->escape($customer->id)."', 'stripe', '".$this->db->escape($stripearrayofkeysbyenv[$status]['publishable_key'])."', ".((int) $status).", ".((int) $conf->entity).", '".$this->db->idate(dol_now())."', ".((int) $user->id).")";
 					$resql = $this->db->query($sql);
 					if (!$resql) {
 						$this->error = $this->db->lasterror();
