@@ -374,7 +374,7 @@ class BookKeeping extends CommonObject
 						$objnum = $this->db->fetch_object($resqlnum);
 						$this->piece_num = $objnum->piece_num;
 					} else {
-						$this->piece_num = "";
+						$this->piece_num = 0;
 					}
 				}
 
