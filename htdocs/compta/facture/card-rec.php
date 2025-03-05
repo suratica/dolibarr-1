@@ -10,7 +10,7 @@
  * Copyright (C) 2016       Meziane Sof             <virtualsof@yahoo.fr>
  * Copyright (C) 2017-2025  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2023       Nick Fragoulis
- * Copyright (C) 2024-2025	MDW							<mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024-2025	MDW						<mdeweerd@users.noreply.github.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -934,7 +934,7 @@ if (empty($reshook)) {
 				$position,
 				$special_code,
 				$label,
-				GETPOST('units'),
+				GETPOSTINT('units'),
 				(float) $pu_ht_devise,
 				0,
 				$date_start_fill,
