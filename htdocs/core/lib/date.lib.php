@@ -984,7 +984,7 @@ function num_public_holiday($timestampStart, $timestampEnd, $country_code = '', 
 						$ferie = true;
 					}
 				}
-				if ($includesaturday) {	
+				if ($includesaturday) {
 					if ($jour_semaine == 6) {
 						$ferie = true;
 					}
