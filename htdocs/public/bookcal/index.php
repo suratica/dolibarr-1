@@ -306,6 +306,14 @@ if ($action == 'add') {	// Test on permission not required here (anonymous actio
 
 $form = new Form($db);
 
+
+// Define $urlwithroot
+$urlwithouturlroot=preg_replace('/'.preg_quote(DOL_URL_ROOT, '/').'$/i', '', trim($dolibarr_main_url_root));
+$urlwithroot=$urlwithouturlroot.DOL_URL_ROOT;		// This is to use external domain name found into config file
+//$urlwithroot = DOL_MAIN_URL_ROOT; // This is to use same domain name than current. For Paypal payment, we can use internal URL like localhost.
+// TODO Replace DOL_URL_ROOT with $urlwithroot ?
+
+
 llxHeaderVierge('BookingCalendar');
 
 print '<center><br><h2>'.(!empty($object->label) ? $object->label : $object->ref).'</h2></center>';
