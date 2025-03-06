@@ -4378,10 +4378,12 @@ if ($action == 'editsecurity') {
 	$head = websiteconfigPrepareHead($object);
 	print dol_get_fiche_head($head, 'security', $langs->trans("General"), -1, 'website');
 
+	print '<span class="opacitymedium">'.$langs->trans("HTTPHeaderEditor").'. '.$langs->trans("ReservedToAdvancedUsers").'.</span><br><br>';
+
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre">';
-	print '<td>'.$langs->trans("Parameter").'</td>';
+	print '<td>'.$langs->trans("HTTPHeader").'</td>';
 	print '<td></td>'."\n";
 	print '</tr>';
 
@@ -4470,6 +4472,14 @@ if ($action == 'editsecurity') {
 	print '</tr>';
 
 	print '</table>';
+	print '</div>';
+
+
+	print '<div class="center">';
+
+	print '<input type="submit" class="button small" name="addcontainer" value="'.$langs->trans("Save").'">';
+	print '<input class="button button-cancel small" type="submit" name="preview" value="'.$langs->trans("Cancel").'">';
+
 	print '</div>';
 
 
