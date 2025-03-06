@@ -118,7 +118,7 @@ class EcmFiles extends CommonObject
 	public $gen_or_uploaded;
 
 	/**
-	 * @var string extraparams
+	 * @var array<string,string>|string 	Extra parameters. Try to store here the array of parameters. Old code is sometimes storing a string.
 	 */
 	public $extraparams;
 
@@ -250,9 +250,6 @@ class EcmFiles extends CommonObject
 		if (isset($this->gen_or_uploaded)) {
 			$this->gen_or_uploaded = trim($this->gen_or_uploaded);
 		}
-		if (isset($this->extraparams)) {
-			$this->extraparams = trim($this->extraparams);
-		}
 		if (isset($this->fk_user_c)) {
 			$this->fk_user_c = (int) $this->fk_user_c;
 		}
@@ -305,6 +302,10 @@ class EcmFiles extends CommonObject
 		if (!isset($this->entity)) {
 			$this->entity = $conf->entity;
 		}
+
+		$extraparams = (!empty($this->extraparams) ? json_encode($this->extraparams) : null);
+		$extraparams = dol_trunc($extraparams, 250);
+
 		// Put here code to add control on parameters values
 
 		// Insert request
@@ -348,7 +349,7 @@ class EcmFiles extends CommonObject
 		$sql .= ' '.(!isset($this->cover) ? 'NULL' : "'".$this->db->escape($this->cover)."'").',';
 		$sql .= ' '.((int) $maxposition).',';
 		$sql .= ' '.(!isset($this->gen_or_uploaded) ? 'NULL' : "'".$this->db->escape($this->gen_or_uploaded)."'").',';
-		$sql .= ' '.(!isset($this->extraparams) ? 'NULL' : "'".$this->db->escape($this->extraparams)."'").',';
+		$sql .= ' '.(!isset($extraparams) ? 'NULL' : "'".$this->db->escape($extraparams)."'").',';
 		$sql .= " '".$this->db->idate($this->date_c)."',";
 		$sql .= ' '.(!isset($this->date_m) || dol_strlen((string) $this->date_m) == 0 ? 'NULL' : "'".$this->db->idate($this->date_m)."'").',';
 		$sql .= ' '.(!isset($this->fk_user_c) ? $user->id : $this->fk_user_c).',';
