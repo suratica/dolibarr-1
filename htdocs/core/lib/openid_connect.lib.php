@@ -73,5 +73,5 @@ function openid_connect_get_redirect_url()
  */
 function openid_connect_get_url()
 {
-	return getDolGlobalString('MAIN_AUTHENTICATION_OIDC_AUTHORIZE_URL') . '?client_id=' . getDolGlobalString('MAIN_AUTHENTICATION_OIDC_CLIENT_ID') . '&redirect_uri=' . openid_connect_get_redirect_url() . '&scope=' . getDolGlobalString('MAIN_AUTHENTICATION_OIDC_SCOPES') . '&response_type=code&state=' . openid_connect_get_state();
+	return getDolGlobalString('MAIN_AUTHENTICATION_OIDC_AUTHORIZE_URL').'?client_id='.urlencode(getDolGlobalString('MAIN_AUTHENTICATION_OIDC_CLIENT_ID')).'&redirect_uri='.urlencode(openid_connect_get_redirect_url()).'&scope='.urlencode(getDolGlobalString('MAIN_AUTHENTICATION_OIDC_SCOPES')).'&response_type=code&state='.urlencode(openid_connect_get_state());
 }
