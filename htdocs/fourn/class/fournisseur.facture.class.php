@@ -3682,6 +3682,7 @@ class FactureFournisseur extends CommonInvoice
 								$actioncomm->errors_to = $errors_to;
 
 								$actioncomm->elementtype = 'invoice_supplier';
+								$actioncomm->elementid = $tmpinvoice->id;
 								$actioncomm->fk_element = $tmpinvoice->id;
 
 								//$actioncomm->extraparams = $extraparams;
