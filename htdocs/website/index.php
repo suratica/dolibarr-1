@@ -4419,8 +4419,8 @@ if ($action == 'editsecurity') {
 
 	print '<br>';
 
-	print '<div class="nowraponall">';
-	print img_picto('', 'graph', 'class="pictofixedwidth"').$langs->trans("GraphicalView").'<br>';
+	print '<div class="">';
+	print img_picto('', 'graph', 'class="pictofixedwidth"').$langs->trans("HierarchicView").'<br>';
 	print $form->selectarray("select_identifier_WEBSITE_SECURITY_FORCECSP", $selectarrayCSPDirectives, "select_identifier_WEBSITE_SECURITY_FORCECSP", 1, 0, 0, '', 0, 0, 0, '', 'minwidth200 maxwidth300 inline-block');
 	print ' ';
 	print '<input type="hidden" id="select_source_WEBSITE_SECURITY_FORCECSP" name="select_source_WEBSITE_SECURITY_FORCECSP">';
