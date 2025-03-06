@@ -1954,7 +1954,7 @@ class FunctionsLibTest extends CommonClassTest
 		var_dump($s);
 		*/
 
-		//$s = natural_search("t.field", "KØB", 3);						// mode 3 is to provide a list of string separated with coma
-		//$this->assertEquals(" AND (t.field IN ('KØB'))", $s);
+		$s = natural_search("t.field", "KØB", 3);						// mode 3 is to provide a list of string separated with coma
+		$this->assertEquals(" AND (t.field IN ('KØB'))", $s);
 	}
 }
