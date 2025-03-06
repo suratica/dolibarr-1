@@ -866,6 +866,7 @@ class Contrat extends CommonObject
 		$sql .= " d.fk_user_ouverture,";
 		$sql .= " d.fk_user_cloture,";
 		$sql .= " d.fk_unit,";
+		$sql .= " d.extraparams,";
 		$sql .= " d.product_type as type,";
 		$sql .= " d.rang";
 		$sql .= " FROM ".MAIN_DB_PREFIX."contratdet as d LEFT JOIN ".MAIN_DB_PREFIX."product as p ON d.fk_product = p.rowid";
@@ -920,6 +921,8 @@ class Contrat extends CommonObject
 				$line->fk_user_ouverture = $objp->fk_user_ouverture;
 				$line->fk_user_cloture = $objp->fk_user_cloture;
 				$line->fk_unit = $objp->fk_unit;
+
+				$line->extraparams = !empty($objp->extraparams) ? (array) json_decode($objp->extraparams, true) : array();
 
 				$line->ref = $objp->product_ref; // deprecated
 				$line->product_ref = $objp->product_ref; // Product Ref
