@@ -700,7 +700,7 @@ if (empty($reshook)) {
 				$label = (GETPOST('product_label') ? GETPOST('product_label') : '');
 				$desc = $product_desc;
 				$type = GETPOST('type');
-				$fk_unit = GETPOST('units', 'alpha');
+				$fk_unit = GETPOSTINT('units');
 			}
 
 			$date_start_fill = GETPOSTINT('date_start_fill');
