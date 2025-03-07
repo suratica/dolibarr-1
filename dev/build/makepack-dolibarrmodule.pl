@@ -136,12 +136,12 @@ foreach my $PROJECT (@PROJECTLIST) {
 
 	# Get version $MAJOR, $MINOR and $BUILD
 	print "Version detected for module ".$PROJECT.": ";
-	$result=open(IN,"<".$SOURCE."/htdocs/".$PROJECTLC."/core/modules/mod".$PROJECT.".class.php");
+	$result=open(IN,"<".$SOURCE."/htdocs/".$PROJECTLC."/core/modules/mod".ucfirst($PROJECT).".class.php");
 	$custom=false;
 	if (! $result) {
-                $result=open(IN,"<".$SOURCE."/htdocs/custom/".$PROJECTLC."/core/modules/mod".$PROJECT.".class.php");
+                $result=open(IN,"<".$SOURCE."/htdocs/custom/".$PROJECTLC."/core/modules/mod".ucfirst($PROJECT).".class.php");
                 if (! $result) {
-                    die "Error: Can't open descriptor file ".$SOURCE."/htdocs/(or /htdocs/custom/)".$PROJECTLC."/core/modules/mod".$PROJECT.".class.php for reading.\n";
+                    die "Error: Can't open descriptor file ".$SOURCE."/htdocs/(or /htdocs/custom/)".$PROJECTLC."/core/modules/mod".ucfirst($PROJECT).".class.php for reading.\n";
                 }else{
                     $custom = true;
                 }
