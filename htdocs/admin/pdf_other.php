@@ -297,7 +297,7 @@ if (isModEnabled('propal')) {
 
 	if (getDolGlobalString("MAIN_PDF_ADD_TERMSOFSALE_PROPAL")) {
 		$modulepart = 'propal';
-		print '<div class="centpercent nobordernopadding valignmiddle "><div class="inline-block marginrightonly">';
+		print '<div class="inline-block nobordernopadding valignmiddle "><div class="inline-block marginrightonly">';
 		print '<input type="file" class="flat minwidth100 maxwidthinputfileonsmartphone" name="MAIN_INFO_PROPAL_TERMSOFSALE" id="MAIN_INFO_PROPAL_TERMSOFSALE" accept="application/pdf">';
 		if (getDolGlobalString("MAIN_INFO_PROPAL_TERMSOFSALE")) {
 			$termofsale = getDolGlobalString("MAIN_INFO_PROPAL_TERMSOFSALE");
@@ -312,10 +312,10 @@ if (isModEnabled('propal')) {
 
 	print '</td></tr>';
 
-
-
 	print '</table>';
 	print '</div>';
+
+	print '<br>';
 }
 
 if (isModEnabled('order')) {
@@ -373,7 +373,7 @@ if (isModEnabled('order')) {
 
 	if (getDolGlobalString("MAIN_PDF_ADD_TERMSOFSALE_ORDER")) {
 		$modulepart = 'order';
-		print '<div class="centpercent nobordernopadding valignmiddle "><div class="inline-block marginrightonly">';
+		print '<div class="inline-block nobordernopadding valignmiddle "><div class="inline-block marginrightonly">';
 		print '<input type="file" class="flat minwidth100 maxwidthinputfileonsmartphone" name="MAIN_INFO_ORDER_TERMSOFSALE" id="MAIN_INFO_ORDER_TERMSOFSALE" accept="application/pdf">';
 		if (getDolGlobalString("MAIN_INFO_ORDER_TERMSOFSALE")) {
 			$termofsale = getDolGlobalString("MAIN_INFO_ORDER_TERMSOFSALE");
@@ -390,8 +390,9 @@ if (isModEnabled('order')) {
 
 	print '</table>';
 	print '</div>';
-}
 
+	print '<br>';
+}
 
 
 if (isModEnabled('invoice')) {
@@ -531,7 +532,7 @@ if (isModEnabled('invoice')) {
 
 	if (getDolGlobalString("MAIN_PDF_ADD_TERMSOFSALE_INVOICE")) {
 		$modulepart = 'invoice';
-		print '<div class="centpercent nobordernopadding valignmiddle "><div class="inline-block marginrightonly">';
+		print '<div class="inline-block nobordernopadding valignmiddle "><div class="inline-block marginrightonly">';
 		print '<input type="file" class="flat minwidth100 maxwidthinputfileonsmartphone" name="MAIN_INFO_INVOICE_TERMSOFSALE" id="MAIN_INFO_INVOICE_TERMSOFSALE" accept="application/pdf">';
 		if (getDolGlobalString("MAIN_INFO_INVOICE_TERMSOFSALE")) {
 			$termofsale = getDolGlobalString("MAIN_INFO_INVOICE_TERMSOFSALE");
@@ -548,6 +549,8 @@ if (isModEnabled('invoice')) {
 
 	print '</table>';
 	print '</div>';
+
+	print '<br>';
 }
 
 
@@ -583,6 +586,8 @@ if (isModEnabled('supplier_proposal')) {
 
 	print '</table>';
 	print '</div>';
+
+	print '<br>';
 }
 
 
@@ -618,6 +623,8 @@ if (isModEnabled('supplier_order')) {
 
 	print '</table>';
 	print '</div>';
+
+	print '<br>';
 }
 
 if (isModEnabled('shipping')) {
@@ -639,6 +646,8 @@ if (isModEnabled('shipping')) {
 	print '</td></tr>';
 	print '</table>';
 	print '</div>';
+
+	print '<br>';
 }
 
 if (isModEnabled('reception')) {
@@ -682,6 +691,8 @@ if (isModEnabled('reception')) {
 	print '</td></tr>';
 	print '</table>';
 	print '</div>';
+
+	print '<br>';
 }
 
 if (isModEnabled('stocktransfer')) {
@@ -704,6 +715,8 @@ if (isModEnabled('stocktransfer')) {
 
 	print '</table>';
 	print '</div>';
+
+	print '<br>';
 }
 
 print '<br><div class="center">';
