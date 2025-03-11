@@ -45,6 +45,7 @@ $arrayofjs = array(
 top_htmlhead('', '', 0, 0, $arrayofjs);
 
 $prefix = dol_getprefix('');
+
 $callbackUrl = $_COOKIE["DOL_rollback_url_".$prefix];	// Was set by login page to $_SERVER['REQUEST_URI'] to allow come back to initial requested page
 
 if (empty($callbackUrl) || !preg_match('/^\/[a-z0-9]/i', $callbackUrl)) {
