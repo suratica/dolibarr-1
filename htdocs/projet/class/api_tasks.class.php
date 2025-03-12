@@ -568,7 +568,7 @@ class Tasks extends DolibarrApi
 		$this->task->timespent_duration = $duration;
 		$this->task->timespent_fk_user  = $uid;
 		$this->task->timespent_note     = $note;
-		$this->task->fk_product = $this->task->getExtraField('servicio') ?? -1;
+		$this->task->timespent_fk_product = $this->task->getExtraField('servicio') ?? -1;
 
 		$result = $this->task->addTimeSpent(DolibarrApiAccess::$user, 0);
 		if ($result == 0) {
