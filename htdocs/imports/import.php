@@ -1167,11 +1167,7 @@ if ($step == 4 && $datatoimport) {
 
 		$selectforline = '';
 		$selectforline .= '<select id="selectorderimport_'.($i + 1).'" class="targetselectchange minwidth300" name="select_'.($i + 1).'">';
-		if (!empty($line["imported"])) {
-			$selectforline .= '<option value="-1">&nbsp;</option>';
-		} else {
-			$selectforline .= '<option selected="" value="-1">&nbsp;</option>';
-		}
+		$selectforline .= '<option value="-1">&nbsp;</option>';
 
 		$j = 0;
 		$codeselectedarray = array();
