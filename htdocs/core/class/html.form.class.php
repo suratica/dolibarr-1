@@ -87,6 +87,7 @@ class Form
 	public $cache_types_fees = array();
 	public $cache_vatrates = array();
 	public $cache_invoice_subtype = array();
+	/** @var array<string,string}> */
 	public $cache_rule_for_lines_dates = array();
 
 
@@ -4387,12 +4388,13 @@ class Form
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
 	/**
-	 * Loads into cache rule for lines dates
+	 * Loads into a cache property the list of possible rules for line dates
 	 *
 	 * @return int 1=OK ; -1=Empty
 	 */
 	public function load_cache_rule_for_lines_dates()
 	{
+		// phpcs:enable
 		$factureRec = new FactureRec($this->db);
 
 		$this->cache_rule_for_lines_dates = $factureRec->fields['rule_for_lines_dates']['arrayofkeyval'];
@@ -4407,7 +4409,7 @@ class Form
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 
 	/**
-	 *      Load int a cache property th elist of possible delivery delays.
+	 *      Load int a cache property the list of possible delivery delays.
 	 *
 	 * @return     int             Nb of lines loaded, <0 if KO
 	 */
