@@ -1918,7 +1918,7 @@ class Commande extends CommonOrder
 	 *	@param      int			$id       		Id of object to load
 	 * 	@param		string		$ref			Ref of object
 	 * 	@param		string		$ref_ext		External reference of object
-	 * 	@param		string		$notused		Internal reference of other object
+	 * 	@param		string		$notused		Not used
 	 *	@return     int         				>0 if OK, <0 if KO, 0 if not found
 	 */
 	public function fetch($id, $ref = '', $ref_ext = '', $notused = '')
