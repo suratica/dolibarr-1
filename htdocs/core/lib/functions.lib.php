@@ -15179,3 +15179,27 @@ function recordNotFound($message = '', $printheader = 1, $printfooter = 1, $show
 	}
 	exit(0);
 }
+
+
+/**
+ * Get caller info required to debug.
+ *
+ * @return string
+ */
+function getCallerFunctionString()
+{
+	$msg = '';
+
+	if (function_exists('debug_backtrace')) {
+		$backtrace = debug_backtrace();
+		$msg = "";
+		if (count($backtrace) >= 1) {
+			$trace = $backtrace[1];
+			if (isset($trace['file'], $trace['line'])) {
+				$msg = " - From ".$trace['file'].":".$trace['line'];
+			}
+		}
+	}
+
+	return $msg;
+}
