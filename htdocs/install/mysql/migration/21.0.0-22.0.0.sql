@@ -207,3 +207,5 @@ DELETE FROM llx_const WHERE name = 'STOCK_ALLOW_NEGATIVE_TRANSFER' AND value = 1
 
 ALTER TABLE llx_links ADD COLUMN  share varchar(128) NULL AFTER objectid;
 ALTER TABLE llx_links ADD COLUMN  share_pass varchar(32) NULL AFTER share;
+
+ALTER TABLE llx_webhook_target ADD COLUMN type integer DEFAULT 0 NOT NULL AFTER label;
