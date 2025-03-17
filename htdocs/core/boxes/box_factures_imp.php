@@ -235,7 +235,7 @@ class box_factures_imp extends ModeleBoxes
 
 					// Add the sum à the bottom of the boxes
 					$this->info_box_contents[$line][] = array(
-						'tr' => 'class="liste_total_wrap"',
+						'tr' => 'class="liste_total"',
 						'td' => 'class="liste_total"',
 						'text' => $langs->trans("Total"),
 					);
