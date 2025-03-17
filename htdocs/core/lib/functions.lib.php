@@ -812,7 +812,7 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
 	if (empty($check)) {
 		dol_syslog("Deprecated use of GETPOST, called with 1st param = ".$paramname." and a 2nd param that is '', when calling page ".$_SERVER["PHP_SELF"], LOG_WARNING);
 		// Enable this line to know who call the GETPOST with '' $check parameter.
-		//var_dump(debug_backtrace()[0]);
+		//var_dump(getCallerInfoString());
 	}
 
 	if (empty($method)) {
@@ -2337,8 +2337,12 @@ function getCallerInfoString()
 {
 	$backtrace = debug_backtrace();
 	$msg = "";
-	if (count($backtrace) >= 2) {
-		$trace = $backtrace[1];
+	if (count($backtrace) >= 1) {
+		$pos = 1;
+		if (count($backtrace) == 1) {
+			$pos = 0;
+		}
+		$trace = $backtrace[$pos];
 		if (isset($trace['file'], $trace['line'])) {
 			$msg = " From {$trace['file']}:{$trace['line']}.";
 		}
@@ -15178,28 +15182,4 @@ function recordNotFound($message = '', $printheader = 1, $printfooter = 1, $show
 		llxFooter();
 	}
 	exit(0);
-}
-
-
-/**
- * Get caller info required to debug.
- *
- * @return string
- */
-function getCallerFunctionString()
-{
-	$msg = '';
-
-	if (function_exists('debug_backtrace')) {
-		$backtrace = debug_backtrace();
-		$msg = "";
-		if (count($backtrace) >= 1) {
-			$trace = $backtrace[1];
-			if (isset($trace['file'], $trace['line'])) {
-				$msg = " - From ".$trace['file'].":".$trace['line'];
-			}
-		}
-	}
-
-	return $msg;
 }
