@@ -97,9 +97,9 @@ before_install:
   if [ "$TRAVIS_PHP_VERSION" = '8.4' ]; then
     sudo apt install unzip apache2 php8.4 php8.4-cli php8.4-curl php8.4-mysql php8.4-pgsql php8.4-gd php8.4-imap php8.4-intl php8.4-ldap php8.4-xml php8.4-mbstring php8.4-xml php8.4-zip libapache2-mod-php8.4
   fi
-  #if [ "$TRAVIS_PHP_VERSION" = 'latest' ]; then
-  #  sudo apt install unzip apache2 php8.4 php8.4-cli php8.4-curl php8.4-mysql php8.4-pgsql php8.4-gd php8.4-imap php8.4-intl php8.4-ldap php8.4-xml php8.4-mbstring php8.4-xml php8.4-zip libapache2-mod-php8.4
-  #fi
+  if [ "$TRAVIS_PHP_VERSION" = 'latest' ]; then
+    sudo apt install unzip apache2 php8.4 php8.4-cli php8.4-curl php8.4-mysql php8.4-pgsql php8.4-gd php8.4-imap php8.4-intl php8.4-ldap php8.4-xml php8.4-mbstring php8.4-xml php8.4-zip libapache2-mod-php8.4
+  fi
 
 - |
   echo Install pgsql if run is for pgsql
