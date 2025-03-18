@@ -3658,9 +3658,9 @@ class Facture extends CommonInvoice
 		}
 
 		// Rename directory if dir was a temporary ref
-		if (!$error && preg_match('/^[\(]?PROV/i', $this->ref)) {
+		if (!$error && preg_match('/^[\(]?PROV/i', $this->oldref)) {
 			// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
-			$oldref = dol_sanitizeFileName($this->ref);
+			$oldref = dol_sanitizeFileName($this->oldref);
 			$newref = dol_sanitizeFileName($num);
 			$dirsource = $conf->facture->dir_output.'/'.$oldref;
 			$dirdest = $conf->facture->dir_output.'/'.$newref;
