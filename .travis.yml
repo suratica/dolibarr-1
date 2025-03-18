@@ -37,7 +37,7 @@ cache:
 jobs:
   fast_finish: true
   allow_failures:
-  - php: '8.4'
+  - php: 'nightly'
   include:
     - stage: PHP min and max
       if: type = push
@@ -47,16 +47,16 @@ jobs:
       - TRAVIS_PHP_VERSION=7.1
     - stage: PHP min and max
       if: type = pull_request OR type = push
-      php: '8.3'
-      env:
-      - DB=mysql
-      - TRAVIS_PHP_VERSION=8.3
-    - stage: PHP 8.4
-      if: type = push AND branch = develop
       php: '8.4'
       env:
       - DB=mysql
       - TRAVIS_PHP_VERSION=8.4
+    - stage: PHP nightly
+      if: type = push AND branch = develop
+      php: 'nightly'
+      env:
+      - DB=mysql
+      - TRAVIS_PHP_VERSION=nightly
 
 notifications:
   email:
@@ -97,6 +97,9 @@ before_install:
   if [ "$TRAVIS_PHP_VERSION" = '8.4' ]; then
     sudo apt install unzip apache2 php8.4 php8.4-cli php8.4-curl php8.4-mysql php8.4-pgsql php8.4-gd php8.4-imap php8.4-intl php8.4-ldap php8.4-xml php8.4-mbstring php8.4-xml php8.4-zip libapache2-mod-php8.4
   fi
+  #if [ "$TRAVIS_PHP_VERSION" = 'nightly' ]; then
+  #  sudo apt install unzip apache2 php8.4 php8.4-cli php8.4-curl php8.4-mysql php8.4-pgsql php8.4-gd php8.4-imap php8.4-intl php8.4-ldap php8.4-xml php8.4-mbstring php8.4-xml php8.4-zip libapache2-mod-php8.4
+  #fi
 
 - |
   echo Install pgsql if run is for pgsql
