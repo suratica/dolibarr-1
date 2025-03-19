@@ -979,11 +979,6 @@ class Facture extends CommonInvoice
 				$fk_parent_line = 0;
 
 				foreach ($_facrec->lines as $i => $val) {
-					if ($_facrec->lines[$i]->fk_product) {
-						$prod = new Product($this->db);
-						$res = $prod->fetch($_facrec->lines[$i]->fk_product);
-					}
-
 					// Reset fk_parent_line for no child products and special product
 					if (($_facrec->lines[$i]->product_type != 9 && empty($_facrec->lines[$i]->fk_parent_line)) || $_facrec->lines[$i]->product_type == 9) {
 						$fk_parent_line = 0;
@@ -991,6 +986,11 @@ class Facture extends CommonInvoice
 
 					// For line from template invoice, we use data from template invoice
 					/*
+					if ($_facrec->lines[$i]->fk_product) {
+						$prod = new Product($this->db);
+						$res = $prod->fetch($_facrec->lines[$i]->fk_product);
+					}
+
 					$tva_tx = get_default_tva($mysoc,$soc,$prod->id);
 					$tva_npr = get_default_npr($mysoc,$soc,$prod->id);
 					if (empty($tva_tx)) $tva_npr=0;
