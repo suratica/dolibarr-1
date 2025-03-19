@@ -2251,13 +2251,22 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 				// Stock
 				if (($object->isProduct() || getDolGlobalInt('STOCK_SUPPORTS_SERVICES')) && isModEnabled('stock')) {
+					if (isModEnabled('productbatch') && $object->hasbatch()) {
+						print '<td><input type="hidden" id="stockable_product" name="stockable_product" value="on" /></td></tr>';
+					} else {
+						print '<tr><td><label for="stockable_product">' . $langs->trans("StockableProduct") . '</label></td>';
+						$checked = empty($object->stockable_product) ? "" : "checked";
+						print '<td><input type="checkbox" id="stockable_product" name="stockable_product" '. $checked . ' /></td></tr>';
+					}
+
 					// Default warehouse
-					print '<tr><td>'.$langs->trans("DefaultWarehouse").'</td><td>';
+					print '<tr class="showifstockable'.(empty($object->stockable_product) ? ' hidden' : '').'"><td>'.$langs->trans("DefaultWarehouse").'</td><td>';
 					print img_picto($langs->trans("DefaultWarehouse"), 'stock', 'class="pictofixedwidth"');
-					print $formproduct->selectWarehouses((GETPOSTISSET('fk_default_warehouse') ? GETPOST('fk_default_warehouse') : $object->fk_default_warehouse), 'fk_default_warehouse', 'warehouseopen', 1, 0, 0, '', 0, 0, array(), 'maxwidth500 widthcentpercentminusxx');
+					print $formproduct->selectWarehouses((GETPOSTISSET('fk_default_warehouse') ? GETPOST('fk_default_warehouse') : $object->fk_default_warehouse), 'fk_default_warehouse', 'warehouseopen', 1, 0, 0, '', 0, 0, array(), 'minwidth200 maxwidth500 widthcentpercentminusxx');
 					print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create&amp;backtopage='.urlencode($_SERVER['PHP_SELF'].'?action=edit&id='.((int) $object->id)).'">';
 					print '<span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddWarehouse").'"></span></a>';
 					print '</td></tr>';
+
 					/*
 					print "<tr>".'<td>'.$langs->trans("StockLimit").'</td><td>';
 					print '<input name="seuil_stock_alerte" size="4" value="'.$object->seuil_stock_alerte.'">';
@@ -2267,14 +2276,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print '<input name="desiredstock" size="4" value="'.$object->desiredstock.'">';
 					print '</td></tr>';
 					*/
-
-					if (isModEnabled('productbatch') && $object->hasbatch()) {
-						print '<td><input type="hidden" id="stockable_product" name="stockable_product" value="on" /></td></tr>';
-					} else {
-						print '<tr><td valign="top">' . $langs->trans("StockableProduct") . '</td>';
-						$checked = $object->stockable_product == 1 ? "checked" : "";
-						print '<td><input type="checkbox" id="stockable_product" name="stockable_product" '. $checked . ' /></td></tr>';
-					}
 				}
 
 				if ($object->isService() && isModEnabled('workstation')) {
@@ -2314,8 +2315,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 					print '</td></tr>';
 
-					if (!empty($conf->stock->enabled) && !empty($conf->global->STOCK_SUPPORTS_SERVICES)) {
-						print '<tr><td valign="top">' . $langs->trans("StockableProduct") . '</td>';
+					if (isModEnabled('stock') && getDolGlobalString('STOCK_SUPPORTS_SERVICES')) {
+						print '<tr><td>' . $langs->trans("StockableProduct") . '</td>';
 						$checked = $object->stockable_product == 1 ? "checked" : "";
 						print '<td><input type="checkbox" id="stockable_product" name="stockable_product" ' . $checked . ' /></td></tr>';
 					}
@@ -2331,6 +2332,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				if (!$object->isService() && isModEnabled('bom')) {
 					print '<tr><td>'.$form->textwithpicto($langs->trans("DefaultBOM"), $langs->trans("DefaultBOMDesc", $langs->transnoentitiesnoconv("Finished"))).'</td><td>';
 					$bomkey = "Bom:bom/class/bom.class.php:0:(t.status:=:1) AND (t.fk_product:=:".((int) $object->id).')';
+					print img_picto($langs->trans("DefaultBOM"), 'bom', 'class="pictofixedwidth"');
 					print $form->selectForForms($bomkey, 'fk_default_bom', (GETPOSTISSET('fk_default_bom') ? GETPOST('fk_default_bom') : $object->fk_default_bom), 1);
 					print '</td></tr>';
 				}
@@ -2460,11 +2462,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 				print '</table>';
 
-				print '<br>';
-
-				print '<table class="border centpercent">';
-
 				if (!getDolGlobalString('PRODUCT_DISABLE_ACCOUNTING')) {
+					print '<hr>';
+
+					print '<table class="border centpercent">';
+
 					if (isModEnabled('accounting')) {
 						/** @var FormAccounting $formaccounting */
 						// Accountancy_code_sell
@@ -2542,9 +2544,20 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 						print '<td><input name="accountancy_code_buy_export" class="maxwidth200" value="'.(GETPOSTISSET('accountancy_code_buy_export') ? GETPOST('accountancy_code_buy_export') : $object->accountancy_code_buy_export).'">';
 						print '</td></tr>';
 					}
+
+					print '</table>';
 				}
-				print '</table>';
 			}
+
+			print '<script>';
+			print '$(document).ready(function() {
+            	$("#stockable_product").change(function() {
+	                $(".showifstockable").toggle(this.checked);
+    	        });
+        	});';
+
+			print '</script>';
+
 
 			print dol_get_fiche_end();
 

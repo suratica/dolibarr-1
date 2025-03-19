@@ -391,7 +391,7 @@ if ($id > 0 || !empty($ref)) {
 				$rowspan++;
 			}
 
-			print '<form action="'.DOL_URL_ROOT.'/product/composition/card.php?id='.$id.'" method="POST" class="formtoaddinkit" name="formtoaddinkit" id="formtoaddinkit"'.($action != 'search' ?' class="hideobject"' : '').'>';
+			print '<form action="'.DOL_URL_ROOT.'/product/composition/card.php?id='.$id.'" method="POST" class="formtoaddinkit'.($action != 'search' ?' hideobject' : '').'" name="formtoaddinkit" id="formtoaddinkit">';
 			print '<input type="hidden" name="token" value="'.newToken().'">';
 			print '<input type="hidden" name="action" value="search">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
