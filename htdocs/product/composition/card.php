@@ -600,7 +600,7 @@ if ($id > 0 || !empty($ref)) {
 					print '<td title="'.dol_escape_htmltag($productstatic->label).'" class="tdoverflowmax150">'.dol_escape_htmltag($productstatic->label).'</td>';
 
 					// Best buying price
-					print '<td class="right">';
+					print '<td class="right"><span class="small">';
 					if ($product_fourn->find_min_price_product_fournisseur($productstatic->id) > 0) {
 						print $langs->trans("BuyingPriceMinShort").': ';
 						if ($product_fourn->product_fourn_price_id > 0) {
@@ -611,6 +611,7 @@ if ($id > 0 || !empty($ref)) {
 							$atleastonenotdefined++;
 						}
 					}
+					print '</span>';
 					print '</td>';
 
 					// For avoid a non-numeric value
