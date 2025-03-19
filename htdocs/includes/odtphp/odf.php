@@ -405,6 +405,7 @@ class Odf
 
 		while (strlen($tempHtml) > 0) {
 			// Check if the string includes a html tag
+			$matches = array();
 			if (preg_match_all(self::FIND_TAGS_REGEX, $tempHtml, $matches)) {
 				$tagOffset = strpos($tempHtml, $matches[0][0]);
 				// Check if the string starts with the html tag
@@ -417,6 +418,7 @@ class Odf
 					$tempHtml = substr($tempHtml, $tagOffset);
 				}
 				// Extract the attribute data from the html tag
+				$explodedAttributes = array();
 				preg_match_all('/([0-9A-Za-z]+(?:="[0-9A-Za-z\:\-\s\,\;\#]*")?)+/', $matches[2][0], $explodedAttributes);
 				$explodedAttributes = array_filter($explodedAttributes[0]);
 				$attributes = array();
