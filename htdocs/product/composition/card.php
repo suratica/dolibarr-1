@@ -632,7 +632,7 @@ if ($id > 0 || !empty($ref)) {
 
 		// Form with product to add
 		if ((empty($action) || $action == 'view' || $action == 'edit' || $action == 'search' || $action == 're-edit') && ($user->hasRight('produit', 'creer') || $user->hasRight('service', 'creer'))) {
-			print '<br>';
+			//print '<br>';
 
 			$rowspan = 1;
 			if (isModEnabled('category')) {
@@ -640,7 +640,7 @@ if ($id > 0 || !empty($ref)) {
 			}
 
 			print load_fiche_titre($langs->trans("ProductToAddSearch"), '', '');
-			print '<form action="'.DOL_URL_ROOT.'/product/composition/card.php?id='.$id.'" method="POST">';
+			print '<form action="'.DOL_URL_ROOT.'/product/composition/card.php?id='.$id.'" method="POST" name="formtoaddinkit" id="formtoaddinkit">';
 			print '<input type="hidden" name="action" value="search">';
 			print '<input type="hidden" name="id" value="'.$id.'">';
 			print '<div class="inline-block">';

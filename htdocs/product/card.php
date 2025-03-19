@@ -1742,7 +1742,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 			// Custom code
 			if (!getDolGlobalString('PRODUCT_DISABLE_CUSTOM_INFO') && empty($type)) {
-				print '<tr><td class="wordbreak">'.$langs->trans("CustomCode").'</td><td><input name="customcode" class="maxwidth100onsmartphone" value="'.GETPOST('customcode').'"></td></tr>';
+				print '<tr><td class="wordbreak">'.$form->textwithpicto($langs->trans("CustomsCode"), $langs->trans("CustomsCodeHelp")).'</td><td><input name="customcode" class="maxwidth100onsmartphone" value="'.GETPOST('customcode').'"></td></tr>';
 
 				// Origin country
 				print '<tr><td>'.$langs->trans("CountryOrigin").'</td>';
@@ -2386,7 +2386,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 				// Custom code
 				if (!$object->isService() && !getDolGlobalString('PRODUCT_DISABLE_CUSTOM_INFO')) {
-					print '<tr><td class="wordbreak">'.$langs->trans("CustomCode").'</td><td><input name="customcode" class="maxwidth100onsmartphone" value="'.(GETPOSTISSET('customcode') ? GETPOST('customcode') : $object->customcode).'"></td></tr>';
+					print '<tr><td class="wordbreak">'.$form->textwithpicto($langs->trans("CustomsCode"), $langs->trans("CustomsCodeHelp")).'</td><td><input name="customcode" class="maxwidth100onsmartphone" value="'.(GETPOSTISSET('customcode') ? GETPOST('customcode') : $object->customcode).'"></td></tr>';
 					// Origin country
 					print '<tr><td>'.$langs->trans("CountryOrigin").'</td>';
 					print '<td>';
@@ -2958,7 +2958,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 				// Custom code
 				if (!$object->isService() && !getDolGlobalString('PRODUCT_DISABLE_CUSTOM_INFO')) {
-					print '<tr><td>'.$langs->trans("CustomCode").'</td><td>'.$object->customcode.'</td></tr>';
+					print '<tr><td>'.$form->textwithpicto($langs->trans("CustomsCode"), $langs->trans("CustomsCodeHelp")).'</td><td>'.dolPrintHTML($object->customcode).'</td></tr>';
 
 					// Origin country code
 					print '<tr><td>'.$langs->trans("Origin").'</td><td>'.getCountry($object->country_id, '', $db);
