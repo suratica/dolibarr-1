@@ -1741,7 +1741,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			}
 
 			// Custom code
-			if (!getDolGlobalString('PRODUCT_DISABLE_CUSTOM_INFO') && empty($type)) {
+			if (!getDolGlobalString('PRODUCT_DISABLE_CUSTOMS_INFO') && empty($type)) {
 				print '<tr><td class="wordbreak">'.$form->textwithpicto($langs->trans("CustomsCode"), $langs->trans("CustomsCodeHelp")).'</td><td><input name="customcode" class="maxwidth100onsmartphone" value="'.GETPOST('customcode').'"></td></tr>';
 
 				// Origin country
@@ -2386,8 +2386,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print '</td></tr>';
 				}
 
-				// Custom code
-				if (!$object->isService() && !getDolGlobalString('PRODUCT_DISABLE_CUSTOM_INFO')) {
+				// Customs code
+				if (!$object->isService() && !getDolGlobalString('PRODUCT_DISABLE_CUSTOMS_INFO')) {
 					print '<tr><td class="wordbreak">'.$form->textwithpicto($langs->trans("CustomsCode"), $langs->trans("CustomsCodeHelp")).'</td><td><input name="customcode" class="maxwidth100onsmartphone" value="'.(GETPOSTISSET('customcode') ? GETPOST('customcode') : $object->customcode).'"></td></tr>';
 					// Origin country
 					print '<tr><td>'.$langs->trans("CountryOrigin").'</td>';
@@ -2797,14 +2797,19 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print '</td></tr>';
 				}
 
-				// Default warehouse
+				// Stockable product / default warehouse
 				if (($object->isProduct() || getDolGlobalInt('STOCK_SUPPORTS_SERVICES')) && isModEnabled('stock')) {
-					$warehouse = new Entrepot($db);
-					$warehouse->fetch($object->fk_default_warehouse);
+					print '<tr><td>' . $form->textwithpicto($langs->trans("StockableProduct"), $langs->trans('StockableProductDescription')) . '</td>';
+					print '<td><input type="checkbox" readonly disabled '.($object->stockable_product == 1 ? 'checked' : '').'></td></tr>';
 
-					print '<tr><td>'.$langs->trans("DefaultWarehouse").'</td><td>';
-					print(!empty($warehouse->id) ? $warehouse->getNomUrl(1) : '');
-					print '</td>';
+					if ($object->isStockManaged()) {
+						$warehouse = new Entrepot($db);
+						$warehouse->fetch($object->fk_default_warehouse);
+
+						print '<tr><td>'.$langs->trans("DefaultWarehouse").'</td><td>';
+						print(!empty($warehouse->id) ? $warehouse->getNomUrl(1) : '');
+						print '</td>';
+					}
 				}
 
 				if ($object->isService() && isModEnabled('workstation')) {
@@ -2814,12 +2819,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print '<tr><td>'.$langs->trans("DefaultWorkstation").'</td><td>';
 					print(!empty($workstation->id) ? $workstation->getNomUrl(1) : '');
 					print '</td>';
-				}
-
-				// View stockable_product
-				if (($object->isProduct() || ($object->isService() && !empty($conf->global->STOCK_SUPPORTS_SERVICES))) && isModEnabled('stock') && !$object->hasbatch()) {
-					print '<tr><td valign="top">' . $form->textwithpicto($langs->trans("StockableProduct"), $langs->trans('StockableProductDescription')) . '</td>';
-					print '<td><input type="checkbox" readonly disabled '.($object->stockable_product == 1 ? 'checked' : '').'></td></tr>';
 				}
 
 				// Parent product.
@@ -2838,10 +2837,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				}
 
 				print '</table>';
+
 				print '</div>';
 				print '<div class="fichehalfright">';
-
 				print '<div class="underbanner clearboth"></div>';
+
 				print '<table class="border tableforfield centpercent">';
 
 				if ($object->isService()) {
@@ -2970,7 +2970,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				}
 
 				// Custom code
-				if (!$object->isService() && !getDolGlobalString('PRODUCT_DISABLE_CUSTOM_INFO')) {
+				if (!$object->isService() && !getDolGlobalString('PRODUCT_DISABLE_CUSTOMS_INFO')) {
 					print '<tr><td>'.$form->textwithpicto($langs->trans("CustomsCode"), $langs->trans("CustomsCodeHelp")).'</td><td>'.dolPrintHTML($object->customcode).'</td></tr>';
 
 					// Origin country code
