@@ -1033,6 +1033,11 @@ class Facture extends CommonInvoice
 				$fk_parent_line = 0;
 
 				foreach ($_facrec->lines as $i => $val) {
+					// Reset fk_parent_line for no child products and special product
+					if (($_facrec->lines[$i]->product_type != 9 && empty($_facrec->lines[$i]->fk_parent_line)) || $_facrec->lines[$i]->product_type == 9) {
+						$fk_parent_line = 0;
+					}
+
 					$tva_tx = $_facrec->lines[$i]->tva_tx.($_facrec->lines[$i]->vat_src_code ? '('.$_facrec->lines[$i]->vat_src_code.')' : '');
 					$tva_npr = $_facrec->lines[$i]->info_bits;
 					if (empty($tva_tx)) {
