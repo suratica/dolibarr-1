@@ -362,7 +362,7 @@ function LoadProducts(position, issubcat) {
 	// Only show products for sale (tosell=1)
 	$.getJSON('<?php echo DOL_URL_ROOT ?>/takepos/ajax/ajax.php?action=getProducts&token=<?php echo newToken();?>&thirdpartyid=' + jQuery('#thirdpartyid').val() + '&category='+currentcat+'&tosell=1&limit='+limit+'&offset=0', function(data) {
 		console.log("Call ajax.php (in LoadProducts) to get Products of category "+currentcat+" then loop on result to fill image thumbs");
-		console.log(data);
+		//console.log(data);
 
 		while (ishow < maxproduct) {
 			console.log("ishow"+ishow+" idata="+idata);
