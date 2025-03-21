@@ -19,6 +19,8 @@
  *	\file       htdocs/waf.inc.php
  *	\ingroup	core
  *	\brief      File with WAF controls
+ *				WARNING: This file must have absolutely no dependency with Dolibarr code.
+ *				It should be usable in any project.
  */
 
 // To disable the WAF for GET and POST and PHP_SELF, uncomment this
