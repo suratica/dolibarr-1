@@ -728,15 +728,13 @@ class MultiCurrency extends CommonObject
 				}
 
 				dol_syslog("Failed to call endpoint ".$error_info_syslog, LOG_WARNING);
-				if ($mode == "cron") {
-					$this->output = $langs->trans('multicurrency_syncronize_error', $error_info);
-				} else {
-					setEventMessages($langs->trans('multicurrency_syncronize_error', $error_info), null, 'errors');
-				}
+
+				$this->output = $langs->trans('multicurrency_syncronize_error', $error_info);
+
 				return -1;
 			}
 		} else {
-			$error_info = $resget['curl_error_msg'];
+			$this->output = $resget['curl_error_msg'];
 
 			return -1;
 		}
