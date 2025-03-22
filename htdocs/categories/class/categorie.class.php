@@ -945,7 +945,8 @@ class Categorie extends CommonObject
 	}
 
 	/**
-	 * Return list of fetched instance of elements having this category
+	 * Return list of fetched instances of elements having this category
+	 * WARNING: Do not use this. It can return an array with a very high number of element making an out of memory. Try by using instead getListForItem().
 	 *
 	 * @param   string     	$type       	Type of category ('customer', 'supplier', 'contact', 'product', 'member', 'knowledge_management', ...)
 	 * @param   int        	$onlyids    	Return only ids of objects (consume less memory)
@@ -960,10 +961,13 @@ class Categorie extends CommonObject
 	 * @param   string		$filterlang     Language to use in Universal Search for multilingual fields ('fr_FR', 'en_US'...)
 	 * @return  CommonObject[]|int[]|int    Return -1 if KO, array of instance of object if OK
 	 * @see containsObject()
+	 * @deprecated
 	 */
 	public function getObjectsInCateg($type, $onlyids = 0, $limit = 0, $offset = 0, $sortfield = '', $sortorder = 'ASC', $filter = '', $filtermode = 'AND', $filterlang = '')
 	{
 		global $user;
+
+		dol_syslog("getObjectsInCateg This method is deprecated. Try by using instead getListForItem().", LOG_WARNING);
 
 		$objs = array();
 
@@ -1169,7 +1173,7 @@ class Categorie extends CommonObject
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 	/**
-	 * Return direct children ids of a category into an array
+	 * Return direct children ids of a category into an array. Only first level of children.
 	 *
 	 * @return	Categorie[]|int   Return integer <0 KO, array ok
 	 */
@@ -1197,7 +1201,8 @@ class Categorie extends CommonObject
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 	/**
-	 * 	Load the array this->motherof that is array(id_son=>id_parent, ...)
+	 * 	Load the array this->motherof that is array(id_son=>id_parent, ...), so array of all child categories and ID of their parent.
+	 *  TODO Add a filter on the type of category.
 	 *
 	 *	@return		int		Return integer <0 if KO, >0 if OK
 	 */
@@ -1209,7 +1214,7 @@ class Categorie extends CommonObject
 		// Load array[child]=parent
 		$sql = "SELECT fk_parent as id_parent, rowid as id_son";
 		$sql .= " FROM ".MAIN_DB_PREFIX."categorie";
-		$sql .= " WHERE fk_parent != 0";
+		$sql .= " WHERE fk_parent <> 0";
 		$sql .= " AND entity IN (".getEntity('category').")";
 
 		dol_syslog(get_class($this)."::load_motherof", LOG_DEBUG);
