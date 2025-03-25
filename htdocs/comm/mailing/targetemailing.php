@@ -21,7 +21,7 @@
  */
 
 /**
- *       \file       htdocs/comm/mailing/cibles.php
+ *       \file       htdocs/comm/mailing/targetemailing.php
  *       \ingroup    mailing
  *       \brief      Page to define or view emailing targets
  */
@@ -325,6 +325,7 @@ llxHeader('', $langs->trans("Mailing"), 'EN:Module_EMailing|FR:Module_Mailing|ES
 
 $form = new Form($db);
 $formmailing = new FormMailing($db);
+
 $arrayofselected = is_array($toselect) ? $toselect : array();
 $totalarray = [
 	'nbfield' => 0,
@@ -509,7 +510,7 @@ if ($object->fetch($id) >= 0) {
 
 	// Show email selectors
 	if ($allowaddtarget && $user->hasRight('mailing', 'creer')) {
-		print load_fiche_titre($langs->trans("ToAddRecipientsChooseHere"), ($user->admin ? info_admin($langs->trans("YouCanAddYourOwnPredefindedListHere"), 1) : ''), 'generic');
+		print load_fiche_titre($langs->trans("ToAddRecipientsChooseHere").'...', ($user->admin ? info_admin($langs->trans("YouCanAddYourOwnPredefindedListHere"), 1) : ''), '');
 
 		print '<div class="div-table-responsive">';
 		print '<div class="tagtable centpercentwithout1imp liste_titre_bydiv borderbottom" id="tablelines">';
@@ -526,8 +527,8 @@ if ($object->fetch($id) >= 0) {
 		print '</div>';
 		print '<div class="tagtd left"><div class="inline-block">'.$langs->trans("Filters").'</div>';
 		if ($object->messtype != 'sms') {
-			print ' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <div class=" inline-block">'.$langs->trans("EvenUnsubscribe").' ';
-			print ajax_object_onoff($object, 'evenunsubscribe', 'evenunsubscribe', 'EvenUnsubscribe:switch_on:warning', 'EvenUnsubscribe', array(), 'small valignmiddle', '', 1);
+			print ' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <div class="inline-block valignmiddle">'.$langs->trans("EvenUnsubscribe").' ';
+			print ajax_object_onoff($object, 'evenunsubscribe', 'evenunsubscribe', 'EvenUnsubscribe:switch_on:warning', 'EvenUnsubscribe', array(), 'small valignmiddle reposition', '', 1);
 			print '</div>';
 		}
 		print '</div>';
@@ -596,7 +597,7 @@ if ($object->fetch($id) >= 0) {
 						print '<div class="oddeven trforbreakperms trforbreaknobg impair tagtr">';
 					}
 
-					print '<div class="tagtd paddingleftimp marginleftonly paddingrightimp marginrightonly valignmiddle center">';
+					print '<div class="tagtd paddingleftlarge marginleftonly paddingrightlarge marginrightonly valignmiddle center">';
 					if (empty($obj->picto)) {
 						$obj->picto = 'generic';
 					}
@@ -674,6 +675,8 @@ if ($object->fetch($id) >= 0) {
 
 		print '<br><br>';
 	}
+
+
 
 	// List of selected targets
 	$sql  = "SELECT mc.rowid, mc.lastname, mc.firstname, mc.email, mc.other, mc.statut as status, mc.date_envoi, mc.tms,";
@@ -778,7 +781,7 @@ if ($object->fetch($id) >= 0) {
 
 		print '</form>';
 
-		print "\n<!-- Liste destinataires selectionnes -->\n";
+		print "\n<!-- List o selected targets -->\n";
 		print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 		print '<input type="hidden" name="token" value="'.newToken().'">';
 		print '<input type="hidden" name="sortfield" value="'.$sortfield.'">';
@@ -804,7 +807,7 @@ if ($object->fetch($id) >= 0) {
 		print '<div class="div-table-responsive">';
 		print '<table class="noborder centpercent">';
 
-		// Ligne des champs de filtres
+		// Line of filters
 		print '<tr class="liste_titre_filter">';
 
 		// Action column
@@ -1031,7 +1034,7 @@ if ($object->fetch($id) >= 0) {
 		dol_print_error($db);
 	}
 
-	print "\n<!-- Fin liste destinataires selectionnes -->\n";
+	print "\n<!-- End list of selected targets -->\n";
 }
 
 // End of page
