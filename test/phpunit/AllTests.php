@@ -308,6 +308,7 @@ class AllTests
 		$suite->addTestSuite('WebsiteTest');
 
 		// At end because it's the longer
+		// Also enabling and disabling modules is changing the context and global variables that changes behaviour of previous tests
 		require_once dirname(__FILE__).'/ModulesTest.php';
 		$suite->addTestSuite('ModulesTest');
 

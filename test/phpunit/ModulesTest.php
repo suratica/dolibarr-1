@@ -52,6 +52,26 @@ use PHPUnit\Framework\TestCase;
 class ModulesTest extends CommonClassTest // TestCase //CommonClassTest
 {
 	/**
+	 * setUpBeforeClass
+	 *
+	 * @return void
+	 */
+	public static function setUpBeforeClass(): void
+	{
+		global $conf,$user,$langs,$db;
+		$db->begin(); // This is to have all actions inside a transaction even if test launched without suite.
+
+		if ((int) getenv('PHPUNIT_DEBUG') > 0) {
+			print get_called_class()."::".__FUNCTION__.PHP_EOL;
+		}
+
+		$infotable = $db->DDLListTablesFull($db->database_name);
+		print "List of existing tables before running test ModulesTest\n";
+		print var_export($infotable, true)."\n";
+	}
+
+
+	/**
 	 * Return list of modules for which to test initialisation
 	 *
 	 * @return array<array{0:string}> List of module labels to test (class is mod<module_label>)
@@ -90,7 +110,7 @@ class ModulesTest extends CommonClassTest // TestCase //CommonClassTest
 		$mod = new $class($db);
 
 		$result = $mod->remove();
-		print __METHOD__." test remove for module ".$modlabel.",  result=".$result."\n";
+		print __METHOD__." test remove for module ".$modlabel.", result=".$result."\n";
 
 		$result = $mod->init();
 		print __METHOD__." test init for module ".$modlabel.", result=".$result."\n";
