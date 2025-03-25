@@ -6864,33 +6864,6 @@ INSERT INTO `llx_usergroup_user` VALUES (1,1,1,1);
 /*!40000 ALTER TABLE `llx_usergroup_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `llx_ventilation_achat`
---
-
-DROP TABLE IF EXISTS `llx_ventilation_achat`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `llx_ventilation_achat` (
-  `rowid` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_code_ventilation` int(11) DEFAULT NULL,
-  `fk_facture` int(11) DEFAULT NULL,
-  `fk_facture_fourn_det` int(11) DEFAULT NULL,
-  `ventilation` varchar(255) DEFAULT NULL,
-  `qty` double DEFAULT NULL,
-  PRIMARY KEY (`rowid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `llx_ventilation_achat`
---
-
-LOCK TABLES `llx_ventilation_achat` WRITE;
-/*!40000 ALTER TABLE `llx_ventilation_achat` DISABLE KEYS */;
-/*!40000 ALTER TABLE `llx_ventilation_achat` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
