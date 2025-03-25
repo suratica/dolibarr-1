@@ -4814,9 +4814,6 @@ tr.pair td, tr.impair td, form.impair div.tagtd, form.pair div.tagtd, div.impair
 	padding: 7px 8px 7px 8px;
 	border-bottom: 1px solid #ddd;
 }
-form.pair, form.impair {
-	font-weight: normal;
-}
 form.tagtr:last-of-type div.tagtd, tr.pair:last-of-type td, tr.impair:last-of-type td {
 	border-bottom: 0px !important;
 }

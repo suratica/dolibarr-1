@@ -37,16 +37,12 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/ajax.lib.php';
 
 
-'
-@phan-var-force array{0:string,1:string} $bctag From main.inc
-';
 /**
  * @var Conf $conf
  * @var DoliDB $db
  * @var HookManager $hookmanager
  * @var Translate $langs
  * @var User $user
- * @var array{0:string,1:string} $bctag From main.inc
  */
 
 // Load translation files required by the page
@@ -591,15 +587,13 @@ if ($object->fetch($id) >= 0) {
 
 				// If module is qualified
 				if ($qualified) {
-					$var = !$var;
-
 					if ($allowaddtarget) {
-						print '<form '.$bctag[$var].' name="'.$modulename.'" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&module='.$modulename.'" method="POST" enctype="multipart/form-data">';
+						print '<form class="oddeven trforbreakperms trforbreaknobg impair tagtr" name="'.$modulename.'" action="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&module='.$modulename.'" method="POST" enctype="multipart/form-data">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
 						print '<input type="hidden" name="action" value="add">';
 						print '<input type="hidden" name="page_y" value="'.newToken().'">';
 					} else {
-						print '<div '.$bctag[$var].'>';
+						print '<div class="oddeven trforbreakperms trforbreaknobg impair tagtr">';
 					}
 
 					print '<div class="tagtd paddingleftimp marginleftonly paddingrightimp marginrightonly valignmiddle center">';
