@@ -97,6 +97,12 @@ class ModulesTest extends CommonClassTest // TestCase //CommonClassTest
 		$this->assertLessThan($result, 0, $modlabel." ".$mod->error);
 		print __METHOD__." test remove/init for module ".$modlabel.", result=".$result."\n";
 
+		if ($modlabel == 'User') {
+			print __METHOD__." test table llx_user exists after Webhook init\n";
+			$infotable = $db->DDLInfoTable("llx_user");
+			print var_export($infotable, true)."\n";
+			$this->assertGreaterThan(0, count($infotable));
+		}
 		if ($modlabel == 'Webhook') {
 			print __METHOD__." test table llx_webhook_target exists after Webhook init\n";
 			$infotable = $db->DDLInfoTable("llx_webhook_target");
