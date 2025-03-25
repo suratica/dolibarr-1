@@ -10369,9 +10369,9 @@ abstract class CommonObject
 				}
 				$keys_with_alias[] = $alias . '.' . $fieldname;
 			}
-			return implode(',', $keys_with_alias);
+			return implode(', ', $keys_with_alias);
 		} else {
-			return implode(',', $keys);
+			return implode(', ', $keys);
 		}
 	}
 

@@ -90,10 +90,12 @@ class ModulesTest extends CommonClassTest // TestCase //CommonClassTest
 		$mod = new $class($db);
 
 		$result = $mod->remove();
+		print __METHOD__." test remove for module ".$modlabel.",  result=".$result."\n";
+
 		$result = $mod->init();
+		print __METHOD__." test init for module ".$modlabel.", result=".$result."\n";
 
 		$this->assertLessThan($result, 0, $modlabel." ".$mod->error);
-		print __METHOD__." test remove/init for module ".$modlabel.", result=".$result."\n";
 
 		if ($modlabel == 'User') {
 			print __METHOD__." test table llx_user exists after Webhook init\n";
