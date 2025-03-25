@@ -164,8 +164,8 @@ class Project extends CommonObject
 	public $usage_bill_time; // Is the time spent on project must be invoiced or not
 
 	/**
-	   * @var integer		Event organization: Use Event Organization
-	   */
+	 * @var integer		Event organization: Use Event Organization
+	 */
 	public $usage_organize_event;
 
 	/**
@@ -1517,19 +1517,19 @@ class Project extends CommonObject
 		$this->usage_organize_event = 1;
 
 		/*
-		 $nbp = mt_rand(1, 9);
-		 $xnbp = 0;
-		 while ($xnbp < $nbp)
-		 {
-		 $line = new Task($this->db);
-		 $line->fk_project = 0;
-		 $line->label = $langs->trans("Label") . " " . $xnbp;
-		 $line->description = $langs->trans("Description") . " " . $xnbp;
+			   $nbp = mt_rand(1, 9);
+			   $xnbp = 0;
+			   while ($xnbp < $nbp)
+			   {
+			   $line = new Task($this->db);
+			   $line->fk_project = 0;
+			   $line->label = $langs->trans("Label") . " " . $xnbp;
+			   $line->description = $langs->trans("Description") . " " . $xnbp;
 
-		 $this->lines[]=$line;
-		 $xnbp++;
-		 }
-		 */
+			   $this->lines[]=$line;
+			   $xnbp++;
+			   }
+			   */
 
 		return 1;
 	}
@@ -2438,6 +2438,30 @@ class Project extends CommonObject
 		return 1;
 	}
 
+	public function getLinesArrayForActualUser($user, $loadRoleMode = 1)
+	{
+		require_once DOL_DOCUMENT_ROOT.'/projet/class/task.class.php';
+		$taskstatic = new Task($this->db);
+		$this->lines = $taskstatic->getTasksArray(
+			0,
+			$user,
+			$this->id,
+			0,
+			0,
+			'',
+			'-1',
+			'',
+			0,
+			$user->id,
+			array(),
+			0,
+			array(),
+			0,
+			$loadRoleMode
+		);
+		return 1;
+	}
+
 	/**
 	 *  Function sending an email to the current member with the text supplied in parameter.
 	 *
@@ -2501,17 +2525,17 @@ class Project extends CommonObject
 		}
 		// Date
 		/*
-		if (property_exists($this, 'date_start') && $this->date_start) {
-			$return .= '<br><span class="info-box-label">'.dol_print_date($this->date_start, 'day').'</>';
-		}
-		if (property_exists($this, 'date_end') && $this->date_end) {
-			if ($this->date_start) {
-				$return .= ' - ';
-			} else {
-				$return .= '<br>';
-			}
-			$return .= '<span class="info-box-label">'.dol_print_date($this->date_end, 'day').'</span>';
-		}*/
+			  if (property_exists($this, 'date_start') && $this->date_start) {
+				  $return .= '<br><span class="info-box-label">'.dol_print_date($this->date_start, 'day').'</>';
+			  }
+			  if (property_exists($this, 'date_end') && $this->date_end) {
+				  if ($this->date_start) {
+					  $return .= ' - ';
+				  } else {
+					  $return .= '<br>';
+				  }
+				  $return .= '<span class="info-box-label">'.dol_print_date($this->date_end, 'day').'</span>';
+			  }*/
 		if (property_exists($this, 'thirdparty') && is_object($this->thirdparty)) {
 			$return .= '<br><div class="info-box-ref tdoverflowmax150 inline-block valignmiddle">'.$this->thirdparty->getNomUrl(1);
 			$return .= '</div><div class="inline-block valignmiddle">';
@@ -2531,9 +2555,9 @@ class Project extends CommonObject
 			$return .= ' <span class="small valignmiddle">'.$arraydata['assignedusers'].'</span>';
 		}
 		/*if (property_exists($this, 'user_author_id')) {
-			$return .= '<br><span class="info-box-label opacitymedium">'.$langs->trans("Author").'</span>';
-			$return .= '<span> : '.$user->getNomUrl(1).'</span>';
-		}*/
+				  $return .= '<br><span class="info-box-label opacitymedium">'.$langs->trans("Author").'</span>';
+				  $return .= '<span> : '.$user->getNomUrl(1).'</span>';
+			  }*/
 		$return .= '<br><div>';	// start div line status
 		if ($this->usage_opportunity && $this->opp_status_code) {
 			//$return .= '<br><span class="info-bo-label opacitymedium">'.$langs->trans("OpportunityStatusShort").'</span>';

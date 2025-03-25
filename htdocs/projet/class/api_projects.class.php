@@ -337,7 +337,7 @@ class Projects extends DolibarrApi
 		if (!DolibarrApi::_checkAccessToResource('project', $this->project->id)) {
 			throw new RestException(403, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
-		$this->project->getLinesArray(DolibarrApiAccess::$user);
+		$this->project->getLinesArrayForActualUser(DolibarrApiAccess::$user);
 		$result = array();
 		foreach ($this->project->lines as $line) {      // $line is a task
 			if ($includetimespent == 1) {

@@ -1046,7 +1046,7 @@ class Task extends CommonObjectLine
 		}
 		if ($filterontaskuser > 0) {
 			$sql .= " AND t.fk_projet = p.rowid";
-			$sql .= " AND p.rowid = ec2.element_id";
+			$sql .= " AND t.rowid = ec2.element_id";
 			$sql .= " AND ctc2.rowid = ec2.fk_c_type_contact";
 			$sql .= " AND ctc2.element = 'project_task'";
 			$sql .= " AND ec2.fk_socpeople = ".((int) $filterontaskuser);
