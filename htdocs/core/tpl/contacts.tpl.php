@@ -101,7 +101,7 @@ $userstatic = new User($db);
 
 ?>
 
-<!-- BEGIN PHP TEMPLATE CONTACTS -->
+<!-- BEGIN PHP TEMPLATE CORE/TPL/CONTACTS.TPL.PHP -->
 <?php
 if ($permission) {
 	print '<div class="underbanner clearboth"></div>'."\n";
@@ -134,7 +134,7 @@ if ($permission) {
 		<div class="tagtd maxwidthonsmartphone">
 		<?php echo img_object('', 'user', 'class="pictofixedwidth"').$form->select_dolusers($user->id, 'userid', 1, (!empty($userAlreadySelected) ? $userAlreadySelected : null), 0, '', '', '0', 56, 0, '', 0, '', 'minwidth100imp widthcentpercentminusxx maxwidth400 userselectcontact');
 		if (empty($hideaddcontactforgroups) && $module == 'project') {
-			print '<span> '.$langs->trans("or").' </span>';
+			print '<span class="opacitymedium"> '.$langs->trans("or").' </span>';
 			echo img_object('', 'group', 'class="pictofixedwidth"').$form->select_dolgroups(0, 'groupid', 1, '', 0, '', array(), '0', false, 'minwidth100imp widthcentpercentminusxx maxwidth400 groupselectcontact');
 		}
 		?>
@@ -275,13 +275,13 @@ foreach (array('internal', 'external') as $source) {
 			$entry->contact_id   = $userstatic->id;
 			$entry->contact_html = $userstatic->getNomUrl(-1, '', 0, 0, 0, 0, '', 'valignmiddle');
 			$entry->contact_name = strtolower($userstatic->getFullName($langs));
-			$entry->contact_warning = false;
+			$entry->contact_warning = 0;
 		} elseif ($contact['source'] == 'external') {
 			$contactstatic->fetch($contact['id']);
 			$entry->contact_id   = $contactstatic->id;
 			$entry->contact_html = $contactstatic->getNomUrl(1, '', 0, '', 0, 0);
 			$entry->contact_name = strtolower($contactstatic->getFullName($langs));
-			$entry->contact_warning = ($contactstatic->user_id > 0);
+			$entry->contact_warning = $contactstatic->user_id;	// Show warning to recommend to assign user_id as contact instead.
 		}
 
 		if ($contact['source'] == 'internal') {
@@ -351,7 +351,13 @@ foreach ($list as $entry) {
 
 	print '<td class="tdoverflowmax200" data-thirdparty_id="' . ((int) $entry->thirdparty_id) . '" data-thirdparty_name="' . dol_escape_htmltag($entry->thirdparty_name) . '">'.$entry->thirdparty_html.'</td>';
 	print '<td class="tdoverflowmax200" data-contact_id="' . ((int) $entry->contact_id) . '">'.$entry->contact_html.'</td>';
-	print '<td class="nowrap" data-nature="' . dol_escape_htmltag($entry->nature) . '"><span class="opacitymedium">'.dol_escape_htmltag($entry->nature_html).'</span></td>';
+	print '<td class="nowrap" data-nature="' . dol_escape_htmltag($entry->nature) . '"><span class="opacitymedium">'.dol_escape_htmltag($entry->nature_html).'</span>';
+	if ($entry->contact_warning > 0) {
+		$tmpuser = new User($db);
+		$tmpuser->fetch($entry->contact_warning);
+		print ($tmpuser->id > 0 ? img_picto($langs->trans("ThisContactHasAUser", $tmpuser->getFullName($langs), $entry->contact_name), 'info') : '');
+	}
+	print '</td>';
 	print '<td class="tdoverflowmax200" data-type_id="' . ((int) $entry->type_id) . '" data-type="' . dol_escape_htmltag($entry->type) . '">'.dol_escape_htmltag($entry->type).'</td>';
 	print '<td class="tdoverflowmax200 center" data-status_id="' . ((int) $entry->status) . '">'.$entry->status_html.'</td>';
 
