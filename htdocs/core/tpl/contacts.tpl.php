@@ -4,6 +4,7 @@
  * Copyright (C) 2015-2016  Charlie BENKE 	        <charlie@patas-monkey.com>
  * Copyright (C) 2021-2025  Frédéric France         <frederic.france@free.fr>
  * Copyright (C) 2024-2025	MDW					    <mdeweerd@users.noreply.github.com>
+ * Copyright (C) 2024		Solution Libre SAS	<contact@solution-libre.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -274,11 +275,13 @@ foreach (array('internal', 'external') as $source) {
 			$entry->contact_id   = $userstatic->id;
 			$entry->contact_html = $userstatic->getNomUrl(-1, '', 0, 0, 0, 0, '', 'valignmiddle');
 			$entry->contact_name = strtolower($userstatic->getFullName($langs));
+			$entry->contact_warning = false;
 		} elseif ($contact['source'] == 'external') {
 			$contactstatic->fetch($contact['id']);
 			$entry->contact_id   = $contactstatic->id;
 			$entry->contact_html = $contactstatic->getNomUrl(1, '', 0, '', 0, 0);
 			$entry->contact_name = strtolower($contactstatic->getFullName($langs));
+			$entry->contact_warning = ($contactstatic->user_id > 0);
 		}
 
 		if ($contact['source'] == 'internal') {
