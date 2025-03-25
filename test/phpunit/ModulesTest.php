@@ -85,8 +85,6 @@ class ModulesTest extends CommonClassTest // TestCase //CommonClassTest
 		$langs = $this->savlangs;
 		$db = $this->savdb;
 
-		//$this->nbLinesToShow = 0; // Only 3 lines of the log.
-
 		require_once DOL_DOCUMENT_ROOT.'/core/modules/mod'.$modlabel.'.class.php';
 		$class = 'mod'.$modlabel;
 		$mod = new $class($db);
