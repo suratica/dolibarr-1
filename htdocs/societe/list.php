@@ -63,7 +63,6 @@ if (isModEnabled('category')) {
 // Load translation files required by the page
 $langs->loadLangs(array("companies", "commercial", "customers", "suppliers", "bills", "compta", "categories", "cashdesk"));
 
-
 // Get parameters
 $action = GETPOST('action', 'aZ09');
 $massaction = GETPOST('massaction', 'alpha');
@@ -97,6 +96,7 @@ $search_town = trim(GETPOST("search_town", 'alpha'));
 $search_state = trim(GETPOST("search_state", 'alpha'));
 $search_region = trim(GETPOST("search_region", 'alpha'));
 $search_email = trim(GETPOST('search_email', 'alpha'));
+$search_noemail = trim(GETPOST('search_noemail', 'alpha'));
 $search_phone = trim(GETPOST('search_phone', 'alpha'));
 $search_phone_mobile = trim(GETPOST('search_phone_mobile', 'alpha'));
 $search_fax = trim(GETPOST('search_fax', 'alpha'));
@@ -309,6 +309,7 @@ $arrayfields = array(
 	'region.nom' => array('label' => "Region", 'position' => 23, 'checked' => '0'),
 	'country.code_iso' => array('label' => "Country", 'position' => 24, 'checked' => '0'),
 	's.email' => array('label' => "Email", 'position' => 25, 'checked' => '0'),
+	'su.noemail' => array('label' => "No_Email", 'position' => 26, 'checked' => '0'),
 	's.url' => array('label' => "Url", 'position' => 26, 'checked' => '0'),
 	's.phone' => array('label' => "Phone", 'position' => 27, 'checked' => '1'),
 	's.fax' => array('label' => "Fax", 'position' => 28, 'checked' => '0'),
@@ -443,6 +444,7 @@ if (empty($reshook)) {
 		$search_region = "";
 		$search_country = '';
 		$search_email = '';
+		$search_noemail = '';
 		$search_phone = '';
 		$search_phone_mobile = '';
 		$search_fax = '';
@@ -764,6 +766,9 @@ if ($search_country && $search_country != '-1') {
 if ($search_email) {
 	$sql .= natural_search("s.email", $search_email);
 }
+if ($search_noemail) {
+	$sql .= " AND EXISTS (SELECT rowid FROM ".MAIN_DB_PREFIX."mailing_unsubscribe as mu WHERE mu.email = '".$db->escape($search_email)."' AND unsubscribegroup = '' AND entity IN (".getEntity('societe')."))";
+}
 if (strlen($search_phone)) {
 	$sql .= natural_search("s.phone", $search_phone);
 }
@@ -1009,6 +1014,9 @@ if ($search_fax != '') {
 }
 if ($search_email != '') {
 	$param .= "&search_email=".urlencode($search_email);
+}
+if ($search_noemail != '') {
+	$param .= "&search_noemail=".urlencode($search_noemail);
 }
 if ($search_url != '') {
 	$param .= "&search_url=".urlencode($search_url);
@@ -1467,6 +1475,12 @@ if (!empty($arrayfields['s.email']['checked'])) {
 	print '<input class="flat searchemail maxwidth50imp" type="text" name="search_email" value="'.dol_escape_htmltag($search_email).'">';
 	print '</td>';
 }
+if (!empty($arrayfields['su.noemail']['checked'])) {
+	// Email
+	print '<td class="liste_titre center">';
+	print '<input class="flat searchemail maxwidth50imp" type="checkbox" name="search_noemail" '.($search_noemail ? ' checked="checked"' : '').'">';
+	print '</td>';
+}
 if (!empty($arrayfields['s.phone']['checked'])) {
 	// Phone
 	print '<td class="liste_titre">';
@@ -1726,6 +1740,10 @@ if (!empty($arrayfields['s.price_level']['checked'])) {
 }
 if (!empty($arrayfields['s.email']['checked'])) {
 	print_liste_field_titre($arrayfields['s.email']['label'], $_SERVER["PHP_SELF"], "s.email", "", $param, '', $sortfield, $sortorder);
+	$totalarray['nbfield']++;
+}
+if (!empty($arrayfields['su.noemail']['checked'])) {
+	print_liste_field_titre($arrayfields['su.noemail']['label'], $_SERVER["PHP_SELF"], "", "", $param, '', $sortfield, $sortorder, 'center ');
 	$totalarray['nbfield']++;
 }
 if (!empty($arrayfields['s.phone']['checked'])) {
@@ -2129,6 +2147,13 @@ while ($i < $imaxinloop) {
 		// Email
 		if (!empty($arrayfields['s.email']['checked'])) {
 			print '<td class="tdoverflowmax150">'.dol_print_email($obj->email, $obj->rowid, $obj->rowid, 1, 0, 0, 1)."</td>\n";
+			if (!$i) {
+				$totalarray['nbfield']++;
+			}
+		}
+		// Unsubscribe to ML list
+		if (!empty($arrayfields['su.noemail']['checked'])) {
+			print '<td class="center">'.yn($obj->noemail)."</td>\n";
 			if (!$i) {
 				$totalarray['nbfield']++;
 			}
