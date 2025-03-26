@@ -2322,7 +2322,7 @@ while ($i < $imaxinloop) {
 		// Note public
 		if (!empty($arrayfields['s.note_public']['checked'])) {
 			print '<td class="flat maxwidth250imp">';
-			print '<span class="small">'.dolPrintHTML(dolGetFirstLineOfText($obj->note_public), 5).'</span>';
+			print '<div class="small lineheightsmall">'.dolPrintHTML(dolGetFirstLineOfText($obj->note_public), 5).'</div>';
 			print '</td>';
 			if (!$i) {
 				$totalarray['nbfield']++;
@@ -2331,7 +2331,7 @@ while ($i < $imaxinloop) {
 		// Note private
 		if (!empty($arrayfields['s.note_private']['checked'])) {
 			print '<td class="flat maxwidth250imp">';
-			print '<span class="small">'.dolPrintHTML(dolGetFirstLineOfText($obj->note_private), 5).'</span>';
+			print '<div class="small lineheightsmall">'.dolPrintHTML(dolGetFirstLineOfText($obj->note_private), 5).'</div>';
 			print '</td>';
 			if (!$i) {
 				$totalarray['nbfield']++;
