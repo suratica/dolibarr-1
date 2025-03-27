@@ -474,7 +474,7 @@ section.setupsection {
 .field-error-icon { color: #ea1212 !important; }
 
 /* Focus definitions must be after standard definition */
-div.tabBar textarea:focus {
+div.tabBar textarea:focus:not(.textarea-ai_feature) {
 	border: 1px solid #aaa !important;
 }
 input:focus:not(.button):not(.buttonwebsite):not(.buttonreset):not(.select2-search__field):not(#top-bookmark-search-input):not(.search_component_input):not(.input-nobottom),
@@ -8636,6 +8636,7 @@ table.jPicker {
 {
 	.ai_dropdown{
 		min-width : 280px !important;
+		width: calc(100% - 50px);
 	}
 
 	.imgopensurveywizard, .imgautosize { width:95%; height: auto; }

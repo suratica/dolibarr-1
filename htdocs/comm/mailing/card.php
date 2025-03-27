@@ -799,7 +799,7 @@ if ($action == 'create') {	// aaa
 	// Print mail form
 	print load_fiche_titre($langs->trans("NewMailing"), $availablelink, 'object_email');
 
-	print dol_get_fiche_head(array(), '', '', 0, '', 0, '', '');
+	print dol_get_fiche_head(array(), '', '', -3, '', 0, '', 'noborderbottom');
 
 	print '<table class="border centpercent">';
 
