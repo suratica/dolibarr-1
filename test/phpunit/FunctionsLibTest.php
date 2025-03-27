@@ -1993,8 +1993,8 @@ class FunctionsLibTest extends CommonClassTest
 		$this->assertEquals("a", $result[0]);
 		$this->assertEquals("b c", $result[1]);
 
-		//$result = dolExplodeKeepIfQuotes("1 0");
-		//$this->assertEquals("1", $result[0]);
-		//$this->assertEquals("0", $result[1]);
+		$result = dolExplodeKeepIfQuotes("1 0");
+		$this->assertEquals("1", $result[0]);
+		$this->assertEquals("0", $result[1]);
 	}
 }
