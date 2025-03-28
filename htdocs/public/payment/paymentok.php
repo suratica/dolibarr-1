@@ -2150,7 +2150,13 @@ if (!empty($doactionsthenredirect)) {
 		} else {
 			$ext_urlok = DOL_URL_ROOT.'/public/website/index.php?website='.urlencode($ws).'&pageref=paymentok&fulltag='.$FULLTAG;
 		}
-		print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlok) ."';</script></html>";
+
+		dol_syslog("Now do a redirect to ".$ext_urlok, LOG_DEBUG, 0, '_payment');
+
+		header("Location: ".$ext_urlok);
+		exit;
+		// Redirect in js is not reliable
+		//print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlok) ."';</script></html>";
 	} else {
 		// Redirect to an error page
 		// Paymentko page must be created for the specific website
@@ -2159,6 +2165,12 @@ if (!empty($doactionsthenredirect)) {
 		} else {
 			$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
 		}
-		print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script></html>";
+
+		dol_syslog("Now do a redirect to ".$ext_urlko, LOG_DEBUG, 0, '_payment');
+
+		header("Location: ".$ext_urlko);
+		exit;
+		// Redirect in js is not reliable
+		//print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script></html>";
 	}
 }

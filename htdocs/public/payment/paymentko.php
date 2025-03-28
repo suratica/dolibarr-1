@@ -116,14 +116,14 @@ if (empty($paymentmethod)) {
 	dol_print_error(null, 'The back url does not contain a parameter fulltag that should help us to find the payment method used');
 	exit;
 } else {
-	dol_syslog("paymentmethod=".$paymentmethod);
+	dol_syslog("paymentko.php: paymentmethod=".$paymentmethod, LOG_DEBUG, 0, '_payment');
 }
 
 // Detect $ws
 $reg_ws = array();
 $ws = preg_match('/WS=([^\.]+)/', $FULLTAG, $reg_ws) ? $reg_ws[1] : 0;
 if ($ws) {
-	dol_syslog("Paymentko.php page is invoked from a website with ref ".$ws.". It performs actions and then redirects back to this website. A page with ref paymentko must be created for this website.", LOG_DEBUG, 0, '_payment');
+	dol_syslog("paymentko.php: page is invoked from a website with ref ".$ws.". It performs actions and then redirects back to this website. A page with ref paymentko must be created for this website.", LOG_DEBUG, 0, '_payment');
 }
 
 
@@ -354,5 +354,10 @@ if (!empty($doactionsthenredirect)) {
 		$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
 	}
 
-	print "<script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script>";
+	dol_syslog("Now do a redirect to ".$ext_urlko, LOG_DEBUG, 0, '_payment');
+
+	header("Location: ".$ext_urlko);
+	exit;
+	// Redirect in js is not reliable
+	//print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script></html>";
 }
