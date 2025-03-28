@@ -2155,7 +2155,7 @@ if (!empty($doactionsthenredirect)) {
 
 		dol_syslog("Now do a redirect to ".$ext_urlok, LOG_DEBUG, 0, '_payment');
 
-		if (getDolGlobalString('WEBSITE_PAYMENT_IN_FRAME_'.$ws_id)) {
+		if (getDolGlobalString('MARKETPLACE_PAYMENT_IN_FRAME')) {	// TODO Use a property in website module
 			// Redirect in js is not reliable
 			print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlok)."';</script></html>";
 		} else {
@@ -2173,7 +2173,7 @@ if (!empty($doactionsthenredirect)) {
 
 		dol_syslog("Now do a redirect to ".$ext_urlko, LOG_DEBUG, 0, '_payment');
 
-		if (getDolGlobalString('WEBSITE_PAYMENT_IN_FRAME_'.$ws_id)) {
+		if (getDolGlobalString('MARKETPLACE_PAYMENT_IN_FRAME')) {	// TODO Use a property in website module
 			// Redirect in js is not reliable
 			print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script></html>";
 		} else {
