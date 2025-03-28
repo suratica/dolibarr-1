@@ -784,11 +784,11 @@ class AccountancyCategory // extends CommonObject
 		global $conf, $mysoc;
 
 		if (empty($mysoc->country_id)) {
-			dol_print_error(null, 'Call to select_accounting_account with mysoc country not yet defined');
+			dol_print_error(null, 'Call to getCats with mysoc country not yet defined');
 			exit();
 		}
 
-		$sql = "SELECT c.rowid, c.code, c.label, c.formula, c.position, c.category_type, c.sens";
+		$sql = "SELECT c.rowid, c.code, c.label, c.formula, c.position, c.category_type, c.sens, c.fk_report";
 		$sql .= " FROM ".$this->db->prefix().$this->table_element." as c";
 		$sql .= " WHERE c.active = " . (int) $active;
 		$sql .= " AND c.fk_report=".((int) $id_report);
