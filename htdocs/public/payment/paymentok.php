@@ -1887,6 +1887,8 @@ if ($ispaymentok) {
 	}
 }
 
+dol_syslog("ispaymentok=".$ispaymentok." ispostactionok=".$ispostactionok." doactionsthenredirect=".$doactionsthenredirect, LOG_DEBUG, 0, '_payment');
+
 if ($ispaymentok) {
 	// Get on url call
 	$onlinetoken        = empty($PAYPALTOKEN) ? $_SESSION['onlinetoken'] : $PAYPALTOKEN;
