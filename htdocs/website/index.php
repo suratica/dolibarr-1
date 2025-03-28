@@ -4402,11 +4402,6 @@ if ($action == 'editsecurity') {
 	print '</tr>';
 
 	$examplecsprule = "frame-ancestors 'self'; img-src * data:; font-src *; default-src 'self' 'unsafe-inline' 'unsafe-eval' *.paypal.com *.stripe.com *.google.com *.googleapis.com *.google-analytics.com *.googletagmanager.com;";
-	// Force CSPRO
-	print '<tr class="oddeven">';
-	print '<td>'.$form->textwithpicto($langs->trans('WebsiteSecurityForceCSPRO'), 'HTTP Header Content-Security-Policy-Report-Only<br><br>'.$langs->trans("Example").":<br>".$examplecsprule, 1, 'help', 'valignmiddle', 0, 3, 'WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO').'</td>';
-	print '<td><input class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO" value="'.getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCECSPRO").'"></td>';
-	print '</tr>';
 
 	// Force CSP - Content Security Policy
 	print '<tr class="oddeven nohover">';
@@ -4475,6 +4470,14 @@ if ($action == 'editsecurity') {
 
 	print '</td>';
 	print '</tr>';
+
+	// Force CSPRO
+	if (getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCECSPRO")) {
+		print '<tr class="oddeven">';
+		print '<td>'.$form->textwithpicto($langs->trans('WebsiteSecurityForceCSPRO'), 'HTTP Header Content-Security-Policy-Report-Only<br><br>'.$langs->trans("Example").":<br>".$examplecsprule, 1, 'help', 'valignmiddle', 0, 3, 'WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO').'</td>';
+		print '<td><input class="minwidth500" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSPRO" value="'.getDolGlobalString("WEBSITE_".$object->id."_SECURITY_FORCECSPRO").'"></td>';
+		print '</tr>';
+	}
 
 	print '</table>';
 	print '</div>';
