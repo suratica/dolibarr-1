@@ -2153,12 +2153,14 @@ if (!empty($doactionsthenredirect)) {
 			$ext_urlok = DOL_URL_ROOT.'/public/website/index.php?website='.urlencode($ws).'&pageref=paymentok&fulltag='.$FULLTAG;
 		}
 
-		dol_syslog("Now do a redirect to ".$ext_urlok, LOG_DEBUG, 0, '_payment');
+		if (getDolGlobalInt('MARKETPLACE_PAYMENT_IN_FRAME') == 1) {	// TODO Use a property in website module
+			dol_syslog("Now do a redirect in iframe mode in js to ".$ext_urlok, LOG_DEBUG, 0, '_payment');
 
-		if (getDolGlobalString('MARKETPLACE_PAYMENT_IN_FRAME')) {	// TODO Use a property in website module
 			// Redirect in js is not reliable
 			print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlok)."';</script></html>";
 		} else {
+			dol_syslog("Now do a redirect using a Location: ".$ext_urlok, LOG_DEBUG, 0, '_payment');
+
 			header("Location: ".$ext_urlok);
 			exit;
 		}
@@ -2171,12 +2173,14 @@ if (!empty($doactionsthenredirect)) {
 			$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
 		}
 
-		dol_syslog("Now do a redirect to ".$ext_urlko, LOG_DEBUG, 0, '_payment');
+		if (getDolGlobalInt('MARKETPLACE_PAYMENT_IN_FRAME') == 1) {	// TODO Use a property in website module
+			dol_syslog("Now do a redirect in iframe mode in js to ".$ext_urlko, LOG_DEBUG, 0, '_payment');
 
-		if (getDolGlobalString('MARKETPLACE_PAYMENT_IN_FRAME')) {	// TODO Use a property in website module
 			// Redirect in js is not reliable
 			print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script></html>";
 		} else {
+			dol_syslog("Now do a redirect using a Location:".$ext_urlko, LOG_DEBUG, 0, '_payment');
+
 			header("Location: ".$ext_urlko);
 			exit;
 		}
