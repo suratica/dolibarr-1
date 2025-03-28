@@ -174,6 +174,7 @@ $error = 0;
 
 // Check if we have redirtodomain to do.
 $ws_virtuelhost = null;
+$ws_id = 0;
 $doactionsthenredirect = 0;
 if ($ws) {
 	$doactionsthenredirect = 1;
@@ -182,6 +183,7 @@ if ($ws) {
 	$result = $website->fetch(0, $ws);
 	if ($result > 0) {
 		$ws_virtuelhost = $website->virtualhost;
+		$ws_id = $website->id;
 	}
 }
 
@@ -2153,10 +2155,13 @@ if (!empty($doactionsthenredirect)) {
 
 		dol_syslog("Now do a redirect to ".$ext_urlok, LOG_DEBUG, 0, '_payment');
 
-		header("Location: ".$ext_urlok);
-		exit;
-		// Redirect in js is not reliable
-		//print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlok) ."';</script></html>";
+		if (getDolGlobalString('WEBSITE_PAYMENT_IN_FRAME_'.$ws_id)) {
+			// Redirect in js is not reliable
+			print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlok)."';</script></html>";
+		} else {
+			header("Location: ".$ext_urlok);
+			exit;
+		}
 	} else {
 		// Redirect to an error page
 		// Paymentko page must be created for the specific website
@@ -2168,9 +2173,12 @@ if (!empty($doactionsthenredirect)) {
 
 		dol_syslog("Now do a redirect to ".$ext_urlko, LOG_DEBUG, 0, '_payment');
 
-		header("Location: ".$ext_urlko);
-		exit;
-		// Redirect in js is not reliable
-		//print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script></html>";
+		if (getDolGlobalString('WEBSITE_PAYMENT_IN_FRAME_'.$ws_id)) {
+			// Redirect in js is not reliable
+			print "<!DOCTYPE html><html><head></head><script>window.top.location.href = '".dol_escape_js($ext_urlko)."';</script></html>";
+		} else {
+			header("Location: ".$ext_urlko);
+			exit;
+		}
 	}
 }
