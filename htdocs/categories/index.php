@@ -75,14 +75,17 @@ if (!$permissiontoread) {
 	accessforbidden();
 }
 
+$nbtotalofrecords = 99;
+
 
 /*
  * View
  */
 
-$form = new Form($db);
-
 $param = ($nosearch ? '&nosearch=1' : '');
+if ($type != '') {
+	$param .= '&type='.urlencode($type);
+}
 
 $typetext = $type;
 
@@ -92,83 +95,7 @@ $title .= ' ('.$langs->trans(empty(Categorie::$MAP_TYPE_TITLE_AREA[$type]) ? ucf
 $arrayofjs = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.js', '/includes/jquery/plugins/jquerytreeview/lib/jquery.cookie.js');
 $arrayofcss = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.css');
 
-llxHeader('', $title, '', '', 0, 0, $arrayofjs, $arrayofcss);
-
-$newcardbutton = '';
-//$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_URL_ROOT.'/categories/categorie_list.php?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
-//$newcardbutton .= dolGetButtonTitle($langs->trans('HierarchicView'), '', 'fa fa-stream paddingleft imgforviewmode', DOL_URL_ROOT.'/categories/index.php?mode=hierarchy'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', (($mode == 'hierarchy') ? 2 : 1), array('morecss' => 'reposition'));
-//$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER["PHP_SELF"].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
-//$newcardbutton .= dolGetButtonTitleSeparator();
-$newcardbutton .= dolGetButtonTitle($langs->trans('NewCategory'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/categories/card.php?action=create&type='.$type.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?type='.$type.$param).$param, '', $permissiontoadd);
-
-print load_fiche_titre($title, $newcardbutton, 'object_category');
-
-// Search categories
-if (empty($nosearch)) {
-	print '<div class="fichecenter"><div class="fichehalfleft">';
-
-
-	print '<form method="post" action="index.php?type='.$type.'">';
-	print '<input type="hidden" name="token" value="'.newToken().'">';
-	print '<input type="hidden" name="type" value="'.$type.'">';
-	print '<input type="hidden" name="nosearch" value="'.$nosearch.'">';
-
-
-	print '<table class="noborder nohover centpercent">';
-	print '<tr class="liste_titre">';
-	print '<td colspan="3">'.$langs->trans("Search").'</td>';
-	print '</tr>';
-	print '<tr class="oddeven nohover"><td>';
-	print $langs->trans("Name").':</td><td><input class="flat inputsearch" type="text" name="catname" value="'.dol_escape_htmltag($catname).'"></td>';
-	print '<td><input type="submit" class="button small" value="'.$langs->trans("Search").'"></td></tr>';
-	print '</table></form>';
-
-
-	print '</div><div class="fichehalfright">';
-
-
-	/*
-	 * Categories found
-	 */
-	if ($catname || $id > 0) {
-		$cats = $categstatic->rechercher($id, $catname, $typetext);
-
-		print '<table class="noborder centpercent">';
-		print '<tr class="liste_titre"><td colspan="2">'.$langs->trans("FoundCats").'</td></tr>';
-
-		foreach ($cats as $cat) {
-			$categstatic->id = $cat->id;
-			$categstatic->ref = $cat->label;
-			$categstatic->label = $cat->label;
-			$categstatic->type = $cat->type;
-			$categstatic->color = $cat->color;
-			$color = $categstatic->color ? ' style="background: #'.sprintf("%06s", $categstatic->color).';"' : ' style="background: #bbb"';
-
-			print "\t".'<tr class="oddeven">'."\n";
-			print "\t\t<td>";
-			print '<span class="noborderoncategories"'.$color.'>';
-			print $categstatic->getNomUrl(1, '');
-			print '</span>';
-			print "</td>\n";
-			print "\t\t<td>";
-			$text = dolGetFirstLineOfText(dol_string_nohtmltag($cat->description, 1));
-			$trunclength = 48;
-			print $form->textwithtooltip(dol_trunc($text, $trunclength), $cat->description);
-			print "</td>\n";
-			print "\t</tr>\n";
-		}
-		print "</table>";
-	} else {
-		print '&nbsp;';
-	}
-
-	print '</div></div>';
-}
-
-print '<div class="fichecenter"><br>';
-
-
-// Charge tableau des categories
+// Load array of categories
 $cate_arbo = $categstatic->get_full_arbo($typetext);
 
 // Define fulltree array
@@ -203,7 +130,7 @@ foreach ($fulltree as $key => $val) {
 	$counter = '';
 	if (getDolGlobalString('CATEGORY_SHOW_COUNTS')) {
 		// we need only a count of the elements, so it is enough to consume only the id's from the database
-		$elements = $type == Categorie::TYPE_ACCOUNT
+		$elements = ($type == Categorie::TYPE_ACCOUNT)
 			? $categstatic->getObjectsInCateg("account", 1)			// Categorie::TYPE_ACCOUNT is "bank_account" instead of "account"
 			: $categstatic->getObjectsInCateg($type, 1);
 
@@ -253,6 +180,86 @@ foreach ($data as $record) {
 	}
 }
 
+$nbtotalofrecords = $nbofentries;
+
+// Output page
+// --------------------------------------------------------------------
+
+llxHeader('', $title, '', '', 0, 0, $arrayofjs, $arrayofcss);
+
+$newcardbutton = '';
+$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_URL_ROOT.'/categories/categorie_list.php?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitle($langs->trans('HierarchicView'), '', 'fa fa-stream paddingleft imgforviewmode', DOL_URL_ROOT.'/categories/index.php?mode=hierarchy'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', (($mode == 'hierarchy') ? 2 : 1), array('morecss' => 'reposition'));
+//$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER["PHP_SELF"].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+$newcardbutton .= dolGetButtonTitleSeparator();
+$newcardbutton .= dolGetButtonTitle($langs->trans('NewCategory'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/categories/card.php?action=create&type='.$type.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?type='.$type.$param).$param, '', $permissiontoadd);
+
+print_barre_liste($title, 0, $_SERVER["PHP_SELF"], $param, '', '', '', 0, $nbtotalofrecords, $categstatic->picto, 0, $newcardbutton, '', 0, 0, 0, 1);
+//print load_fiche_titre($title, $newcardbutton, 'object_category');
+
+// Search categories
+/*
+if (empty($nosearch)) {
+	print '<div class="fichecenter"><div class="fichehalfleft">';
+
+
+	print '<form method="post" action="index.php?type='.$type.'">';
+	print '<input type="hidden" name="token" value="'.newToken().'">';
+	print '<input type="hidden" name="type" value="'.$type.'">';
+	print '<input type="hidden" name="nosearch" value="'.$nosearch.'">';
+
+
+	print '<table class="noborder nohover centpercent">';
+	print '<tr class="liste_titre">';
+	print '<td colspan="3">'.$langs->trans("Search").'</td>';
+	print '</tr>';
+	print '<tr class="oddeven nohover"><td>';
+	print $langs->trans("Name").':</td><td><input class="flat inputsearch" type="text" name="catname" value="'.dol_escape_htmltag($catname).'"></td>';
+	print '<td><input type="submit" class="button small" value="'.$langs->trans("Search").'"></td></tr>';
+	print '</table></form>';
+
+
+	print '</div><div class="fichehalfright">';
+
+
+	// Categories found
+	if ($catname || $id > 0) {
+		$cats = $categstatic->rechercher($id, $catname, $typetext);
+
+		print '<table class="noborder centpercent">';
+		print '<tr class="liste_titre"><td colspan="2">'.$langs->trans("FoundCats").'</td></tr>';
+
+		foreach ($cats as $cat) {
+			$categstatic->id = $cat->id;
+			$categstatic->ref = $cat->label;
+			$categstatic->label = $cat->label;
+			$categstatic->type = $cat->type;
+			$categstatic->color = $cat->color;
+			$color = $categstatic->color ? ' style="background: #'.sprintf("%06s", $categstatic->color).';"' : ' style="background: #bbb"';
+
+			print "\t".'<tr class="oddeven">'."\n";
+			print "\t\t<td>";
+			print '<span class="noborderoncategories"'.$color.'>';
+			print $categstatic->getNomUrl(1, '');
+			print '</span>';
+			print "</td>\n";
+			print "\t\t<td>";
+			$text = dolGetFirstLineOfText(dol_string_nohtmltag($cat->description, 1));
+			$trunclength = 48;
+			print $form->textwithtooltip(dol_trunc($text, $trunclength), $cat->description);
+			print "</td>\n";
+			print "\t</tr>\n";
+		}
+		print "</table>";
+	} else {
+		print '&nbsp;';
+	}
+
+	print '</div></div>';
+}
+*/
+
+print '<div class="fichecenter">';
 
 print '<table class="liste nohover centpercent noborder">';
 print '<tr class="liste_titre"><td>'.$langs->trans("Categories").'</td><td></td><td class="right">';
@@ -266,7 +273,7 @@ if ($morethan1level && !empty($conf->use_javascript_ajax)) {
 print '</td></tr>';
 
 if ($nbofentries > 0) {
-	print '<tr class="oddeven"><td colspan="3">';
+	print '<tr class="oddeven nohover"><td colspan="3">';
 	tree_recur($data, $data[0], 0);
 	print '</td></tr>';
 } else {

@@ -38,7 +38,8 @@ require_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
  */
 
 // Load translation files required by the page
-$langs->loadLangs(array("categories"));
+$langs->loadLangs(array("accountancy", "agenda", "banks", "bills", "categories", "contracts", "interventions"));
+$langs->loadLangs(array("knowledgemanagement", "members", "orders", "products", "stocks", "suppliers", "tickets"));
 
 // Get parameters
 $action     = GETPOST('action', 'aZ09') ? GETPOST('action', 'aZ09') : 'view'; // The action 'create'/'add', 'edit'/'update', 'view', ...
@@ -267,6 +268,7 @@ if ($object->ismultientitymanaged == 1) {
 } else {
 	$sql .= " WHERE 1 = 1";
 }
+$sql .= " AND type = ".((int) $object->MAP_ID[$type]);
 foreach ($search as $key => $val) {
 	if (array_key_exists($key, $object->fields)) {
 		if ($key == 'status' && $search[$key] == -1) {
@@ -445,6 +447,9 @@ if ($optioncss != '') {
 }
 if ($groupby != '') {
 	$param .= '&groupby='.urlencode($groupby);
+}
+if ($type != '') {
+	$param .= '&type='.urlencode($type);
 }
 foreach ($search as $key => $val) {
 	if (is_array($search[$key])) {
@@ -774,7 +779,13 @@ while ($i < $imaxinloop) {
 					print ' title="'.dol_escape_htmltag((string) $object->$key).'"';
 				}
 				print '>';
-				if ($key == 'status') {
+				if ($key == 'label') {
+					$color = $object->color ? ' style="background: #'.sprintf("%06s", $object->color).';"' : ' style="background: #bbb"';
+					$object->ref = $object->label;
+					$li = $object->getNomUrl(1, '', 60, '&backtolist='.urlencode($_SERVER["PHP_SELF"].'?type='.$type.$param));
+
+					print '<span class="noborderoncategories" '.$color.'>'.$li.'</span>';
+				} elseif ($key == 'status') {
 					print $object->getLibStatut(5);
 				} elseif ($key == 'rowid') {
 					print $object->showOutputField($val, $key, (string) $object->id, '');
