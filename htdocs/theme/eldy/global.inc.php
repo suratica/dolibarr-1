@@ -4235,7 +4235,7 @@ div .tdtop:not(.tagtdnote) {
 	vertical-align: top !important;
 	/*padding-top: 10px !important;
 	padding-bottom: 2px !important; */
-	padding-top: 7px !important;
+	padding-top: 8px !important;
 	padding-bottom: 0px !important;
 	height: unset !important;
 }

@@ -150,9 +150,11 @@ foreach ($fulltree as $key => $val) {
 	// Add column counter
 	$entry .= $counter;
 
+	/*
 	$entry .= '<td class="right" width="30px;">';
 	$entry .= '<a href="'.DOL_URL_ROOT.'/categories/viewcat.php?id='.$val['id'].'&type='.urlencode($type).$param.'&backtolist='.urlencode($_SERVER["PHP_SELF"].'?type='.urlencode($type)).'">'.img_view().'</a>';
 	$entry .= '</td>';
+	*/
 	$entry .= '<td class="right" width="30px;">';
 	if ($user->hasRight('categorie', 'creer')) {
 		$entry .= '<a class="editfielda" href="' . DOL_URL_ROOT . '/categories/edit.php?id=' . $val['id'] . '&type=' . urlencode($type) . $param . '&backtopage=' . urlencode($_SERVER["PHP_SELF"] . '?type=' . urlencode($type)) . '">' . img_edit() . '</a>';

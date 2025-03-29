@@ -5066,7 +5066,7 @@ div.tabBar .noborder {
 }
 div .tdtop:not(.tagtdnote) {
 	vertical-align: top !important;
-	padding-top: 8px !important;
+	padding-top: 6px !important;
 	padding-bottom: 0px !important;
 }
 
