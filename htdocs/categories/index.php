@@ -44,8 +44,13 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
  */
 
 // Load translation files required by the page
-$langs->load("categories");
+$langs->loadLangs(array("accountancy", "agenda", "banks", "bills", "categories", "contracts", "interventions"));
+$langs->loadLangs(array("knowledgemanagement", "members", "orders", "products", "stocks", "suppliers", "tickets"));
 
+$mode = GETPOST('mode', 'aZ09');
+if (empty($mode)) {
+	$mode = 'hierarchy';
+}
 $id = GETPOSTINT('id');
 $type = (GETPOST('type', 'aZ09') ? GETPOST('type', 'aZ09') : Categorie::TYPE_PRODUCT);
 $catname = GETPOST('catname', 'alpha');
@@ -59,7 +64,14 @@ if (is_numeric($type)) {
 // Initialize a technical object to manage hooks. Note that conf->hooks_modules contains array array
 $hookmanager->initHooks(array('categoryindex'));
 
-if (!$user->hasRight('categorie', 'lire')) {
+$permissiontoread = $user->hasRight('categorie', 'read');
+$permissiontoadd = $user->hasRight('categorie', 'write');
+//$permissiontodelete = $user->hasRight('categorie', 'delete');
+
+if (!isModEnabled("categorie")) {
+	accessforbidden('Module Category not enabled');
+}
+if (!$permissiontoread) {
 	accessforbidden();
 }
 
@@ -70,24 +82,12 @@ if (!$user->hasRight('categorie', 'lire')) {
 
 $form = new Form($db);
 
-$moreparam = ($nosearch ? '&nosearch=1' : '');
+$param = ($nosearch ? '&nosearch=1' : '');
 
 $typetext = $type;
-if ($type == Categorie::TYPE_ACCOUNT) {
-	$title = $langs->trans('AccountsCategoriesArea');
-} elseif ($type == Categorie::TYPE_WAREHOUSE) {
-	$title = $langs->trans('StocksCategoriesArea');
-} elseif ($type == Categorie::TYPE_ACTIONCOMM) {
-	$title = $langs->trans('ActionCommCategoriesArea');
-} elseif ($type == Categorie::TYPE_WEBSITE_PAGE) {
-	$title = $langs->trans('WebsitePagesCategoriesArea');
-} elseif ($type == Categorie::TYPE_SUPPLIER_ORDER) {
-	$title = $langs->trans('SuppliersOrdersCategoriesArea');
-} elseif ($type == Categorie::TYPE_SUPPLIER_INVOICE) {
-	$title = $langs->trans('SuppliersInvoicesCategoriesArea');
-} else {
-	$title = $langs->trans(ucfirst($type).'sCategoriesArea');
-}
+
+$title = $langs->trans("Categories");
+$title .= ' ('.$langs->trans(empty(Categorie::$MAP_TYPE_TITLE_AREA[$type]) ? ucfirst($type) : Categorie::$MAP_TYPE_TITLE_AREA[$type]).')';
 
 $arrayofjs = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.js', '/includes/jquery/plugins/jquerytreeview/lib/jquery.cookie.js');
 $arrayofcss = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.css');
@@ -95,9 +95,11 @@ $arrayofcss = array('/includes/jquery/plugins/jquerytreeview/jquery.treeview.css
 llxHeader('', $title, '', '', 0, 0, $arrayofjs, $arrayofcss);
 
 $newcardbutton = '';
-if ($user->hasRight('categorie', 'creer')) {
-	$newcardbutton .= dolGetButtonTitle($langs->trans('NewCategory'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/categories/card.php?action=create&type='.$type.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?type='.$type.$moreparam).$moreparam);
-}
+//$newcardbutton .= dolGetButtonTitle($langs->trans('ViewList'), '', 'fa fa-bars imgforviewmode', DOL_URL_ROOT.'/categories/categorie_list.php?mode=common'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ((empty($mode) || $mode == 'common') ? 2 : 1), array('morecss' => 'reposition'));
+//$newcardbutton .= dolGetButtonTitle($langs->trans('HierarchicView'), '', 'fa fa-stream paddingleft imgforviewmode', DOL_URL_ROOT.'/categories/index.php?mode=hierarchy'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', (($mode == 'hierarchy') ? 2 : 1), array('morecss' => 'reposition'));
+//$newcardbutton .= dolGetButtonTitle($langs->trans('ViewKanban'), '', 'fa fa-th-list imgforviewmode', $_SERVER["PHP_SELF"].'?mode=kanban'.preg_replace('/(&|\?)*mode=[^&]+/', '', $param), '', ($mode == 'kanban' ? 2 : 1), array('morecss' => 'reposition'));
+//$newcardbutton .= dolGetButtonTitleSeparator();
+$newcardbutton .= dolGetButtonTitle($langs->trans('NewCategory'), '', 'fa fa-plus-circle', DOL_URL_ROOT.'/categories/card.php?action=create&type='.$type.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?type='.$type.$param).$param, '', $permissiontoadd);
 
 print load_fiche_titre($title, $newcardbutton, 'object_category');
 
@@ -209,7 +211,7 @@ foreach ($fulltree as $key => $val) {
 	}
 
 	$color = $categstatic->color ? ' style="background: #'.sprintf("%06s", $categstatic->color).';"' : ' style="background: #bbb"';
-	$li = $categstatic->getNomUrl(1, '', 60, '&backtolist='.urlencode($_SERVER["PHP_SELF"].'?type='.$type.$moreparam));
+	$li = $categstatic->getNomUrl(1, '', 60, '&backtolist='.urlencode($_SERVER["PHP_SELF"].'?type='.$type.$param));
 
 	$entry = '<table class="nobordernopadding centpercent">';
 	$entry .= '<tr>';
@@ -222,16 +224,16 @@ foreach ($fulltree as $key => $val) {
 	$entry .= $counter;
 
 	$entry .= '<td class="right" width="30px;">';
-	$entry .= '<a href="'.DOL_URL_ROOT.'/categories/viewcat.php?id='.$val['id'].'&type='.urlencode($type).$moreparam.'&backtolist='.urlencode($_SERVER["PHP_SELF"].'?type='.urlencode($type)).'">'.img_view().'</a>';
+	$entry .= '<a href="'.DOL_URL_ROOT.'/categories/viewcat.php?id='.$val['id'].'&type='.urlencode($type).$param.'&backtolist='.urlencode($_SERVER["PHP_SELF"].'?type='.urlencode($type)).'">'.img_view().'</a>';
 	$entry .= '</td>';
 	$entry .= '<td class="right" width="30px;">';
 	if ($user->hasRight('categorie', 'creer')) {
-		$entry .= '<a class="editfielda" href="' . DOL_URL_ROOT . '/categories/edit.php?id=' . $val['id'] . '&type=' . urlencode($type) . $moreparam . '&backtopage=' . urlencode($_SERVER["PHP_SELF"] . '?type=' . urlencode($type)) . '">' . img_edit() . '</a>';
+		$entry .= '<a class="editfielda" href="' . DOL_URL_ROOT . '/categories/edit.php?id=' . $val['id'] . '&type=' . urlencode($type) . $param . '&backtopage=' . urlencode($_SERVER["PHP_SELF"] . '?type=' . urlencode($type)) . '">' . img_edit() . '</a>';
 	}
 	$entry .= '</td>';
 	$entry .= '<td class="right" width="30px;">';
 	if ($user->hasRight('categorie', 'supprimer')) {
-		$entry .= '<a class="deletefilelink" href="' . DOL_URL_ROOT . '/categories/viewcat.php?action=delete&token=' . newToken() . '&id=' . $val['id'] . '&type=' . urlencode($type) . $moreparam . '&backtopage=' . urlencode($_SERVER["PHP_SELF"] . '?type=' . urlencode($type) . $moreparam) . '&backtolist=' . urlencode($_SERVER["PHP_SELF"] . '?type=' . urlencode($type) . $moreparam) . '">' . img_delete() . '</a>';
+		$entry .= '<a class="deletefilelink" href="' . DOL_URL_ROOT . '/categories/viewcat.php?action=delete&token=' . newToken() . '&id=' . $val['id'] . '&type=' . urlencode($type) . $param . '&backtopage=' . urlencode($_SERVER["PHP_SELF"] . '?type=' . urlencode($type) . $param) . '&backtolist=' . urlencode($_SERVER["PHP_SELF"] . '?type=' . urlencode($type) . $param) . '">' . img_delete() . '</a>';
 	}
 	$entry .= '</td>';
 
