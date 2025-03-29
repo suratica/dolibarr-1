@@ -618,7 +618,7 @@ class AccountancyCategory // extends CommonObject
 	}
 
 	/**
-	 * Function to show result of an accounting account from the ledger with a direction and a period
+	 * Function to set the property ->sdc (and ->sdcperaccount) that is the result of an accounting account from the ledger with a direction and a period
 	 *
 	 * @param int|array<?string>	$cpt 	Accounting account or array of accounting account
 	 * @param int 		$date_start			Date start
