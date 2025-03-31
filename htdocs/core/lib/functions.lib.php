@@ -2132,6 +2132,7 @@ function dol_escape_xml($stringtoescape)
  * @param	string	$s						String to print
  * @param	int		$escapeonlyhtmltags		1=Escape only html tags, not the special chars like accents.
  * @return	string							String ready for HTML output
+ * @see dolPrintText()
  */
 function dolPrintLabel($s, $escapeonlyhtmltags = 0)
 {
@@ -2144,6 +2145,7 @@ function dolPrintLabel($s, $escapeonlyhtmltags = 0)
  *
  * @param	string	$s		String to print
  * @return	string			String ready for HTML output
+ * @see dolPrintLabel(), dolPrintHTML()
  */
 function dolPrintText($s)
 {
@@ -2158,7 +2160,7 @@ function dolPrintText($s)
  * @param	string	$s				String to print
  * @param	int		$allowiframe	Allow iframe tags
  * @return	string					String ready for HTML output (sanitized and escape)
- * @see dolPrintHTMLForAttribute(), dolPrintHTMLFortextArea()
+ * @see dolPrintHTMLForAttribute(), dolPrintHTMLFortextArea(), dolPrintText()
  */
 function dolPrintHTML($s, $allowiframe = 0)
 {
