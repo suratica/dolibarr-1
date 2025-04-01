@@ -604,9 +604,8 @@ class SecurityTest extends CommonClassTest
 		include_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
 		include_once DOL_DOCUMENT_ROOT.'/projet/class/task.class.php';
 
-		$result = dol_eval('1==\x01', 1, 0);	// Check that we can't make dol_eval on string containing \ char.
-		print "result0 = ".$result."\n";
-		$this->assertStringContainsString('Bad string syntax to evaluate', $result);
+		$conf->global->MAIN_USE_DOL_EVAL_NEW = 0;
+		//$conf->global->MAIN_USE_DOL_EVAL_NEW = 1;
 
 		$result = dol_eval('1==1', 1, 0);
 		print "result1 = ".$result."\n";
@@ -619,7 +618,7 @@ class SecurityTest extends CommonClassTest
 		$s = '((($reloadedobj = new ClassThatDoesNotExists($db)) && ($reloadedobj->fetchNoCompute($objectoffield->fk_product) > 0)) ? \'1\' : \'0\')';
 		$result3a = dol_eval($s, 1, 1, '2');
 		print "result3a = ".$result3a."\n";
-		$this->assertEquals('Exception during evaluation: '.$s, $result3a);
+		$this->assertStringContainsString('Exception during evaluation: '.$s, $result3a);
 
 		$s = '((($reloadedobj = new Project($db)) && ($reloadedobj->fetchNoCompute($objectoffield->fk_product) > 0)) ? \'1\' : \'0\')';
 		$result3b = dol_eval($s, 1, 1, '2');
@@ -635,6 +634,10 @@ class SecurityTest extends CommonClassTest
 		$result = (string) dol_eval($s, 1, 1, '2');
 		print "result4 = ".$result."\n";
 		$this->assertEquals('Parent project not found', $result, 'Test 4');
+
+		$result = dol_eval('1==\x01', 1, 0);	// Check that we can't make dol_eval on string containing \ char.
+		print "result0 = ".$result."\n";
+		$this->assertStringContainsString('Bad string syntax to evaluate', $result);
 
 		$s = '4 < 5';
 		$result = (string) dol_eval($s, 1, 1, '2');

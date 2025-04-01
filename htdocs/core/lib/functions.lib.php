@@ -4912,7 +4912,7 @@ function dol_user_country()
  */
 function dol_print_address($address, $htmlid, $element, $id, $noprint = 0, $charfornl = '')
 {
-	global $conf, $user, $langs, $hookmanager;
+	global $hookmanager;
 
 	$out = '';
 
@@ -10846,6 +10846,29 @@ function verifCond($strToEvaluate, $onlysimplestring = '1')
  * This function is called by verifCond() or trans() and transnoentitiesnoconv().
  *
  * @param 	string		$s					String to evaluate
+ * @param	int<0,1>	$returnvalue		0=No return (deprecated, used to execute eval($a=something)). 1=Value of eval is returned (used to eval($something)).
+ * @param   int<0,1>	$hideerrors     	1=Hide errors
+ * @param	string		$onlysimplestring	'0' (deprecated, do not use it anymore)=Accept all chars,
+ *                                          '1' (most common use)=Accept only simple string with char 'a-z0-9\s^$_+-.*>&|=!?():"\',/@';',
+ *                                          '2' (used for example for the compute property of extrafields)=Accept also '<[]'
+ * @return	void|string						Nothing or return result of eval (even if type can be int, it is safer to assume string and find all potential typing issues as abs(dol_eval(...)).
+ * @see verifCond(), checkPHPCode() to see sanitizing rules that should be very close.
+ * @phan-suppress PhanPluginUnsafeEval
+ */
+function dol_eval($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring = '1')
+{
+	if (getDolGlobalString("MAIN_USE_DOL_EVAL_NEW")) {
+		return dol_eval_new($s);
+	} else {
+		return dol_eval_old($s, $returnvalue, $hideerrors, $onlysimplestring);
+	}
+}
+
+/**
+ * Replace eval function to add more security.
+ * This function is called by dol_eval(), itself called by verifCond() or trans() and transnoentitiesnoconv().
+ *
+ * @param 	string		$s					String to evaluate
  * @return	void|string						Nothing or return result of eval (even if type can be int, it is safer to assume string and find all potential typing issues as abs(dol_eval(...)).
  * @see verifCond(), checkPHPCode() to see sanitizing rules that should be very close.
  * @phan-suppress PhanPluginUnsafeEval
@@ -11022,13 +11045,13 @@ function dol_eval_new($s)
 	try {
 		return @eval("return {$s};") ?? '';
 	} catch (Throwable $ex) {
-		return "Evaluation Error: {$ex->getMessage()} in {$s}";
+		return "Exception during evaluation: ".$s." - ".$ex->getMessage();
 	}
 }
 
 /**
  * Replace eval function to add more security.
- * This function is called by verifCond() or trans() and transnoentitiesnoconv().
+ * This function is called by dol_eval(), itself called by verifCond() or trans() and transnoentitiesnoconv().
  *
  * @param 	string		$s					String to evaluate
  * @param	int<0,1>	$returnvalue		0=No return (deprecated, used to execute eval($a=something)). 1=Value of eval is returned (used to eval($something)).
@@ -11040,7 +11063,7 @@ function dol_eval_new($s)
  * @see verifCond(), checkPHPCode() to see sanitizing rules that should be very close.
  * @phan-suppress PhanPluginUnsafeEval
  */
-function dol_eval($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring = '1')
+function dol_eval_old($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring = '1')
 {
 	// Only this global variables can be read by eval function and returned to caller
 	global $conf;	// Read of const is done with getDolGlobalString() but we need $conf->currency for example
