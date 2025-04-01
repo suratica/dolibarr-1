@@ -5078,7 +5078,7 @@ function migrate_invoice_export_models()
 {
 	global $db, $langs;
 
-	$lock = getDolGlobalInt('MIGRATION_INVOICE_MODELS_V20');
+	$lock = getDolGlobalInt('MIGRATION_FLAG_INVOICE_MODELS_V20');
 
 	$firstInstallVersion = getDolGlobalString('MAIN_VERSION_FIRST_INSTALL', DOL_VERSION);
 	$migrationNeeded = (versioncompare(explode('.', $firstInstallVersion, 3), array(20, 0, -5)) < 0 && !$lock);
@@ -5089,7 +5089,7 @@ function migrate_invoice_export_models()
 	if (! $migrationNeeded) {
 		print $langs->trans("AlreadyDone");
 		print '</td></tr>';
-		dolibarr_set_const($db, 'MIGRATION_INVOICE_MODELS_V20', 1, 'chaine', 0, 'To flag the upgrade of invoice template has been set', 0);
+		dolibarr_set_const($db, 'MIGRATION_FLAG_INVOICE_MODELS_V20', 1, 'chaine', 0, 'To flag the upgrade of invoice template has been set', 0);
 		return;
 	}
 
@@ -5136,7 +5136,7 @@ function migrate_invoice_export_models()
 
 	$db->commit();
 
-	dolibarr_set_const($db, 'MIGRATION_INVOICE_MODELS_V20', 1, 'chaine', 0, 'To flag the upgrade of invoice template has been set', 0);
+	dolibarr_set_const($db, 'MIGRATION_FLAG_INVOICE_MODELS_V20', 1, 'chaine', 0, 'To flag the upgrade of invoice template has been set', 0);
 
 	echo '</td></tr>';
 }
