@@ -53,6 +53,7 @@ require_once $dolibarr_main_document_root.'/commande/class/commande.class.php';
 require_once $dolibarr_main_document_root.'/fourn/class/fournisseur.commande.class.php';
 require_once $dolibarr_main_document_root.'/core/lib/price.lib.php';
 require_once $dolibarr_main_document_root.'/core/class/menubase.class.php';
+require_once $dolibarr_main_document_root.'/core/lib/admin.lib.php';
 require_once $dolibarr_main_document_root.'/core/lib/files.lib.php';
 
 global $langs;
@@ -5077,12 +5078,13 @@ function migrate_invoice_export_models()
 {
 	global $db, $langs;
 
-	$lock = DOL_DATA_ROOT.'/invoice_models_migrated.lock';
+	$lock = getDolGlobalInt('MIGRATION_INVOICE_MODELS_V20');
+
 	$firstInstallVersion = getDolGlobalString('MAIN_VERSION_FIRST_INSTALL', DOL_VERSION);
 	$migrationNeeded = versioncompare(explode('.', $firstInstallVersion, 3), array(20, 0, -5)) < 0 && !file_exists($lock);
 
 	if (! $migrationNeeded) {
-		touch($lock);
+		dolibarr_set_const($db, 'MIGRATION_INVOICE_MODELS_V20', 1, 'chaine', 0, 'To flag the upgrade of invoice template has been set', 0);
 		return;
 	}
 
@@ -5091,11 +5093,7 @@ function migrate_invoice_export_models()
 
 	$db->begin();
 
-	$sql1 = "
-		UPDATE ".$db->prefix()."export_model
-		SET type = 'facture_0'
-		WHERE type = 'facture_1'
-	";
+	$sql1 = "UPDATE ".$db->prefix()."export_model SET type = 'facture_0' WHERE type = 'facture_1'";
 
 	$resql1 = $db->query($sql1);
 
@@ -5112,11 +5110,7 @@ function migrate_invoice_export_models()
 
 	$db->free($resql1);
 
-	$sql2 = "
-		UPDATE ".$db->prefix()."export_model
-		SET type = 'facture_1'
-		WHERE type = 'facture_2'
-	";
+	$sql2 = "UPDATE ".$db->prefix()."export_model SET type = 'facture_1' WHERE type = 'facture_2'";
 
 	$resql2 = $db->query($sql2);
 
