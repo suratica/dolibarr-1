@@ -10860,7 +10860,7 @@ function dol_eval($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring = '1'
 	if (getDolGlobalString("MAIN_USE_DOL_EVAL_NEW")) {
 		return dol_eval_new($s);
 	} else {
-		return dol_eval_old($s, $returnvalue, $hideerrors, $onlysimplestring);
+		return dol_eval_standard($s, $returnvalue, $hideerrors, $onlysimplestring);
 	}
 }
 
@@ -10974,7 +10974,7 @@ function dol_eval_new($s)
 		'override_function', 'session_id', 'session_create_id', 'session_regenerate_id',
 		'call_user_func', 'call_user_func_array',  // PREVENT calling forbidden functions
 		'exec', 'passthru', 'shell_exec', 'system', 'proc_open', 'popen',
-		'dol_eval', 'executeCLI', 'verifCond', // Native Dolibarr functions
+		'dol_eval', 'dol_eval_new', 'dol_eval_standard', 'dol_contctdesc', 'executeCLI', 'verifCond', 'GETPOST', // Native Dolibarr functions
 		'create_function', 'assert', 'mb_ereg_replace', 'mb_eregi_replace', // function with eval capabilities
 		'dol_compress_dir', 'dol_decode', 'dol_delete_file', 'dol_delete_dir', 'dol_delete_dir_recursive', 'dol_copy', 'archiveOrBackupFile', // more dolibarr functions
 		'fopen', 'file_put_contents', 'fputs', 'fputscsv', 'fwrite', 'fpassthru', 'mkdir', 'rmdir', 'symlink', 'touch', 'unlink', 'umask', // PHP functions related to file operations
@@ -11063,7 +11063,7 @@ function dol_eval_new($s)
  * @see verifCond(), checkPHPCode() to see sanitizing rules that should be very close.
  * @phan-suppress PhanPluginUnsafeEval
  */
-function dol_eval_old($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring = '1')
+function dol_eval_standard($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring = '1')
 {
 	// Only this global variables can be read by eval function and returned to caller
 	global $conf;	// Read of const is done with getDolGlobalString() but we need $conf->currency for example
@@ -11093,8 +11093,10 @@ function dol_eval_old($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring =
 			if ($onlysimplestring == '2') {
 				$specialcharsallowed .= '<[]';
 			}
+			$specialcharsallowedarray = array();
 			if (getDolGlobalString('MAIN_ALLOW_UNSECURED_SPECIAL_CHARS_IN_DOL_EVAL')) {
 				$specialcharsallowed .= getDolGlobalString('MAIN_ALLOW_UNSECURED_SPECIAL_CHARS_IN_DOL_EVAL');
+				$specialcharsallowedarray = str_split(getDolGlobalString('MAIN_ALLOW_UNSECURED_SPECIAL_CHARS_IN_DOL_EVAL'));
 			}
 			if (preg_match('/[^a-z0-9\s'.preg_quote($specialcharsallowed, '/').']/i', $s)) {
 				if ($returnvalue) {
@@ -11182,7 +11184,7 @@ function dol_eval_old($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring =
 				return '';
 			}
 		}
-		if (preg_match('/[^0-9]+\.[^0-9]+/', $s)) {	// We refuse . if not between 2 numbers
+		if (preg_match('/[^0-9]+\.[^0-9]+/', $s) && !in_array('.', $specialcharsallowedarray)) {	// We refuse . if not between 2 numbers
 			if ($returnvalue) {
 				return 'Bad string syntax to evaluate (dot char is forbidden): '.$s;
 			} else {
@@ -11204,7 +11206,7 @@ function dol_eval_old($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestring =
 		$forbiddenphpfunctions = array_merge($forbiddenphpfunctions, array("function", "call_user_func", "call_user_func_array"));
 		$forbiddenphpfunctions = array_merge($forbiddenphpfunctions, array("require", "include", "require_once", "include_once"));
 		$forbiddenphpfunctions = array_merge($forbiddenphpfunctions, array("exec", "passthru", "shell_exec", "system", "proc_open", "popen"));
-		$forbiddenphpfunctions = array_merge($forbiddenphpfunctions, array("dol_eval", "executeCLI", "verifCond", "GETPOST"));	// native dolibarr functions
+		$forbiddenphpfunctions = array_merge($forbiddenphpfunctions, array("dol_eval", "dol_eval_new", "dol_eval_standard", "dol_concatdesc", "executeCLI", "verifCond", "GETPOST"));	// native dolibarr functions
 		$forbiddenphpfunctions = array_merge($forbiddenphpfunctions, array("eval", "create_function", "assert", "mb_ereg_replace")); // function with eval capabilities
 		$forbiddenphpfunctions = array_merge($forbiddenphpfunctions, array("dol_compress_dir", "dol_decode", "dol_delete_file", "dol_delete_dir", "dol_delete_dir_recursive", "dol_copy", "archiveOrBackupFile")); // more dolibarr functions
 		$forbiddenphpfunctions = array_merge($forbiddenphpfunctions, array("fopen", "file_put_contents", "fputs", "fputscsv", "fwrite", "fpassthru", "mkdir", "rmdir", "symlink", "touch", "unlink", "umask"));

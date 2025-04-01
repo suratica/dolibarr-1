@@ -637,7 +637,7 @@ class SecurityTest extends CommonClassTest
 
 		$result = dol_eval('1==\x01', 1, 0);	// Check that we can't make dol_eval on string containing \ char.
 		print "result0 = ".$result."\n";
-		$this->assertStringContainsString('Bad string syntax to evaluate', $result);
+		$this->assertStringContainsString('Bad string syntax to evaluate (found chars that are not chars for a simple one line clean eval string)', $result);
 
 		$s = '4 < 5';
 		$result = (string) dol_eval($s, 1, 1, '2');
@@ -681,9 +681,17 @@ class SecurityTest extends CommonClassTest
 		print "result6 = ".json_encode($result)."\n";
 		$this->assertStringContainsString('Bad string syntax to evaluate', json_encode($result), 'The string was not detected as evil');
 
-		$result = (string) dol_eval('$a=exec("ls");', 1, 1);
+		$result = (string) dol_eval('instruction;', 1, 1);	// ; is not allowed.
 		print "result7 = ".$result."\n";
-		$this->assertStringContainsString('Bad string syntax to evaluate', $result, 'The string was not detected as evil');
+		$this->assertStringContainsString('Bad string syntax to evaluate (found chars that are not chars for a simple one line clean eval string)', $result, 'The string was not detected as evil');
+
+		$result = (string) dol_eval('$a=exec("ls")', 1, 1);
+		print "result7 = ".$result."\n";
+		$this->assertStringContainsString('Bad string syntax to evaluate (mode 1, found call of a function or method without using the direct name of the function)', $result, 'The string was not detected as evil');
+
+		$result = (string) dol_eval('$a=exec(\'ls\')', 1, 1);
+		print "result7 = ".$result."\n";
+		$this->assertStringContainsString('Bad string syntax to evaluate (mode 1, found call of a function or method without using the direct name of the function)', $result, 'The string was not detected as evil');
 
 		$result = (string) dol_eval('$a=exec ("ls")', 1, 1);
 		print "result8 = ".$result."\n";
@@ -691,11 +699,11 @@ class SecurityTest extends CommonClassTest
 
 		$result = (string) dol_eval("strrev('metsys') ('whoami')", 1, 1);
 		print "result8b = ".$result."\n";
-		$this->assertStringContainsString('Bad string syntax to evaluate', $result, 'The string was not detected as evil');
+		$this->assertStringContainsString('Bad string syntax to evaluate (mode 1, found call of a function or method without using the direct name of the function)', $result, 'The string was not detected as evil');
 
 		$result = (string) dol_eval('$a="test"; $$a;', 1, 0);
 		print "result9 = ".$result."\n";
-		$this->assertStringContainsString('Bad string syntax to evaluate', $result, 'The string was not detected as evil');
+		$this->assertStringContainsString('Bad string syntax to evaluate (found chars that are not chars for a simple one line clean eval string)', $result, 'The string was not detected as evil');
 
 		$result = (string) dol_eval('`ls`', 1, 0);
 		print "result10 = ".$result."\n";
@@ -703,7 +711,7 @@ class SecurityTest extends CommonClassTest
 
 		$result = (string) dol_eval("('ex'.'ec')('echo abc')", 1, 0);
 		print "result11 = ".$result."\n";
-		$this->assertStringContainsString('Bad string syntax to evaluate', $result, 'The string was not detected as evil');
+		$this->assertStringContainsString('Bad string syntax to evaluate (mode 1, found call of a function or method without using the direct name of the function)', $result, 'The string was not detected as evil');
 
 		$result = (string) dol_eval("sprintf(\"%s%s\", \"ex\", \"ec\")('echo abc')", 1, 0);
 		print "result12 = ".$result."\n";
@@ -715,8 +723,7 @@ class SecurityTest extends CommonClassTest
 
 		// Must be allowed
 
-		global $leftmenu;	// Used into strings to eval
-		$conf->global->MAIN_FEATURES_LEVEL = 1;
+		global $mainmenu,$leftmenu;	// Used into following strings to eval
 
 		$leftmenu = 'AAA';
 		$result = dol_eval('$conf->currency && preg_match(\'/^(AAA|BBB)/\',$leftmenu)', 1, 1, '1');
@@ -750,17 +757,42 @@ class SecurityTest extends CommonClassTest
 		print "result18 = ".$result."\n";
 		$this->assertFalse($result);
 
+		$mainmenu = 'TTT';
+		$leftmenu = 'LLL';
+		$result = (string) dol_eval('$mainmenu=\'T2\' && ($mainmenu == \'TTT\')', 1, 0);
+		print "result11 = ".$result."\n";
+		$this->assertEquals('1', $result, 'The string was not detected as evil');
+
+
+		// Test option MAIN_ALLOW_UNSECURED_SPECIAL_CHARS_IN_DOL_EVAL
+
+		$conf->global->MAIN_ALLOW_UNSECURED_SPECIAL_CHARS_IN_DOL_EVAL = '.';
+
+		$mainmenu = 'ex';
+		$result = (string) dol_eval('$mainmenu.\'ec\'', 1, 0);
+		print "result11 = ".$result."\n";
+		$this->assertStringContainsString('exec', $result, 'With MAIN_ALLOW_UNSECURED_SPECIAL_CHARS_IN_DOL_EVAL=. we should accept concat');
+
+		$mainmenu = 'ex';
+		$leftmenu = 'ec';
+		$result = (string) dol_eval("\$mainmenu.\$leftmenu", 1, 0);
+		print "result11 = ".$result."\n";
+		$this->assertStringContainsString('exec', $result, 'The string was not detected as evil');
+
+		$conf->global->MAIN_ALLOW_UNSECURED_SPECIAL_CHARS_IN_DOL_EVAL = '';
+
+
 		// Not allowed
 
-		$a = 'ab';
-		$result = (string) dol_eval("(\$a.'s')", 1, 0);
+		$leftmenu = 'ab';
+		$result = (string) dol_eval("(\$leftmenu.'s')", 1, 0);
 		print "result19 = ".$result."\n";
-		$this->assertStringContainsString('Bad string syntax to evaluate', $result, 'Test 19 - The string was not detected as evil');
+		$this->assertStringContainsString('Bad string syntax to evaluate (dot char is forbidden)', $result, 'Test 19 - The string was not detected as evil');
 
 		$leftmenu = 'abs';
 		$result = (string) dol_eval('$leftmenu(-5)', 1, 0);
 		print "result20 = ".$result."\n";
-		$this->assertStringContainsString('Bad string syntax to evaluate', $result, 'Test 20 - The string was not detected as evil');
+		$this->assertStringContainsString('Bad string syntax to evaluate (mode 1, found a call using "$abc(" or "$abc (" instead of using the direct name of the function)', $result, 'Test 20 - The string was not detected as evil');
 
 		$result = (string) dol_eval('str_replace("z","e","zxzc")("whoami");', 1, 0);
 		print "result21 = ".$result."\n";
