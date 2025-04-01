@@ -709,7 +709,11 @@ class SecurityTest extends CommonClassTest
 		print "result10 = ".$result."\n";
 		$this->assertStringContainsString('Bad string syntax to evaluate', $result, 'The string was not detected as evil');
 
-		$result = (string) dol_eval("('ex'.'ec')('echo abc')", 1, 0);
+		$result = (string) dol_eval("('ex'.'ec')('ls')", 1, 0);	// This will execute exec of ls
+		print "result11 = ".$result."\n";
+		$this->assertStringContainsString('Bad string syntax to evaluate (mode 1, found call of a function or method without using the direct name of the function)', $result, 'The string was not detected as evil');
+
+		$result = (string) dol_eval("('ex'.'ec') /* */   ('ls')", 1, 0);	// This will execute exec of ls
 		print "result11 = ".$result."\n";
 		$this->assertStringContainsString('Bad string syntax to evaluate (mode 1, found call of a function or method without using the direct name of the function)', $result, 'The string was not detected as evil');
 

@@ -11140,8 +11140,8 @@ function dol_eval_standard($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestr
 				$scheck = preg_replace('/->[a-zA-Z0-9_]+\(/', '->__METHOD__', $scheck);	// accept parenthesis in '...->method(...'
 				$scheck = preg_replace('/::[a-zA-Z0-9_]+\(/', '->__METHOD__', $scheck);	// accept parenthesis in '...::method(...'
 				$scheck = preg_replace('/^\(+/', '__PARENTHESIS__ ', $scheck);	// accept parenthesis in '(...'. Must replace with "__PARENTHESIS__ with a space after "to allow following substitutions
-				$scheck = preg_replace('/\&\&\s+\(/', '__ANDPARENTHESIS__ ', $scheck);	// accept parenthesis in '... (' like in '&& (...'. Must replace with "__PARENTHESIS__ with a space after" to allow following substitutions
-				$scheck = preg_replace('/\|\|\s+\(/', '__ORPARENTHESIS__ ', $scheck);	// accept parenthesis in '... (' like in '|| (...'. Must replace with "__PARENTHESIS__ with a space after" to allow following substitutions
+				$scheck = preg_replace('/\&\&\s+\(/', '__ANDPARENTHESIS__ ', $scheck);	// accept parenthesis in '&& ('. Must replace with "__PARENTHESIS__ with a space after" to allow following substitutions
+				$scheck = preg_replace('/\|\|\s+\(/', '__ORPARENTHESIS__ ', $scheck);	// accept parenthesis in '|| ('. Must replace with "__PARENTHESIS__ with a space after" to allow following substitutions
 				$scheck = preg_replace('/^!?[a-zA-Z0-9_]+\(/', '__FUNCTION__', $scheck); // accept parenthesis in 'function(' and '!function('
 				$scheck = preg_replace('/\s!?[a-zA-Z0-9_]+\(/', '__FUNCTION__', $scheck); // accept parenthesis in '... function(' and '... !function('
 				$scheck = preg_replace('/^!\(/', '__NOTANDPARENTHESIS__', $scheck); // accept parenthesis in '!('
@@ -11150,7 +11150,7 @@ function dol_eval_standard($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestr
 			}
 			//print 'scheck='.$scheck." : ".strpos($scheck, '(')."<br>\n";
 
-			// Now test if it remains 1 one parenthesis.
+			// Now test if it remains 1 open parenthesis.
 			if (strpos($scheck, '(') !== false) {
 				if ($returnvalue) {
 					return 'Bad string syntax to evaluate (mode '.$onlysimplestring.', found call of a function or method without using the direct name of the function): '.$s;
@@ -11198,8 +11198,8 @@ function dol_eval_standard($s, $returnvalue = 1, $hideerrors = 1, $onlysimplestr
 		}
 
 		// We block use of php exec or php file functions
-		$forbiddenphpstrings = array('$$', '$_', '}[');
-		$forbiddenphpstrings = array_merge($forbiddenphpstrings, array('_ENV', '_SESSION', '_COOKIE', '_GET', '_POST', '_REQUEST', 'ReflectionFunction'));
+		$forbiddenphpstrings = array('$$', '$_', '}[', ')(');
+		$forbiddenphpstrings = array_merge($forbiddenphpstrings, array('_ENV', '_SESSION', '_COOKIE', '_GET', '_GLOBAL', '_POST', '_REQUEST', 'ReflectionFunction'));
 
 		// We list all forbidden function as keywords we don't want to see (we don't mind it if is "kewyord(" or just "keyword", we don't want "keyword" at all)
 		$forbiddenphpfunctions = array();
