@@ -461,6 +461,9 @@ print '<strong>'.$langs->trans("MaxNumberOfAttachementOnForms").'</strong>: ';
 print(getDolGlobalInt('MAIN_SECURITY_MAX_ATTACHMENT_ON_FORMS', 10) ? img_picto('', 'tick').' ' : '').getDolGlobalInt("MAIN_SECURITY_MAX_ATTACHMENT_ON_FORMS", 10).' '.strtolower($langs->trans("Files"));
 print '<br><br>';
 
+
+// Clear password ?
+
 print '<strong>'.$langs->trans("DoNotStoreClearPassword").'</strong>: ';
 print !getDolGlobalString('DATABASE_PWD_ENCRYPTED') ? '' : img_picto('', 'tick').' ';
 print yn(!getDolGlobalString('DATABASE_PWD_ENCRYPTED') ? 0 : 1);
@@ -469,6 +472,22 @@ if (!getDolGlobalString('DATABASE_PWD_ENCRYPTED')) {
 }
 print '<br>';
 print '<br>';
+
+
+// Mask by default in upload
+$umask = getDolGlobalString('MAIN_UMASK');
+
+print '<strong>'.$langs->trans("UMask").'</strong>: ';
+if (! in_array($umask, array('600', '660', '0600', '0660'))) {
+	print img_warning().' ';
+}
+print $umask;
+if (! in_array($umask, array('600', '660', '0600', '0660'))) {
+	print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Recommended").': 0600 | 0660)</span>';
+}
+print '<br>';
+print '<br>';
+
 
 /* Already into section conf file */
 /*
@@ -516,18 +535,14 @@ if (!getDolGlobalString('MAIN_ANTIVIRUS_COMMAND')) {
 print '<br>';
 print '<br>';
 
-$umask = getDolGlobalString('MAIN_UMASK');
+// File extension locked in upload by default
 
-print '<strong>'.$langs->trans("UMask").'</strong>: ';
-if (! in_array($umask, array('600', '660', '0600', '0660'))) {
-	print img_warning().' ';
-}
-print $umask;
-if (! in_array($umask, array('600', '660', '0600', '0660'))) {
-	print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Recommended").': 0600 | 0660)</span>';
-}
+print '<strong>'.$langs->trans("UploadExtensionRestriction").'</strong>: ';
+print implode(', ', explode(',', getDolGlobalString('MAIN_FILE_EXTENSION_UPLOAD_RESTRICTION')));
+print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Recommended").': '.implode(', ', getExecutableContent()).')</span>';
 print '<br>';
 print '<br>';
+
 
 
 $securityevent = new Events($db);
@@ -602,7 +617,6 @@ if (!$test) {
 }
 print '<br>';
 
-
 // Modules for Payments
 $test = isModEnabled('stripe');
 if ($test) {
@@ -664,6 +678,8 @@ print '<br>';
 print '<br>';
 
 
+// Other setup
+
 print load_fiche_titre($langs->trans("OtherSetup"), '', 'folder');
 
 print '<div class="divsection wordbreak">';
@@ -681,10 +697,8 @@ print '<strong>MAIN_SECURITY_CSRF_WITH_TOKEN</strong> = '.getDolGlobalString('MA
 
 print '</div>';
 
-
 print '<br>';
 print '<br>';
-
 
 print load_fiche_titre($langs->trans("DatabaseEncryption"), '', 'folder');
 
@@ -734,51 +748,59 @@ print '</div>';
 print '<br>';
 print '<br>';
 
+
 // Websites
 
-print load_fiche_titre($langs->trans("Website"), '', 'website');
-print '<div class="divsection wordbreak">';
+if (isModEnabled('website')) {
+	print load_fiche_titre($langs->trans("Website"), '', 'website');
+	print '<div class="divsection wordbreak">';
 
-$sql = "SELECT w.rowid as id, w.ref";
-$sql .= " FROM ".MAIN_DB_PREFIX."website as w";
-$sql .= " WHERE w.entity = ".((int) $conf->entity);
-$sql .= " AND w.status = 1";
+	$sql = "SELECT w.rowid as id, w.ref";
+	$sql .= " FROM ".MAIN_DB_PREFIX."website as w";
+	$sql .= " WHERE w.entity = ".((int) $conf->entity);
+	$sql .= " AND w.status = 1";
 
-$resql = $db->query($sql);
-if ($resql) {
-	$num_rows = $db->num_rows($resql);
-	if ($num_rows > 0) {
-		$i = 0;
-		while ($obj = $db->fetch_object($resql)) {
-			print "<strong>".$langs->trans("RefWebsite").": ".$obj->ref."</strong>";
-			print'<br><br>';
-			print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCERP</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCERP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>');
-			print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").': "';
-			$examplecsprule = "default-src 'self' 'unsafe-inline' matomo.".getDomainFromURL($_SERVER["SERVER_NAME"], 1)." *.transifex.net *.transifex.com *.cloudflare.com *.cloudflareinsights.com *.google-analytics.com *.googletagmanager.com *.google.com *.gstatic.com *.googleapis.com *.googleadservices.com *.ads-twitter.com *.doubleclick.net; frame-ancestors 'self'; object-src *.youtube.com; frame-src 'self' *.twitter.com *.facebook.com *.youtube.com; img-src * data:;";
-			print $examplecsprule;
-			print '")</span><br>';
+	$resql = $db->query($sql);
+	if ($resql) {
+		$num_rows = $db->num_rows($resql);
+		if ($num_rows > 0) {
+			$i = 0;
+			while ($obj = $db->fetch_object($resql)) {
+				print "<strong>".$langs->trans("RefWebsite").": ".$obj->ref."</strong>";
+				print'<br><br>';
+				print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCERP</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCERP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>');
+				print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").': "';
+				$examplecsprule = "default-src 'self' 'unsafe-inline' matomo.".getDomainFromURL($_SERVER["SERVER_NAME"], 1)." *.transifex.net *.transifex.com *.cloudflare.com *.cloudflareinsights.com *.google-analytics.com *.googletagmanager.com *.google.com *.gstatic.com *.googleapis.com *.googleadservices.com *.ads-twitter.com *.doubleclick.net; frame-ancestors 'self'; object-src *.youtube.com; frame-src 'self' *.twitter.com *.facebook.com *.youtube.com; img-src * data:;";
+				print $examplecsprule;
+				print '")</span><br>';
 
-			print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCECSP</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCECSP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>');
-			print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").': "';
-			$examplecsprule = "default-src 'self' 'unsafe-inline' matomo.".getDomainFromURL($_SERVER["SERVER_NAME"], 1)." *.transifex.net *.transifex.com *.cloudflare.com *.cloudflareinsights.com *.google-analytics.com *.googletagmanager.com *.google.com *.gstatic.com *.googleapis.com *.googleadservices.com *.ads-twitter.com *.doubleclick.net; frame-ancestors 'self'; object-src *.youtube.com; frame-src 'self' *.twitter.com *.facebook.com *.youtube.com; img-src * data:;";
-			print $examplecsprule;
-			print '")</span><br>';
+				print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCECSP</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCECSP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>');
+				print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").': "';
+				$examplecsprule = "default-src 'self' 'unsafe-inline' matomo.".getDomainFromURL($_SERVER["SERVER_NAME"], 1)." *.transifex.net *.transifex.com *.cloudflare.com *.cloudflareinsights.com *.google-analytics.com *.googletagmanager.com *.google.com *.gstatic.com *.googleapis.com *.googleadservices.com *.ads-twitter.com *.doubleclick.net; frame-ancestors 'self'; object-src *.youtube.com; frame-src 'self' *.twitter.com *.facebook.com *.youtube.com; img-src * data:;";
+				print $examplecsprule;
+				print '")</span><br>';
 
-			print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCERP</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCERP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>').' &nbsp; <span class="opacitymedium">('.$langs->trans("Recommended").': '.$langs->trans("Undefined").'="strict-origin-when-cross-origin" '.$langs->trans("or").' "same-origin"=more secured)</span><br>';
+				print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCERP</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCERP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>').' &nbsp; <span class="opacitymedium">('.$langs->trans("Recommended").': '.$langs->trans("Undefined").'="strict-origin-when-cross-origin" '.$langs->trans("or").' "same-origin"=more secured)</span><br>';
 
-			print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCESTS</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCESTS', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>').' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").": \"max-age=31536000; includeSubDomains\")</span><br>";
+				print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCESTS</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCESTS', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>').' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").": \"max-age=31536000; includeSubDomains\")</span><br>";
 
-			print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCEPP</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCEPP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>').' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").": \"camera=(), microphone=(), geolocation=*\")</span><br>";
-			$i++;
-			if ($i != $num_rows) {
-				print '<br>';
+				print '<strong>WEBSITE_'.$obj->id.'_SECURITY_FORCEPP</strong> = '.getDolGlobalString('WEBSITE_'.$obj->id.'_SECURITY_FORCEPP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>').' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").": \"camera=(), microphone=(), geolocation=*\")</span><br>";
+				$i++;
+				if ($i != $num_rows) {
+					print '<br>';
+				}
 			}
+		} else {
+			print '<span class="opacity">'.$langs->trans("NoWebsite").'</span>';
 		}
+	} else {
+		dol_print_error($db);
 	}
-} else {
-	dol_print_error($db);
+	print '</div>';
+
+
+	print '<br>';
 }
-print '</div>';
 
 
 // Other - experimental
@@ -790,7 +812,7 @@ print '<strong>MAIN_EXEC_USE_POPEN</strong> = ';
 if (!getDolGlobalString('MAIN_EXEC_USE_POPEN')) {
 	print '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>';
 } else {
-	print $conf->global->MAIN_EXEC_USE_POPEN;
+	print getDolGlobalString('MAIN_EXEC_USE_POPEN');
 }
 if ($execmethod == 1) {
 	print '<span class="opacitymedium"> &nbsp; &nbsp; "exec" PHP method will be used for shell commands';
@@ -869,6 +891,11 @@ print '<br>';
 print '<strong>MAIN_ALLOW_SVG_FILES_AS_EXTERNAL_LINKS</strong> = '.getDolGlobalString('MAIN_ALLOW_SVG_FILES_AS_EXTERNAL_LINKS', '<span class="opacitymedium">'.$langs->trans("Undefined").' &nbsp; ('.$langs->trans("Recommended").': '.$langs->trans("Undefined").' '.$langs->trans("or").' 0)</span>')."<br>";
 print '<br>';
 
+print '<strong>MAIN_DISALLOW_STRING_OBFUSCATION_IN_DOL_EVAL</strong> = '.(getDolGlobalString('MAIN_DISALLOW_STRING_OBFUSCATION_IN_DOL_EVAL') ? '1' : '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>');
+print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Recommended").": 1 - may break use of concatenation function like . or dol_concatdesc into extra fields conditions or formula)</span><br>";
+print '<br>';
+
+
 // MAIN_ALLOW_LOCAL_LINKS_AS_EXTERNAL_LINKS
 
 print '<strong>MAIN_SECURITY_CSRF_TOKEN_RENEWAL_ON_EACH_CALL</strong> = '.getDolGlobalString('MAIN_SECURITY_CSRF_TOKEN_RENEWAL_ON_EACH_CALL', '<span class="opacitymedium">'.$langs->trans("Undefined").' &nbsp; ('.$langs->trans("Recommended").': '.$langs->trans("Undefined").' '.$langs->trans("or").' 0)</span>')."<br>";
@@ -889,8 +916,10 @@ print '<strong>MAIN_SECURITY_FORCERP</strong> = '.getDolGlobalString('MAIN_SECUR
 print '<br>';
 
 print '<strong>MAIN_SECURITY_FORCE_ACCESS_CONTROL_ALLOW_ORIGIN</strong> = '.getDolGlobalString('MAIN_SECURITY_FORCE_ACCESS_CONTROL_ALLOW_ORIGIN', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>').' &nbsp; <span class="opacitymedium">('.$langs->trans("Recommended").": 1)</span><br>";
-print '<br>';
 
+
+/* Removed, already in the dedicated section Websites.
+print '<br>';
 
 print '<strong>WEBSITE_MAIN_SECURITY_FORCECSPRO</strong> = '.getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCECSPRO', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>');
 print ' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").': "';
@@ -913,10 +942,12 @@ print '<strong>WEBSITE_MAIN_SECURITY_FORCESTS</strong> = '.getDolGlobalString('W
 print '<br>';
 
 print '<strong>WEBSITE_MAIN_SECURITY_FORCEPP</strong> = '.getDolGlobalString('WEBSITE_MAIN_SECURITY_FORCEPP', '<span class="opacitymedium">'.$langs->trans("Undefined").'</span>').' &nbsp; <span class="opacitymedium">('.$langs->trans("Example").": \"camera=(), microphone=(), geolocation=*\")</span><br>";
+*/
 
 print '</div>';
 
 
+print '<br>';
 print '<br>';
 
 
