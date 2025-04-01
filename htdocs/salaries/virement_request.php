@@ -186,7 +186,8 @@ if ($action == "add" && $permissiontoadd) {
 
 		$sourcetype = 'salaire';
 		$newtype = 'salaire';
-		$paymentservice = GETPOST('paymentservice');
+		$paymentservice = GETPOST('paymentservice');	// value can be 'stripesepa'. not used yet.
+
 		$result = $object->demande_prelevement($user, price2num(GETPOST('request_transfer', 'alpha')), $newtype, $sourcetype);
 
 		if ($result > 0) {
