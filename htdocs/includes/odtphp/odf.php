@@ -856,11 +856,12 @@ IMG;
 	 * Convert the ODT file to PDF and export the file as attached file by HTTP
 	 * Note: you need to have JODConverter and OpenOffice or LibreOffice installed and executable on the same system as where this php script will be executed. You also need to chmod +x odt2pdf.sh
 	 *
-	 * @param 	string 	$name 	Name of ODT file to generate before generating PDF
+	 * @param 	string 	$name 					Name of ODT file to generate before generating PDF
+	 * @param	int		$dooutputfordownload	Output the file content to make the download
 	 * @throws OdfException
 	 * @return void
 	 */
-	public function exportAsAttachedPDF($name = "")
+	public function exportAsAttachedPDF($name = "", $dooutputfordownload = 1)
 	{
 		global $conf;
 
@@ -963,7 +964,7 @@ IMG;
 			dol_syslog(get_class($this).'::exportAsAttachedPDF $ret_val='.$retval, LOG_DEBUG);
 			$filename=''; $linenum=0;
 
-			if (!getDolGlobalInt('MAIN_DISABLE_PDF_AUTO_DOWNLOAD_AFTER_CONVERT_FROM_ODT')) {
+			if ($dooutputfordownload) {
 				if (php_sapi_name() != 'cli') {    // If we are in a web context (not into CLI context)
 					if (headers_sent($filename, $linenum)) {
 						throw new OdfException("headers already sent ($filename at $linenum)");
