@@ -1676,6 +1676,8 @@ if ($action == 'create') {
 					}
 
 					$line = $objp;
+					$line->id = $objp->rowid;
+
 					$coldisplay = 0;
 
 					print '<tr class="tdtop oddeven" '.$moreparam.'>';
@@ -1712,7 +1714,7 @@ if ($action == 'create') {
 
 						// Add description in form
 						if ($line->fk_product > 0 && getDolGlobalInt('PRODUIT_DESC_IN_FORM_ACCORDING_TO_DEVICE')) {
-							print (!empty($line->description) && $line->description != $line->product_label) ? (($line->date_start || $line->date_end) ? '' : '<br>').'<br>'.dol_htmlentitiesbr($line->description) : '';
+							print (!empty($line->description) && $line->description != $line->plabel) ? (($line->date_start || $line->date_end) ? '' : '<br>').'<br>'.dol_htmlentitiesbr($line->description) : '';
 						}
 					} else {
 						print img_object($langs->trans("ShowProductOrService"), ($objp->product_type ? 'service' : 'product')).' '.dol_htmlentitiesbr($objp->description)."\n";
