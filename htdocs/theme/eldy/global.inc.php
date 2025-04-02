@@ -3421,8 +3421,11 @@ if (getDolGlobalString('MAIN_LOGIN_BACKGROUND')) {
 }
 .login_table #tdpasswordlogin #togglepassword {
 	position: absolute;
-	top: 10px;
+	top: 1em;
 	right: 5px;
+	background: none;
+	border: none;
+	/* opacity: 0.5; */
 }
 .login_table #tdpasswordlogin #togglepassword .fa {
 	padding: 0 3px;
