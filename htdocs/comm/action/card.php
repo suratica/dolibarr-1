@@ -1401,11 +1401,7 @@ if ($action == 'create') {
 		print '<input type="hidden" name="actioncode" value="'.dol_getIdFromCode($db, 'AC_OTH', 'c_actioncomm').'">';
 	}
 
-	if (GETPOST("actioncode", 'aZ09') == 'AC_RDV') {
-		print load_fiche_titre($langs->trans("AddActionRendezVous"), '', 'title_agenda');
-	} else {
-		print load_fiche_titre($langs->trans("AddAnAction"), '', 'title_agenda');
-	}
+	print load_fiche_titre($langs->trans("AddAnAction"), '', 'title_agenda');
 
 	print dol_get_fiche_head();
 
