@@ -543,7 +543,7 @@ if (empty($reshook) && $action == 'add' && $usercancreate) {
 
 		// Is event recurrent ?
 		$eventisrecurring = 0;
-		$userepeatevent = (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 ? 1 : 0);
+		$userepeatevent = (getDolGlobalInt('MAIN_DISABLE_RECURRING_EVENTS') ? 0 : 1);
 		if ($userepeatevent && !empty($selectedrecurrulefreq) && $selectedrecurrulefreq != 'no') {
 			$eventisrecurring = 1;
 			$object->recurid = dol_print_date(dol_now('gmt'), 'dayhourlog', 'gmt');
@@ -1452,7 +1452,7 @@ if ($action == 'create') {
 	print '</td></tr>';
 
 	// Recurring event
-	$userepeatevent = (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 ? 1 : 0);
+	$userepeatevent = (getDolGlobalInt('MAIN_DISABLE_RECURRING_EVENTS') ? 0 : 1);
 	if ($userepeatevent) {
 		print '<tr><td></td><td>';
 
@@ -1481,7 +1481,7 @@ if ($action == 'create') {
 			$selectedrecurrulebyday = (int) $reg[1];
 		}
 
-		print $form->selectarray('recurrulefreq', $arrayrecurrulefreq, $selectedrecurrulefreq, 0, 0, 0, '', 0, 0, 0, '', 'marginrightonly');
+		print $form->selectarray('recurrulefreq', $arrayrecurrulefreq, $selectedrecurrulefreq, 0, 0, 0, '', 0, 0, 0, '', 'marginrightonly minwidth100');
 		// print '<script>console.log("recurrule: " +'.$object->recurrule.')</script>';
 		// For recursive event
 
@@ -2087,7 +2087,7 @@ if ($id > 0) {
 		print '<label for="fullday">'.$langs->trans("EventOnFullDay").'</label>';
 
 		// // Recurring event
-		// $userepeatevent = (getDolGlobalInt('MAIN_FEATURES_LEVEL') == 2 ? 1 : 0);
+		// $userepeatevent = (getDolGlobalInt('MAIN_DISABLE_RECURRING_EVENTS') ? 0 : 1);
 		// if ($userepeatevent) {
 		// 	// Repeat
 		// 	//print '<tr><td></td><td colspan="3">';
