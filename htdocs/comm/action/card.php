@@ -540,7 +540,7 @@ if (empty($reshook) && $action == 'add' && $usercancreate) {
 		if ($object->recurrule && preg_match('/FREQ=WEEKLY.*BYDAY(\d+)/i', $object->recurrule, $reg3)) {
 			$selectedrecurrulebyday = (int) $reg3[1];
 		}
-
+		var_dump($object->recurrule);exit;
 		// Is event recurrent ?
 		$eventisrecurring = 0;
 		$userepeatevent = (getDolGlobalInt('MAIN_FEATURES_LEVEL') == 2 ? 1 : 0);
@@ -1594,7 +1594,7 @@ if ($action == 'create') {
 	}
 
 	if (isModEnabled('resource')) {
-		// Categories
+		// Resources
 		print '<tr><td class="tdtop nowrap">'.$langs->trans("Resource").'</td><td>';
 
 		$listofresourceid = array();
