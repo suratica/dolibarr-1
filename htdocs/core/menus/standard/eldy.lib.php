@@ -1781,8 +1781,8 @@ function get_left_menu_accountancy($mainmenu, &$newmenu, $usemenuhider = 1, $lef
 				$sql = "SELECT rowid, code, label, nature";
 				$sql .= " FROM ".MAIN_DB_PREFIX."accounting_journal";
 				$sql .= " WHERE entity = ".((int) $conf->entity);
-				if (getDolGlobalInt('ACCOUNTING_USE_TREASURY')) {
-					$sql .= " AND nature = 4"; // only bank journal when using treasury
+				if (getDolGlobalString('ACCOUNTING_MODE') == 'RECETTES-DEPENSES') {
+					$sql .= " AND nature = 4"; // only bank journal when using treasury accounting mode
 				}
 				$sql .= " AND active = 1";
 				$sql .= " ORDER BY nature ASC, label DESC";
@@ -1842,7 +1842,7 @@ function get_left_menu_accountancy($mainmenu, &$newmenu, $usemenuhider = 1, $lef
 								$key = $langs->trans("AccountingJournalType".$objp->nature);	// $objp->nature is 1, 2, 3 ...
 								$transferlabel = (($objp->nature && $key != "AccountingJournalType".$objp->nature) ? $key.($journallabelwithoutspan != $key ? ' '.$journallabel : '') : $journallabel);
 
-								if (getDolGlobalInt('ACCOUNTING_USE_TREASURY')) {
+								if (getDolGlobalString('ACCOUNTING_MODE') == 'RECETTES-DEPENSES') {
 									$journalNaturePrefixUrl = 'treasury';
 								} else {
 									$journalNaturePrefixUrl = $nature;

@@ -57,6 +57,9 @@ if (!$user->hasRight('accounting', 'chartofaccount')) {
 }
 
 $action = GETPOST('action', 'aZ09');
+if (empty($action)) {
+	$action = 'edit';
+}
 
 $nbletter = GETPOSTINT('ACCOUNTING_LETTERING_NBLETTERS');
 
@@ -64,9 +67,6 @@ $nbletter = GETPOSTINT('ACCOUNTING_LETTERING_NBLETTERS');
 $formSetup = new FormSetup($db);
 
 // Main options
-$formSetup->newItem('ACCOUNTING_USE_TREASURY')
-	->setAsYesNo()
-	->nameText = $langs->trans('ACCOUNTING_USE_TREASURY');
 $formSetup->newItem('BANK_DISABLE_DIRECT_INPUT')
 	->setAsYesNo();
 $formSetup->newItem('ACCOUNTANCY_COMBO_FOR_AUX')
@@ -130,10 +130,13 @@ $model_option = array(
 
 $error = 0;
 
+$accounting_mode = getDolGlobalString('ACCOUNTING_MODE', 'CREANCES-DETTES');
+
 
 /*
  * Actions
  */
+
 include DOL_DOCUMENT_ROOT.'/core/actions_setmoduleoptions.inc.php';
 
 if (in_array($action, array('setACCOUNTANCY_ER_DATE_RECORD', 'setACCOUNTING_BANK_CONCILIATED'))) {
@@ -148,6 +151,27 @@ if (in_array($action, array('setACCOUNTANCY_ER_DATE_RECORD', 'setACCOUNTING_BANK
 		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
 	} else {
 		setEventMessages($langs->trans("Error"), null, 'mesgs');
+	}
+}
+
+if ($action == 'updatemode') {
+	$error = 0;
+
+	$accounting_modes = array(
+		'RECETTES-DEPENSES',
+		'CREANCES-DETTES'
+	);
+
+	$accounting_mode = GETPOST('accounting_mode', 'alpha');
+
+	if (in_array($accounting_mode, $accounting_modes)) {
+		if (dolibarr_set_const($db, 'ACCOUNTING_MODE', $accounting_mode, 'chaine', 0, '', $conf->entity)) {
+			setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+		} else {
+			$error++;
+		}
+	} else {
+		$error++;
 	}
 }
 
@@ -396,30 +420,47 @@ if (getDolGlobalString('FACTURE_SUPPLIER_DEPOSITS_ARE_JUST_PAYMENTS')) {
 if (getDolGlobalString('ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY')) {
 	print '<div class="info">' . $langs->trans("ConstantIsOn", "ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY") . '</div>';
 }
-if (getDolGlobalString('MAIN_COMPANY_PERENTITY_SHARED')) {
+if (!getDolGlobalString('MAIN_COMPANY_PERENTITY_SHARED')) {
 	print '<div class="info">' . $langs->trans("ConstantIsOn", "MAIN_COMPANY_PERENTITY_SHARED") . '</div>';
 }
 if (getDolGlobalString('MAIN_PRODUCT_PERENTITY_SHARED')) {
 	print '<div class="info">' . $langs->trans("ConstantIsOn", "MAIN_PRODUCT_PERENTITY_SHARED") . '</div>';
 }
 
+print '<br>';
+
+
+print '<form action="'.$_SERVER["PHP_SELF"].'" method="post">';
+print '<input type="hidden" name="token" value="'.newToken().'">';
+print '<input type="hidden" name="action" value="updatemode">';
+
+print '<table class="noborder centpercent">';
+
+// case of the parameter ACCOUNTING_MODE
+
+print '<tr class="liste_titre">';
+print '<td colspan="2">'.$langs->trans('OptionMode').'</td>';
+print "</tr>\n";
+print '<tr class="oddeven"><td class="nowraponall"><input type="radio" id="accounting_mode_1" name="accounting_mode" value="RECETTES-DEPENSES"'.($accounting_mode != 'CREANCES-DETTES' ? ' checked' : '').'><label for="accounting_mode_1"> '.$langs->trans('OptionModeTrue').'</label></td>';
+print '<td class="opacitymedium">'.nl2br($langs->trans('OptionModeTrueDesc'));
+print "</td></tr>\n";
+print '<tr class="oddeven"><td class="nowraponall"><input type="radio" id="accounting_mode_2" name="accounting_mode" value="CREANCES-DETTES"'.($accounting_mode == 'CREANCES-DETTES' ? ' checked' : '').'><label for="accounting_mode_2"> '.$langs->trans('OptionModeVirtual').'</label></td>';
+print '<td class="opacitymedium">'.nl2br($langs->trans('OptionModeVirtualDesc'))."</td></tr>\n";
+
+print "</table>\n";
+
+print '<div style="text-align:center"><input type="submit" class="button button-edit" name="button" value="'.$langs->trans('Save').'"></div>';
+print '</form>';
+
+
+print '<br><br><br>';
+
+
 // Show form main options
-if ($action == 'edit') {
-	print $formSetup->generateOutput(true);
-	print '<br />';
-	print '<br />';
-} else {
-	print $formSetup->generateOutput();
-}
-if (count($formSetup->items) > 0) {
-	if ($action != 'edit') {
-		print '<div class="tabsAction">';
-		print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&token='.newToken().'">'.$langs->trans("Modify").'</a>';
-		print '</div>';
-	}
-} else {
-	print '<br />'.$langs->trans("NothingToSetup");
-}
+print $formSetup->generateOutput(true);
+
+print '<br><br><br>';
+
 
 print '<form action="'.$_SERVER["PHP_SELF"].'" method="post">';
 print '<input type="hidden" name="token" value="'.newToken().'">';

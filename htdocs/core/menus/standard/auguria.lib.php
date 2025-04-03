@@ -406,8 +406,8 @@ function print_left_auguria_menu($db, $menu_array_before, $menu_array_after, &$t
 		$sql = "SELECT rowid, code, label, nature";
 		$sql .= " FROM ".MAIN_DB_PREFIX."accounting_journal";
 		$sql .= " WHERE entity = ".$conf->entity;
-		if (getDolGlobalInt('ACCOUNTING_USE_TREASURY')) {
-			$sql .= " AND nature = 4"; // only bank journal when using treasury
+		if (getDolGlobalString('ACCOUNTING_MODE') == 'RECETTES-DEPENSES') {
+			$sql .= " AND nature = 4"; // only bank journal when using treasury accounting mode
 		}
 		$sql .= " AND active = 1";
 		$sql .= " ORDER BY nature ASC, label DESC";
@@ -459,7 +459,7 @@ function print_left_auguria_menu($db, $menu_array_before, $menu_array_after, &$t
 						$langs->load('accountancy');
 						$journallabel = $langs->transnoentities($objp->label); // Labels in this table are set by loading llx_accounting_abc.sql. Label can be 'ACCOUNTING_SELL_JOURNAL', 'InventoryJournal', ...
 
-						if (getDolGlobalInt('ACCOUNTING_USE_TREASURY')) {
+						if (getDolGlobalString('ACCOUNTING_MODE') == 'RECETTES-DEPENSES') {
 							$journalNaturePrefixUrl = 'treasury';
 						} else {
 							$journalNaturePrefixUrl = $nature;
