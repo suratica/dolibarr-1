@@ -1367,7 +1367,7 @@ if ($action == 'create') {
 							}
 							console.log("Start date was changed, we modify end date "+oldhour+" "+oldmin+" -> "+newhour+" "+oldmin);
 							$("#p2hour").val(("00" + newhour).substr(-2,2));
-							$("#p2min").val(oldmin);
+							$("#p2min").val(("00" + oldmin).substr(-2,2));
 							$("#p2day").val(newday);
 							$("#p2month").val(newmonth);
 							$("#p2year").val(newyear);
