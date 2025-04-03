@@ -77,6 +77,10 @@ $apmin = GETPOSTINT('apmin');
 $p2hour = GETPOSTINT('p2hour');
 $p2min = GETPOSTINT('p2min');
 
+if (empty($action)) {
+	$action = 'create';
+}
+
 $addreminder = GETPOST('addreminder', 'alpha');
 $offsetvalue = GETPOSTINT('offsetvalue');
 $offsetunit = GETPOST('offsetunittype_duration', 'aZ09');
@@ -110,7 +114,11 @@ if (GETPOST('datep')) {
 
 $currentyear = (int) dol_print_date(dol_now(), '%Y');
 
-$repeateventlimitdate = dol_mktime(23, 59, 59, GETPOSTISSET("limitmonth") ? GETPOSTINT("limitmonth") : 1, GETPOSTISSET("limitday") ? GETPOSTINT("limitday") : 1, GETPOSTISSET("limityear") && GETPOSTINT("limityear") < 2100 ? GETPOSTINT("limityear") : ($currentyear + 1), $tzforfullday ? $tzforfullday : 'tzuserrel');
+if (GETPOSTISSET("limityear") && GETPOSTINT("limityear") < 2100) {
+	$repeateventlimitdate = dol_mktime(23, 59, 59, GETPOSTISSET("limitmonth") ? GETPOSTINT("limitmonth") : 1, GETPOSTISSET("limitday") ? GETPOSTINT("limitday") : 1, GETPOSTINT("limityear"), $tzforfullday ? $tzforfullday : 'tzuserrel');
+} else {
+	$repeateventlimitdate = dol_mktime(23, 59, 59, 12, 31, $currentyear, $tzforfullday ? $tzforfullday : 'tzuserrel');
+}
 
 // Security check
 $socid = GETPOSTINT('socid');
