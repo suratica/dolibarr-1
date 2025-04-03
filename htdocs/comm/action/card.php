@@ -77,10 +77,6 @@ $apmin = GETPOSTINT('apmin');
 $p2hour = GETPOSTINT('p2hour');
 $p2min = GETPOSTINT('p2min');
 
-if (empty($action)) {
-	$action = 'create';
-}
-
 $addreminder = GETPOST('addreminder', 'alpha');
 $offsetvalue = GETPOSTINT('offsetvalue');
 $offsetunit = GETPOST('offsetunittype_duration', 'aZ09');
@@ -156,6 +152,10 @@ if ($id > 0 && $action != 'add') {
 
 // fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
+
+if (empty($action) && empty($object->id)) {
+	$action = 'create';
+}
 
 // Initialize a technical object to manage hooks of page. Note that conf->hooks_modules contains an array of hook context
 $hookmanager->initHooks(array('actioncard', 'globalcard'));
@@ -540,10 +540,10 @@ if (empty($reshook) && $action == 'add' && $usercancreate) {
 		if ($object->recurrule && preg_match('/FREQ=WEEKLY.*BYDAY(\d+)/i', $object->recurrule, $reg3)) {
 			$selectedrecurrulebyday = (int) $reg3[1];
 		}
-		var_dump($object->recurrule);exit;
+
 		// Is event recurrent ?
 		$eventisrecurring = 0;
-		$userepeatevent = (getDolGlobalInt('MAIN_FEATURES_LEVEL') == 2 ? 1 : 0);
+		$userepeatevent = (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 1 ? 1 : 0);
 		if ($userepeatevent && !empty($selectedrecurrulefreq) && $selectedrecurrulefreq != 'no') {
 			$eventisrecurring = 1;
 			$object->recurid = dol_print_date(dol_now('gmt'), 'dayhourlog', 'gmt');
@@ -1952,6 +1952,7 @@ if ($id > 0) {
 		exit;
 	}
 
+	/*
 	if ($object->authorid > 0) {
 		$tmpuser = new User($db);
 		$res = $tmpuser->fetch($object->authorid);
@@ -1962,7 +1963,7 @@ if ($id > 0) {
 		$res = $tmpuser->fetch($object->usermodid);
 		$object->usermod = $tmpuser;
 	}
-
+	*/
 
 	/*
 	 * Show tabs
@@ -2051,10 +2052,10 @@ if ($id > 0) {
 
 		print dol_get_fiche_head($head, 'card', $langs->trans("Action"), 0, 'action');
 
-		print '<table class="border tableforfield" width="100%">';
+		print '<table class="border tableforfield centpercent">';
 
 		// Ref
-		print '<tr><td class="titlefieldcreate">'.$langs->trans("Ref").'</td><td colspan="3">'.$object->id.'</td></tr>';
+		print '<tr><td class="titlefieldmiddle">'.$langs->trans("Ref").'</td><td colspan="3">'.$object->id.'</td></tr>';
 
 		// Type of event
 		if (getDolGlobalString('AGENDA_USE_EVENT_TYPE') && $object->elementtype != "ticket") {
@@ -2582,7 +2583,7 @@ if ($id > 0) {
 
 		// Type
 		if (getDolGlobalString('AGENDA_USE_EVENT_TYPE')) {
-			print '<tr><td class="titlefield">'.$langs->trans("Type").'</td><td>';
+			print '<tr><td class="titlefieldmiddle">'.$langs->trans("Type").'</td><td>';
 			$labeltype = ($langs->transnoentities("Action".$object->type_code) != "Action".$object->type_code) ? $langs->transnoentities("Action".$object->type_code) : $object->type_label;
 			$labeltoshow = $labeltype;
 			if ($object->code) {
@@ -2594,11 +2595,11 @@ if ($id > 0) {
 		}
 
 		// Full day event
-		print '<tr><td class="titlefield">'.$langs->trans("EventOnFullDay").'</td><td>'.yn($object->fulldayevent ? 1 : 0, 3).'</td></tr>';
+		print '<tr><td class="titlefieldmiddle">'.$langs->trans("EventOnFullDay").'</td><td>'.yn($object->fulldayevent ? 1 : 0, 3).'</td></tr>';
 
 		// Event into a series
 		if ($object->recurid) {
-			print '<tr><td class="titlefield">'.$langs->trans("EventIntoASerie").'</td><td>'.dol_escape_htmltag($object->recurid).'</td></tr>';
+			print '<tr><td class="titlefieldmiddle">'.$langs->trans("EventIntoASerie").'</td><td>'.dol_escape_htmltag($object->recurid).'</td></tr>';
 		}
 
 		$rowspan = 4;
