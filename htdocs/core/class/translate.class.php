@@ -790,6 +790,8 @@ class Translate
 				}
 			}
 
+			$str = preg_replace('/([^%])%([^%0sdmYIMpHSBb])/', '\1__percent_with_bad_specifier__\2', $str);
+
 			if (!preg_match('/^Format/', $key)) {
 				try {
 					// @phan-suppress-next-line PhanPluginPrintfVariableFormatString
@@ -799,6 +801,8 @@ class Translate
 					// No exception managed.
 				}
 			}
+
+			$str = str_replace('__percent_with_bad_specifier__', '%', $str);
 
 			// Remove dangerous sequence we should never have. Not needed into a translated response.
 			// %27 is entity code for ' and is replaced by browser automatically when translation is inside a javascript code called by a click like on a href link.
