@@ -31,6 +31,8 @@ require_once DOL_DOCUMENT_ROOT.'/core/modules/facture/modules_facture.php';
  */
 class mod_facture_terre extends ModeleNumRefFactures
 {
+	public $name = 'Terre';
+
 	/**
 	 * Dolibarr version of the loaded document 'development', 'experimental', 'dolibarr'
 	 * @var string Version, possible values are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'''|'development'|'dolibarr'|'experimental'
