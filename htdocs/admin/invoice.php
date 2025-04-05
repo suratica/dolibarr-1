@@ -370,7 +370,7 @@ foreach ($arrayofmodules as $module) {
 	if ($module->version == 'experimental' && getDolGlobalInt('MAIN_FEATURES_LEVEL') < 1) {
 		continue;
 	}
-	if ($module->version == 'dolibarr_deprecated' && getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 0 && getDolGlobalString('FACTURE_ADDON') != $module->getName($langs)) {
+	if ($module->version == 'dolibarr_deprecated' && getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 0 && getDolGlobalString('FACTURE_ADDON') != $file) {
 		continue;
 	}
 
