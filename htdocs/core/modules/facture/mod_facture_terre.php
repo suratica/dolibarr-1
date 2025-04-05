@@ -31,7 +31,15 @@ require_once DOL_DOCUMENT_ROOT.'/core/modules/facture/modules_facture.php';
  */
 class mod_facture_terre extends ModeleNumRefFactures
 {
+	/**
+	 * @var string Sub-module name
+	 */
 	public $name = 'Terre';
+
+	/**
+	 * @var int		Position
+	 */
+	public $position = 40;
 
 	/**
 	 * Dolibarr version of the loaded document 'development', 'experimental', 'dolibarr'

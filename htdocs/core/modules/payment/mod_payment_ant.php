@@ -43,16 +43,21 @@ class mod_payment_ant extends ModeleNumRefPayments
 	public $error = '';
 
 	/**
-	 * @var string Nom du modele
+	 * @var string Name of sub-module
 	 * @deprecated
 	 * @see $name
 	 */
 	public $nom = 'Ant';
 
 	/**
-	 * @var string model name
+	 * @var string Sub-module name
 	 */
 	public $name = 'Ant';
+
+	/**
+	 * @var int		Position
+	 */
+	public $position = 50;
 
 
 	/**

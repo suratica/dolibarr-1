@@ -181,6 +181,8 @@ foreach ($dirmodels as $reldir) {
 	}
 }
 
+$arrayofmodules = dol_sort_array($arrayofmodules, 'position');
+
 foreach ($arrayofmodules as $module) {
 	// Show modules according to features level
 	if ($module->version == 'development' && getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2) {

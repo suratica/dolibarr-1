@@ -37,7 +37,15 @@ require_once DOL_DOCUMENT_ROOT.'/core/modules/facture/modules_facture.php';
  */
 class mod_facture_mercure extends ModeleNumRefFactures
 {
+	/**
+	 * @var string Sub-module name
+	 */
 	public $name = 'Mercure';
+
+	/**
+	 * @var int		Position
+	 */
+	public $position = 50;
 
 	/**
 	 * Dolibarr version of the loaded document

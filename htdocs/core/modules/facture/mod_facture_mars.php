@@ -32,7 +32,15 @@ require_once DOL_DOCUMENT_ROOT.'/core/modules/facture/modules_facture.php';
  */
 class mod_facture_mars extends ModeleNumRefFactures
 {
+	/**
+	 * @var string Sub-module name
+	 */
 	public $name = 'Mars';
+
+	/**
+	 * @var int		Position
+	 */
+	public $position = 30;
 
 	/**
 	 * Dolibarr version of the loaded document
