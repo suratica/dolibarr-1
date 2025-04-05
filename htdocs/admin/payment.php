@@ -234,8 +234,10 @@ foreach ($arrayofmodules as $module) {
 		if ("$nextval" != $langs->trans("NotAvailable")) {  // Keep " on nextval
 			$htmltooltip .= $langs->trans("NextValue").': ';
 			if ($nextval) {
-				if (preg_match('/^Error/', $nextval) || $nextval == 'NotConfigured') {
+				if (preg_match('/^Error/', $nextval)) {
 					$nextval = $langs->trans($nextval);
+				} elseif (preg_match('/NotConfigured/', $nextval)) {
+					$nextval = '<span class="opacitymedium">'.$nextval.'</span>';
 				}
 				$htmltooltip .= $nextval.'<br>';
 			} else {
