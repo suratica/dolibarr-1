@@ -5228,15 +5228,16 @@ function migrate_accountingbookkeeping(int $entity)
 	$error = 0;
 	$resultstring = '';
 
-	// ref migration supports only standard ref numbering model. We set the default ref model if no other model has been set
-	if (!$bookKeepingAddon = getDolGlobalString('BOOKKEEPING_ADDON')) {
-		dolibarr_set_const($db, 'BOOKKEEPING_ADDON', 'mod_bookkeeping_argon', 'chaine', 0, '', $entity);
-		$bookKeepingAddon = 'mod_bookkeeping_argon';
+	// For the moment we set the numbering rule to neon (the rule argon has a lot of critical bugs to fix first).
+	if (getDolGlobalString('BOOKKEEPING_ADDON') == '') {
+		dolibarr_set_const($db, 'BOOKKEEPING_ADDON', 'mod_bookkeeping_neon', 'chaine', 0, '', $entity);
+		$bookKeepingAddon = 'mod_bookkeeping_neon';
 	}
 
 	print '<tr class="trforrunsql"><td colspan="4">';
 	print '<b>'.$langs->trans('MigrationAccountancyBookkeeping')."</b><br>\n";
 
+	// TODO
 	if ($bookKeepingAddon === 'mod_bookkeeping_argon') {
 		$db->begin();
 

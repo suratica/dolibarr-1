@@ -898,20 +898,21 @@ function array2table($data, $tableMarkup = 1, $tableoptions = '', $troptions = '
 /**
  * Return last or next value for a mask (according to area we should not reset)
  *
- * @param   DoliDB		$db				Database handler
- * @param   string		$mask			Mask to use. Must contains {0...0}. Can contains {t..}, {u...}, {user_extra_xxx}, .;.
- * @param   string		$table			Table containing field with counter
- * @param   string		$field			Field containing already used values of counter
- * @param   string		$where			To add a filter on selection (for example to filter on invoice types)
- * @param   null|Societe|''	$objsoc		The company that own the object we need a counter for
- * @param   int|''		$date			Date to use for the {y},{m},{d} tags. is timestamp or '' to use dol_now()
- * @param   string		$mode			'next' for next value or 'last' for last value
- * @param   bool		$bentityon		Activate the entity filter. Default is true (for modules not compatible with multicompany)
- * @param	?User		$objuser		Object user we need data from.
- * @param	?string		$forceentity	Entity id to force, can be '0' or '1' or '1,2' etc
- * @return 	string						New value (numeric) or error message
+ * @param   DoliDB			$db				Database handler
+ * @param   string			$mask			Mask to use. Must contains {0...0}. Can contains {t..}, {u...}, {user_extra_xxx}, .;.
+ * @param   string			$table			Table containing field with counter
+ * @param   string			$field			Field containing already used values of counter
+ * @param   string			$where			To add a filter on selection (for example to filter on invoice types)
+ * @param   null|Societe|''	$objsoc			The company that own the object we need a counter for
+ * @param   int|''			$date			Date to use for the {y},{m},{d} tags. is timestamp or '' to use dol_now()
+ * @param   string			$mode			'next' for next value or 'last' for last value
+ * @param   bool			$bentityon		Activate the entity filter. Default is true (for modules not compatible with multicompany)
+ * @param	?User			$objuser		Object user we need data from.
+ * @param	?string			$forceentity	Entity id to force, can be '0' or '1' or '1,2' etc
+ * @param	?BookKeeping	$objbookkeeping	The record in bookkeeping
+ * @return 	string							New value (numeric) or error message
  */
-function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $date = '', $mode = 'next', $bentityon = true, $objuser = null, $forceentity = null)
+function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $date = '', $mode = 'next', $bentityon = true, $objuser = null, $forceentity = null, $objbookkeeping = null)
 {
 	global $user;
 
@@ -999,19 +1000,35 @@ function get_next_value($db, $mask, $table, $field, $where = '', $objsoc = '', $
 	}
 
 	// Extract value for user
-	$regType = array();
-	if (preg_match('/\{(u+)\}/i', $mask, $regType)) {
+	$regUser = array();
+	if (preg_match('/\{(u+)\}/i', $mask, $regUser)) {
 		$lastname = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 		if (is_object($objuser)) {
 			$lastname = $objuser->lastname;
 		}
 
-		$maskuser = $regType[1];
-		$maskuser_value = substr($lastname, 0, dol_strlen($regType[1])); // get n first characters of user firstname (where n is length in mask)
-		$maskuser_value = str_pad($maskuser_value, dol_strlen($regType[1]), "#", STR_PAD_RIGHT); // we fill on right with # to have same number of char than into mask
+		$maskuser = $regUser[1];
+		$maskuser_value = substr($lastname, 0, dol_strlen($regUser[1])); // get n first characters of user firstname (where n is length in mask)
+		$maskuser_value = str_pad($maskuser_value, dol_strlen($regUser[1]), "#", STR_PAD_RIGHT); // we fill on right with # to have same number of char than into mask
 	} else {
 		$maskuser = '';
 		$maskuser_value = '';
+	}
+
+	// Extract value for journal code
+	$regJournal = array();
+	if (preg_match('/\{(jj+)\}/i', $mask, $regJournal)) {
+		$lastname = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+		if (is_object($objuser)) {
+			$journalcode = $objbookkeeping->code_journal;
+		}
+
+		$maskjournal = $regJournal[1];
+		$maskjournal_value = substr($journalcode, 0, dol_strlen($regJournal[1])); // get n first characters of journal code (where n is length in mask)
+		$maskjournal_value = str_pad($maskjournal_value, dol_strlen($regJournal[1]), "#", STR_PAD_RIGHT); // we fill on right with # to have same number of char than into mask
+	} else {
+		$maskjournal = '';
+		$maskjournal_value = '';
 	}
 
 	// Personalized field {XXX-1} à {XXX-99}

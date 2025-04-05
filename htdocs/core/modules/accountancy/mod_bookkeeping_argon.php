@@ -51,7 +51,7 @@ class mod_bookkeeping_argon extends ModeleNumRefBookkeeping
 	 */
 	public function __construct()
 	{
-		global $conf, $mysoc;
+		// Nothing
 	}
 
 	/**
@@ -87,7 +87,7 @@ class mod_bookkeeping_argon extends ModeleNumRefBookkeeping
 	 */
 	public function canBeActivated($object): bool
 	{
-		global $conf, $langs, $db;
+		global $langs;
 
 		$max = '';
 
@@ -114,13 +114,14 @@ class mod_bookkeeping_argon extends ModeleNumRefBookkeeping
 	 */
 	public function getNextValue(BookKeeping $object)
 	{
-		global $db, $conf;
+		global $db;
 
 		$prefix = $this->getPrefix($object);
 		$posindice = strlen($prefix) + 1;
+
 		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM {$db->prefix()}accounting_bookkeeping";
-		$sql .= " WHERE ref LIKE '{$db->escape($prefix)}%'";
+		$sql .= " FROM ".$db->prefix()."accounting_bookkeeping";
+		$sql .= " WHERE ref LIKE '".$db->escape($prefix)."%'";
 		$sql .= " AND entity = ".getEntity($object->element);
 
 
