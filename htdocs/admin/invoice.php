@@ -355,7 +355,14 @@ foreach ($dirmodels as $reldir) {
 	}
 }
 
+$arrayofmodules = dol_sort_array($arrayofmodules, 'position');
+
 foreach ($arrayofmodules as $module) {
+	$file = strtolower($module->getName($langs));
+	if (!preg_match('/^mod_facture_/', $file)) {
+		$file = 'mod_facture_'.$file;
+	}
+
 	// Show modules according to features level
 	if ($module->version == 'development' && getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2) {
 		continue;
@@ -368,11 +375,6 @@ foreach ($arrayofmodules as $module) {
 	}
 
 	if ($module->isEnabled()) {
-		$file = strtolower($module->getName($langs)).'.php';
-		if (!preg_match('/^mod_facture_/', $file)) {
-			$file = 'mod_facture_'.$file;
-		}
-
 		print '<tr class="oddeven"><td width="100">';
 		print preg_replace('/\-.*$/', '', preg_replace('/mod_facture_/', '', $module->getName($langs)));
 		print "</td><td>\n";
