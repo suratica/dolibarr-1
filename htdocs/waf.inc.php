@@ -148,14 +148,14 @@ function testSqlAndScriptInject($val, $type)
 
 	// For SQL Injection (only GET are used to scan for such injection strings)
 	if ($type == 1 || $type == 3) {
-		// Note the \s+ is replaced into \s* because some spaces may have been modified in previous loop
-		$inj += preg_match('/delete[\/\*\s]+from/i', $val);
-		$inj += preg_match('/create[\/\*\s]+table/i', $val);
-		$inj += preg_match('/insert[\/\*\s]+into/i', $val);
-		$inj += preg_match('/select[\/\*\s]+from/i', $val);
-		$inj += preg_match('/from[\/\*\s]+dual/i', $val);
-		$inj += preg_match('/into[\/\*\s]+(outfile|dumpfile)/i', $val);
-		$inj += preg_match('/user[\/\*\s]+\(/i', $val); // avoid to use function user() or mysql_user() that return current database login
+		// Note the \s+ is replaced into \s* because some spaces may have been modified or removed in previous loop
+		$inj += preg_match('/delete[\/\*\s]*from/i', $val);
+		$inj += preg_match('/create[\/\*\s]*table/i', $val);
+		$inj += preg_match('/insert[\/\*\s]*into/i', $val);
+		$inj += preg_match('/select[\/\*\s]*from/i', $val);
+		$inj += preg_match('/from[\/\*\s]*dual/i', $val);
+		$inj += preg_match('/into[\/\*\s]*(outfile|dumpfile)/i', $val);
+		$inj += preg_match('/user[\/\*\s]*\(/i', $val); // avoid to use function user() or mysql_user() that return current database login
 		$inj += preg_match('/information_schema/i', $val); // avoid to use request that read information_schema database
 		$inj += preg_match('/<svg/i', $val); // <svg can be allowed in POST
 		$inj += preg_match('/update[^&=\w].*set.+=/i', $val);	// the [^&=\w] test is to avoid error when request is like action=update&...set... or &updatemodule=...set...
