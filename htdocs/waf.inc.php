@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2004-2021  Laurent Destailleur     <eldy@users.sourceforge.net>
+/* Copyright (C) 2004-2025  Laurent Destailleur     <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,14 @@
  *	\file       htdocs/waf.inc.php
  *	\ingroup	core
  *	\brief      File with WAF controls
- *				WARNING: This file must have absolutely no dependency with Dolibarr code.
+ *				WARNING: This file must have absolutely no dependency with any other code.
  *				It should be usable in any project.
  */
 
 // To disable the WAF for GET and POST and PHP_SELF, uncomment this
 //define('NOSCANPHPSELFFORINJECTION', 1);
 //define('NOSCANGETFORINJECTION', 1);
-//define('NOSCANPOSTFORINJECTION', 1 or 2);
+//define('NOSCANPOSTFORINJECTION', 1 or array('param1', 'param2'...));
 
 
  /**
