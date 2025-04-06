@@ -220,7 +220,9 @@ function testSqlAndScriptInject($val, $type)
 	// For XSS Injection done by adding javascript closing html tags like with onmousemove, etc... (closing a src or href tag with not cleaned param)
 	if ($type == 1 || $type == 3) {
 		$val = str_replace('enclosure="', 'enclosure=X', $val); // We accept enclosure=" for the export/import module
-		$inj += preg_match('/"/i', $val); // We refused " in GET parameters value.
+		if (!defined("SECURITY_WAF_ALLOW_QUOTES_IN_GET") || !constant("SECURITY_WAF_ALLOW_QUOTES_IN_GET")) {
+			$inj += preg_match('/"/i', $val); // We refused " in GET parameters value.
+		}
 	}
 	if ($type == 2) {
 		$inj += preg_match('/[:;"\'<>\?\(\){}\$%]/', $val); // PHP_SELF is a file system (or url path without parameters). It can contains spaces.
@@ -246,7 +248,8 @@ function analyseVarsForSqlAndScriptsInjection(&$var, $type, $stopcode = 1)
 				continue;
 			}
 
-			if (analyseVarsForSqlAndScriptsInjection($key, $type, $stopcode) && analyseVarsForSqlAndScriptsInjection($value, $type, $stopcode)) {
+			// Test on both the key (we force type to the less tolerant = 3) and the value
+			if (analyseVarsForSqlAndScriptsInjection($key, 3, $stopcode) && analyseVarsForSqlAndScriptsInjection($value, $type, $stopcode)) {
 				//$var[$key] = $value;	// This is useless
 			} else {
 				http_response_code(403);
