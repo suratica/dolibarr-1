@@ -244,3 +244,5 @@ ALTER TABLE llx_contratdet DROP COLUMN price_ht;
 ALTER TABLE llx_contratdet DROP COLUMN remise;
 
 ALTER TABLE llx_extrafields ADD COLUMN aiprompt text;
+
+ALTER TABLE llx_menu ADD COLUMN showtopmenuinframe integer DEFAULT 0;
