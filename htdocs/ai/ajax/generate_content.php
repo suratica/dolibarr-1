@@ -1,10 +1,10 @@
 <?php
-/* Copyright (C) 2008-2011  Laurent Destailleur     <eldy@users.sourceforge.net>
+/* Copyright (C) 2008-2025  Laurent Destailleur     <eldy@users.sourceforge.net>
  * Copyright (C) 2005-2016  Regis Houssin           <regis.houssin@inodbox.com>
  * Copyright (C) 2012       J. Fernando Lagrange    <fernando@demo-tic.org>
  * Copyright (C) 2015       Raphaël Doursenaud      <rdoursenaud@gpcsolutions.fr>
  * Copyright (C) 2023       Eric Seigne      		<eric.seigne@cap-rel.fr>
- * Copyright (C) 2024       Frédéric France             <frederic.france@free.fr>
+ * Copyright (C) 2024       Frédéric France         <frederic.france@free.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
  */
 
 /**
- *	\file			htdocs/ai/lib/generate_content.lib.php
- *  \brief          Library of ai script
+ *	\file			htdocs/ai/ajax/generate_content.php
+ *  \brief          Ajax page to generate content
  */
 
 if (!defined('NOTOKENRENEWAL')) {
@@ -70,7 +70,7 @@ $rawData = file_get_contents('php://input');
 $jsonData = json_decode($rawData, true);
 
 if (is_null($jsonData)) {
-	dol_print_error($db, 'data with format JSON valide.');
+	dol_print_error($db, 'data in POST has not a valid JSON format.');
 }
 $ai = new Ai($db);
 
