@@ -383,7 +383,7 @@ if ($action == 'create') {
 	// Show URL into a frame
 	if (getDolGlobalString("MAIN_SHOW_TOP_MENU_URL_IN_FRAME")) {
 		print '<tr><td class="fieldrequired">'.$langs->trans('ShowTopMenuURLIntoAFrame').'</td>';
-		print '<td><input type="checkbox" name="showtopmenuinframe" value="'.dol_escape_htmltag(GETPOST("showtopmenuinframe", 'alphanohtml')).'"></td><td></td></tr>';
+		print '<td><input type="checkbox" value="1" name="showtopmenuinframe"'.(GETPOSTINT("showtopmenuinframe") ? ' checked="checked"' : '').'"></td><td></td></tr>';
 	}
 
 	// Picto
@@ -514,7 +514,7 @@ if ($action == 'create') {
 	// Show URL into a frame
 	if (getDolGlobalString("MAIN_SHOW_TOP_MENU_URL_IN_FRAME")) {
 		print '<tr><td class="fieldrequired">'.$langs->trans('ShowTopMenuURLIntoAFrame').'</td>';
-		print '<td><input type="checkbox" name="showtopmenuinframe" value="'.dol_escape_htmltag($menu->showtopmenuinframe).'"></td><td></td></tr>';
+		print '<td><input type="checkbox" name="showtopmenuinframe" '.($menu->showtopmenuinframe ? ' checked="checked"' : '').'"></td><td></td></tr>';
 	}
 
 	// Picto
