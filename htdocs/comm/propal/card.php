@@ -1485,7 +1485,7 @@ if (empty($reshook)) {
 
 			if (!$error) {
 				// Insert line
-				$result = $object->addline($desc, $pu_ht, (float) $qty, $tva_tx, $localtax1_tx, $localtax2_tx, $idprod, $remise_percent, $price_base_type, $pu_ttc, $info_bits, $type, min($rank, count($object->lines) + 1), 0, GETPOSTINT('fk_parent_line'), (int) $fournprice, (int) $buyingprice, $label, $date_start, $date_end, $array_options, $fk_unit, '', 0, $pu_ht_devise);
+				$result = $object->addline($desc, $pu_ht, (float) $qty, $tva_tx, $localtax1_tx, $localtax2_tx, $idprod, $remise_percent, $price_base_type, $pu_ttc, $info_bits, $type, min($rank, count($object->lines) + 1), 0, GETPOSTINT('fk_parent_line'), (int) $fournprice, (float) $buyingprice, $label, $date_start, $date_end, $array_options, $fk_unit, '', 0, $pu_ht_devise);
 
 				if ($result > 0) {
 					$db->commit();
