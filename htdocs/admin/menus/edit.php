@@ -380,6 +380,12 @@ if ($action == 'create') {
 	print '<tr><td class="fieldrequired">'.$langs->trans('URL').'</td>';
 	print '<td><input type="text" class="minwidth500" name="url" value="'.dol_escape_htmltag(GETPOST("url", 'alphanohtml')).'"></td><td>'.$langs->trans('DetailUrl').'</td></tr>';
 
+	// Show URL into a frame
+	if (getDolGlobalString("MAIN_SHOW_TOP_MENU_URL_IN_FRAME")) {
+		print '<tr><td class="fieldrequired">'.$langs->trans('ShowTopMenuURLIntoAFrame').'</td>';
+		print '<td><input type="checkbox" name="showtopmenuinframe" value="'.dol_escape_htmltag(GETPOST("showtopmenuinframe", 'alphanohtml')).'"></td><td></td></tr>';
+	}
+
 	// Picto
 	print '<tr><td>'.$langs->trans('Image').'</td>';
 	print '<td><input type="text" class="minwidth300" name="picto" value="'.dol_escape_htmltag(GETPOST("picto", 'alphanohtml')).'"></td><td>'.$langs->trans('Example').': fa-global</td></tr>';
@@ -504,6 +510,12 @@ if ($action == 'create') {
 	// URL
 	print '<tr><td class="fieldrequired">'.$langs->trans('URL').'</td>';
 	print '<td><input type="text" class="quatrevingtpercent" name="url" value="'.dol_escape_htmltag($menu->url).'"></td><td>'.$langs->trans('DetailUrl').'</td></tr>';
+
+	// Show URL into a frame
+	if (getDolGlobalString("MAIN_SHOW_TOP_MENU_URL_IN_FRAME")) {
+		print '<tr><td class="fieldrequired">'.$langs->trans('ShowTopMenuURLIntoAFrame').'</td>';
+		print '<td><input type="checkbox" name="showtopmenuinframe" value="'.dol_escape_htmltag($menu->showtopmenuinframe).'"></td><td></td></tr>';
+	}
 
 	// Picto
 	print '<tr><td class="fieldrequired">'.$langs->trans('Image').'</td>';
