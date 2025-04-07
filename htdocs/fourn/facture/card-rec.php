@@ -105,8 +105,8 @@ $pageprev = $page - 1;
 $pagenext = $page + 1;
 
 $object = new FactureFournisseurRec($db);
-if (($id > 0 || $title) && $action != 'create' && $action != 'add') {
-	$ret = $object->fetch($id, $title);
+if (($id > 0 || $ref) && $action != 'create' && $action != 'add') {
+	$ret = $object->fetch($id, $ref);
 	if (! $ret) {
 		setEventMessages($langs->trans("ErrorRecordNotFound"), null, 'errors');
 	}
