@@ -229,7 +229,7 @@ if (getDolGlobalString("AI_API_SERVICE")) {
 
 	// Fill $out
 
-	$out = '';
+	$out = $langs->trans("Test").': &nbsp; ';
 	include DOL_DOCUMENT_ROOT.'/core/tpl/formlayoutai.tpl.php';
 	print $out;
 
@@ -243,7 +243,7 @@ if (getDolGlobalString("AI_API_SERVICE")) {
 	$formmail->withaiprompt = 'html';
 
 	// Fill $out
-	$out = '';
+	$out = $langs->trans("Test").': &nbsp; ';
 	include DOL_DOCUMENT_ROOT.'/core/tpl/formlayoutai.tpl.php';
 	print $out;
 
