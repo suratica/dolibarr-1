@@ -274,7 +274,8 @@ class Menubase
 				$sql .= "langs,";
 				$sql .= "perms,";
 				$sql .= "enabled,";
-				$sql .= "usertype";
+				$sql .= "usertype,";
+				$sql .= "showtopmenuinframe";
 				$sql .= ") VALUES (";
 				$sql .= " '".$this->db->escape($this->menu_handler)."',";
 				$sql .= " '".$this->db->escape((string) $this->entity)."',";
@@ -293,7 +294,8 @@ class Menubase
 				$sql .= " '".$this->db->escape($this->langs)."',";
 				$sql .= " '".$this->db->escape($this->perms)."',";
 				$sql .= " '".$this->db->escape($this->enabled)."',";
-				$sql .= " '".$this->db->escape((string) $this->user)."'";
+				$sql .= " '".$this->db->escape((string) $this->user)."',";
+				$sql .= " ".((int) $this->showtopmenuinframe);
 				$sql .= ")";
 
 				dol_syslog(get_class($this)."::create", LOG_DEBUG);
@@ -352,24 +354,25 @@ class Menubase
 
 		// Update request
 		$sql = "UPDATE ".$this->db->prefix()."menu SET";
-		$sql .= " menu_handler='".$this->db->escape($this->menu_handler)."',";
-		$sql .= " module='".$this->db->escape($this->module)."',";
-		$sql .= " type='".$this->db->escape($this->type)."',";
-		$sql .= " mainmenu='".$this->db->escape($this->mainmenu)."',";
-		$sql .= " leftmenu='".$this->db->escape($this->leftmenu)."',";
-		$sql .= " fk_menu=".((int) $this->fk_menu).",";
-		$sql .= " fk_mainmenu=".($this->fk_mainmenu ? "'".$this->db->escape($this->fk_mainmenu)."'" : "null").",";
-		$sql .= " fk_leftmenu=".($this->fk_leftmenu ? "'".$this->db->escape($this->fk_leftmenu)."'" : "null").",";
-		$sql .= " position=".($this->position > 0 ? ((int) $this->position) : 0).",";
-		$sql .= " url='".$this->db->escape($this->url)."',";
-		$sql .= " target='".$this->db->escape($this->target)."',";
-		$sql .= " titre='".$this->db->escape($this->title)."',";
-		$sql .= " prefix='".$this->db->escape($this->prefix)."',";
-		$sql .= " langs='".$this->db->escape($this->langs)."',";
-		$sql .= " perms='".$this->db->escape($this->perms)."',";
-		$sql .= " enabled='".$this->db->escape($this->enabled)."',";
-		$sql .= " usertype='".$this->db->escape((string) $this->user)."'";
-		$sql .= " WHERE rowid=".((int) $this->id);
+		$sql .= " menu_handler = '".$this->db->escape($this->menu_handler)."',";
+		$sql .= " module = '".$this->db->escape($this->module)."',";
+		$sql .= " type = '".$this->db->escape($this->type)."',";
+		$sql .= " mainmenu = '".$this->db->escape($this->mainmenu)."',";
+		$sql .= " leftmenu = '".$this->db->escape($this->leftmenu)."',";
+		$sql .= " fk_menu = ".((int) $this->fk_menu).",";
+		$sql .= " fk_mainmenu = ".($this->fk_mainmenu ? "'".$this->db->escape($this->fk_mainmenu)."'" : "null").",";
+		$sql .= " fk_leftmenu = ".($this->fk_leftmenu ? "'".$this->db->escape($this->fk_leftmenu)."'" : "null").",";
+		$sql .= " position = ".($this->position > 0 ? ((int) $this->position) : 0).",";
+		$sql .= " url = '".$this->db->escape($this->url)."',";
+		$sql .= " target = '".$this->db->escape($this->target)."',";
+		$sql .= " titre = '".$this->db->escape($this->title)."',";
+		$sql .= " prefix = '".$this->db->escape($this->prefix)."',";
+		$sql .= " langs = '".$this->db->escape($this->langs)."',";
+		$sql .= " perms = '".$this->db->escape($this->perms)."',";
+		$sql .= " enabled = '".$this->db->escape($this->enabled)."',";
+		$sql .= " usertype = '".$this->db->escape((string) $this->user)."',";
+		$sql .= " showtopmenuinframe = ".((int) $this->showtopmenuinframe);
+		$sql .= " WHERE rowid = ".((int) $this->id);
 
 		dol_syslog(get_class($this)."::update", LOG_DEBUG);
 		$resql = $this->db->query($sql);
@@ -413,7 +416,8 @@ class Menubase
 		$sql .= " t.perms,";
 		$sql .= " t.enabled,";
 		$sql .= " t.usertype as user,";
-		$sql .= " t.tms";
+		$sql .= " t.tms,";
+		$sql .= " t.showtopmenuinframe";
 		$sql .= " FROM ".$this->db->prefix()."menu as t";
 		$sql .= " WHERE t.rowid = ".((int) $id);
 
@@ -444,6 +448,7 @@ class Menubase
 				$this->enabled = str_replace("\"", "'", $obj->enabled);
 				$this->user = $obj->user;
 				$this->tms = $this->db->jdate($obj->tms);
+				$this->showtopmenuinframe = $obj->showtopmenuinframe;
 			}
 			$this->db->free($resql);
 
@@ -641,7 +646,7 @@ class Menubase
 		$leftmenu = $myleftmenu; // To export to dol_eval function
 
 		$sql = "SELECT m.rowid, m.type, m.module, m.fk_menu, m.fk_mainmenu, m.fk_leftmenu, m.url, m.titre,";
-		$sql .= " m.prefix, m.langs, m.perms, m.enabled, m.target, m.mainmenu, m.leftmenu, m.position";
+		$sql .= " m.prefix, m.langs, m.perms, m.enabled, m.target, m.mainmenu, m.leftmenu, m.position, m.showtopmenuinframe";
 		$sql .= " FROM ".$this->db->prefix()."menu as m";
 		$sql .= " WHERE m.entity IN (0,".$conf->entity.")";
 		$sql .= " AND m.menu_handler IN ('".$this->db->escape($menu_handler)."','all')";
@@ -737,7 +742,8 @@ class Menubase
 					$tabMenu[$b]['type']        = $menu['type'];
 					$tabMenu[$b]['fk_mainmenu'] = $menu['fk_mainmenu'];
 					$tabMenu[$b]['fk_leftmenu'] = $menu['fk_leftmenu'];
-					$tabMenu[$b]['position']    = (int) $menu['position'];
+					$tabMenu[$b]['position']    		= (int) $menu['position'];
+					$tabMenu[$b]['showtopmenuinframe']	= (int) $menu['showtopmenuinframe'];
 
 					$b++;
 				}
