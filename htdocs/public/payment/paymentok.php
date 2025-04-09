@@ -1073,6 +1073,7 @@ if ($ispaymentok) {
 							// We can add a line to reduce the amount of the invoice but with which vat ?
 							// TODO Test if vat on line is the same everywhere, if yes we can add
 							// $invoice->addline('Fix amount of invoice', $FinalPaymentAmt - $object->total_ttc, 1, $txtva);
+							// TODO Send a warning email.
 						}
 
 						$object->classifyBilled($user);		// The invoice has been create from the order so total is the same, so we can classify order to billed (even if payment may be partial).
