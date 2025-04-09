@@ -1001,6 +1001,7 @@ if (isModEnabled('paybox')) {
 }
 if (isModEnabled('stripe')) {
 	print '<!-- STRIPE_LIVE = '.getDolGlobalString('STRIPE_LIVE').' -->'."\n";
+	print '<!-- STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION = '.getDolGlobalString('STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION').' -->'."\n";
 }
 print '<!-- urlok = '.$urlok.' -->'."\n";
 print '<!-- urlko = '.$urlko.' -->'."\n";
