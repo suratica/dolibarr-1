@@ -1068,8 +1068,10 @@ if ($ispaymentok) {
 					$invoice = new Facture($db);
 					$result = $invoice->createFromOrder($object, $user);
 					if ($result > 0) {
-						$object->classifyBilled($user);
-						$invoice->validate($user);
+						$object->classifyBilled($user);		// The invoice has been create from the order so total is the same, so we can classify order to billed (even if payment may be partial).
+
+						$invoice->validate($user);			// This may re-classify all linked orders to billed (done previously) if amount of invoice is ok by triggers, depending on the workflow module setup.
+
 						// Creation of payment line
 						include_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 						$paiement = new Paiement($db);
