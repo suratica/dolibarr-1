@@ -1072,7 +1072,7 @@ if ($ispaymentok) {
 
 						$invoice->validate($user);			// This may re-classify all linked orders to billed (done previously) if amount of invoice is ok by triggers, depending on the workflow module setup.
 
-						// Creation of payment line
+						// Creation of payment line (warning: if amount has been modified on page, the payment may be partial)
 						include_once DOL_DOCUMENT_ROOT . '/compta/paiement/class/paiement.class.php';
 						$paiement = new Paiement($db);
 						$paiement->datepaye = $now;
