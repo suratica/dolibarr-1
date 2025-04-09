@@ -2112,7 +2112,7 @@ if ($num > 0) {
 		$multicurrency_totalpay = $multicurrency_paiement + $multicurrency_totalcreditnotes + $multicurrency_totaldeposits;
 		$multicurrency_remaintopay = price2num($facturestatic->multicurrency_total_ttc - $multicurrency_totalpay);
 
-		if ($facturestatic->status == Facture::STATUS_CLOSED && $facturestatic->close_code == 'discount_vat') {		// If invoice closed with discount for anticipated payment
+		if ($facturestatic->status == Facture::STATUS_CLOSED) {
 			$remaintopay = 0;
 			$multicurrency_remaintopay = 0;
 		}

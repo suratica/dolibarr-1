@@ -4403,7 +4403,7 @@ if ($action == 'create') {
 		}
 	}
 
-	if ($object->paye) {
+	if ($object->paye || $object->status == $object::STATUS_CLOSED) {
 		$resteapayer = 0;
 	}
 	$resteapayeraffiche = $resteapayer;

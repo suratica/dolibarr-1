@@ -196,8 +196,8 @@ abstract class CommonInvoice extends CommonObject
 	public $situation_cycle_ref;
 
 	/**
-	 * ! Closing after partial payment: discount_vat, badsupplier, abandon
-	 * ! Closing when no payment: replaced, abandoned
+	 * ! Closing after partial payment: CLOSECODE_DISCOUNTVAT, CLOSECODE_BADDEBT, CLOSECODE_BANKCHARGE, CLOSECODE_OTHER
+	 * ! Closing when no payment: CLOSECODE_ABANDONED, CLOSECODE_REPLACED
 	 * @var string Close code
 	 */
 	public $close_code;
