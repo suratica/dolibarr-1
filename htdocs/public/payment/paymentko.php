@@ -359,7 +359,7 @@ if (!empty($doactionsthenredirect)) {
 		$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?paymentsessionkey='.urlencode($randomseckey).'&website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
 	}
 
-	if (getDolGlobalInt('MARKETPLACE_PAYMENT_IN_FRAME') == 1) {	// TODO Use a property in website module
+	if (getDolGlobalInt('MARKETPLACE_PAYMENT_IN_FRAME') == 1) {	// TODO Remove this to make only a http redirect, if the website need a js redirect to parent frame, he must do it itself.
 		dol_syslog("Now do a redirect in iframe mode in js to ".$ext_urlko, LOG_DEBUG, 0, '_payment');
 
 		// Redirect in js is not reliable
