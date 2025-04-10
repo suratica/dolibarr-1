@@ -563,6 +563,7 @@ if ($action == 'create') {
 		//$object->label = $object->doc_ref;
 		if ($mode == '_tmp') {
 			$object->context['mode'] = $mode;
+			$object->next_prev_filter = '1=0';	// Add a test always false to disable navigation into the dol_banner_tab. In tmp mode, we just want to create/edit lines of bank transaction.
 		}
 		$object->label = $object->ref;
 
