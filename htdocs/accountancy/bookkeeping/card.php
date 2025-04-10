@@ -294,7 +294,7 @@ if (empty($reshook)) {
 			$object->journal_label = $journal_label;
 			$object->fk_doc = 0;
 			$object->fk_docdet = 0;
-			$object->ref = $numRefModel === 'mod_bookkeeping_neon' ? GETPOST('ref', 'alpha') : $object->getNextNumRef();
+			$object->ref = (GETPOST('ref', 'alpha') ? GETPOST('ref', 'alpha') : $object->getNextNumRef());
 			$object->montant = 0; // deprecated
 			$object->amount = 0;
 
