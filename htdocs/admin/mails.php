@@ -1026,6 +1026,10 @@ if ($action == 'edit') {
 
 	print '</div>';
 
+
+	print '<br>';
+
+
 	if (getDolGlobalString('MAIN_MAIL_SENDMODE', 'mail') == 'mail' && !getDolGlobalString('MAIN_FIX_FOR_BUGGED_MTA')) {
 		/*
 		 // Warning 1
