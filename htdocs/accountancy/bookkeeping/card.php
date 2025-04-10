@@ -490,24 +490,8 @@ if ($action == 'create') {
 
 	print '<table class="border centpercent">';
 
-	/*print '<tr>';
-	print '<td class="titlefieldcreate fieldrequired">' . $langs->trans("NumPiece") . '</td>';
-	print '<td>' . $next_num_mvt . '</td>';
-	print '</tr>';*/
-
 	print '<tr>';
-	print '<td class="fieldrequired">'.$langs->trans("Ref").'</td>';
-	print '<td>';
-	if ($numRefModel === 'mod_bookkeeping_neon') {
-		print '<input type="text" class="minwidth200" name="ref" value="">';
-	} else {
-		print '<span class="opacitymedium">'.$langs->trans("Automatic").'</span>';
-	}
-	print '</td>';
-	print '</tr>';
-
-	print '<tr>';
-	print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Docdate").'</td>';
+	print '<td class="fieldrequired">'.$langs->trans("Docdate").'</td>';
 	print '<td>';
 	print $form->selectDate('', 'doc_date', 0, 0, 0, "create_mvt", 1, 1);
 	print '</td>';
@@ -519,8 +503,20 @@ if ($action == 'create') {
 	print '</tr>';
 
 	print '<tr>';
-	print '<td class="fieldrequired">'.$langs->trans("Piece").'</td>';
+	print '<td class="fieldrequired">'.$form->textwithpicto($langs->trans("Piece"), $langs->trans("PieceDesc")).'</td>';
 	print '<td><input type="text" class="minwidth200" name="doc_ref" value="'.GETPOST('doc_ref', 'alpha').'"></td>';
+	print '</tr>';
+
+	// Piece number
+	print '<tr>';
+	print '<td>'.$form->textwithpicto($langs->trans("Ref"), $langs->trans("BankTransactionRef")).'</td>';
+	print '<td>';
+	if ($numRefModel === 'mod_bookkeeping_neon') {
+		print '<input type="text" class="minwidth200" name="ref" value="">';
+	} else {
+		print '<span class="opacitymedium">'.$langs->trans("Automatic").'</span>';
+	}
+	print '</td>';
 	print '</tr>';
 
 	/*
@@ -564,7 +560,11 @@ if ($action == 'create') {
 
 		print dol_get_fiche_head($head, 'transaction', '', -1);
 
-		$object->label = $object->doc_ref;
+		//$object->label = $object->doc_ref;
+		if ($mode == '_tmp') {
+			$object->context['mode'] = $mode;
+		}
+		$object->label = $object->ref;
 
 		$morehtmlref = '<div style="clear: both;"></div>';
 		$morehtmlref .= '<div class="refidno opacitymedium">';
@@ -581,13 +581,15 @@ if ($action == 'create') {
 		print '<table class="border tableforfield centpercent">';
 
 		// Account movement
+		/*
 		print '<tr>';
-		print '<td class="titlefield">'.$langs->trans("NumMvts").'</td>';
+		print '<td class="titlefieldmiddle">'.$langs->trans("NumMvts").'</td>';
 		print '<td>'.($mode == '_tmp' ? '<span class="opacitymedium" title="Id tmp '.$object->piece_num.'">'.$langs->trans("Draft").'</span>' : $object->piece_num).'</td>';
 		print '</tr>';
+		*/
 
 		// Account movement ref. Edit allowed only for free ref num model.
-		print '<tr><td>';
+		print '<tr><td class="titlefieldmiddle">';
 		print '<table class="nobordernopadding centpercent"><tr><td>';
 		print $langs->trans('Ref');
 		print '</td>';
@@ -611,7 +613,7 @@ if ($action == 'create') {
 			print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 			print '<input type="hidden" name="type" value="'.$type.'">';
 			print '<input type="text" size="20" name="ref" value="'.dol_escape_htmltag($object->ref).'">';
-			print '<input type="submit" class="button button-edit" value="'.$langs->trans('Modify').'">';
+			print '<input type="submit" class="button button-edit smallpaddingimp" value="'.$langs->trans('Modify').'">';
 			print '</form>';
 		} else {
 			print $object->ref;
@@ -622,7 +624,7 @@ if ($action == 'create') {
 		// Ref document
 		print '<tr><td>';
 		print '<table class="nobordernopadding centpercent"><tr><td>';
-		print $langs->trans('Piece');
+		print $form->textwithpicto($langs->trans('Piece'), $langs->trans('PieceDesc'));
 		print '</td>';
 		if ($action != 'editdocref') {
 			print '<td class="right">';
@@ -644,7 +646,7 @@ if ($action == 'create') {
 			print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 			print '<input type="hidden" name="type" value="'.$type.'">';
 			print '<input type="text" size="20" name="doc_ref" value="'.dol_escape_htmltag($object->doc_ref).'">';
-			print '<input type="submit" class="button button-edit" value="'.$langs->trans('Modify').'">';
+			print '<input type="submit" class="button button-edit smallpaddingimp" value="'.$langs->trans('Modify').'">';
 			print '</form>';
 		} else {
 			print $object->doc_ref;
@@ -1041,11 +1043,11 @@ if ($action == 'create') {
 					print '<br>';
 					print '<div class="center">';
 					if (empty($total_debit) && empty($total_credit)) {
-						print '<input type="submit" class="button" disabled="disabled" href="#" title="'.dol_escape_htmltag($langs->trans("EnterNonEmptyLinesFirst")).'" value="'.dol_escape_htmltag($langs->trans("ValidTransaction")).'">';
+						print '<a class="button disabled cursornotallowed" disabled="disabled" href="#" title="'.dol_escape_htmltag($langs->trans("EnterNonEmptyLinesFirst")).'">'.dol_escape_htmltag($langs->trans("ValidTransaction")).'</a>';
 					} elseif ($total_debit == $total_credit) {
 						print '<a class="button" href="'.$_SERVER["PHP_SELF"].'?piece_num='.((int) $object->piece_num).(!empty($type) ? '&type=sub' : '').'&backtopage='.urlencode($backtopage).'&action=valid&token='.newToken().'">'.$langs->trans("ValidTransaction").'</a>';
 					} else {
-						print '<input type="submit" class="button" disabled="disabled" href="#" title="'.dol_escape_htmltag($langs->trans("MvtNotCorrectlyBalanced", $total_debit, $total_credit)).'" value="'.dol_escape_htmltag($langs->trans("ValidTransaction")).'">';
+						print '<a class="button disabled cursornotallowed" disabled="disabled" href="#" title="'.dol_escape_htmltag($langs->trans("MvtNotCorrectlyBalanced", $total_debit, $total_credit)).'">'.dol_escape_htmltag($langs->trans("ValidTransaction")).'</a>';
 					}
 
 					print ' &nbsp; ';

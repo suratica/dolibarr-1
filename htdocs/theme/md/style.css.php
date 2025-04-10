@@ -1371,7 +1371,7 @@ td.wordbreak img, td.wordbreakimp img {
 	cursor: move;
 }
 .cursornotallowed {
-	cursor: not-allowed;
+	cursor: not-allowed !important;
 }
 .cursorwait {
 	cursor: wait;
