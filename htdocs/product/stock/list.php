@@ -183,6 +183,8 @@ if (empty($reshook)) {
 				$search[$key.'_dtend'] = '';
 			}
 		}
+		$search['status'] = '';		// To remove when statut and status are merged
+		$search_status = '';		// To remove when statut and status are merged
 		$toselect = array();
 		$search_array_options = array();
 		$search_category_list = array();
