@@ -496,6 +496,17 @@ if ($action == 'create') {
 	print '</tr>';*/
 
 	print '<tr>';
+	print '<td class="fieldrequired">'.$langs->trans("Ref").'</td>';
+	print '<td>';
+	if ($numRefModel === 'mod_bookkeeping_neon') {
+		print '<input type="text" class="minwidth200" name="ref" value="">';
+	} else {
+		print '<span class="opacitymedium">'.$langs->trans("Automatic").'</span>';
+	}
+	print '</td>';
+	print '</tr>';
+
+	print '<tr>';
 	print '<td class="titlefieldcreate fieldrequired">'.$langs->trans("Docdate").'</td>';
 	print '<td>';
 	print $form->selectDate('', 'doc_date', 0, 0, 0, "create_mvt", 1, 1);
@@ -511,13 +522,6 @@ if ($action == 'create') {
 	print '<td class="fieldrequired">'.$langs->trans("Piece").'</td>';
 	print '<td><input type="text" class="minwidth200" name="doc_ref" value="'.GETPOST('doc_ref', 'alpha').'"></td>';
 	print '</tr>';
-
-	if ($numRefModel === 'mod_bookkeeping_neon') {
-		print '<tr>';
-		print '<td class="">'.$langs->trans("Ref").'</td>';
-		print '<td><input type="text" class="minwidth200" name="ref" value="'.GETPOST('ref', 'alpha').'"></td>';
-		print '</tr>';
-	}
 
 	/*
 	print '<tr>';
