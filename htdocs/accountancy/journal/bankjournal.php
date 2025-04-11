@@ -1430,7 +1430,7 @@ if (empty($action) || $action == 'view') {
 							$accounttoshowsubledger = '';
 						}
 					}
-					print '<td class="maxwidth300 nopaddingtopimp nopaddingbottomimp" title="'.dolPrintHTMLForAttribute($accounttoshowsubledger).'">';
+					print '<td class="maxwidth300 nopaddingtopimp nopaddingbottomimp" title="'.dolPrintHTMLForAttribute(dol_string_nohtmltag($accounttoshowsubledger)).'">';
 					print $accounttoshowsubledger;	// This is a html string
 					print "</td>";
 
