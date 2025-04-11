@@ -270,9 +270,8 @@ a.top-menu-dropdown-link {
 }
 
 .dropdown-menu > .user-header{
-	background: rgb(--colorbackhmenu1);
+	background: var(--colorbackhmenu1);
 }
-
 
 
 .dropdown-menu .dropdown-header{
