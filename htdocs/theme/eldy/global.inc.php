@@ -1205,7 +1205,7 @@ td.wordbreak img, td.wordbreakimp img {
 	cursor: move;
 }
 .cursornotallowed {
-	cursor: not-allowed;
+	cursor: not-allowed !important;
 }
 .cursorwait {
 	cursor: wait;
@@ -3423,7 +3423,7 @@ if (getDolGlobalString('MAIN_LOGIN_BACKGROUND')) {
 }
 .login_table #tdpasswordlogin #togglepassword {
 	position: absolute;
-	top: 1em;
+	top: 0.7em;
 	right: 5px;
 	background: none;
 	border: none;
@@ -8646,14 +8646,14 @@ table.jPicker {
 	padding: 12px;
 	left: inherit !important;
 	top: inherit !important;
-	border-radius: 5px !important;
+	border-radius: <?php echo $borderradius; ?>px !important;
 }
 .ai_feature {
 	background-color: var(--colorbackgrey);
 	padding: 10px;
 	padding-bottom: 6px;
 	padding-top: 6px;
-	border-radius: 5px;
+	border-radius: <?php echo $borderradius; ?>px;
 }
 
 

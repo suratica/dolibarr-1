@@ -39,6 +39,7 @@ function getListOfAIFeatures()
 		'textgeneration' => array('label' => $langs->trans('TextGeneration').' ('.$langs->trans("Other").')', 'picto'=>'', 'status'=>'notused', 'function' => 'TEXT'),
 		'texttranslation' => array('label' => $langs->trans('TextTranslation'), 'picto'=>'', 'status'=>'dolibarr', 'function' => 'TEXT'),
 		'textsummarize' => array('label' => $langs->trans('TextSummarize'), 'picto'=>'', 'status'=>'dolibarr', 'function' => 'TEXT'),
+		'textrephrase' => array('label' => $langs->trans('TextRephraser'), 'picto'=>'', 'status'=>'dolibarr', 'function' => 'TEXT'),
 		'imagegeneration' => array('label' => 'ImageGeneration', 'picto'=>'', 'status'=>'notused', 'function' => 'IMAGE'),
 		'videogeneration' => array('label' => 'VideoGeneration', 'picto'=>'', 'status'=>'notused', 'function' => 'VIDEO'),
 		'audiogeneration' => array('label' => 'AudioGeneration', 'picto'=>'', 'status'=>'notused', 'function' => 'AUDIO'),
@@ -59,15 +60,57 @@ function getListOfAIServices()
 	global $langs;
 
 	$arrayofai = array(
-		'-1' => $langs->trans('SelectAService'),
-		'chatgpt' => 'ChatGPT',
-		'groq' => 'Groq',
-		'custom' => 'Custom'
-		//'gemini' => 'Gemini'
+		'-1' => array('label' => $langs->trans('SelectAService')),
+		'chatgpt' => array(
+			'label' => 'ChatGPT',
+			'url' => 'https://api.openai.com/v1/',
+			'textgeneration' => 'gpt-3.5-turbo',		// a lot of text transformation like: 'textgenerationemail', 'textgenerationwebpage', 'textgeneration', 'texttranslation', 'textsummarize'
+			'imagegeneration' => 'dall-e-3',
+			'audiogeneration' => 'tts-1',
+			'videogeneration' => 'na',
+			'transcription' => 'whisper-1',				// audio to text
+			'translation' => 'whisper-1',				// audio to text into another language
+		),
+		'groq' => array(
+			'label' => 'Groq',
+			'url' => 'https://api.groq.com/openai/',
+			'textgeneration' => 'mixtral-8x7b-32768',	// 'llama3-8b-8192', 'gemma-7b-it'
+			'imagegeneration' => 'na',
+			'audiogeneration' => 'na',
+			'videogeneration' => 'na',
+			'transcription' => 'na',
+			'translation' => 'na',
+		),
+		'mistral' => array(
+			'label' => 'Mistral',
+			'url' => 'https://api.mistral.ai/v1/',
+			'textgeneration' => 'open-mistral-7b',
+			'imagegeneration' => 'na',
+			'audiogeneration' => 'na',
+			'videogeneration' => 'na',
+			'transcription' => 'na',
+			'translation' => 'na',
+		),
+		'custom' => array(
+			'label' => 'Custom',
+			'url' => 'https://mydomainofapi.com/v1/',
+			'textgeneration' => 'tinyllama-1.1b',
+			'imagegeneration' => 'mixtral-8x7b-32768',
+			'audiogeneration' => 'mixtral-8x7b-32768',
+			'videogeneration' => 'na',
+			'transcription' => 'mixtral-8x7b-32768',
+			'translation' => 'mixtral-8x7b-32768',
+		)
+		//'gemini' => array(
+		//	'label' => 'Gemini',
+		//)
 	);
 
 	return $arrayofai;
 }
+
+
+
 
 /**
  * Get list for AI summarize
@@ -76,10 +119,8 @@ function getListOfAIServices()
  */
 function getListForAISummarize()
 {
-	global $langs;
-
 	$arrayforaisummarize = array(
-		'20_w' => 'SummarizeTwentyWords',
+		//'20_w' => 'SummarizeTwentyWords',
 		'50_w' => 'SummarizeFiftyWords',
 		'100_w' => 'SummarizeHundredWords',
 		'200_w' => 'SummarizeTwoHundredWords',
@@ -91,6 +132,21 @@ function getListForAISummarize()
 	);
 
 	return $arrayforaisummarize;
+}
+
+/**
+ * Get list for AI style of writing
+ *
+ * @return array<int|string,mixed>
+ */
+function getListForAIRephraseStyle()
+{
+	$arrayforaierephrasestyle = array(
+		'professional' => 'RephraseStyleProfessional',
+		'humouristic' => 'RephraseStyleHumouristic'
+	);
+
+	return $arrayforaierephrasestyle;
 }
 
 /**

@@ -585,7 +585,7 @@ div.quickaddblock:focus {
 .dropdown-content {
 	display: none;
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	width: 300px;
 	right:0;
 	bottom: 0;
