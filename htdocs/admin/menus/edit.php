@@ -382,13 +382,18 @@ if ($action == 'create') {
 
 	// Show URL into a frame
 	if (getDolGlobalString("MAIN_SHOW_TOP_MENU_URL_IN_FRAME")) {
-		print '<tr><td class="fieldrequired">'.$langs->trans('ShowTopMenuURLIntoAFrame').'</td>';
+		print '<tr><td>'.$langs->trans('ShowTopMenuURLIntoAFrame').'</td>';
 		print '<td><input type="checkbox" name="showtopmenuinframe" value="'.dol_escape_htmltag(GETPOST("showtopmenuinframe", 'alphanohtml')).'"></td><td></td></tr>';
 	}
 
 	// Picto
 	print '<tr><td>'.$langs->trans('Image').'</td>';
-	print '<td><input type="text" class="minwidth300" name="picto" value="'.dol_escape_htmltag(GETPOST("picto", 'alphanohtml')).'"></td><td>'.$langs->trans('Example').': fa-global</td></tr>';
+	print '<td><input type="text" class="minwidth300" name="picto" value="'.dol_escape_htmltag(GETPOST("picto", 'alphanohtml')).'"></td><td>'.$langs->trans('Example').': fa-globe-americas';
+	print '<span class="opacitymedium small">';
+	print ' &nbsp; &nbsp; ';
+	print dolButtonToOpenUrlInDialogPopup('popup_picto_id', $langs->transnoentitiesnoconv("DocIconsList"), $langs->transnoentitiesnoconv("DocIconsList"), '/admin/tools/ui/components/icons.php?displayMode=icon-only#img-picto-section-list', '', '');
+	print '</span>';
+	print '</td></tr>';
 
 	// Position
 	print '<tr><td>'.$langs->trans('Position').'</td>';
@@ -513,13 +518,13 @@ if ($action == 'create') {
 
 	// Show URL into a frame
 	if (getDolGlobalString("MAIN_SHOW_TOP_MENU_URL_IN_FRAME")) {
-		print '<tr><td class="fieldrequired">'.$langs->trans('ShowTopMenuURLIntoAFrame').'</td>';
+		print '<tr><td>'.$langs->trans('ShowTopMenuURLIntoAFrame').'</td>';
 		print '<td><input type="checkbox" name="showtopmenuinframe" value="'.dol_escape_htmltag($menu->showtopmenuinframe).'"></td><td></td></tr>';
 	}
 
 	// Picto
 	print '<tr><td class="fieldrequired">'.$langs->trans('Image').'</td>';
-	print '<td><input type="text" class="minwidth300" name="picto" value="'.dol_escape_htmltag($menu->prefix).'"></td><td>'.$langs->trans('Example').': fa-global-america';
+	print '<td><input type="text" class="minwidth300" name="picto" value="'.dol_escape_htmltag($menu->prefix).'"></td><td>'.$langs->trans('Example').': fa-globe-americas';
 	print '<span class="opacitymedium small">';
 	print ' &nbsp; &nbsp; ';
 	print dolButtonToOpenUrlInDialogPopup('popup_picto_id', $langs->transnoentitiesnoconv("DocIconsList"), $langs->transnoentitiesnoconv("DocIconsList"), '/admin/tools/ui/components/icons.php?displayMode=icon-only#img-picto-section-list', '', '');
