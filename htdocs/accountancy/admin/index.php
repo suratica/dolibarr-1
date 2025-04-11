@@ -420,7 +420,7 @@ if (getDolGlobalString('FACTURE_SUPPLIER_DEPOSITS_ARE_JUST_PAYMENTS')) {
 if (getDolGlobalString('ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY')) {
 	print '<div class="info">' . $langs->trans("ConstantIsOn", "ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY") . '</div>';
 }
-if (!getDolGlobalString('MAIN_COMPANY_PERENTITY_SHARED')) {
+if (getDolGlobalString('MAIN_COMPANY_PERENTITY_SHARED')) {
 	print '<div class="info">' . $langs->trans("ConstantIsOn", "MAIN_COMPANY_PERENTITY_SHARED") . '</div>';
 }
 if (getDolGlobalString('MAIN_PRODUCT_PERENTITY_SHARED')) {

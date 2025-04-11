@@ -4300,10 +4300,13 @@ function dol_print_socialnetworks($value, $cid, $socid, $type, $dictsocialnetwor
 			$networkconstname = 'MAIN_INFO_SOCIETE_'.strtoupper($type).'_URL';
 			if (getDolGlobalString($networkconstname)) {
 				$link = str_replace('{socialid}', $value, getDolGlobalString($networkconstname));
+				$valuetoshow = $value;
 				if (preg_match('/^https?:\/\//i', $link)) {
-					$htmllink .= '<a href="'.dol_sanitizeUrl($link, 0).'" target="_blank" rel="noopener noreferrer">'.dol_escape_htmltag($value).'</a>';
+					$valuetoshow = preg_replace('/https:\/\/www\.linkedin\./', 'linkedin.', $valuetoshow);
+					//$valuetoshow = preg_replace('/www\.twitter\./', 'twitter.', $valuetoshow);
+					$htmllink .= '<a href="'.dol_sanitizeUrl($link, 0).'" target="_blank" rel="noopener noreferrer">'.dol_escape_htmltag($valuetoshow).'</a>';
 				} elseif ($link) {
-					$htmllink .= '<a href="'.dol_sanitizeUrl($link, 1).'" target="_blank" rel="noopener noreferrer">'.dol_escape_htmltag($value).'</a>';
+					$htmllink .= '<a href="'.dol_sanitizeUrl($link, 1).'" target="_blank" rel="noopener noreferrer">'.dol_escape_htmltag($valuetoshow).'</a>';
 				}
 			} elseif (!empty($dictsocialnetworks[$type]['url'])) {
 				$tmpvirginurl = preg_replace('/\/?{socialid}/', '', $dictsocialnetworks[$type]['url']);
