@@ -477,7 +477,7 @@ if (getDolGlobalString('THEME_DARKMODEENABLED')) {
 	print ":root {
 	            --colorbackhmenu1: #3d3e40;
 	            --colorbackvmenu1: #2b2c2e;
-	            --colorbacktitle1: #2b2d2f;
+	            --colorbacktitle1: #3b3c3e;
 	            --colorbacktabcard1: #1d1e20;				/* Must be same than colorbackbody */
 	            --colorbacktabactive: rgb(220,220,220);
 	            --colorbacklineimpair1: #38393d;
@@ -7016,9 +7016,33 @@ div.dataTables_length select {
 .select2-container .select2-selection--single {
 	height: 28px;
 }
+
+span.select2-selection--single.flat[aria-disabled="true"] span.select2-selection__rendered {
+	opacity: 0.5;
+}
+
+span.select2.select2-container.select2-container--default {
+	text-align: initial;
+	<?php if (!getDolGlobalString('THEME_SHOW_BORDER_ON_INPUT')) { ?>
+	border-left: none;
+	border-top: none;
+	border-right: none;
+	/*border-bottom: solid 1px var(--inputbordercolor);*/
+	<?php } ?>
+}
+
 input.select2-input {
 	border-bottom: none ! important;
 }
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+	background-color: var(--colorbackhmenu1);
+	color: var(--colortextbackhmenu);
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] span {
+	color: #fff !important;
+}
+
 .select2-choice {
 	border: none;
 	border-bottom: 1px solid #ccc !important;
@@ -7039,7 +7063,10 @@ input.select2-input {
 .blockvmenusearch .select2-container--default .select2-selection--single,
 .blockvmenubookmarks .select2-container--default .select2-selection--single
 {
-	background-color: unset;
+	background-color: var(--colorbackvmenu1);
+}
+.select2-container--default .select2-selection--single {
+	background-color: var(--inputbackgroundcolor);
 }
 #blockvmenusearch .select2-container--default .select2-selection--single .select2-selection__placeholder {
 	color: var(--colortextbackvmenu);
@@ -7139,8 +7166,15 @@ input.select2-input {
 	border-bottom: none;
 	box-shadow: none !important;
 }
+.select2-dropdown {
+	/*background-color: var(--colorbackvmenu1);
+	border: 1px solid var(--colorbackvmenu1); */
+	box-shadow: 1px 2px 10px #8884;
+	background-color: var(--colorbackbody);
+	color: var(--colortext);
+}
 .select2-dropdown-open {
-	background-color: #fff;
+	background-color: var(--colorbackvmenu1);
 }
 .select2-dropdown-open .select2-choice, .select2-dropdown-open .select2-choices
 {
@@ -7149,7 +7183,7 @@ input.select2-input {
 	border-left: none;
 	border-bottom: none;
 	box-shadow: none !important;
-	background-color: #fff;
+	background-color: var(--colorbackvmenu1);
 }
 .select2-disabled
 {
@@ -7167,7 +7201,7 @@ input.select2-input {
 }
 div.select2-drop-above
 {
-	background: #fff;
+	background: var(--colorbackvmenu1);
 	box-shadow: none !important;
 }
 .select2-drop-active
@@ -7188,7 +7222,7 @@ a span.select2-chosen
 }
 .select2-results .select2-no-results, .select2-results .select2-searching, .select2-results .select2-ajax-error, .select2-results .select2-selection-limit
 {
-	background: #FFFFFF;
+	background: var(--colorbackvmenu1);
 }
 .select2-results {
 	max-height:	400px;
@@ -7198,7 +7232,7 @@ a span.select2-chosen
 	text-align: <?php echo $left; ?>;
 }
 .select2-container.select2-container-disabled .select2-choice, .select2-container-multi.select2-container-disabled .select2-choices {
-	background-color: #FFFFFF;
+	background-color: var(--colorbackvmenu1);
 	background-image: none;
 	border: none;
 	cursor: default;

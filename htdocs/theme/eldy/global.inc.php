@@ -1416,9 +1416,7 @@ div.divsearchfield {
 	padding-bottom: 2px;
 	padding-top: 2px;
 }
-.divadvancedsearchfield span.select2.select2-container.select2-container--default {
-	/* padding-bottom: 4px; */
-}
+
 .search_component_params {
 	/*display: flex; */
 	-webkit-flex-flow: row wrap;
@@ -3369,7 +3367,7 @@ if (getDolGlobalString('MAIN_LOGIN_BACKGROUND')) {
 	print '	background-color: var(--colorbackbody);';
 }
 ?>
-	box-shadow: 0 2px 23px 2px rgba(0, 0, 0, <?php getDolGlobalInt('THEME_DARKMODEENABLED') ? 0.4 : 0.2; ?>), 0 2px 6px rgba(60, 60, 60, 0.15);
+	box-shadow: 0 2px 23px 2px rgba(0, 0, 0, <?php print getDolGlobalInt('THEME_DARKMODEENABLED') ? 0.4 : 0.2; ?>), 0 2px 6px rgba(60, 60, 60, 0.15);
 	border-radius: 5px;
 }
 .login_table input#username, .login_table input#password, .login_table input#securitycode {
@@ -7121,10 +7119,6 @@ span.select2.select2-container.select2-container--default {
 	border-left: none;
 	border-top: none;
 	border-right: none;
-	<?php } ?>
-}
-span.select2.select2-container.select2-container--default {
-	<?php if (!getDolGlobalString('THEME_SHOW_BORDER_ON_INPUT')) { ?>
 	/*border-bottom: solid 1px var(--inputbordercolor);*/
 	<?php } ?>
 }
