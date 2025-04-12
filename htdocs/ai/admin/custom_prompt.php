@@ -310,7 +310,7 @@ if ($action == 'create') {
 	$out .= '</span>';
 	$out .= '</td>';
 	$out .= '<td>';
-	$out .= '<textarea class="flat minwidth500 quatrevingtpercent" id="prePromptInput'.$key.'" name="prePrompt" rows="3"></textarea>';
+	$out .= '<textarea class="flat minwidth500 quatrevingtpercent" id="prePromptInput'.$key.'" name="prePrompt" rows="2"></textarea>';
 	$out .= '</td>';
 	$out .= '</tr>';
 	$out .= '<tr class="oddeven">';
@@ -320,7 +320,7 @@ if ($action == 'create') {
 	$out .= '</span>';
 	$out .= '</td>';
 	$out .= '<td>';
-	$out .= '<textarea class="flat minwidth500 quatrevingtpercent" id="postPromptInput" name="postPrompt" rows="3"></textarea>';
+	$out .= '<textarea class="flat minwidth500 quatrevingtpercent" id="postPromptInput" name="postPrompt" rows="2"></textarea>';
 	$out .= '</td>';
 	$out .= '</tr>';
 	$out .= '<tr class="oddeven">';
