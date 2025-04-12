@@ -7702,6 +7702,8 @@ dropdown dd ul li:hover:not(.linputsearch) {
 }
 .dropdown dd ul li a, .dropdown dd ul li span {
 	padding: 3px;
+}
+.dropdown dd ul li a {
 	display: block;
 }
 .dropdown dd ul li span {
