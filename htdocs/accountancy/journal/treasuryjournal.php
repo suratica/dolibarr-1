@@ -1446,8 +1446,6 @@ if (empty($action) || $action == 'view') {
 	print '<td class="right">'.$langs->trans("AccountingCredit")."</td>";
 	print "</tr>\n";
 
-	$r = '';
-
 	foreach ($tabpay as $payment_id => $payment) {
 		$accountInfos = $tabaccount[$payment["fk_bank_account"]];
 		$date = dol_print_date($payment["date"], 'day');
