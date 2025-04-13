@@ -1446,11 +1446,10 @@ if (empty($action) || $action == 'view') {
 	print '<td class="right">'.$langs->trans("AccountingCredit")."</td>";
 	print "</tr>\n";
 
-	$r = '';
-
 	foreach ($tabpay as $payment_id => $payment) {
 		$accountInfos = $tabaccount[$payment["fk_bank_account"]];
 		$date = dol_print_date($payment["date"], 'day');
+		$i++;
 
 		foreach ($payment['objects'] as $object_key => $object_data) {
 			$objectInfos = $tabobject[$object_key];
@@ -1513,6 +1512,11 @@ if (empty($action) || $action == 'view') {
 				FormAccounting::printJournalLine($langs, $date, $objectInfos['url'], $accountInfos['account_number'], $accountInfos['account_ref'], $payment['type_payment'], $object_data['amount']);
 			}
 		}
+	}
+
+	if (!$i) {
+		$colspan = 8;
+		print '<tr class="oddeven"><td colspan="'.$colspan.'"><span class="opacitymedium">'.$langs->trans("NoRecordFound").'</span></td></tr>';
 	}
 
 	print "</table>";
