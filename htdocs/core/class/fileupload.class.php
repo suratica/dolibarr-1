@@ -420,6 +420,7 @@ class FileUpload
 	 * @param 	string		$error				Error
 	 * @param	string		$index				Index
 	 * @return stdClass|null
+	 * @see dol_add_file_process()
 	 */
 	protected function handleFileUpload($uploaded_file, $name, $size, $type, $error, $index)
 	{
@@ -431,7 +432,7 @@ class FileUpload
 
 		// Sanitize to avoid stream execution when calling file_size(). Not that this is a second security because
 		// most streams are already disabled by stream_wrapper_unregister() in filefunc.inc.php
-		$uploaded_file = preg_replace('/\s*(http|ftp)s?:/i', '', $uploaded_file);
+		$uploaded_file = preg_replace('/\s*(http|ftp|sftp|)s?:/i', '', $uploaded_file);
 		$uploaded_file = realpath($uploaded_file);	// A hack to be sure the file point to an existing file on disk (and is not a SSRF attack)
 
 		$validate = $this->validate($uploaded_file, $file, $error, $index);
