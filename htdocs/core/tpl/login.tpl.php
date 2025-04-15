@@ -318,8 +318,10 @@ if ($disablenofollow) {
 
 			if ($passwordInput.is('[type=password]')) {
 				$passwordInput.attr('type', 'text');
+				jQuery('#togglepassword .fa-eye').attr('class', 'fa fa-eye-slash');
 			} else {
 				$passwordInput.attr('type', 'password');
+				jQuery('#togglepassword .fa-eye-slash').attr('class', 'fa fa-eye');
 			}
 
 			return false; // This prevents the click from reloading the page
