@@ -695,8 +695,8 @@ if (empty($reshook)) {
 				}
 
 				if (!empty($labeltouse) && is_object($arraydefaultmessage) && $arraydefaultmessage->id > 0) {
-					$subject = $arraydefaultmessage->topic;
-					$msg     = $arraydefaultmessage->content;
+					$subject = (string) $arraydefaultmessage->topic;
+					$msg     = (string) $arraydefaultmessage->content;
 				}
 
 				if (empty($labeltouse) || (int) $labeltouse === -1) {
