@@ -449,6 +449,7 @@ class FileUpload
 					if ($append_file) {
 						file_put_contents($file_path, fopen($uploaded_file, 'r'), FILE_APPEND);
 					} else {
+						// TODO Replace this with a call of dol_add_file_process(... $mode=1)
 						$result = dol_move_uploaded_file($uploaded_file, $file_path, 1, 0, 0, 0, 'userfile');
 					}
 				} else {
