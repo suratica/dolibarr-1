@@ -1590,15 +1590,14 @@ class FormMail extends Form
 						type: "POST",
 						url: "'.DOL_URL_ROOT.'/core/ajax/mailtemplate.php",
 						data: {
+							token: csrfToken,
 							template: template,
 							subject: subject,
 							fromtype: fromtype,
 							sendto: sendto,
 							sendtocc: sendtocc,
 							sendtoccc: sendtoccc,
-							content: contentHtml,
-							selectedPosts: "[]",
-							token: csrfToken
+							selectedPosts: "[]"
 						},
 						success: function(response) {
 							jQuery("#'.$htmlContent.'").val(response);
@@ -1640,9 +1639,14 @@ class FormMail extends Form
 							type: "POST",
 							url: "/core/ajax/mailtemplate.php",
 							data: {
-								content: contentHtml,
-								selectedPosts: selectedIds.join(","),
-								token: csrfToken
+								token: csrfToken,
+								template: template,
+								subject: subject,
+								fromtype: fromtype,
+								sendto: sendto,
+								sendtocc: sendtocc,
+								sendtoccc: sendtoccc,
+								selectedPosts: selectedIds.join(",")
 							},
 							success: function(response) {
 								jQuery("#'.$htmlContent.'").val(response);
