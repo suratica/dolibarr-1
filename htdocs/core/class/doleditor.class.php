@@ -133,7 +133,7 @@ class DolEditor
 
 		// Name of extended editor to use (FCKEDITOR_EDITORNAME can be 'ckeditor' or 'fckeditor')
 		$defaulteditor = 'ckeditor';
-		$this->tool = !getDolGlobalString('FCKEDITOR_EDITORNAME') ? $defaulteditor : $conf->global->FCKEDITOR_EDITORNAME;
+		$this->tool = getDolGlobalString('FCKEDITOR_EDITORNAME', $defaulteditor);
 		$this->uselocalbrowser = $uselocalbrowser;
 		$this->readonly = $readonly;
 
@@ -207,7 +207,7 @@ class DolEditor
 
 		$fullpage = false;
 
-		$extraAllowedContent = 'a[target];section[contenteditable,id];div{background-color,display,float,height,margin,margin-top,margin-bottom,padding,width,border-top-left-radius,border-top-right-radius,box-shadow}';
+		$extraAllowedContent = 'a[target];section[contenteditable,id];div{background-color,color,display,float,height,margin,margin-top,margin-bottom,padding,width,border-top-left-radius,border-top-right-radius,box-shadow}';
 		if (is_string($restrictContent)) {
 			$extraAllowedContent = $restrictContent;
 		}

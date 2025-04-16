@@ -38,9 +38,6 @@ if (!defined('NOREQUIREHTML')) {
 if (!defined('NOREQUIREAJAX')) {
 	define('NOREQUIREAJAX', '1');
 }
-if (!defined('NOREQUIRESOC')) {
-	define('NOREQUIRESOC', '1');
-}
 require_once '../../main.inc.php';
 require_once '../lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
@@ -51,9 +48,16 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/website.lib.php';
  * @var Conf $conf
  * @var DoliDB $db
  * @var HookManager $hookmanager
+ * @var Societe $mysoc
  * @var Translate $langs
  * @var User $user
  */
+
+/*
+ * Actions
+ */
+
+// None
 
 
 /*
@@ -80,15 +84,34 @@ if (GETPOSTISSET('template')) {
 
 
 	$specificSubstitutionArray = array(
-		'__LOGO_URL__' => !empty($mysoc->logo) && dol_is_file($conf->mycompany->dir_output.'/logos/'.$mysoc->logo) ? $urlwithroot.'/viewimage.php?modulepart=mycompany&file='.urlencode('logos/'.$mysoc->logo) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC',
 		'__TITLEOFMAILHOLDER__' => $langs->trans('TitleOfMailHolder'),
 		'__CONTENTOFMAILHOLDER__' => 'Lorem ipsum ...',
-		'__USERSIGNATURE__' => !empty($user->signature) ? dol_htmlentities($user->signature) : '',
 		'__GRAY_RECTANGLE__' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC',
 		'__LAST_NEWS__'   => $langs->trans('LastNews'),
 		'__LIST_PRODUCTS___' => $langs->trans('ListProducts'),
 		'__SUBJECT__' => GETPOST('subject')
 	);
+
+	if (!empty($mysoc->logo) && dol_is_file($conf->mycompany->dir_output.'/logos/'.$mysoc->logo)) {
+		$specificSubstitutionArray['__LOGO_URL__'] = $urlwithroot.'/viewimage.php?modulepart=mycompany&file='.urlencode('logos/'.$mysoc->logo);
+	} else {
+		$specificSubstitutionArray['__LOGO_URL__'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC';
+	}
+
+	$specificSubstitutionArray['__USERSIGNATURE__'] = empty($user->signature) ? '' : $user->signature;
+
+	if (GETPOST('fromtype') == 'user') {
+		$specificSubstitutionArray['__SENDEREMAIL_SIGNATURE__'] = empty($user->signature) ? '' : $user->signature;
+	} elseif (GETPOST('fromtype') == 'company') {
+		$specificSubstitutionArray['__SENDEREMAIL_SIGNATURE__'] = $mysoc->name.' '.$mysoc->email;
+	} elseif (GETPOST('fromtype') == 'main_from') {
+		$specificSubstitutionArray['__SENDEREMAIL_SIGNATURE__'] = $mysoc->name.' '.getDolGlobalString('MAIN_MAIL_EMAIL_FROM');
+	} else {
+		// GETPOST('fromtype') is senderprofile_x_y (x = ID profile)
+		$specificSubstitutionArray['__SENDEREMAIL_SIGNATURE__'] = 'TODO Read database to get the signature of the profile';
+	}
+
+
 
 	// Must replace
 	// __SUBJECT__, __CONTENTOFMAILHOLDER__, __USERSIGNATURE__, __NEWS_LIST__, __PRODUCTS_LIST__
@@ -96,6 +119,8 @@ if (GETPOSTISSET('template')) {
 		$content = str_replace($key, $val, $content);
 	}
 
+	// Parse all strings __(...)__ to replace with the translated value.
+	// TODO
 
 	$selectedPostsStr = GETPOST('selectedPosts', 'alpha');
 	$selectedPosts = explode(',', $selectedPostsStr);
