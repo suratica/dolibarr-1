@@ -1516,6 +1516,7 @@ class FormMail extends Form
 		$layouts = array(
 			'empty' => 'empty',
 		);
+
 		// Search available layouts on disk
 		$arrayoflayoutemplates = dol_dir_list(DOL_DOCUMENT_ROOT.'/install/doctemplates/maillayout/', 'files', 0, '\.html$');
 		foreach ($arrayoflayoutemplates as $layouttemplatefile) {
