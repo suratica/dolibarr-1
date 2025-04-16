@@ -1560,24 +1560,19 @@ class FormMail extends Form
 		$out .= '</div>';
 
 		$out .= '<script type="text/javascript">
-      $(document).ready(function() {
-        $(".template-option").click(function() {
-          var template = $(this).data("template");
-          var subject = jQuery("#subject").val();
-          var fromtype = jQuery("#fromtype").val();
-          var sendto = jQuery("#sendto").val();
-          var sendtocc = jQuery("#sendtocc").val();
-          var sendtoccc = jQuery("#sendtoccc").val();
+      	$(document).ready(function() {
+        	$(".template-option").click(function() {
+				var template = $(this).data("template");
+				var subject = jQuery("#subject").val();
+				var fromtype = jQuery("#fromtype").val();
+				var sendto = jQuery("#sendto").val();
+				var sendtocc = jQuery("#sendtocc").val();
+				var sendtoccc = jQuery("#sendtoccc").val();
 
 				console.log("We choose a layout for email template=" + template + ", subject="+subject);
 
 				$(".template-option").removeClass("selected");
 				$(this).addClass("selected");
-
-				var subject = $("#sujet").val();
-
-				var contentHtml = $(this).data("content");
-				contentHtml = contentHtml.replace(/__SUBJECT__/g, subject);
 
 				if (template === "news") {
 					$("#post-dropdown-container").show();
@@ -1631,7 +1626,7 @@ class FormMail extends Form
 					},
 					success: function(response) {
 						var selectedPosts = JSON.parse(response);
-						var subject = $("#sujet").val();
+						var subject = $("#subject").val();
 
 						contentHtml = contentHtml.replace(/__SUBJECT__/g, subject);
 

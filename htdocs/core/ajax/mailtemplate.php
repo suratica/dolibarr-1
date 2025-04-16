@@ -55,6 +55,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/website.lib.php';
  * @var User $user
  */
 
+
 /*
  * View
  */
@@ -62,8 +63,39 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/website.lib.php';
 top_httphead();
 
 // TODO Replace with ID of template
-if (GETPOSTISSET('content')) {
-	$content = filter_input(INPUT_POST, 'content', FILTER_UNSAFE_RAW);
+if (GETPOSTISSET('template')) {
+	$templatefile = DOL_DOCUMENT_ROOT.'/install/doctemplates/maillayout/'.dol_sanitizeFileName(GETPOST('template')).'.html';
+
+	$content = file_get_contents($templatefile);
+
+	if ($content === false) {
+		print 'Failed to load template '.dol_escape_htmltag(GETPOST('template'));
+		exit;
+	}
+
+	// Define $urlwithroot
+	$urlwithouturlroot = preg_replace('/'.preg_quote(DOL_URL_ROOT, '/').'$/i', '', trim($dolibarr_main_url_root));
+	$urlwithroot = $urlwithouturlroot.DOL_URL_ROOT; // This is to use external domain name found into config file
+	//$urlwithroot=DOL_MAIN_URL_ROOT;					// This is to use same domain name than current
+
+
+	$specificSubstitutionArray = array(
+		'__LOGO_URL__' => !empty($mysoc->logo) && dol_is_file($conf->mycompany->dir_output.'/logos/'.$mysoc->logo) ? $urlwithroot.'/viewimage.php?modulepart=mycompany&file='.urlencode('logos/'.$mysoc->logo) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC',
+		'__TITLEOFMAILHOLDER__' => $langs->trans('TitleOfMailHolder'),
+		'__CONTENTOFMAILHOLDER__' => 'Lorem ipsum ...',
+		'__USERSIGNATURE__' => !empty($user->signature) ? dol_htmlentities($user->signature) : '',
+		'__GRAY_RECTANGLE__' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC',
+		'__LAST_NEWS__'   => $langs->trans('LastNews'),
+		'__LIST_PRODUCTS___' => $langs->trans('ListProducts'),
+		'__SUBJECT__' => GETPOST('subject')
+	);
+
+	// Must replace
+	// __SUBJECT__, __CONTENTOFMAILHOLDER__, __USERSIGNATURE__, __NEWS_LIST__, __PRODUCTS_LIST__
+	foreach ($specificSubstitutionArray as $key => $val) {
+		$content = str_replace($key, $val, $content);
+	}
+
 
 	$selectedPostsStr = GETPOST('selectedPosts', 'alpha');
 	$selectedPosts = explode(',', $selectedPostsStr);
@@ -93,8 +125,7 @@ if (GETPOSTISSET('content')) {
 		$content = str_replace('__NEWS_LIST__', 'No articles selected', $content);
 	}
 
-
 	print $content;
 } else {
-	print 'No content provided or invalid token';
+	print 'No template ID provided or expired token';
 }
