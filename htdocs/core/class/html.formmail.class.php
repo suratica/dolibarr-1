@@ -992,7 +992,7 @@ class FormMail extends Form
 				$defaultmessage = GETPOST('message', 'restricthtml');
 				if (!GETPOST('modelselected', 'alpha') || GETPOST('modelmailselected') != '-1') {
 					if ($arraydefaultmessage && $arraydefaultmessage->content) {
-						$defaultmessage = $arraydefaultmessage->content;
+						$defaultmessage = (string) $arraydefaultmessage->content;
 					} elseif (!is_numeric($this->withbody)) {
 						$defaultmessage = $this->withbody;
 					}
@@ -1754,15 +1754,15 @@ class FormMail extends Form
 				}
 
 				// If a record was found
-				$ret->id = $obj->rowid;
-				$ret->module = $obj->module;
-				$ret->label = $obj->label;
+				$ret->id = (int) $obj->rowid;
+				$ret->module = (string) $obj->module;
+				$ret->label = (string) $obj->label;
 				$ret->lang = $obj->lang;
 				$ret->topic = $obj->topic;
-				$ret->content = $obj->content;
-				$ret->content_lines = $obj->content_lines;
+				$ret->content = (string) $obj->content;
+				$ret->content_lines = (string) $obj->content_lines;
 				$ret->joinfiles = $obj->joinfiles;
-				$ret->email_from = $obj->email_from;
+				$ret->email_from = (string) $obj->email_from;
 
 				break;
 			} else {
@@ -1776,7 +1776,7 @@ class FormMail extends Form
 
 					if ($type_template == 'body') {
 						// Special case to use this->withbody as content
-						$defaultmessage = $this->withbody;
+						$defaultmessage = (string) $this->withbody;
 					} elseif ($type_template == 'facture_send') {
 						$defaultmessage = $outputlangs->transnoentities("PredefinedMailContentSendInvoice");
 					} elseif ($type_template == 'facture_relance') {
@@ -1891,8 +1891,8 @@ class FormMail extends Form
 				}
 
 				$line = new ModelMail($db);
-				$line->id = $obj->rowid;
-				$line->label = $obj->label;
+				$line->id = (int) $obj->rowid;
+				$line->label = (string) $obj->label;
 				$line->lang = $obj->lang;
 				$line->fk_user = $obj->fk_user;
 				$line->private = $obj->private;
