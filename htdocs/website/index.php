@@ -2620,9 +2620,13 @@ if ($action == 'overwritesite' && $user->hasRight('website', 'export')) {
 		$fileofzip = $object->exportWebSite();
 		$pathToExport = GETPOST('export_path');
 		if ($fileofzip) {
-			$object->overwriteTemplate($fileofzip, $pathToExport);
+			$result = $object->overwriteTemplate($fileofzip, $pathToExport);
+			if ($result < 0) {
+				$action = 'preview';
+			}
 		} else {
 			setEventMessages($object->error, $object->errors, 'errors');
+			$action = 'preview';
 		}
 	}
 }
