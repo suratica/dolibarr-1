@@ -472,13 +472,13 @@ class FormMail extends Form
 		// phpcs:enable
 		global $conf, $langs, $user, $hookmanager, $form;
 
-		// Required to show preview wof mail attachments
-		require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-		$formfile = new FormFile($this->db);
-
 		if (!is_object($form)) {
 			$form = new Form($this->db);
 		}
+
+		// Required to show editor assistants
+		require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
+		$formfile = new FormFile($this->db);
 
 		require_once DOL_DOCUMENT_ROOT.'/core/class/html.formai.class.php';
 		$formai = new FormAI($this->db);
@@ -1494,7 +1494,7 @@ class FormMail extends Form
 	/**
 	 * Return HTML code for selection of email layout
 	 *
-	 * @param   string      $htmlContent    	HTML name of WYSIWYG field to fill
+	 * @param   string      $htmlContent    	HTML name of WYSIWYG field to fill once layout has been chosen
 	 * @param	string		$showlinktolayout	Show link to layout
 	 * @return  string                      	HTML for model email boxes
 	 */
@@ -1505,10 +1505,6 @@ class FormMail extends Form
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/emaillayout.lib.php';
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 		require_once DOL_DOCUMENT_ROOT.'/website/class/websitepage.class.php';
-
-		// Fetch blogs
-		$websitepage = new WebsitePage($this->db);
-		$arrayofblogs = $websitepage->fetchAll('', 'DESC', 'date_creation', 0, 0, array('type_container' => 'blogpost'));
 
 		$out = '<div id="template-selector" class="template-selector email-layout-container hidden" style="display:none;">';
 
@@ -1546,6 +1542,11 @@ class FormMail extends Form
 		$out .= '</div>';
 
 		// Prepare the array for multiselect
+
+		// Fetch blogs
+		$websitepage = new WebsitePage($this->db);
+		$arrayofblogs = $websitepage->fetchAll('', 'DESC', 'date_creation', 0, 0, array('type_container' => 'blogpost'));
+
 		$blogArray = array();
 		if (!empty($arrayofblogs)) {
 			foreach ($arrayofblogs as $blog) {
@@ -1559,6 +1560,7 @@ class FormMail extends Form
 		$out .= self::multiselectarray('blogpost-select', $blogArray, array(), 0, 0, 'minwidth200');
 		$out .= '</div>';
 
+		$out .= '<!-- Js code to manage choice of an email layout -->'."\n";
 		$out .= '<script type="text/javascript">
       	$(document).ready(function() {
         	$(".template-option").click(function() {
