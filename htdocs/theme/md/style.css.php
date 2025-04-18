@@ -1202,6 +1202,11 @@ textarea.centpercent {
 .centerimp {
 	text-align: center !important;
 }
+.centergrid {
+	display: grid;
+	text-align: center;
+	place-items: center;
+}
 .alignstart {
 	text-align: start;
 }
