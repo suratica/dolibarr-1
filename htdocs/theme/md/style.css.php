@@ -2372,7 +2372,7 @@ select.widthcentpercentminusxx, span.widthcentpercentminusxx:not(.select2-select
 	}
 
 	div.tabs div.tab a.tab  {
-		max-width: 200px;
+		max-width: 180px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -8600,6 +8600,10 @@ table.jPicker {
 	#bookinghoursection {
 		font-size: small;
 		width: 122px;
+	}
+
+	a.tab:link, a.tab:visited, a.tab:hover, a.tab#active {
+		padding: 10px 3px 10px;
 	}
 }
 

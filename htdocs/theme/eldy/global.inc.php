@@ -2235,7 +2235,7 @@ datalist {
 
 
 	div.tabs div.tab a.tab  {
-		max-width: 200px;
+		max-width: 180px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -5170,7 +5170,7 @@ ul.noborder li:nth-child(even):not(.liste_titre) {
 	}
 
 	a.tab:link, a.tab:visited, a.tab:hover, a.tab#active {
-		padding: 12px 12px 13px;
+		padding: 12px 3px 13px;
 	}
 	a.tmenu:link, a.tmenu:visited, a.tmenu:hover, a.tmenu:active {
 		padding: 0px 0px 0px 0px;

@@ -247,6 +247,9 @@ if (!getDolGlobalString('MAIN_ENABLE_OVERWRITE_TRANSLATION')) {
 $current_language_code = $langs->defaultlang;
 $s = picto_from_langcode($current_language_code);
 $infoOnCurrentLang = $form->textwithpicto('<span class="opacitymedium">'.$langs->trans("CurrentUserLanguage").':</span> <strong>'.$s.' '.$current_language_code.'</strong>', $langs->trans("TranslationDesc")).'</span><br>';
+if (!empty($conf->dol_optimize_smallscreen)) {
+	$infoOnCurrentLang = 1;
+}
 
 print load_fiche_titre($langs->trans("Translation"), $enabledisablehtml, 'language', 0, '', '', $infoOnCurrentLang);
 
