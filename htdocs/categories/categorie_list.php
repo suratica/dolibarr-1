@@ -212,7 +212,7 @@ if (empty($reshook)) {
 	// Mass actions
 	$objectclass = 'Categorie';
 	$objectlabel = 'Categorie';
-	$uploaddir = $conf->aaa->dir_output;
+	$uploaddir = $conf->categorie->dir_output;
 
 	global $error;
 	include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
