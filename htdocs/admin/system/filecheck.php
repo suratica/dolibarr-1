@@ -58,7 +58,7 @@ llxHeader('', '', '', '', 0, 0, '', '', '', 'mod-admin page-system_filecheck');
 
 print load_fiche_titre($langs->trans("FileCheckDolibarr"), '', 'title_setup');
 
-print '<span class="opacitymedium">'.$langs->trans("FileCheckDesc").'</span><br><br>';
+print '<div class="opacitymedium justify">'.$langs->trans("FileCheckDesc").'</div><br><br>';
 
 // Version
 print '<div class="div-table-responsive-no-min">';
@@ -141,6 +141,7 @@ if (dol_is_file($xmlfile)) {
 	print ' <span class="warning">('.$langs->trans("AvailableOnlyOnPackagedVersions").')</span></label>';
 	print '<br>';
 }
+print '<br>';
 print '<!-- for a remote target=remote&xmlremote=... -->'."\n";
 if ($enableremotecheck) {
 	print '<input type="radio" name="target" id="checkboxremote" value="remote"'.(GETPOST('target') == 'remote' ? 'checked="checked"' : '').'> <label for="checkboxremote">'.$langs->trans("RemoteSignature").'</label> = ';
