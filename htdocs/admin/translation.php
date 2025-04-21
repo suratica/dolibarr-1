@@ -397,7 +397,7 @@ if ($mode == 'overwrite') {
 
 	// Lang
 	print '<td>';
-	print $formadmin->select_language(GETPOST('langcode'), 'langcode', 0, array(), 1, 0, $disablededit ? 1 : 0, 'maxwidth250', 1);
+	print $formadmin->select_language(GETPOST('langcode'), 'langcode', 0, array(), 1, 0, $disablededit ? 1 : 0, 'minwidth100 maxwidth250', 1);
 	print '</td>'."\n";
 
 	// Trans key
@@ -570,8 +570,7 @@ if ($mode == 'searchkey') {
 	print '<table class="noborder centpercent">';
 
 	print '<tr class="liste_titre liste_titre_filter"><td>';
-	//print $formadmin->select_language($langcode,'langcode',0,null,$langs->trans("All"),0,0,'',1);
-	print $formadmin->select_language($langcode, 'langcode', 0, array(), 0, 0, 0, 'maxwidth250', 1);
+	print $formadmin->select_language($langcode, 'langcode', 0, array(), 0, 0, 0, 'minwidth100 maxwidth250', 1);
 	print '</td>'."\n";
 	print '<td>';
 	print '<input type="text" class="flat maxwidthonsmartphone" name="transkey" value="'.dol_escape_htmltag($transkey).'">';
@@ -627,8 +626,10 @@ if ($mode == 'searchkey') {
 		if ($limit && $i > ($offset + $limit)) {
 			break;
 		}
-		print '<tr class="oddeven"><td>'.$langcode.'</td><td>'.$key.'</td>';
-		print '<td class="small">';
+		print '<tr class="oddeven"><td>'.dolPrintHTML($langcode).'</td>';
+		// Key
+		print '<td class="" title="'.dolPrintHTMLForAttribute($key).'">'.dolPrintHTML($key).'</td>';
+		print '<td class="tdoverflowmax300 small">';
 		$titleforvalue = $langs->trans("Translation").' en_US for key '.$key.':<br>';
 		if (!empty($langsenfileonly->tab_translate[$key])) {
 			if (substr_count($langsenfileonly->tab_translate[$key], '%s') <= 4) {	// To avoid errors when more than 4 %s.
