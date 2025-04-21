@@ -159,10 +159,10 @@ print '
 		padding-'.$left.': 60px !important;
 	}
 	li.lilevel3 a {
-		padding-'.$left.': 90px !important;
+		padding-'.$left.': 85px !important;
 	}
 	li.lilevel4 a {
-		padding-: 120px !important;
+		padding-'.$left.': 105px !important;
 	}
 
     a.alilevel0, span.spanlilevel0 {
