@@ -370,6 +370,7 @@ if (getDolGlobalString('PAYMENT_SECURITY_TOKEN')) {
 			$valid = false; // PAYMENT_SECURITY_ACCEPT_ANY_TOKEN is for backward compatibility
 		} else {
 			dol_syslog("Warning: PAYMENT_SECURITY_ACCEPT_ANY_TOKEN is on", LOG_WARNING);
+			dol_syslog("Warning: PAYMENT_SECURITY_ACCEPT_ANY_TOKEN is on", LOG_WARNING, 0, '_payment');
 		}
 	}
 
@@ -446,6 +447,7 @@ if ($action == 'dopayment') {	// Test on permission not required here (anonymous
 
 		if (empty($mesg)) {
 			dol_syslog("newpayment.php call paypal api and do redirect", LOG_DEBUG);
+			dol_syslog("newpayment.php call paypal api and do redirect", LOG_DEBUG, 0, '_payment');
 
 			// Other
 			$PAYPAL_API_DEVISE = "USD";
@@ -455,27 +457,29 @@ if ($action == 'dopayment') {	// Test on permission not required here (anonymous
 
 			// Show var initialized by inclusion of paypal lib at start of this file
 			dol_syslog("Submit Paypal form", LOG_DEBUG);
-			dol_syslog("PAYPAL_API_USER: $PAYPAL_API_USER", LOG_DEBUG);
-			dol_syslog("PAYPAL_API_PASSWORD: ".preg_replace('/./', '*', $PAYPAL_API_PASSWORD), LOG_DEBUG); // No password into log files
-			dol_syslog("PAYPAL_API_SIGNATURE: $PAYPAL_API_SIGNATURE", LOG_DEBUG);
-			dol_syslog("PAYPAL_API_SANDBOX: $PAYPAL_API_SANDBOX", LOG_DEBUG);
-			dol_syslog("PAYPAL_API_OK: $PAYPAL_API_OK", LOG_DEBUG);
-			dol_syslog("PAYPAL_API_KO: $PAYPAL_API_KO", LOG_DEBUG);
-			dol_syslog("PAYPAL_API_PRICE: $PAYPAL_API_PRICE", LOG_DEBUG);
-			dol_syslog("PAYPAL_API_DEVISE: $PAYPAL_API_DEVISE", LOG_DEBUG);
-			// All those fields may be empty when making a payment for a free amount for example
-			dol_syslog("shipToName: $shipToName", LOG_DEBUG);
-			dol_syslog("shipToStreet: $shipToStreet", LOG_DEBUG);
-			dol_syslog("shipToCity: $shipToCity", LOG_DEBUG);
-			dol_syslog("shipToState: $shipToState", LOG_DEBUG);
-			dol_syslog("shipToCountryCode: $shipToCountryCode", LOG_DEBUG);
-			dol_syslog("shipToZip: $shipToZip", LOG_DEBUG);
-			dol_syslog("shipToStreet2: $shipToStreet2", LOG_DEBUG);
-			dol_syslog("phoneNum: $phoneNum", LOG_DEBUG);
-			dol_syslog("email: $email", LOG_DEBUG);
-			dol_syslog("desc: $desc", LOG_DEBUG);
+			dol_syslog("Submit Paypal form", LOG_DEBUG, 0, '_payment');
 
-			dol_syslog("SCRIPT_URI: ".(empty($_SERVER["SCRIPT_URI"]) ? '' : $_SERVER["SCRIPT_URI"]), LOG_DEBUG); // If defined script uri must match domain of PAYPAL_API_OK and PAYPAL_API_KO
+			dol_syslog("PAYPAL_API_USER: $PAYPAL_API_USER", LOG_DEBUG, 0, '_payment');
+			dol_syslog("PAYPAL_API_PASSWORD: ".preg_replace('/./', '*', $PAYPAL_API_PASSWORD), LOG_DEBUG, 0, '_payment'); // No password into log files
+			dol_syslog("PAYPAL_API_SIGNATURE: $PAYPAL_API_SIGNATURE", LOG_DEBUG, 0, '_payment');
+			dol_syslog("PAYPAL_API_SANDBOX: $PAYPAL_API_SANDBOX", LOG_DEBUG, 0, '_payment');
+			dol_syslog("PAYPAL_API_OK: $PAYPAL_API_OK", LOG_DEBUG, 0, '_payment');
+			dol_syslog("PAYPAL_API_KO: $PAYPAL_API_KO", LOG_DEBUG, 0, '_payment');
+			dol_syslog("PAYPAL_API_PRICE: $PAYPAL_API_PRICE", LOG_DEBUG, 0, '_payment');
+			dol_syslog("PAYPAL_API_DEVISE: $PAYPAL_API_DEVISE", LOG_DEBUG, 0, '_payment');
+			// All those fields may be empty when making a payment for a free amount for example
+			dol_syslog("shipToName: $shipToName", LOG_DEBUG, 0, '_payment');
+			dol_syslog("shipToStreet: $shipToStreet", LOG_DEBUG, 0, '_payment');
+			dol_syslog("shipToCity: $shipToCity", LOG_DEBUG, 0, '_payment');
+			dol_syslog("shipToState: $shipToState", LOG_DEBUG, 0, '_payment');
+			dol_syslog("shipToCountryCode: $shipToCountryCode", LOG_DEBUG, 0, '_payment');
+			dol_syslog("shipToZip: $shipToZip", LOG_DEBUG, 0, '_payment');
+			dol_syslog("shipToStreet2: $shipToStreet2", LOG_DEBUG, 0, '_payment');
+			dol_syslog("phoneNum: $phoneNum", LOG_DEBUG, 0, '_payment');
+			dol_syslog("email: $email", LOG_DEBUG, 0, '_payment');
+			dol_syslog("desc: $desc", LOG_DEBUG, 0, '_payment');
+
+			dol_syslog("SCRIPT_URI: ".(empty($_SERVER["SCRIPT_URI"]) ? '' : $_SERVER["SCRIPT_URI"]), LOG_DEBUG, 0, '_payment'); // If defined script uri must match domain of PAYPAL_API_OK and PAYPAL_API_KO
 
 			// A redirect is added if API call successful
 			$mesg = print_paypal_redirect($PAYPAL_API_PRICE, $PAYPAL_API_DEVISE, $PAYPAL_PAYMENT_TYPE, $PAYPAL_API_OK, $PAYPAL_API_KO, $FULLTAG);
@@ -511,7 +515,7 @@ if ($action == 'dopayment') {	// Test on permission not required here (anonymous
 		}
 
 		if (empty($mesg)) {
-			dol_syslog("newpayment.php call paybox api and do redirect", LOG_DEBUG);
+			dol_syslog("newpayment.php call paybox api and do redirect", LOG_DEBUG, 0, '_payment');
 
 			include_once DOL_DOCUMENT_ROOT.'/paybox/lib/paybox.lib.php';
 			print_paybox_redirect((float) $PRICE, $conf->currency, $email, $urlok, $urlko, $FULLTAG);

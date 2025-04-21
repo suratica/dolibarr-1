@@ -134,7 +134,7 @@ dol_syslog("***** paymentok.php is called paymentmethod=".$paymentmethod." FULLT
 $reg_ws = array();
 $ws = preg_match('/WS=([^\.]+)/', $FULLTAG, $reg_ws) ? $reg_ws[1] : 0;
 if ($ws) {
-	dol_syslog("Paymentok.php page is invoked from a website with ref ".$ws.". It performs actions and then redirects back to this website. A page with ref paymentok must be created for this website.", LOG_DEBUG, 0, '_payment');
+	dol_syslog("paymentok.php page is invoked from a website with ref ".$ws.". It performs actions and then redirects back to this website. A page with ref paymentok must be created for this website.", LOG_DEBUG, 0, '_payment');
 }
 
 $validpaymentmethod = getValidOnlinePaymentMethods($paymentmethod);
