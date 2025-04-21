@@ -121,7 +121,7 @@ print '
     }
     body ul {
         margin: 0;
-        padding-left: 0;
+        padding-'.$left.': 0;
     }
     body ul li {
         list-style: none;
@@ -131,7 +131,16 @@ print '
     }
 
 	ul li.lilevel2 {
-		padding-left: 40px;	/* width = 20 for level0, 20 for level1 */
+		padding-'.$left.': 60px;		/* width = 20 for level0, 20 for level1 */
+	}
+	ul li.lilevel3 {
+		padding-'.$left.': 60px;		/* width = 20 for level0, 20 for level1 */
+	}
+	ul li.lilevel4 {
+		padding-'.$left.': 60px;		/* width = 20 for level0, 20 for level1 */
+	}
+	ul li.lilevel5 {
+		padding-'.$left.': 60px;		/* width = 20 for level0, 20 for level1 */
 	}
 
 	.getmenudiv a:hover {
@@ -140,20 +149,20 @@ print '
 
 	.pictofixedwidth {
     	text-align: left;
-    	padding-right: 10px !important;
+    	padding-'.$right.': 8px !important;
 	}
 
 	li.lilevel1 > a, li.lilevel1 > i {
-		padding-left: 30px !important;
+		padding-'.$left.': 30px !important;
 	}
 	li.lilevel2 a {
-		padding-left: 60px !important;
+		padding-'.$left.': 60px !important;
 	}
 	li.lilevel3 a {
-		padding-left: 90px !important;
+		padding-'.$left.': 90px !important;
 	}
 	li.lilevel4 a {
-		padding-left: 120px !important;
+		padding-: 120px !important;
 	}
 
     a.alilevel0, span.spanlilevel0 {
@@ -161,12 +170,14 @@ print '
         background-repeat: no-repeat !important;';
 if ($langs->trans("DIRECTION") == 'rtl') {
 	print 'background-position: right;';
+	print 'background-position-y: 18px;';
+	print 'padding: 1em 40px 1em 15px;';
 } else {
-	print 'background-position-x: 10px;';
+	print 'background-position-x: 18px;';
+	print 'background-position-y: 10px;';
+	print 'padding: 1em 15px 1em 40px;';
 }
 print '
-        background-position-y: 18px;
-        padding: 1em 15px 1em 40px;
 		display: block;
     }
     li.lilevel0 font.vsmenudisabled {
@@ -200,15 +211,19 @@ if ($langs->trans("DIRECTION") == 'rtl') {
 } else {
 	print 'background-position-x: 10px;';
 }
-print 'background-position-y: 1px;';
-print 'padding-left: 20px;';
-print '
+print '	background-position-y: 1px;
+		padding-'.$left.': 20px;
 	}
     li.lilevel1 a, li.lilevel1 {
         color: #000;
         cursor: pointer;
         display: block;
     }
+	.fa.fa-does-not-exists {
+	    padding: 0px !important;
+	    margin: 0px;
+	    width: 0px;
+	}
     li.lilevel2 a {
         padding: 0.7em 15px 0.7em 40px;
         color: #000;
