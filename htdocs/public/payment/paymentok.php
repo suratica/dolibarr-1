@@ -181,9 +181,15 @@ if ($ws) {
 	}
 }
 
+/*
+ * Actions
+ */
+
+// None
+
 
 /*
- * Actions and view
+ * View
  */
 
 $now = dol_now();
@@ -199,13 +205,16 @@ foreach ($_POST as $k => $v) {
 	}
 }
 dol_syslog("POST=".$tracepost, LOG_DEBUG, 0, '_payment');
+
 $tracesession = "";
 foreach ($_SESSION as $k => $v) {
-	if (is_scalar($k) && is_scalar($v)) {
+	if (is_scalar($k) && is_scalar($v) && in_array($k, array('currencyCodeType', 'errormessage', 'FinalPaymentAmt', 'ipaddress', 'onlinetoken', 'payerID', 'paymentType', 'TRANSACTIONID', 'paymentoksessionkey', 'paymentkosessionkey'))) {
 		$tracesession .= "$k - $v\n";
 	}
 }
 dol_syslog("SESSION=".$tracesession, LOG_DEBUG, 0, '_payment');
+
+dol_syslog("paymentoksessionkey=".GETPOST('paymentoksessionkey')." SESSION['paymentoksessionkey']=".$_SESSION['paymentoksessionkey'], LOG_DEBUG, 0, '_payment');
 
 $head = '';
 if (getDolGlobalString('ONLINE_PAYMENT_CSS_URL')) {
@@ -370,7 +379,8 @@ if (isModEnabled('paybox')) {
 // For Stripe
 if (isModEnabled('stripe')) {
 	if ($paymentmethod === 'stripe') {
-		// TODO Add a check to validate that payment is ok. We can request Stripe with payment_intent and payment_intent_client_secret
+		// TODO Add a check to validate that payment is ok.
+		// We can request Stripe with payment_intent and payment_intent_client_secret the sameway we do in newpayment after comment "// Get here amount and currency used for payment".
 		$ispaymentok = true; // We call this page only if payment is ok on payment system
 	}
 }
@@ -2162,16 +2172,16 @@ $db->close();
 
 // If option to do a redirect somewhere else.
 if (!empty($doactionsthenredirect)) {
-	$randomseckey = getRandomPassword(true, null, 20);
-	$_SESSION['paymentsessionkey'] = $randomseckey;
-
 	if ($ispaymentok) {
 		// Redirect to a success page
+		$randomseckey = getRandomPassword(true, null, 20);
+		$_SESSION['paymentoksessionkey'] = $randomseckey;		// key between paymentok.php to another page like a paymentok of the website.
+
 		// Paymentok page must be created for the specific website
 		if (!defined('USEDOLIBARRSERVER') && !empty($ws_virtuelhost)) {
-			$ext_urlok = $ws_virtuelhost . '/paymentok.php?paymentsessionkey='.urlencode($randomseckey).'&fulltag='.$FULLTAG;
+			$ext_urlok = $ws_virtuelhost . '/paymentok.php?paymentoksessionkey='.urlencode($randomseckey).'&fulltag='.$FULLTAG;
 		} else {
-			$ext_urlok = DOL_URL_ROOT.'/public/website/index.php?paymentsessionkey='.urlencode($randomseckey).'&website='.urlencode($ws).'&pageref=paymentok&fulltag='.$FULLTAG;
+			$ext_urlok = DOL_URL_ROOT.'/public/website/index.php?paymentoksessionkey='.urlencode($randomseckey).'&website='.urlencode($ws).'&pageref=paymentok&fulltag='.$FULLTAG;
 		}
 
 		dol_syslog("Now do a redirect using a Location: ".$ext_urlok, LOG_DEBUG, 0, '_payment');
@@ -2179,11 +2189,14 @@ if (!empty($doactionsthenredirect)) {
 		exit;
 	} else {
 		// Redirect to an error page
+		$randomseckey = getRandomPassword(true, null, 20);
+		$_SESSION['paymentkosessionkey'] = $randomseckey;		// key between paymentok.php to another page like a paymentko of the website.
+
 		// Paymentko page must be created for the specific website
 		if (!defined('USEDOLIBARRSERVER') && !empty($ws_virtuelhost)) {
-			$ext_urlko = $ws_virtuelhost . '/paymentko.php?paymentsessionkey='.urlencode($randomseckey).'&fulltag='.$FULLTAG;
+			$ext_urlko = $ws_virtuelhost . '/paymentko.php?paymentkosessionkey='.urlencode($randomseckey).'&fulltag='.$FULLTAG;
 		} else {
-			$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?paymentsessionkey='.urlencode($randomseckey).'&website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
+			$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?paymentkosessionkey='.urlencode($randomseckey).'&website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
 		}
 
 		dol_syslog("Now do a redirect using a Location:".$ext_urlko, LOG_DEBUG, 0, '_payment');
