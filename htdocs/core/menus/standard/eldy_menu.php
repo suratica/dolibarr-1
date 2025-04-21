@@ -217,8 +217,8 @@ class MenuManager
 
 					// Add font-awesome
 					if ($val['level'] == 0 && !empty($val['prefix'])) {
-						if (preg_match('/^fa\-[a-zA-Z0-9\-_]+$/', $val['prefix'])) {
-							print '<span class="fas '.$val['prefix'].' paddingright pictofixedwidth"></span>';
+						if (preg_match('/^(fa[rsb]? )?fa-/', $val['prefix'])) {
+							print '<span class="'.$val['prefix'].' paddingright pictofixedwidth"></span>';
 						} else {
 							print str_replace('<span class="', '<span class="paddingright pictofixedwidth ', $val['prefix']);
 						}

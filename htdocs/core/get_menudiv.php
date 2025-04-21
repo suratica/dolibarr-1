@@ -297,7 +297,7 @@ if (!class_exists('MenuManager')) {
 $menumanager = new MenuManager($db, empty($user->socid) ? 0 : 1);
 // @phan-suppress-next-line PhanRedefinedClassReference
 $menumanager->loadMenu('all', 'all'); // Load this->tabMenu with sql menu entries
-//var_dump($menumanager);exit;
+
 // @phan-suppress-next-line PhanRedefinedClassReference
 $menumanager->showmenu('jmobile');
 

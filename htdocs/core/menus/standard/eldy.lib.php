@@ -679,7 +679,7 @@ function print_text_menu_entry($text, $showmode, $url, $id, $idsel, $classname, 
 		print '<div class="'.$id.' '.$idsel.' topmenuimage">';
 		if (!empty($menuval['prefix']) && strpos($menuval['prefix'], '<span') === 0) {
 			print $menuval['prefix'];
-		} elseif (!empty($menuval['prefix']) && preg_match('/^(fa[rsb]? )fa-/', $menuval['prefix'])) {
+		} elseif (!empty($menuval['prefix']) && preg_match('/^(fa[rsb]? )?fa-/', $menuval['prefix'])) {
 			print '<span class="'.$id.' '.$menuval['prefix'].'" id="mainmenuspan_'.$idsel.'"></span>';
 		} else {
 			print '<span class="'.$id.' tmenuimageforpng" id="mainmenuspan_'.$idsel.'"></span>';
@@ -1035,8 +1035,8 @@ function print_left_eldy_menu($db, $menu_array_before, $menu_array_after, &$tabM
 						print '<span class="vmenu">';
 					}
 					if (!empty($menu_array[$i]['prefix'])) {
-						if (preg_match('/^fa\-[a-zA-Z0-9\-_]+$/', $menu_array[$i]['prefix'])) {
-							print '<span class="fas '.$menu_array[$i]['prefix'].' paddingright pictofixedwidth"></span>';
+						if (preg_match('/^(fa[rsb]? )?fa-/', $menu_array[$i]['prefix'])) {
+							print '<span class="'.$menu_array[$i]['prefix'].' paddingright pictofixedwidth"></span>';
 						} else {
 							print $menu_array[$i]['prefix'];
 						}

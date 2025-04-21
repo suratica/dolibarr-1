@@ -7984,18 +7984,21 @@ div.tabsElem a.tab {
 }
 .lilevel3
 {
-	padding-left: 44px;
+	padding-left: 34px;
 	background: #fff ! important;
+	font-size: 0.9em;
 }
 .lilevel4
 {
-	padding-left: 66px;
+	padding-left: 46px;
 	background: #fff ! important;
+	font-size: 0.9em;
 }
 .lilevel5
 {
-	padding-left: 88px;
+	padding-left: 58px;
 	background: #fff ! important;
+	font-size: 0.9em;
 }
 
 
