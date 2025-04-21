@@ -167,14 +167,13 @@ print '
 
     a.alilevel0, span.spanlilevel0 {
         background-image: url(\''.DOL_URL_ROOT.'/theme/'.urlencode($conf->theme).'/img/next.png\') !important;
-        background-repeat: no-repeat !important;';
+        background-repeat: no-repeat !important;
+		background-position-y: 18px;';
 if ($langs->trans("DIRECTION") == 'rtl') {
 	print 'background-position: right;';
-	print 'background-position-y: 18px;';
 	print 'padding: 1em 40px 1em 15px;';
 } else {
-	print 'background-position-x: 18px;';
-	print 'background-position-y: 10px;';
+	print 'background-position-x: 10px;';
 	print 'padding: 1em 15px 1em 40px;';
 }
 print '
