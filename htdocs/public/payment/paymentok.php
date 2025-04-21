@@ -1064,6 +1064,8 @@ if ($ispaymentok) {
 			// Do action only if $FinalPaymentAmt is set (session variable is cleaned after this page to avoid duplicate actions when page is POST a second time)
 			if (isModEnabled('invoice')) {
 				if (!empty($FinalPaymentAmt) && $paymentTypeId > 0) {
+					$db->begin();
+
 					include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 					$invoice = new Facture($db);
 					$result = $invoice->createFromOrder($object, $user);
@@ -1152,15 +1154,16 @@ if ($ispaymentok) {
 								$error++;
 							}
 						}
-
-						if (!$error) {
-							$db->commit();
-						} else {
-							$db->rollback();
-						}
 					} else {
 						$postactionmessages[] = 'Failed to create invoice form order ' . $tmptag['ORD'] . '.';
 						$ispostactionok = -1;
+						$error++;
+					}
+
+					if (!$error) {
+						$db->commit();
+					} else {
+						$db->rollback();
 					}
 				} else {
 					$postactionmessages[] = 'Failed to get a valid value for "amount paid" (' . $FinalPaymentAmt . ') or "payment type id" (' . $paymentTypeId . ') to record the payment of order ' . $tmptag['ORD'] . '. May be payment was already recorded.';
@@ -1680,6 +1683,8 @@ if ($ispaymentok) {
 										$error++;
 										setEventMessages(null, $thirdparty->errors, "errors");
 									} else {
+										// TODO Move the send of email out of the db transaction
+
 										// Sending mail
 										require_once DOL_DOCUMENT_ROOT.'/core/class/CMailFile.class.php';
 										include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
@@ -1786,6 +1791,8 @@ if ($ispaymentok) {
 			// Do action only if $FinalPaymentAmt is set (session variable is cleaned after this page to avoid duplicate actions when page is POST a second time)
 			if (isModEnabled('invoice')) {
 				if (!empty($FinalPaymentAmt) && $paymentTypeId > 0) {
+					$db->begin();
+
 					include_once DOL_DOCUMENT_ROOT . '/compta/facture/class/facture.class.php';
 					$invoice = new Facture($db);
 					$result = $invoice->createFromContract($object, $user, array((int) $contract_lines));
@@ -1864,12 +1871,6 @@ if ($ispaymentok) {
 								$error++;
 							}
 						}
-
-						if (!$error) {
-							$db->commit();
-						} else {
-							$db->rollback();
-						}
 					} else {
 						$msg = 'Failed to create invoice form contract ' . $tmptag['CON'];
 						if (!empty($tmptag['COL'])) {
@@ -1877,6 +1878,13 @@ if ($ispaymentok) {
 						}
 						$postactionmessages[] = $msg;
 						$ispostactionok = -1;
+						$error++;
+					}
+
+					if (!$error) {
+						$db->commit();
+					} else {
+						$db->rollback();
 					}
 				} else {
 					$postactionmessages[] = 'Failed to get a valid value for "amount paid" (' . $FinalPaymentAmt . ') or "payment type id" (' . $paymentTypeId . ') to record the payment of contract ' . $tmptag['CON'] .'. Maybe payment was already recorded.';
