@@ -133,18 +133,18 @@ print '<div class="divsection">';
 print '<!-- for a local check target=local&xmlshortfile=... -->'."\n";
 if (dol_is_file($xmlfile)) {
 	print '<input type="radio" name="target" id="checkboxlocal" value="local"'.((!GETPOST('target') || GETPOST('target') == 'local') ? 'checked="checked"' : '').'"> <label for="checkboxlocal">'.$langs->trans("LocalSignature").'</label> = ';
-	print '<input name="xmlshortfile" class="flat minwidth400" value="'.dol_escape_htmltag($xmlshortfile).'">';
+	print '<input name="xmlshortfile" class="flat minwidth400" value="'.dol_escape_htmltag($xmlshortfile).'" spellcheck="false">';
 	print '<br>';
 } else {
 	print '<input type="radio" name="target" id="checkboxlocal" value="local"> <label for="checkboxlocal">'.$langs->trans("LocalSignature").' = ';
-	print '<input name="xmlshortfile" class="flat minwidth400" value="'.dol_escape_htmltag($xmlshortfile).'">';
+	print '<input name="xmlshortfile" class="flat minwidth400" value="'.dol_escape_htmltag($xmlshortfile).'" spellcheck="false">';
 	print ' <span class="warning">('.$langs->trans("AvailableOnlyOnPackagedVersions").')</span></label>';
 	print '<br>';
 }
 print '<!-- for a remote target=remote&xmlremote=... -->'."\n";
 if ($enableremotecheck) {
 	print '<input type="radio" name="target" id="checkboxremote" value="remote"'.(GETPOST('target') == 'remote' ? 'checked="checked"' : '').'> <label for="checkboxremote">'.$langs->trans("RemoteSignature").'</label> = ';
-	print '<input name="xmlremote" class="flat minwidth500" value="'.dol_escape_htmltag($xmlremote).'"><br>';
+	print '<input name="xmlremote" class="flat minwidth500" value="'.dol_escape_htmltag($xmlremote).'" spellcheck="false"><br>';
 } else {
 	print '<input type="radio" name="target" id="checkboxremote" value="remote" disabled="disabled"> '.$langs->trans("RemoteSignature").' = '.dol_escape_htmltag($xmlremote);
 	if (!GETPOST('xmlremote')) {
