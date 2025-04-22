@@ -1908,7 +1908,7 @@ class Ticket extends CommonObject
 
 						$result = $ecmfile->fetch(0, '', $destdir.'/'.$attachedfiles['names'][$key]);
 
-						// TODO We must add a column into ecm_files table agenda_id to store the ID of event.
+						// We also store the ID of event.
 						$ecmfile->agenda_id = $actionid;
 
 						if ($result > 0) {
