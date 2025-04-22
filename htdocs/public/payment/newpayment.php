@@ -885,7 +885,7 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 	$_SESSION['errormessage'] = $errormessage;
 
 	dol_syslog("Action charge stripe STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION=".getDolGlobalInt('STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION')." ip=".$remoteip, LOG_DEBUG, 0, '_payment');
-	dol_syslog("onlinetoken=".$_SESSION["onlinetoken"]." paymentsessionkey=".$_SESSION["paymentsessionkey"], LOG_DEBUG, 0, '_payment');
+	dol_syslog("onlinetoken=".$_SESSION["onlinetoken"]." paymentoksessionkey=".$_SESSION["paymentoksessionkey"]." paymentkosessionkey=".$_SESSION["paymentkosessionkey"], LOG_DEBUG, 0, '_payment');
 	dol_syslog("FinalPaymentAmt=".$_SESSION["FinalPaymentAmt"]." currencyCodeType=".$_SESSION["currencyCodeType"]." payerID=".$_SESSION['payerID']." TRANSACTIONID=".$_SESSION['TRANSACTIONID'], LOG_DEBUG, 0, '_payment');
 	dol_syslog("FULLTAG=".$FULLTAG, LOG_DEBUG, 0, '_payment');
 	dol_syslog("error=".$error." errormessage=".$errormessage, LOG_DEBUG, 0, '_payment');
