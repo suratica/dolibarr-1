@@ -671,7 +671,7 @@ if ($object->fetch($id) >= 0) {
 		print '<input type="hidden" name="action" value="">'."\n";
 		print '<table class="border centpercent">'."\n";
 
-		print '<tr><td>'.$langs->trans('AdvTgtNameTemplate').'</td><td class="valignmiddle">';
+		print '<tr><td class="titlefieldcreate">'.$langs->trans('AdvTgtNameTemplate').'</td><td class="valignmiddle">';
 		if (!empty($template_id)) {
 			$default_template = $template_id;
 		} else {
@@ -690,7 +690,7 @@ if ($object->fetch($id) >= 0) {
 		print '</td><td>'."\n";
 		print '</td></tr>'."\n";
 
-		print '<tr><td colspan="2"><hr></td></tr>';
+		print '<tr><td colspan="3"><hr></td></tr>';
 
 		print '<tr>'."\n";
 		print '<td colspan="3" class="center">'."\n";
@@ -813,7 +813,7 @@ if ($object->fetch($id) >= 0) {
 			1 => $langs->trans('Customer'),
 			0 => $langs->trans('NorProspectNorCustomer')
 		);
-		print $formadvtargetemaling->advMultiselectarray('cust_typecust', $options_array, $array_query['cust_typecust']);
+		print $formadvtargetemaling->advMultiselectarray('cust_typecust', $options_array, $selected);
 		print '</td><td>'."\n";
 		print '</td></tr>'."\n";
 
@@ -992,7 +992,7 @@ if ($object->fetch($id) >= 0) {
 		print '</td></tr>'."\n";
 
 		// Civility
-		print '<tr><td width="15%">'.$langs->trans("UserTitle");
+		print '<tr><td>'.$langs->trans("UserTitle");
 		if (!empty($array_query['contact_civility'])) {
 			print img_picto($langs->trans('AdvTgtUse'), 'ok.png@advtargetemailing');
 		}
