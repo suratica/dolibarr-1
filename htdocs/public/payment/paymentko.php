@@ -177,7 +177,7 @@ foreach ($_POST as $k => $v) {
 }
 dol_syslog("POST=".$tracepost, LOG_DEBUG, 0, '_payment');
 
-dol_syslog("paymentkosessionkey=".GETPOST('paymentkosessionkey')." SESSION['paymentkosessionkey']=".$_SESSION['paymentkosessionkey'], LOG_DEBUG, 0, '_payment');
+dol_syslog("paymentkosessioncode=".GETPOST('paymentkosessioncode')." SESSION['paymentkosessioncode']=".$_SESSION['paymentkosessioncode'], LOG_DEBUG, 0, '_payment');
 
 // Set $appli for emails title
 $appli = $mysoc->name;
@@ -354,9 +354,9 @@ if (!empty($doactionsthenredirect)) {
 
 	// Paymentko page must be created for the specific website
 	if (!defined('USEDOLIBARRSERVER') && !empty($ws_virtuelhost)) {
-		$ext_urlko = $ws_virtuelhost . '/paymentko.php?paymentkosessionkey='.urlencode($randomseckey).'&fulltag='.$FULLTAG;
+		$ext_urlko = $ws_virtuelhost . '/paymentko.php?paymentkosessioncode='.urlencode($randomseckey).'&fulltag='.$FULLTAG;
 	} else {
-		$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?paymentkosessionkey='.urlencode($randomseckey).'&website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
+		$ext_urlko = DOL_URL_ROOT.'/public/website/index.php?paymentkosessioncode='.urlencode($randomseckey).'&website='.urlencode($ws).'&pageref=paymentko&fulltag='.$FULLTAG;
 	}
 
 	dol_syslog("Now do a redirect using Location : ".$ext_urlko, LOG_DEBUG, 0, '_payment');

@@ -786,14 +786,14 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 
 		if ($error) {
 			$randomseckey = getRandomPassword(true, null, 20);
-			$_SESSION['paymentkosessionkey'] = $randomseckey;		// key between newpayment.php to paymentko.php
+			$_SESSION['paymentkosessioncode'] = $randomseckey;		// key between newpayment.php to paymentko.php
 
-			$urlko .= '&paymentkosessionkey='.urlencode($randomseckey);
+			$urlko .= '&paymentkosessioncode='.urlencode($randomseckey);
 		} else {
 			$randomseckey = getRandomPassword(true, null, 20);
-			$_SESSION['paymentoksessionkey'] = $randomseckey;		// key between newpayment.php to paymentok.php
+			$_SESSION['paymentoksessioncode'] = $randomseckey;		// key between newpayment.php to paymentok.php
 
-			$urlok .= '&paymentoksessionkey='.urlencode($randomseckey);
+			$urlok .= '&paymentoksessioncode='.urlencode($randomseckey);
 		}
 	}
 
@@ -839,9 +839,9 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 			$action = '';
 
 			$randomseckey = getRandomPassword(true, null, 20);
-			$_SESSION['paymentkosessionkey'] = $randomseckey;		// key between newpayment.php to paymentko.php
+			$_SESSION['paymentkosessioncode'] = $randomseckey;		// key between newpayment.php to paymentko.php
 
-			$urlko .= '&paymentkosessionkey='.urlencode($randomseckey);
+			$urlko .= '&paymentkosessioncode='.urlencode($randomseckey);
 		} else {
 			// We can also record the payment mode into llx_societe_rib with stripe $paymentintent->payment_method
 			// Note that with other old Stripe architecture (using Charge API), the payment mode was not recorded, so it is not mandatory to do it here.
@@ -866,9 +866,9 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 			dol_syslog("StatusOfRetrievedIntent is succeeded for amount = ".$amount." currency = ".$currency, LOG_DEBUG, 0, '_payment');
 
 			$randomseckey = getRandomPassword(true, null, 20);
-			$_SESSION['paymentoksessionkey'] = $randomseckey;		// key between newpayment.php to paymentok.php
+			$_SESSION['paymentoksessioncode'] = $randomseckey;		// key between newpayment.php to paymentok.php
 
-			$urlok .= '&paymentoksessionkey='.urlencode($randomseckey);
+			$urlok .= '&paymentoksessioncode='.urlencode($randomseckey);
 		}
 	}
 
@@ -885,7 +885,7 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 	$_SESSION['errormessage'] = $errormessage;
 
 	dol_syslog("Action charge stripe STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION=".getDolGlobalInt('STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION')." ip=".$remoteip, LOG_DEBUG, 0, '_payment');
-	dol_syslog("onlinetoken=".$_SESSION["onlinetoken"]." paymentoksessionkey=".$_SESSION["paymentoksessionkey"]." paymentkosessionkey=".$_SESSION["paymentkosessionkey"], LOG_DEBUG, 0, '_payment');
+	dol_syslog("onlinetoken=".$_SESSION["onlinetoken"]." paymentoksessioncode=".$_SESSION["paymentoksessioncode"]." paymentkosessioncode=".$_SESSION["paymentkosessioncode"], LOG_DEBUG, 0, '_payment');
 	dol_syslog("FinalPaymentAmt=".$_SESSION["FinalPaymentAmt"]." currencyCodeType=".$_SESSION["currencyCodeType"]." payerID=".$_SESSION['payerID']." TRANSACTIONID=".$_SESSION['TRANSACTIONID'], LOG_DEBUG, 0, '_payment');
 	dol_syslog("FULLTAG=".$FULLTAG, LOG_DEBUG, 0, '_payment');
 	dol_syslog("error=".$error." errormessage=".$errormessage, LOG_DEBUG, 0, '_payment');
