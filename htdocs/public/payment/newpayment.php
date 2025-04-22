@@ -783,6 +783,18 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 			setEventMessages($e->getMessage(), null, 'errors');
 			$action = '';
 		}
+
+		if ($error) {
+			$randomseckey = getRandomPassword(true, null, 20);
+			$_SESSION['paymentkosessionkey'] = $randomseckey;		// key between newpayment.php to paymentko.php
+
+			$urlko .= '&paymentkosessionkey='.urlencode($randomseckey);
+		} else {
+			$randomseckey = getRandomPassword(true, null, 20);
+			$_SESSION['paymentoksessionkey'] = $randomseckey;		// key between newpayment.php to paymentok.php
+
+			$urlok .= '&paymentoksessionkey='.urlencode($randomseckey);
+		}
 	}
 
 	// When using the PaymentIntent API architecture (mode set on by default into conf.class.php)

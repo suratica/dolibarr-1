@@ -379,9 +379,13 @@ if (isModEnabled('paybox')) {
 // For Stripe
 if (isModEnabled('stripe')) {
 	if ($paymentmethod === 'stripe') {
-		// TODO Add a check to validate that payment is ok.
-		// We can request Stripe with payment_intent and payment_intent_client_secret the sameway we do in newpayment after comment "// Get here amount and currency used for payment".
-		$ispaymentok = true; // We call this page only if payment is ok on payment system
+		// Check we are coming from the newpaymentpage
+		if (GETPOST('paymentoksessionkey') == $_SESSION['paymentoksessionkey']) {
+			// We can also request Stripe with payment_intent and payment_intent_client_secret the sameway we do in newpayment after comment "// Get here amount and currency used for payment".
+			$ispaymentok = true; // We call this page only if payment is ok on payment system
+		} else {
+			$ispaymentok = false; // We call this page only if payment is ok on payment system
+		}
 	}
 }
 
