@@ -239,9 +239,6 @@ if ($ws && !defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {	// 
 	$urlko = $tmpwebsite->virtualhost.'/public/payment/paymentko.php?';
 }
 
-dol_syslog("ws=".$ws." urlok=".$urlok, LOG_DEBUG);
-dol_syslog("ws=".$ws." urlok=".$urlok, LOG_DEBUG, 0, '_payment');
-
 // Complete urls for post treatment
 $ref = $REF = GETPOST('ref', 'alpha');
 $TAG = GETPOST("tag", 'alpha');
@@ -413,6 +410,9 @@ $mesg = '';
 
 // First log into the dolibarr_payment.log file
 dol_syslog("--- newpayment.php action=".$action." paymentmethod=".$paymentmethod.' amount='.$amount.' newamount='.GETPOST("newamount", 'alpha'), LOG_DEBUG, 0, '_payment');
+
+dol_syslog("fulltag=".GETPOST("fulltag", 'alpha')." ws=".$ws." urlok=".$urlok, LOG_DEBUG);
+dol_syslog("fulltag=".GETPOST("fulltag", 'alpha')." ws=".$ws." urlok=".$urlok, LOG_DEBUG, 0, '_payment');
 
 // Action dopayment is called after clicking/choosing the payment mode
 if ($action == 'dopayment') {	// Test on permission not required here (anonymous action protected by mitigation of /public/... urls)
