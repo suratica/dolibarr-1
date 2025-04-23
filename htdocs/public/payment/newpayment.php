@@ -239,6 +239,9 @@ if ($ws && !defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {	// 
 	$urlko = $tmpwebsite->virtualhost.'/public/payment/paymentko.php?';
 }
 
+dol_syslog("ws=".$ws." urlok=".$urlok, LOG_DEBUG);
+dol_syslog("ws=".$ws." urlok=".$urlok, LOG_DEBUG, 0, '_payment');
+
 // Complete urls for post treatment
 $ref = $REF = GETPOST('ref', 'alpha');
 $TAG = GETPOST("tag", 'alpha');
