@@ -787,12 +787,12 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 		}
 
 		if ($error) {
-			$randomseckey = getRandomPassword(true, null, 20);
+			$randomseckey = getRandomPassword(true, null, 20);		// TODO Generate a key including fulltag to avoid forging URL.
 			$_SESSION['paymentkosessioncode'] = $randomseckey;		// key between newpayment.php to paymentko.php
 
 			$urlko .= '&paymentkosessioncode='.urlencode($randomseckey);
 		} else {
-			$randomseckey = getRandomPassword(true, null, 20);
+			$randomseckey = getRandomPassword(true, null, 20);		// TODO Generate a key including fulltag to avoid forging URL.
 			$_SESSION['paymentoksessioncode'] = $randomseckey;		// key between newpayment.php to paymentok.php
 
 			$urlok .= '&paymentoksessioncode='.urlencode($randomseckey);
@@ -840,7 +840,7 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 			setEventMessages($paymentintent->status, null, 'errors');
 			$action = '';
 
-			$randomseckey = getRandomPassword(true, null, 20);
+			$randomseckey = getRandomPassword(true, null, 20);		// TODO Generate a key including fulltag to avoid forging URL.
 			$_SESSION['paymentkosessioncode'] = $randomseckey;		// key between newpayment.php to paymentko.php
 
 			$urlko .= '&paymentkosessioncode='.urlencode($randomseckey);
@@ -867,7 +867,7 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 
 			dol_syslog("StatusOfRetrievedIntent is succeeded for amount = ".$amount." currency = ".$currency, LOG_DEBUG, 0, '_payment');
 
-			$randomseckey = getRandomPassword(true, null, 20);
+			$randomseckey = getRandomPassword(true, null, 20);		// TODO Generate a key including fulltag to avoid forging URL.
 			$_SESSION['paymentoksessioncode'] = $randomseckey;		// key between newpayment.php to paymentok.php
 
 			$urlok .= '&paymentoksessioncode='.urlencode($randomseckey);
