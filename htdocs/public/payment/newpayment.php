@@ -412,7 +412,7 @@ $mesg = '';
  */
 
 // First log into the dolibarr_payment.log file
-dol_syslog("--- newpayment.php action = ".$action." paymentmethod=".$paymentmethod.' amount='.$amount.' newamount='.GETPOST("newamount", 'alpha'), LOG_DEBUG, 0, '_payment');
+dol_syslog("--- newpayment.php action=".$action." paymentmethod=".$paymentmethod.' amount='.$amount.' newamount='.GETPOST("newamount", 'alpha'), LOG_DEBUG, 0, '_payment');
 
 // Action dopayment is called after clicking/choosing the payment mode
 if ($action == 'dopayment') {	// Test on permission not required here (anonymous action protected by mitigation of /public/... urls)
@@ -553,7 +553,7 @@ if ($action == 'charge' && isModEnabled('stripe')) {	// Test on permission not r
 		$amountstripe *= 100;
 	}
 
-	dol_syslog("--- newpayment.php Execute action = ".$action." STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION=".getDolGlobalInt('STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION'), LOG_DEBUG, 0, '_payment');
+	dol_syslog("newpayment.php execute action = ".$action." STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION=".getDolGlobalInt('STRIPE_USE_INTENT_WITH_AUTOMATIC_CONFIRMATION'), LOG_DEBUG, 0, '_payment');
 	dol_syslog("GET=".var_export($_GET, true), LOG_DEBUG, 0, '_payment');
 	dol_syslog("POST=".var_export($_POST, true), LOG_DEBUG, 0, '_payment');
 
