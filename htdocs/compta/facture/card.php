@@ -5685,7 +5685,7 @@ if ($action == 'create') {
 		print '</div>';
 		print '</div>';
 
-		print '<div class="clearboth"></div><br><br>';
+		print '<div class="clearboth"></div><br>';
 
 		if (getDolGlobalString('MAIN_DISABLE_CONTACTS_TAB')) {
 			$blocname = 'contacts';
