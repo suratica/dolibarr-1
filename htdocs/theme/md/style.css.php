@@ -681,6 +681,9 @@ section.setupsection {
 	background-color: var(--colorbacktitle1);
 	border-radius: 5px;
 }
+section.setupsection:hover {
+	box-shadow: 0 0 5px #aaa;
+}
 
 .field-error-icon { color: #ea1212 !important; }
 
