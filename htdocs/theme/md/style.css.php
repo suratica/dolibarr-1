@@ -3267,6 +3267,10 @@ div.mainmenu.menu {
 
 /* To show text of top menu according to option THEME_TOPMENU_DISABLE_IMAGE */
 
+.menuhider {
+	width: <?php echo $disableimages ? 'auto' : '44'; ?>px;
+}
+
 /* Text hidden by default */
 <?php if (in_array(getDolGlobalInt('THEME_TOPMENU_DISABLE_IMAGE'), array(2, 3, 4))) { ?>
 .tmenulabel:not(.menuhider), .tmenulabel:not(.menuhider)::before {
@@ -8832,11 +8836,6 @@ table.jPicker {
 		margin: 0 5px 0 1px;
 		transform: scale(1.1);
 	}
-}
-
-
-.menuhider {
-	width: <?php echo $disableimages ? 'auto' : '44'; ?>px;
 }
 
 
