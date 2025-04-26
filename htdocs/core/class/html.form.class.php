@@ -7511,9 +7511,9 @@ class Form
 						$retstringbuttom = '<button id="' . $prefix . 'Button" type="button" class="dpInvisibleButtons"';
 						$base = DOL_URL_ROOT . '/core/';
 						$retstringbuttom .= ' onClick="showDP(\'' . dol_escape_js($base) . '\',\'' . dol_escape_js($prefix) . '\',\'' . dol_escape_js($langs->trans("FormatDateShortJavaInput")) . '\',\'' . dol_escape_js($langs->defaultlang) . '\');"';
-						$retstringbuttom .= '>' . img_object($langs->trans("SelectDate"), 'calendarday', 'class="datecallink"') . '</button>';
+						$retstringbuttom .= '>' . img_object($langs->trans("SelectDate"), 'calendarday', 'class="datecallink paddingright"') . '</button>';
 					} else {
-						$retstringbuttom = '<button id="' . $prefix . 'Button" type="button" class="dpInvisibleButtons">' . img_object($langs->trans("Disabled"), 'calendarday', 'class="datecallink"') . '</button>';
+						$retstringbuttom = '<button id="' . $prefix . 'Button" type="button" class="dpInvisibleButtons">' . img_object($langs->trans("Disabled"), 'calendarday', 'class="datecallink paddingright"') . '</button>';
 					}
 					$retstring = $retstringbuttom . $retstring;
 
