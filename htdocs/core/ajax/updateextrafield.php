@@ -85,6 +85,12 @@ top_httphead();
 
 // Update the object field with the new value
 if ($object->id > 0 && $field && isset($value)) {
+	// Fetch optionals attributes and labels
+	$extrafields->fetch_name_optionals_label($object->table_element);
+
+	// TODO Test specific permission of extrafield $field for object $object. It is stored into
+	// $extrafields->attributes[$object->table_element]['label']['perms'][$key]
+
 	$object->array_options['options_'.$field] = $value;
 	if ($object instanceof Societe) {
 		$result = $object->update($object->id, $user);
