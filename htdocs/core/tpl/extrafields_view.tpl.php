@@ -243,7 +243,8 @@ if (empty($reshook) && !empty($object->table_element) && isset($extrafields->att
 					// Fill $out
 					include DOL_DOCUMENT_ROOT.'/core/tpl/formlayoutai.tpl.php';
 					print '<td class="right">';
-					print '<!-- TODO Have code that will make the AI call and update field without the popup-->';
+					print '<!-- TODO Step 2 Have code that will make the AI call and update input field without the popup-->';
+					print '<!-- TODO Step 3 Then a next step will be to use the ajax call core/aja/updateextrafield.php to update field in database directly with no need to pass by edit_extras step -->';
 					print $out;
 					print '</td>';
 				}

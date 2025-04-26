@@ -17,8 +17,9 @@
  */
 
 /**
- *       \file       htdocs/core/ajax/editextrafield.php
- *       \brief      File to return Ajax response for stars extrafield request
+ *      \file       htdocs/core/ajax/updateextrafield.php
+ *      \ingroup    core
+ *      \brief      File to update an extrafield (for example for stars or AI update)
  */
 
 if (!defined('NOTOKENRENEWAL')) {
@@ -78,14 +79,19 @@ if (!$user->hasRight($module, $object->element, 'write') && !$user->hasRight($mo
  * View
  */
 
-dol_syslog("Call ajax core/ajax/editextrafield.php");
+dol_syslog("Call ajax core/ajax/updateextrafield.php");
 
 top_httphead();
 
 // Update the object field with the new value
 if ($object->id > 0 && $field && isset($value)) {
 	$object->array_options['options_'.$field] = $value;
-	$result = $object->update($user);
+	if ($object instanceof Societe) {
+		$result = $object->update($object->id, $user);
+	} else {
+		$result = $object->update($user);
+	}
+
 	if ($result < 0) {
 		print json_encode(['status' => 'error', 'message' => 'Error updating '. $field]);
 	} else {
