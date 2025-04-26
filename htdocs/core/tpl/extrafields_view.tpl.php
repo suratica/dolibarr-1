@@ -30,6 +30,8 @@
  * @var string	$action
  * @var	array<string,mixed>	$parameters		Array of parameters
  * @var int 	$cols
+ * @var string	$forcefieldid
+ * @var string	$forceobjectid
  */
 
 // Protection to avoid direct call of template
@@ -241,6 +243,7 @@ if (empty($reshook) && !empty($object->table_element) && isset($extrafields->att
 					// Fill $out
 					include DOL_DOCUMENT_ROOT.'/core/tpl/formlayoutai.tpl.php';
 					print '<td class="right">';
+					print '<!-- TODO Have code that will make the AI call and update field without the popup-->';
 					print $out;
 					print '</td>';
 				}
