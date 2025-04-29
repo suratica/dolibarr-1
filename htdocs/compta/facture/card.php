@@ -1367,7 +1367,7 @@ if (empty($reshook)) {
 							$tva_tx = 0;
 						}
 
-						$object->addline($langs->trans('invoiceAvoirLineWithPaymentRestAmount'), $remain_to_pay, 1, $tva_tx, 0, 0, 0, 0, '', '', 0, 0, 0, 'TTC');
+						$object->addline($langs->trans('invoiceAvoirLineWithPaymentRestAmount'), 0, 1, $tva_tx, 0, 0, 0, 0, '', '', 0, 0, 0, 'TTC', $remain_to_pay);
 					}
 				}
 
