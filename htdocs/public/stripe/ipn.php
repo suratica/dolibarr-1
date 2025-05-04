@@ -377,10 +377,10 @@ if ($event->type == 'payout.created' && getDolGlobalString('STRIPE_AUTO_RECORD_P
 		$obj = $db->fetch_object($result);
 		if ($obj) {
 			if ($obj->type == 'ban') {
+				$pdid = $obj->rowid;
 				if ($obj->traite == 1) {
 					// This is a direct-debit with an order (llx_bon_prelevement) ALREADY generated, so
 					// it means we received here the confirmation that payment request is finished.
-					$pdid = $obj->rowid;
 					$invoice_id = $obj->fk_facture;
 					$directdebitorcreditransfer_id = $obj->fk_prelevement_bons;
 					$payment_amountInDolibarr = $obj->amount;
@@ -394,9 +394,9 @@ if ($event->type == 'payout.created' && getDolGlobalString('STRIPE_AUTO_RECORD_P
 				}
 			}
 			if ($obj->type == 'card' || empty($obj->type)) {
+				$pdid = $obj->rowid;
 				if ($obj->traite == 0) {
 					// This is a card payment not already flagged as sent to Stripe.
-					$pdid = $obj->rowid;
 					$invoice_id = $obj->fk_facture;
 					$payment_amountInDolibarr = $obj->amount;
 					$paymentTypeCodeInDolibarr = empty($obj->type) ? 'card' : $obj->type;
@@ -807,7 +807,8 @@ if ($event->type == 'payout.created' && getDolGlobalString('STRIPE_AUTO_RECORD_P
 		$companypaymentmode->label           = '';
 		$companypaymentmode->number          = $db->escape($event->data->object->id);
 		$companypaymentmode->last_four       = $db->escape($event->data->object->card->last4);
-		$companypaymentmode->proprio         = $db->escape($event->data->object->billing_details->name);
+		$companypaymentmode->proprio         = $db->escape($event->data->object->billing_details->name);	// deprecated
+		$companypaymentmode->owner_name      = $db->escape($event->data->object->billing_details->name);
 		$companypaymentmode->exp_date_month  = (int) $event->data->object->card->exp_month;
 		$companypaymentmode->exp_date_year   = (int) $event->data->object->card->exp_year;
 		$companypaymentmode->cvn             = null;
