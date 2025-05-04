@@ -870,7 +870,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			// Default language
 			if (getDolGlobalInt('MAIN_MULTILANGS')) {
 				print '<tr><td>'.$form->editfieldkey('DefaultLang', 'default_lang', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">'."\n";
-				print img_picto('', 'language', 'class="pictofixedwidth"').$formadmin->select_language(GETPOST('default_lang', 'alpha') ? GETPOST('default_lang', 'alpha') : ($object->default_lang ? $object->default_lang : ''), 'default_lang', 0, array(), 1, 0, 0, 'maxwidth200onsmartphone');
+				print img_picto('', 'language', 'class="pictofixedwidth"').$formadmin->select_language(GETPOST('default_lang', 'alpha') ? GETPOST('default_lang', 'alpha') : ($object->default_lang ? $object->default_lang : ''), 'default_lang', 0, array(), 1, 0, 0, 'maxwidth200 widthcentpercentminusx');
 				print '</td>';
 				print '</tr>';
 			}
@@ -884,7 +884,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($action)) {
 			}
 
 			// Contact by default
-			if (!empty($socid)) {
+			if ($socid > 0) {
 				print '<tr><td>'.$langs->trans("ContactByDefaultFor").'</td>';
 				print '<td colspan="3">';
 				$contactType = $object->listeTypeContacts('external', 0, 1);
