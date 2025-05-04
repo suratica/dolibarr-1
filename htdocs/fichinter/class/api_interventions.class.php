@@ -1,7 +1,6 @@
 <?php
-/* Copyright (C) 2015   Jean-François Ferry     <jfefe@aternatik.fr>
+/* Copyright (C) 2015	Jean-François Ferry		<jfefe@aternatik.fr>
  * Copyright (C) 2016	Laurent Destailleur		<eldy@users.sourceforge.net>
- * Copyright (C) 2025		MDW					<mdeweerd@users.noreply.github.com>
  * Copyright (C) 2025	William Mead			<william@m34d.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -73,7 +72,6 @@ class Interventions extends DolibarrApi
 
 	/**
 	 * Get an intervention
-	 *
 	 * Return an array with intervention information
 	 *
 	 * @since	7.0.0	Initial implementation
@@ -82,7 +80,7 @@ class Interventions extends DolibarrApi
 	 * @param	string	$contact_type		{@choice '',thirdparty,internal,external} Type of contacts
 	 * @return	Object						Cleaned intervention object
 	 *
-	 * @throws	RestException
+	 * @throws		RestException
 	 */
 	public function get($id, $contact_type = '')
 	{
