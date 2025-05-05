@@ -60,12 +60,12 @@ class Orders extends DolibarrApi
 	 * Return an array with order information
 	 *
 	 * @param       int         $id            ID of order
-	 * @param       int         $contact_list  0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id
+	 * @param       int         $contact_list  0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id, -1: Do not return contacts/adddesses
 	 * @return	array|mixed data without useless information
 	 *
 	 * @throws	RestException
 	 */
-	public function get($id, $contact_list = 1)
+	public function get($id, $contact_list = -1)
 	{
 		return $this->_fetch($id, '', '', $contact_list);
 	}
@@ -76,14 +76,14 @@ class Orders extends DolibarrApi
 	 * Return an array with order information
 	 *
 	 * @param       string		$ref			Ref of object
-	 * @param       int         $contact_list  0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id
+	 * @param       int         $contact_list  0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id, -1: Do not return contacts/adddesses
 	 * @return	array|mixed data without useless information
 	 *
 	 * @url GET    ref/{ref}
 	 *
 	 * @throws	RestException
 	 */
-	public function getByRef($ref, $contact_list = 1)
+	public function getByRef($ref, $contact_list = -1)
 	{
 		return $this->_fetch(0, $ref, '', $contact_list);
 	}
@@ -94,14 +94,14 @@ class Orders extends DolibarrApi
 	 * Return an array with order information
 	 *
 	 * @param       string		$ref_ext			External reference of object
-	 * @param       int         $contact_list  0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id
+	 * @param       int         $contact_list  0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id, -1: Do not return contacts/adddesses
 	 * @return	array|mixed data without useless information
 	 *
 	 * @url GET    ref_ext/{ref_ext}
 	 *
 	 * @throws	RestException
 	 */
-	public function getByRefExt($ref_ext, $contact_list = 1)
+	public function getByRefExt($ref_ext, $contact_list = -1)
 	{
 		return $this->_fetch(0, '', $ref_ext, $contact_list);
 	}
@@ -114,12 +114,12 @@ class Orders extends DolibarrApi
 	 * @param       int         $id				ID of order
 	 * @param		string		$ref			Ref of object
 	 * @param		string		$ref_ext		External reference of object
-	 * @param       int         $contact_list	0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id
+	 * @param       int         $contact_list	0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id, -1: Do not return contacts/adddesses
 	 * @return		Object						Object with cleaned properties
 	 *
 	 * @throws	RestException
 	 */
-	private function _fetch($id, $ref = '', $ref_ext = '', $contact_list = 1)
+	private function _fetch($id, $ref = '', $ref_ext = '', $contact_list = -1)
 	{
 		if (!DolibarrApiAccess::$user->hasRight('commande', 'lire')) {
 			throw new RestException(403);

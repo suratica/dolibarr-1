@@ -79,12 +79,12 @@ class Interventions extends DolibarrApi
 	 * @param	int			$id				ID of intervention
 	 * @param	string		$ref			Ref of object
 	 * @param	string		$ref_ext		External reference of object
-	 * @param   int         $contact_list	0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id
+	 * @param   int         $contact_list	0: Returned array of contacts/addresses contains all properties, 1: Return array contains just id, -1: Do not return contacts/adddesses
 	 * @return	Object						Cleaned intervention object
 	 *
 	 * @throws		RestException
 	 */
-	public function get($id, $ref = '', $ref_ext = '', $contact_list = '')
+	public function get($id, $ref = '', $ref_ext = '', $contact_list = 1)
 	{
 		if (!DolibarrApiAccess::$user->hasRight('ficheinter', 'lire')) {
 			throw new RestException(403);
