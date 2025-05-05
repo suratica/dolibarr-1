@@ -784,8 +784,13 @@ if ($id > 0) {
 			$('#clone_date_start').after(
 				$('<button id=\"start_prev_month\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('PreviousMonthShort')."</button>')
 				.add('<button id=\"start_curr_month\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('CurrentMonthShort')."</button>')
-				.add('<button id=\"start_prev_week\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('PreviousWeekShort')."</button>')
-				.add('<button id=\"start_curr_week\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('CurrentWeekShort')."</button>')
+			";
+		if (getDolGlobalString('SALARY_MANAGEMENT_PER_WEEK')) {
+			$formconfirm .= "
+					.add('<button id=\"start_prev_week\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('PreviousWeekShort')."</button>')
+					.add('<button id=\"start_curr_week\" class=\"dpInvisibleButtons\" style=\"color: var(--colortextlink);font-size: 0.8em;opacity: 0.7;margin-left:4px;\" type=\"button\">".$langs->trans('CurrentWeekShort')."</button>')";
+		}
+		$formconfirm .= "
 			);
 
 			$('#start_prev_month').click(function(){
