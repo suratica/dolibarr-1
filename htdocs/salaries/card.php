@@ -1204,6 +1204,11 @@ if ($id > 0) {
 			print dolGetButtonAction('', $langs->trans('Modify'), 'default', $_SERVER["PHP_SELF"].'?action=edit&token='.newToken().'&id='.$object->id, '');
 		}
 
+		// Transfer request
+		if ($object->status == $object::STATUS_UNPAID && ((price2num($object->amount) < 0 && $resteapayer < 0) || (price2num($object->amount) > 0 && $resteapayer > 0)) && $permissiontoadd) {
+			print dolGetButtonAction('', $langs->trans('MakeTransferRequest'), 'default', DOL_URL_ROOT . '/salaries/virement_request.php?id=' . $object->id, '');
+		}
+
 		// Emit payment
 		if ($object->status == $object::STATUS_UNPAID && ((price2num($object->amount) < 0 && $resteapayer < 0) || (price2num($object->amount) > 0 && $resteapayer > 0)) && $permissiontoadd) {
 			print dolGetButtonAction('', $langs->trans('DoPayment'), 'default', DOL_URL_ROOT.'/salaries/paiement_salary.php?action=create&token='.newToken().'&id='. $object->id, '');
@@ -1213,11 +1218,6 @@ if ($id > 0) {
 		// If payment complete $resteapayer <= 0 on a positive salary, or if amount is negative, we allow to classify as paid.
 		if ($object->status == $object::STATUS_UNPAID && (($resteapayer <= 0 && $object->amount > 0) || ($object->amount <= 0)) && $permissiontoadd) {
 			print dolGetButtonAction('', $langs->trans('ClassifyPaid'), 'default', $_SERVER["PHP_SELF"].'?action=paid&token='.newToken().'&id='.$object->id, '');
-		}
-
-		// Transfer request
-		if ($object->status == $object::STATUS_UNPAID && ((price2num($object->amount) < 0 && $resteapayer < 0) || (price2num($object->amount) > 0 && $resteapayer > 0)) && $permissiontoadd) {
-			print dolGetButtonAction('', $langs->trans('MakeTransferRequest'), 'default', DOL_URL_ROOT . '/salaries/virement_request.php?id=' . $object->id, '');
 		}
 
 		// Clone
