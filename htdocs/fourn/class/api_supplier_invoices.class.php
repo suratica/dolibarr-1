@@ -447,10 +447,6 @@ class SupplierInvoices extends DolibarrApi
 			throw new RestException(404, 'Invoice not found');
 		}
 
-		if (!DolibarrApi::_checkAccessToResource('fournisseur', $id, 'facture_fourn', 'facture')) {
-			throw new RestException(403, 'Access not allowed for login ' . DolibarrApiAccess::$user->login);
-		}
-
 		return $this->_cleanObjectDatas($this->invoice);
 	}
 
