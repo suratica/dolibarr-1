@@ -1800,7 +1800,7 @@ BarcodeDescC39=Barcode of type C39
 BarcodeDescC128=Barcode of type C128
 BarcodeDescDATAMATRIX=Barcode of type Datamatrix
 BarcodeDescQRCODE=Barcode of type QR code
-GenbarcodeLocation=Bar code generation command line tool (used by internal engine for some bar code types). Must be compatible with "genbarcode".<br>For example: /usr/local/bin/genbarcode
+GenbarcodeLocation=Bar code generation command line tool (optional, used to replace the internal bar code generation engine for some bar code types). Must be compatible with "genbarcode".<br>For example: /usr/local/bin/genbarcode
 BarcodeInternalEngine=Internal engine
 BarCodeNumberManager=Manager to auto define barcode numbers
 ##### ExternalRSS #####
