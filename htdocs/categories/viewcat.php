@@ -420,6 +420,8 @@ print '<div class="fichecenter">';
 
 print load_fiche_titre($langs->trans("SubCats"), $newcardbutton, 'object_category');
 
+$cats = $object->get_filles();
+
 print '<table class="liste nohover noborder centpercent borderbottom">';
 
 print '<tr class="liste_titre">';
@@ -427,7 +429,7 @@ print '<td>'.$langs->trans("SubCats").'</td>';
 print '<td></td>';
 print '<td class="right">';
 
-if (!empty($conf->use_javascript_ajax)) {
+if (is_array($cats) && count($cats) > 1 && !empty($conf->use_javascript_ajax)) {
 	print '<div id="iddivjstreecontrol">';
 	print '<a class="notasortlink" href="#">'.img_picto('', 'folder').' '.$langs->trans("UndoExpandAll").'</a>';
 	print " | ";
@@ -438,8 +440,7 @@ if (!empty($conf->use_javascript_ajax)) {
 print '</td>';
 print '</tr>';
 
-$cats = $object->get_filles();
-if ($cats < 0) {
+if (is_numeric($cats) && $cats < 0) {
 	dol_print_error($db, $object->error, $object->errors);
 } elseif (count($cats) < 1) {
 	print '<tr class="oddeven nobottom">';
