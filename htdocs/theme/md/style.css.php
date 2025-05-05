@@ -5373,6 +5373,7 @@ img.boxhandle, img.boxclose {
 	font-size: 1rem;
 	cursor: pointer;
 	display: inline-block;
+	white-spacing: nowrap;
 }
 .star {
 	color: #ccc;
