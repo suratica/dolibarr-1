@@ -477,6 +477,9 @@ if ($mode == 'hierarchy') {
 		$entry = '<table class="nobordernopadding centpercent">';
 		$entry .= '<tr>';
 
+		// Force tools on right
+		$conf->main_checkbox_left_column = 0;
+
 		$entry .= '<td>';
 		$entry .= '<span class="noborderoncategories" '.$color.'>'.$li.'</span>';
 		if (!empty($conf->main_checkbox_left_column)) {
