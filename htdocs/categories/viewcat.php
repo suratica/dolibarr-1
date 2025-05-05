@@ -364,7 +364,7 @@ print '</td></tr>';
 // Position
 print '<tr><td class="titlefield notopnoleft">';
 print $langs->trans("Position").'</td><td>';
-print $object->position;
+print $object->position ? $object->position : '';
 print '</td></tr>';
 
 // Other attributes
@@ -443,7 +443,7 @@ print '</tr>';
 if (is_numeric($cats) && $cats < 0) {
 	dol_print_error($db, $object->error, $object->errors);
 } elseif (count($cats) < 1) {
-	print '<tr class="oddeven nobottom">';
+	print '<tr class="oddeven nobottom nohover">';
 	print '<td colspan="3"><span class="opacitymedium">'.$langs->trans("NoSubCat").'</span></td>';
 	print '</tr>';
 } else {
@@ -611,11 +611,11 @@ if ($type == Categorie::TYPE_PRODUCT) {
 						break;
 					}
 
-					print "\t".'<tr class="oddeven">'."\n";
-					print '<td class="nowrap" valign="top">';
+					print '<tr class="oddeven">'."\n";
+					print '<td class="nowrap tdtop">';
 					print $prod->getNomUrl(1);
 					print "</td>\n";
-					print '<td class="tdtop">'.$prod->label."</td>\n";
+					print '<td class="tdtop">'.dolPrintHTML($prod->label)."</td>\n";
 					// Link to delete from category
 					print '<td class="right">';
 					if ($permission) {
