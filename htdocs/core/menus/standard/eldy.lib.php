@@ -2540,6 +2540,11 @@ function get_left_menu_tools($mainmenu, &$newmenu, $usemenuhider = 1, $leftmenu 
 	global $user, $langs;
 
 	if ($mainmenu == 'tools') {
+		if (isModEnabled('category')) {
+			$titleindex = $langs->trans("Categories");
+			$newmenu->add("/categories/index.php?leftmenu=category", $titleindex, 0, $user->hasRight('category', 'read'), '', $mainmenu, 'category', 5, '', '', '', img_picto('', 'category', 'class="paddingright pictofixedwidth"'));
+		}
+
 		if (empty($user->socid)) { // limit to internal users
 			$langs->load("mails");
 			$newmenu->add("/admin/mails_templates.php?leftmenu=email_templates", $langs->trans("EMailTemplates"), 0, 1, '', $mainmenu, 'email_templates', 10, '', '', '', img_picto('', 'email', 'class="paddingright pictofixedwidth"'));
