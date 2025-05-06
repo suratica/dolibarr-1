@@ -104,8 +104,9 @@ if ($action == 'update') {
 $form = new Form($db);
 
 $title = $langs->trans("DonationsSetup");
+$help_url = 'EN:Module_Donation|FR:Module_Don';
 
-llxHeader('', $title, '', '', 0, 0, '', '', '', 'mod-don page-admin_website');
+llxHeader('', $title, $help_url, '', 0, 0, '', '', '', 'mod-don page-admin_website');
 
 
 $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
@@ -126,12 +127,10 @@ if ($conf->use_javascript_ajax) {
 	print 'jQuery(document).ready(function () {
                 function initfields()
                 {
-					if (jQuery("#DONATION_ENABLE_PUBLIC").val()==\'0\')
-                    {
+					if (jQuery("#DONATION_ENABLE_PUBLIC").val()==\'0\') {
                         jQuery("#trforcetype, #tramount, #tredit, #trpayment").hide();
                     }
-                    if (jQuery("#DONATION_ENABLE_PUBLIC").val()==\'1\')
-                    {
+                    if (jQuery("#DONATION_ENABLE_PUBLIC").val()==\'1\') {
                         jQuery("#trforcetype, #tramount, #tredit, #trpayment").show();
 					}
 				}
