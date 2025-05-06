@@ -4417,6 +4417,7 @@ if ($action == 'editsecurity') {
 
 	if (!empty($forceCSP)) {
 		// Content Security Policy list of selected rules
+		print '<br>';
 		print '<div class="div-table-responsive-no-min">';
 		print img_picto('', 'graph', 'class="pictofixedwidth"').$langs->trans("HierarchicView").'<br>';
 		print '<ul>';
