@@ -32,8 +32,8 @@ require '../../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/donation.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/core/lib/payments.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/don/class/don.class.php';
-
 
 /**
  * @var Conf $conf
@@ -49,6 +49,10 @@ require_once DOL_DOCUMENT_ROOT.'/don/class/don.class.php';
 $langs->loadLangs(array("admin", "donations"));
 
 $action = GETPOST('action', 'aZ09');
+
+// Hook to be used by external payment modules (ie Payzen, ...)
+$hookmanager = new HookManager($db);
+$hookmanager->initHooks(array('newpayment'));
 
 if (!$user->admin) {
 	accessforbidden();
@@ -207,18 +211,23 @@ if (getDolGlobalString('DONATION_ENABLE_PUBLIC')) {
 	print '<tr class="oddeven" id="trpayment"><td>';
 	print $langs->trans("DONATION_NEWFORM_PAYONLINE");
 	print '</td><td>';
+
+	// Initialize $validpaymentmethod
+	// The list can be complete by the hook 'doValidatePayment' executed inside getValidOnlinePaymentMethods()
+	$validpaymentmethod = getValidOnlinePaymentMethods('', 1);
+
+	// Define $listofval using the $validpaymentmethod
 	$listofval = array();
-	$listofval['-1'] = $langs->trans('No');
-	$listofval['all'] = $langs->trans('Yes').' ('.$langs->trans("VisitorCanChooseItsPaymentMode").')';
-	if (isModEnabled('paybox')) {
-		$listofval['paybox'] = 'Paybox';
+	$listofval['-1'] = array('label' => $langs->trans('No'));
+	$listofval['all'] = array('label' => $langs->trans('Yes').' ('.$langs->trans("VisitorCanChooseItsPaymentMode").')', 'data-html' => $langs->trans('Yes').' &nbsp; <span class="opacitymedium">('.$langs->trans("VisitorCanChooseItsPaymentMode").')</span>');
+	foreach ($validpaymentmethod as $key => $val) {
+		if (is_array($val)) {
+			$listofval[$key] = $val;
+		} else {
+			$listofval[$key] = array('label' => $key, 'status' => 'valid');
+		}
 	}
-	if (isModEnabled('paypal')) {
-		$listofval['paypal'] = 'PayPal';
-	}
-	if (isModEnabled('stripe')) {
-		$listofval['stripe'] = 'Stripe';
-	}
+
 	print $form->selectarray("DONATION_NEWFORM_PAYONLINE", $listofval, getDolGlobalString('DONATION_NEWFORM_PAYONLINE'), 0);
 	print "</td></tr>\n";
 
