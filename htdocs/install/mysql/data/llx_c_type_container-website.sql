@@ -36,6 +36,6 @@ INSERT INTO llx_c_type_container (code, label, module, active, position, entity)
 INSERT INTO llx_c_type_container (code, label, module, active, position, entity) values ('banner',   'Banner',   'system', 1, 35, __ENTITY__);
 INSERT INTO llx_c_type_container (code, label, module, active, position, entity) values ('other',    'Other',    'system', 1, 40, __ENTITY__);
 
-INSERT INTO llx_c_type_container (code, label, active, module, position, typecontainer, entity) VALUES ('service', 'Service (ajax or api)', 1, 'system', 300, 'library', __ENTITY__);
+INSERT INTO llx_c_type_container (code, label, active, module, position, typecontainer, entity) VALUES ('service', 'Web Service (for ajax or api call)', 1, 'system', 300, 'library', __ENTITY__);
 INSERT INTO llx_c_type_container (code, label, active, module, position, typecontainer, entity) VALUES ('library', 'Library (functions)',   1, 'system', 400, 'library', __ENTITY__);
 INSERT INTO llx_c_type_container (code, label, active, module, position, typecontainer, entity) VALUES ('setup',   'Setup screen',          1, 'system', 500, 'library', __ENTITY__);

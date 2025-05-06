@@ -4397,9 +4397,9 @@ if ($action == 'editsecurity') {
 
 	print '<input class="minwidth500 quatrevingtpercent" name="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" id="WEBSITE_'.$object->id.'_SECURITY_FORCECSP" value="'.$forceCSP.'"> <a href="#" id="btnaddcontentsecuritypolicy">'.img_picto('', 'add').'</a><br>';
 
-	print '<br>';
+	print '<br class="selectaddcontentsecuritypolicy hidden">';
 
-	print '<div id="selectaddcontentsecuritypolicy" class="hidden">';
+	print '<div id="selectaddcontentsecuritypolicy" class="hidden selectaddcontentsecuritypolicy">';
 	print $form->selectarray("select_identifier_WEBSITE_SECURITY_FORCECSP", $selectarrayCSPDirectives, "select_identifier_WEBSITE_SECURITY_FORCECSP", $langs->trans("FillCSPDirective"), 0, 0, '', 0, 0, 0, '', 'minwidth200 maxwidth350 inline-block');
 	print ' ';
 	print '<input type="hidden" id="select_source_WEBSITE_SECURITY_FORCECSP" name="select_source_WEBSITE_SECURITY_FORCECSP">';
@@ -4471,10 +4471,10 @@ if ($action == 'editsecurity') {
 			$("#btnaddcontentsecuritypolicy").on("click", function(){
 				if($("#selectaddcontentsecuritypolicy").is(":visible")){
 					console.log("We hide select to add Content Security Policy");
-					$("#selectaddcontentsecuritypolicy").hide();
+					$(".selectaddcontentsecuritypolicy").hide();
 				} else {
 					console.log("We show select to add Content Security Policy");
-					$("#selectaddcontentsecuritypolicy").show();
+					$(".selectaddcontentsecuritypolicy").show();
 				}
 			});
 
