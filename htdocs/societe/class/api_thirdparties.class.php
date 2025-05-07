@@ -368,6 +368,7 @@ class Thirdparties extends DolibarrApi
 	 * @param int   $id             ID of thirdparty to keep (the target third party)
 	 * @param int   $idtodelete     ID of thirdparty to remove (the thirdparty to delete), once data has been merged into the target third party.
 	 * @return Object				Return the resulted third party.
+	 *
 	 * @phan-return Societe
 	 * @phpstan-return Societe
 	 *
@@ -622,6 +623,7 @@ class Thirdparties extends DolibarrApi
 	 * @param int		$id				Id of thirdparty
 	 * @param int       $category_id	Id of category
 	 * @return Object
+	 *
 	 * @phan-return Societe
 	 * @phpstan-return Societe
 	 *
@@ -741,8 +743,8 @@ class Thirdparties extends DolibarrApi
 	 *
 	 * @param int		$id				Id of thirdparty
 	 * @param int       $category_id	Id of category
-	 *
 	 * @return mixed
+	 *
 	 * @phan-return Societe
 	 * @phpstan-return Societe
 	 *
@@ -1377,10 +1379,10 @@ class Thirdparties extends DolibarrApi
 	 * @param int $id ID of thirdparty
 	 * @param int  $notification_id ID of CompanyNotification
 	 * @param array $request_data Request data
+	 * @return array|mixed  Notification of thirdparty
+	 *
 	 * @phan-param ?array<string,string> $request_data
 	 * @phpstan-param ?array<string,string> $request_data
-	 *
-	 * @return array|mixed  Notification of thirdparty
 	 *
 	 * @url PUT {id}/notifications/{notification_id}
 	 */
@@ -1552,10 +1554,10 @@ class Thirdparties extends DolibarrApi
 	 * @param int $id ID of thirdparty
 	 * @param int  $bankaccount_id ID of CompanyBankAccount
 	 * @param array $request_data Request data
+	 * @return array|mixed  BankAccount of thirdparty
+	 *
 	 * @phan-param ?array<string,string> $request_data
 	 * @phpstan-param ?array<string,string> $request_data
-	 *
-	 * @return array|mixed  BankAccount of thirdparty
 	 *
 	 * @url PUT {id}/bankaccounts/{bankaccount_id}
 	 */
@@ -1897,7 +1899,7 @@ class Thirdparties extends DolibarrApi
 	 * Create and attach a new (or replace an existing) specific site account to a thirdparty
 	 *
 	 * You <strong>MUST</strong> pass all values to keep (otherwise, they will be deleted) !<br>
-	 * If you just need to update specific fields prefer <code>PATCH /thirdparties/{id}/accounts/{site}</code> endpoint.<br><br>
+	 * If you just need to update specific fields prefer <code>PUT /thirdparties/{id}/accounts/{site}</code> endpoint.<br><br>
 	 * When a <strong>SocieteAccount</strong> entity does not exist for the <code>id</code> and <code>site</code>
 	 * supplied, a new one will be created. In that case <code>fk_soc</code> and <code>site</code> members form
 	 * request body payload will be ignored and <code>id</code> and <code>site</code> query strings parameters
@@ -1906,18 +1908,18 @@ class Thirdparties extends DolibarrApi
 	 * @param int $id ID of thirdparty
 	 * @param string $site Site key
 	 * @param array $request_data Request data
+	 * @return array|mixed
+	 *
 	 * @phan-param ?array<string,string> $request_data
 	 * @phpstan-param ?array<string,string> $request_data
-	 *
-	 * @return array|mixed
 	 *
 	 * @throws RestException 401 Unauthorized: User does not have permission to read thirdparties
 	 * @throws RestException 422 Unprocessable Entity: You must pass the site attribute in your request data !
 	 * @throws RestException 500 Internal Server Error: Error updating SocieteAccount entity
 	 *
-	 * @url PUT {id}/accounts/{site}
+	 * @url POST {id}/accounts/{site}
 	 */
-	public function putSocieteAccount($id, $site, $request_data = null)
+	public function postSocieteAccount($id, $site, $request_data = null)
 	{
 		if (!DolibarrApiAccess::$user->hasRight('societe', 'creer')) {
 			throw new RestException(403);
@@ -2001,19 +2003,19 @@ class Thirdparties extends DolibarrApi
 	 * @param int		$id				Id of thirdparty
 	 * @param string	$site			Site key
 	 * @param array		$request_data	Request data
+	 * @return array|mixed
+	 *
 	 * @phan-param ?array<string,string> $request_data
 	 * @phpstan-param ?array<string,string> $request_data
-	 *
-	 * @return array|mixed
 	 *
 	 * @throws RestException 401 Unauthorized: User does not have permission to read thirdparties
 	 * @throws RestException 404 Not Found: Specified thirdparty ID does not belongs to an existing thirdparty
 	 * @throws RestException 409 Conflict: Another SocieteAccount entity already exists for this thirdparty with this site key.
 	 * @throws RestException 500 Internal Server Error: Error updating SocieteAccount entity
 	 *
-	 * @url PATCH {id}/accounts/{site}
+	 * @url PUT {id}/accounts/{site}
 	 */
-	public function patchSocieteAccount($id, $site, $request_data = null)
+	public function putSocieteAccount($id, $site, $request_data = null)
 	{
 		if (!DolibarrApiAccess::$user->hasRight('societe', 'creer')) {
 			throw new RestException(403);
