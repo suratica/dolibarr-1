@@ -235,7 +235,7 @@ class BonPrelevement extends CommonObject
 	 */
 	public $statut;
 	/**
-	 * @var int	Status
+	 * @var int|null	Status
 	 */
 	public $status;
 
