@@ -19,7 +19,7 @@ class OdfExceptionSegmentNotFound extends Exception
 /**
  * Templating class for odt file
  * You need PHP 5.2 at least
- * You need Zip Extension or PclZip library
+ * You need Zip Extension for ZIP_PROXY=PhpZipProxy, or PclZip library for ZIP_PROXY=PclZipProxy (bugged)
  *
  * @copyright  2008 - Julien Pauli - Cyril PIERRE de GEYER - Anaska (http://www.anaska.com)
  * @copyright  2010-2015 - Laurent Destailleur - eldy@users.sourceforge.net
@@ -130,13 +130,21 @@ class Odf
 			$result = mkdir($this->tmpdir);
 		}
 
+		// Fix because PclZipProxy is corrupting the zip file when updating one file inside the existing ODT file.
+		if ($this->config['ZIP_PROXY'] == 'PclZipProxy') {
+			$this->config['ZIP_PROXY'] = 'PhpZipProxy';
+		}
+
 		// Load zip proxy
 		$zipHandler = $this->config['ZIP_PROXY'];
+
 		if (!defined('PCLZIP_TEMPORARY_DIR')) define('PCLZIP_TEMPORARY_DIR', $this->tmpdir);
+
 		include_once 'zip/'.$zipHandler.'.php';
 		if (! class_exists($this->config['ZIP_PROXY'])) {
 			throw new OdfException($this->config['ZIP_PROXY'] . ' class not found - check your php settings');
 		}
+
 		$this->file = new $zipHandler($this->tmpdir);
 
 		if ($this->file->open($filename) !== true) {	// This also create the tmpdir directory
