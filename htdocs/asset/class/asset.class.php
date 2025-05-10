@@ -590,6 +590,12 @@ class Asset extends CommonObject
 	 */
 	public function delete(User $user, $notrigger = 0)
 	{
+		$sql = 'DELETE FROM '.MAIN_DB_PREFIX.'asset_depreciation_codes_economic WHERE fk_asset = '.((int) $this->id);
+		$this->db->query($sql);
+
+		$sql = 'DELETE FROM '.MAIN_DB_PREFIX.'asset_depreciation_codes_fiscal WHERE fk_asset = '.((int) $this->id);
+		$this->db->query($sql);
+
 		$sql = 'DELETE FROM '.MAIN_DB_PREFIX.'asset_depreciation_options_fiscal WHERE fk_asset = '.((int) $this->id);
 		$this->db->query($sql);
 
