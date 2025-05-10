@@ -10994,8 +10994,9 @@ class Form
 		}
 		$out .= '         });
         	        $(".' . $cssclass . '").change(function() {
-					$(this).closest("tr").toggleClass(this.checked);
-				});
+						console.log("We change tr class highlight");
+						$(this).closest("tr").toggleClass("highlight", this.checked);
+					});
 		 	});
     	</script>';
 
