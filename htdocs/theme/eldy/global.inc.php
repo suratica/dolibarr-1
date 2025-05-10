@@ -2404,6 +2404,10 @@ td.showDragHandle {
 .bodyforlist #id-right {
 	padding-bottom: 4px;
 }
+.bodyforlist.poslist #id-right {
+	display: block;
+}
+
 .page-modulehelp div#id-right {
 	display: flex;
 }
