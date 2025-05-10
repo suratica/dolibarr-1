@@ -313,12 +313,12 @@ if (empty($reshook)) {
 					if ($res < 0) {
 						$error++;
 						dol_htmloutput_errors($langs->trans('Error').' '.$payment->error, $payment->errors, 1);
-					}
-
-					$res = $payment->addPaymentToBank($user, 'payment', '(CustomerInvoicePayment)', $bankaccount, '', '');
-					if ($res < 0) {
-						$error++;
-						dol_htmloutput_errors($langs->trans('ErrorNoPaymentDefined').' '.$payment->error, $payment->errors, 1);
+					} else {
+						$res = $payment->addPaymentToBank($user, 'payment', '(CustomerInvoicePayment)', $bankaccount, '', '');
+						if ($res < 0) {
+							$error++;
+							dol_htmloutput_errors($langs->trans('ErrorNoPaymentDefined').' '.$payment->error, $payment->errors, 1);
+						}
 					}
 					$remaintopay = $invoice->getRemainToPay(); // Recalculate remain to pay after the payment is recorded
 				} elseif (getDolGlobalInt("TAKEPOS_DELAYED_TERMS")) {
