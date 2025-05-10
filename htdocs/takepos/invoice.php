@@ -1248,7 +1248,7 @@ if (empty($reshook)) {
 	}
 
 	$sectionwithinvoicelink = '';
-	if (($action == "valid" || $action == "history" || $action == 'creditnote') && $user->hasRight('takepos', 'run')) {
+	if (($action == "valid" || $action == "history" || $action == 'creditnote' || ($action == 'addline' && $invoice->status == $invoice::STATUS_CLOSED)) && $user->hasRight('takepos', 'run')) {
 		$sectionwithinvoicelink .= '<!-- Section with invoice link -->'."\n";
 		$sectionwithinvoicelink .= '<span style="font-size:120%;" class="center">';
 		$sectionwithinvoicelink .= $invoice->getNomUrl(1, '', 0, 0, '', 0, 0, -1, '_backoffice')." - ";
@@ -1706,6 +1706,7 @@ if ($usediv) {
 	print '<table id="tablelines" class="noborder noshadow postablelines centpercent">';
 }
 if ($sectionwithinvoicelink && ($mobilepage == "invoice" || $mobilepage == "")) {
+	print '<!-- Print table line with link to invoice ref -->';
 	if (getDolGlobalString('TAKEPOS_SHOW_HT')) {
 		print '<tr><td colspan="5">'.$sectionwithinvoicelink.'</td></tr>';
 	} else {
@@ -2134,9 +2135,10 @@ if ($usediv) {
 }
 
 if (($action == "valid" || $action == "history") && $invoice->type != Facture::TYPE_CREDIT_NOTE && !getDolGlobalString('TAKEPOS_NO_CREDITNOTE')) {
+	print '<!-- Show button to create a credit note -->'."\n";
 	print '<button id="buttonprint" type="button" onclick="ModalBox(\'ModalCreditNote\')">'.$langs->trans('CreateCreditNote').'</button>';
 	if (getDolGlobalInt('TAKEPOS_PRINT_INVOICE_DOC_INSTEAD_OF_RECEIPT')) {
-		print ' <a target="_blank" class="button" href="' . DOL_URL_ROOT . '/document.php?token=' . newToken() . '&modulepart=facture&file=' . $invoice->ref . '/' . $invoice->ref . '.pdf">Invoice</a>';
+		print ' <a target="_blank" class="button" href="' . DOL_URL_ROOT . '/document.php?token=' . newToken() . '&modulepart=facture&file=' . urlencode($invoice->ref . '/' . $invoice->ref . '.pdf').'">'.$langs->trans("Invoice").'</a>';
 	}
 }
 
