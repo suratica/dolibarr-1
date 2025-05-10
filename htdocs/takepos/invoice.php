@@ -1250,17 +1250,13 @@ if (empty($reshook)) {
 	$sectionwithinvoicelink = '';
 	if (($action == "valid" || $action == "history" || $action == 'creditnote' || ($action == 'addline' && $invoice->status == $invoice::STATUS_CLOSED)) && $user->hasRight('takepos', 'run')) {
 		$sectionwithinvoicelink .= '<!-- Section with invoice link -->'."\n";
-		$sectionwithinvoicelink .= '<span style="font-size:120%;" class="center">';
+		$sectionwithinvoicelink .= '<span style="font-size:120%;" class="center inline-block marginbottomonly">';
 		$sectionwithinvoicelink .= $invoice->getNomUrl(1, '', 0, 0, '', 0, 0, -1, '_backoffice')." - ";
 		$remaintopay = $invoice->getRemainToPay();
 		if ($remaintopay > 0) {
 			$sectionwithinvoicelink .= $langs->trans('RemainToPay').': <span class="amountremaintopay" style="font-size: unset">'.price($remaintopay, 1, $langs, 1, -1, -1, $conf->currency).'</span>';
 		} else {
-			if ($invoice->paye) {
-				$sectionwithinvoicelink .= '<span class="amountpaymentcomplete" style="font-size: unset">'.$langs->trans("Paid").'</span>';
-			} else {
-				$sectionwithinvoicelink .= $langs->trans('BillShortStatusValidated');
-			}
+			$sectionwithinvoicelink .= $invoice->getLibStatut(2);
 		}
 
 		$sectionwithinvoicelink .= '</span><br>';
@@ -1705,12 +1701,29 @@ if ($usediv) {
 } else {
 	print '<table id="tablelines" class="noborder noshadow postablelines centpercent">';
 }
+
+$buttontocreatecreditnote = '';
+if (($action == "valid" || $action == "history" ||  ($action == "addline" && $invoice->status == $invoice::STATUS_CLOSED)) && $invoice->type != Facture::TYPE_CREDIT_NOTE && !getDolGlobalString('TAKEPOS_NO_CREDITNOTE')) {
+	$buttontocreatecreditnote .= ' &nbsp; <!-- Show button to create a credit note -->'."\n";
+	$buttontocreatecreditnote .= '<button id="buttonprint" type="button" onclick="ModalBox(\'ModalCreditNote\')">'.$langs->trans('CreateCreditNote').'</button>';
+	if (getDolGlobalInt('TAKEPOS_PRINT_INVOICE_DOC_INSTEAD_OF_RECEIPT')) {
+		$buttontocreatecreditnote .= ' <a target="_blank" class="button" href="' . DOL_URL_ROOT . '/document.php?token=' . newToken() . '&modulepart=facture&file=' . urlencode($invoice->ref . '/' . $invoice->ref . '.pdf').'">'.$langs->trans("Invoice").'</a>';
+	}
+}
+
+// Show the ref of invoice
 if ($sectionwithinvoicelink && ($mobilepage == "invoice" || $mobilepage == "")) {
 	print '<!-- Print table line with link to invoice ref -->';
 	if (getDolGlobalString('TAKEPOS_SHOW_HT')) {
-		print '<tr><td colspan="5">'.$sectionwithinvoicelink.'</td></tr>';
+		print '<tr><td colspan="5" class="paddingtopimp paddingbottomimp" style="padding-top: 10px !important; padding-bottom: 10px !important;">';
+		print $sectionwithinvoicelink;
+		print $buttontocreatecreditnote;
+		print '</td></tr>';
 	} else {
-		print '<tr><td colspan="4">'.$sectionwithinvoicelink.'</td></tr>';
+		print '<tr><td colspan="4" class="paddingtopimp paddingbottomimp" style="padding-top: 10px !important; padding-bottom: 10px !important;">';
+		print $sectionwithinvoicelink;
+		print $buttontocreatecreditnote;
+		print '</td></tr>';
 	}
 }
 
@@ -1856,6 +1869,7 @@ if (!empty($_SESSION["basiclayout"]) && $_SESSION["basiclayout"] == 1) {
 	if ($mobilepage == "places") {
 		$sql = "SELECT rowid, entity, label, leftpos, toppos, floor FROM ".MAIN_DB_PREFIX."takepos_floor_tables";
 		$resql = $db->query($sql);
+
 		$rows = array();
 		$htmlforlines = '';
 		while ($row = $db->fetch_array($resql)) {
@@ -2133,15 +2147,6 @@ if ($usediv) {
 } else {
 	print '</table>';
 }
-
-if (($action == "valid" || $action == "history") && $invoice->type != Facture::TYPE_CREDIT_NOTE && !getDolGlobalString('TAKEPOS_NO_CREDITNOTE')) {
-	print '<!-- Show button to create a credit note -->'."\n";
-	print '<button id="buttonprint" type="button" onclick="ModalBox(\'ModalCreditNote\')">'.$langs->trans('CreateCreditNote').'</button>';
-	if (getDolGlobalInt('TAKEPOS_PRINT_INVOICE_DOC_INSTEAD_OF_RECEIPT')) {
-		print ' <a target="_blank" class="button" href="' . DOL_URL_ROOT . '/document.php?token=' . newToken() . '&modulepart=facture&file=' . urlencode($invoice->ref . '/' . $invoice->ref . '.pdf').'">'.$langs->trans("Invoice").'</a>';
-	}
-}
-
 
 if ($action == "search") {
 	print '<center>

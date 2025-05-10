@@ -12746,7 +12746,7 @@ function dolGetStatus($statusLabel = '', $statusLabelShort = '', $html = '', $st
 		} elseif ($displayMode === 5) {
 			$return = dolGetBadge($statusLabelShort, $html, $statusType, '', $url, $dolGetBadgeParams);
 		} else {
-			$return = dolGetBadge((empty($conf->dol_optimize_smallscreen) ? $statusLabel : (empty($statusLabelShort) ? $statusLabel : $statusLabelShort)), $html, $statusType, '', $url, $dolGetBadgeParams);
+			$return = dolGetBadge(((empty($conf->dol_optimize_smallscreen) && $displayMode != 2) ? $statusLabel : (empty($statusLabelShort) ? $statusLabel : $statusLabelShort)), $html, $statusType, '', $url, $dolGetBadgeParams);
 		}
 	}
 
