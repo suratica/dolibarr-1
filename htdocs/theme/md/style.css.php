@@ -2538,6 +2538,9 @@ td.showDragHandle {
 .bodyforlist #id-right {
 	padding-bottom: 4px;
 }
+.bodyforlist.poslist #id-right {
+	padding-left: 12px;
+}
 
 /* DOL_XXX For having horizontal scroll into array (like with smartphone) */
 
@@ -2643,7 +2646,9 @@ body.sidebar-collapse .side-nav, body.sidebar-collapse .login_block_other
 	z-index: 1005;
 }
 <?php } ?>
-
+body.bodytakepos #topmenu-login-dropdown {
+	position: unset;
+}
 
 /* For smartphone (testmenuhider is on) */
 <?php if (in_array($conf->browser->layout, array('phone', 'tablet')) && !getDolGlobalString('MAIN_OPTIMIZEFORTEXTBROWSER')) { ?>

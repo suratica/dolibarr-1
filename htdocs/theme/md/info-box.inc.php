@@ -132,7 +132,7 @@ a.vmenu span, span.vmenu, span.vmenu span {
 	/* To force no color on picto in left menu */
 	/* color: var(--colortextbackvmenu) !important; */
 }
-div.login_block_other a {
+div.login_block_other:not(.takepos) a {
 	color: var(--colortextbackvmenu);
 }
 
