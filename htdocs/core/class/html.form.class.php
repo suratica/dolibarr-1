@@ -9472,13 +9472,13 @@ class Form
 	 * @param 	int<0,1> 	$translate 		Translate and encode value
 	 * @param 	int|string 	$width 			Force width of select box. May be used only when using jquery couch. Example: 250, '95%'
 	 * @param 	string 		$moreattrib 	Add more options on select component. Example: 'disabled'
-	 * @param 	string 		$elemtype 		Type of element we show ('category', ...). Will execute a formatting function on it. To use in readonly mode if js component support HTML formatting.
+	 * @param 	string 		$nu		 		Not used
 	 * @param 	string 		$placeholder 	String to use as placeholder
 	 * @param 	int<-1,1> 	$addjscombo 	Add js combo
 	 * @return 	string                      HTML multiselect string
 	 * @see selectarray(), selectArrayAjax(), selectArrayFilter()
 	 */
-	public static function multiselectarray($htmlname, $array, $selected = array(), $key_in_label = 0, $value_as_key = 0, $morecss = '', $translate = 0, $width = 0, $moreattrib = '', $elemtype = '', $placeholder = '', $addjscombo = -1)
+	public static function multiselectarray($htmlname, $array, $selected = array(), $key_in_label = 0, $value_as_key = 0, $morecss = '', $translate = 0, $width = 0, $moreattrib = '', $nu = '', $placeholder = '', $addjscombo = -1)
 	{
 		global $conf, $langs;
 		$out = '';
@@ -9546,16 +9546,6 @@ class Form
 		}
 		$out .= '</select>' . "\n";
 
-		// Add js code to add the edit button and go back
-		if (getDolGlobalString('CATEGORY_EDIT_IN_POPUP_NOT_IN_MENU')) {
-			$jsonclose = 'doJsCodeAfterPopupClose'.$htmlname.'()';
-			$s = dolButtonToOpenUrlInDialogPopup($htmlname, $langs->transnoentitiesnoconv("Tags"), img_picto('', 'add', 'class="editfielda"'), '/categories/categorie_list.php?type='.Categorie::TYPE_CUSTOMER, '', '', '', $jsonclose);
-			$out .= $s;
-			$out .='<script>function doJsCodeAfterPopupClose'.$htmlname.'() {
-				console.log("doJsCodeAfterPopupClose'.$htmlname.' has been called, we refresh the combo content + refresh select2...");
-			}</script>';
-		}
-
 		$out .= '</span>';
 
 		// Add code for jquery to use multiselect
@@ -9576,11 +9566,7 @@ class Form
 				$out .= '}' . "\n";
 
 				$out .= 'function formatSelection(record) {' . "\n";
-				if ($elemtype == 'category') {
-					$out .= 'return \'<span><img src="' . DOL_URL_ROOT . '/theme/eldy/img/object_category.png"> \'+record.text+\'</span>\';';
-				} else {
-					$out .= 'return record.text;';
-				}
+				$out .= '	return record.text;';
 				$out .= '}' . "\n";
 
 				// Load the select2 enhancer
@@ -9591,7 +9577,7 @@ class Form
 					$out .= '
 								placeholder: {
 								    id: \'-1\',
-								    text: \'' . dol_escape_js($placeholder) . '\'
+								    text: \''.dol_escape_js($placeholder).'\'
 								  },';
 				}
 				$out .= '		dir: \'ltr\',
@@ -9599,7 +9585,7 @@ class Form
 								dropdownCssClass: \'' . dol_escape_js($morecss) . '\',				/* Line to add class on the new <span class="select2-selection...> tag (ok with multiselect). Need full version of select2. */
 								// Specify format function for dropdown item
 								formatResult: formatResult,
-							 	templateResult: formatResult,		/* For 4.0 */
+								templateResult: formatResult,		/* For 4.0 */
 								escapeMarkup: function (markup) { return markup; }, 	// let our custom formatter work
 								// Specify format function for selected item
 								formatSelection: formatSelection,
