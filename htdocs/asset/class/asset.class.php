@@ -59,10 +59,10 @@ class Asset extends CommonObject
 	public $fk_element = 'fk_asset';
 
 	/**
-	 * @var array    List of child tables. To know object to delete on cascade.
-	 *               If name matches '@ClassName:FilePathClass:ParentFkFieldName' (the recommended mode) it will
-	 *               call method ClassName->deleteByParentField(parentId, 'ParentFkFieldName') to fetch and delete child object.
-	 *               Using an array like childtables should not be implemented because a child may have other child, so we must only use the method that call deleteByParentField().
+	 * @var string[]	List of child tables. To know object to delete on cascade.
+	 *               	If name matches '@ClassName:FilePathClass:ParentFkFieldName' (the recommended mode) it will
+	 *               	call method ClassName->deleteByParentField(parentId, 'ParentFkFieldName') to fetch and delete child object.
+	 *               	Using an array like childtables should not be implemented because a child may have other child, so we must only use the method that call deleteByParentField().
 	 */
 	protected $childtablesoncascade = array(
 		'@AssetAccountancyCodes:/asset/class/assetaccountancycodes.class.php:fk_asset',
