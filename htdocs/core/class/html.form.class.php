@@ -9498,6 +9498,8 @@ class Form
 			}
 		}
 
+		$out .= '<span class="multiselectarray'.$htmlname.'">';
+
 		// We need a hidden field because when using the multiselect, if we unselect all, there is no
 		// variable submitted at all, so no way to make a difference between variable not submitted and variable
 		// submitted to nothing.
@@ -9544,21 +9546,35 @@ class Form
 		}
 		$out .= '</select>' . "\n";
 
+		// Add js code to add the edit button and go back
+		if (getDolGlobalString('CATEGORY_EDIT_IN_POPUP_NOT_IN_MENU')) {
+			$jsonclose = 'doJsCodeAfterPopupClose'.$htmlname.'()';
+			$s = dolButtonToOpenUrlInDialogPopup($htmlname, $langs->transnoentitiesnoconv("Tags"), img_picto('', 'add', 'class="editfielda"'), '/categories/categorie_list.php?type='.Categorie::TYPE_CUSTOMER, '', '', '', $jsonclose);
+			$out .= $s;
+			$out .='<script>function doJsCodeAfterPopupClose'.$htmlname.'() {
+				console.log("doJsCodeAfterPopupClose'.$htmlname.' has been called, we refresh the combo content + refresh select2...");
+			}</script>';
+		}
+
+		$out .= '</span>';
+
 		// Add code for jquery to use multiselect
 		if (!empty($conf->use_javascript_ajax) && getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') || defined('REQUIRE_JQUERY_MULTISELECT')) {
 			$out .= "\n" . '<!-- JS CODE TO ENABLE select for id ' . $htmlname . ', addjscombo=' . $addjscombo . ' -->';
 			$out .= "\n" . '<script nonce="' . getNonce() . '">' . "\n";
 			if ($addjscombo == 1) {
-				$tmpplugin = !getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : $conf->global->MAIN_USE_JQUERY_MULTISELECT;
-				$out .= 'function formatResult(record, container) {' . "\n";
+				$tmpplugin = getDolGlobalString('MAIN_USE_JQUERY_MULTISELECT', (defined('REQUIRE_JQUERY_MULTISELECT') ? constant('REQUIRE_JQUERY_MULTISELECT') : 'select2'));
+
 				// If property data-html set, we decode html entities and use this.
 				// Note that HTML content must have been sanitized from js with dol_escape_htmltag(xxx, 0, 0, '', 0, 1) when building the select option.
+				// TODO Move this into common js ?
+				$out .= 'function formatResult(record, container) {' . "\n";
 				$out .= '	if ($(record.element).attr("data-html") != undefined && typeof htmlEntityDecodeJs === "function") {';
-				//$out .= '		console.log("aaa");';
 				$out .= '		return htmlEntityDecodeJs($(record.element).attr("data-html"));';
 				$out .= '	}'."\n";
 				$out .= '	return record.text;';
 				$out .= '}' . "\n";
+
 				$out .= 'function formatSelection(record) {' . "\n";
 				if ($elemtype == 'category') {
 					$out .= 'return \'<span><img src="' . DOL_URL_ROOT . '/theme/eldy/img/object_category.png"> \'+record.text+\'</span>\';';
@@ -9566,6 +9582,9 @@ class Form
 					$out .= 'return record.text;';
 				}
 				$out .= '}' . "\n";
+
+				// Load the select2 enhancer
+				//$out .= 'console.log(\'addjscombo=1 for htmlname=' . dol_escape_js($htmlname) . '\');';
 				$out .= '$(document).ready(function () {
 							$(\'#' . dol_escape_js($htmlname) . '\').' . $tmpplugin . '({';
 				if ($placeholder) {
@@ -9588,7 +9607,7 @@ class Form
 							 	language: (typeof select2arrayoflanguage === \'undefined\') ? \'en\' : select2arrayoflanguage
 							});
 
-							/* Add also morecss to the css .select2 that is after the #htmlname, for component that are show dynamically after load, because select2 set
+							/* Add also morecss to the css .select2 that is after the #htmlname, for component that are shown dynamically after load, because select2 set
 								 the size only if component is not hidden by default on load */
 							$(\'#' . dol_escape_js($htmlname) . ' + .select2\').addClass(\'' . dol_escape_js($morecss) . '\');
 						});' . "\n";

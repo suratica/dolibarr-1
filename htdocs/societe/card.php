@@ -2752,7 +2752,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					foreach ($cats as $cat) {
 						$arrayselected[] = $cat->id;
 					}
-					print img_picto('', 'category', 'class="pictofixedwidth"').$form->multiselectarray('custcats', $cate_arbo, $arrayselected, 0, 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0);
+					print img_picto('', 'category', 'class="pictofixedwidth"');
+					print $form->multiselectarray('custcats', $cate_arbo, $arrayselected, 0, 0, 'minwidth100 widthcentpercentminusxx', 0, 0);
 					print "</td></tr>";
 
 					// Supplier
@@ -2766,7 +2767,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 						foreach ($cats as $cat) {
 							$arrayselected[] = $cat->id;
 						}
-						print img_picto('', 'category', 'class="pictofixedwidth"').$form->multiselectarray('suppcats', $cate_arbo, $arrayselected, 0, 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0);
+						print img_picto('', 'category', 'class="pictofixedwidth"');
+						print $form->multiselectarray('suppcats', $cate_arbo, $arrayselected, 0, 0, 'minwidth100 widthcentpercentminusxx', 0, 0);
 						print "</td></tr>";
 					}
 				}
