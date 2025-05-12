@@ -9,6 +9,9 @@ For users:
 ----------
 NEW: Module WebPortal is moved as stable
 NEW: Subtotal module (#33502) - development
+NEW: shipment kits with dispatcher v2 (#33750)
+NEW: ticket : display files linked to actioncomm (#32325)
+NEW: Support of monthly or weekly recurring events
 NEW: #22848
 NEW: #32706 - Treasury accountancy (#33701)
 NEW: #33506 Add a constant to apply a ratio to resize images in ODT templates (#33543)
@@ -85,7 +88,6 @@ NEW: Option MAIN_SECURITY_MAXFILESIZE_DOWNLOADED become official
 NEW: Order - Add drag & drop file (#33848)
 NEW: reopen for interventions API (#33982)
 NEW: Rounding unit price - line discount before applying quantity - option MAIN_APPLY_DISCOUNT_ON_UNIT_PRICE_THEN_ROUND_BEFORE_MULTIPLICATION_BY_QTY (#33690)
-NEW: shipment kits with dispatcher v2 (#33750)
 NEW: shipment with product in cache
 NEW: shipment with warehouse in cache
 NEW: Show code of stripe hooks supported in setup page
@@ -94,13 +96,11 @@ NEW: Show IP of previous connection and date of last password change in the "Con
 NEW: Some trans keys to prepare a new website template (#33886)
 NEW: SUBMIT_FOR_ALL_MARK_RESPAWN (#32101)
 NEW: Supplier orders - Add tags/categories (#33386)
-NEW: Support of monthly or weekly recurring events
 NEW: takepos cash control: add vat taxless total
 NEW: The closing reason of invoice appear on tooltip of invoice status
 NEW: The link "In accountancy" is now clickable to reach bookkeeping
 NEW: The public media browser is now a stable feature
 NEW: The signature is on the good page even if another module add pages
-NEW: ticket : display files linked to actioncomm (#32325)
 NEW: Toggle Display of Supplier Invoices and Credit Notes on Payment Page (#33856)
 NEW: Try to set the tooltip as ajax call by default.
 NEW: Update of currency supports also apilayer (not only currencylayer)
@@ -110,7 +110,7 @@ NEW: Use the PhpZipProxy handler to generate ODT files (avoid corrupted ODT with
 NEW: vcard (vcf) download for third party (#31957)
 NEW: Web pages of websites are protected by the WAF
 NEW: AI feature to autofill extrafields
-NEW: Add onstant to show stock in products combo
+NEW: Add constant to show stock in products combo
 
 For developers:
 ----------
@@ -134,6 +134,7 @@ NEW: endpoints PUT (update) event atteendee by ID or REF (#33985)
 NEW: hidden conf for api contrat putLine endpoint to only return the line (#33809)
 NEW: introduce method dolSetCookie
 NEW: Invoice - Document - Add hook on action
+NEW: Pagination data for intervention APi
 
 WARNING:
 --------
