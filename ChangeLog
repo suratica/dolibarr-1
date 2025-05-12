@@ -109,6 +109,8 @@ NEW: Use the packaging feature to round the quantities to some given multiples f
 NEW: Use the PhpZipProxy handler to generate ODT files (avoid corrupted ODT with recent version of Libre Office).
 NEW: vcard (vcf) download for third party (#31957)
 NEW: Web pages of websites are protected by the WAF
+NEW: AI feature to autofill extrafields
+NEW: Add onstant to show stock in products combo
 
 For developers:
 ----------
