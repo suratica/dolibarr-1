@@ -940,7 +940,7 @@ class Form
 	public function select_country($selected = '', $htmlname = 'country_id', $htmloption = '', $maxlength = 0, $morecss = 'minwidth300', $usecodeaskey = '', $showempty = 1, $disablefavorites = 0, $addspecialentries = 0, $exclude_country_code = array(), $hideflags = 0, $forcecombo = 0)
 	{
 		// phpcs:enable
-		global $conf, $langs, $mysoc;
+		global $langs, $mysoc;
 
 		$langs->load("dict");
 
