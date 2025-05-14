@@ -5225,7 +5225,7 @@ if ($action == 'create') {
 		print '</td></tr>';
 
 		// POS
-		if (isModEnabled('takepos') || $object->module_source || getDolGlobalString('MAIN_ALLOW_POS_EDIT')) {
+		if (isModEnabled('takepos') || $object->module_source || getDolGlobalString('INVOICE_ALLOW_POS_SOURCE_EDIT')) {
 			print '<tr><td class="fieldname_type">';
 			print '<table class="nobordernopadding centpercent"><tr><td>';
 			print $form->textwithpicto($langs->trans('PointOfSale'), $langs->trans('POSInfo'));
