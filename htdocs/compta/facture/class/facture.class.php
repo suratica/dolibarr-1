@@ -184,11 +184,11 @@ class Facture extends CommonInvoice
 	public $paye;
 
 	/**
-	 * @var string key of module source when invoice generated from a dedicated module ('cashdesk', 'takepos', ...)
+	 * @var ?string key of module source when invoice generated from a dedicated module ('cashdesk', 'takepos', 'marketplace', ...)
 	 */
 	public $module_source;
 	/**
-	 * @var string key of pos source ('0', '1', ...)
+	 * @var ?string key of POS terminal ('0', '1', ...)
 	 */
 	public $pos_source;
 	/**
@@ -282,7 +282,7 @@ class Facture extends CommonInvoice
 	public $date_closing;
 
 	/**
-	 * @var int
+	 * @var ?int 	Order mode. How we received the invoice request (by phone, by email, ...)
 	 */
 	public $source;
 
@@ -829,13 +829,13 @@ class Facture extends CommonInvoice
 					}
 				}
 
-				$sqlcontact = "SELECT ctc.code, ctc.source, ec.fk_socpeople FROM ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as ctc";
+				$sqlcontact = "SELECT ctc.code, ctc.source, ec.fk_socpeople";
+				$sqlcontact .= " FROM ".MAIN_DB_PREFIX."element_contact as ec, ".MAIN_DB_PREFIX."c_type_contact as ctc";
 				$sqlcontact .= " WHERE element_id = ".((int) $originidforcontact)." AND ec.fk_c_type_contact = ctc.rowid AND ctc.element = '".$this->db->escape($originforcontact)."'";
 
 				$resqlcontact = $this->db->query($sqlcontact);
 				if ($resqlcontact) {
 					while ($objcontact = $this->db->fetch_object($resqlcontact)) {
-						//print $objcontact->code.'-'.$objcontact->source.'-'.$objcontact->fk_socpeople."\n";
 						$this->add_contact($objcontact->fk_socpeople, $objcontact->code, $objcontact->source); // May failed because of duplicate key or because code of contact type does not exists for new object
 					}
 				} else {
@@ -1413,7 +1413,7 @@ class Facture extends CommonInvoice
 	 */
 	public function createFromOrder($object, User $user)
 	{
-		global $conf, $hookmanager;
+		global $hookmanager;
 
 		$error = 0;
 
@@ -1486,6 +1486,7 @@ class Facture extends CommonInvoice
 		$this->fk_delivery_address  = $object->fk_delivery_address; // deprecated
 		$this->contact_id           = $object->contact_id;
 		$this->ref_client           = $object->ref_client;
+		$this->ref_customer         = $object->ref_client;
 
 		if (!getDolGlobalString('MAIN_DISABLE_PROPAGATE_NOTES_FROM_ORIGIN')) {
 			$this->note_private = $object->note_private;
@@ -1547,7 +1548,7 @@ class Facture extends CommonInvoice
 	 */
 	public function createFromContract($object, User $user, $lines = array())
 	{
-		global $conf, $hookmanager;
+		global $hookmanager;
 
 		$error = 0;
 
