@@ -248,7 +248,7 @@ A View on Contributors:
 
 [![Dolibarr](https://opencollective.com/dolibarr/contributors.svg?width=890&button=false)](https://github.com/Dolibarr/dolibarr/graphs/contributors)
 
-The release process is described into the file dev/build/README.
+The release process is described into the file dev/build/makepack-howto.md
 
 
 ## CREDITS
