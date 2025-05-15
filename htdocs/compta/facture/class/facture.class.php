@@ -1501,6 +1501,7 @@ class Facture extends CommonInvoice
 		$this->origin_id = $object->id;
 
 		$this->fk_user_author = $user->id;
+		$this->user_creation_id = $user->id;
 
 		// get extrafields from original line
 		$object->fetch_optionals();
@@ -1728,6 +1729,7 @@ class Facture extends CommonInvoice
 		$deposit->type = self::TYPE_DEPOSIT;
 		$deposit->fk_project = $origin->fk_project;
 		$deposit->ref_client = $origin->ref_client;
+		$deposit->ref_customer = $origin->ref_client;
 		$deposit->date = $date;
 		$deposit->mode_reglement_id = $origin->mode_reglement_id;
 		$deposit->cond_reglement_id = $payment_terms_id;
@@ -2710,10 +2712,6 @@ class Facture extends CommonInvoice
 		if (isset($this->ref_ext)) {
 			$this->ref_ext = trim($this->ref_ext);
 		}
-		// deprecated
-		if (!empty($this->ref_client)) {
-			$this->ref_client = trim($this->ref_client);
-		}
 		if (!empty($this->ref_customer)) {
 			$this->ref_customer = trim($this->ref_customer);
 		}
@@ -2781,17 +2779,19 @@ class Facture extends CommonInvoice
 		$sql .= " fk_cond_reglement=".(isset($this->cond_reglement_id) ? (int) $this->cond_reglement_id : "null").",";
 		$sql .= " fk_mode_reglement=".(isset($this->mode_reglement_id) ? (int) $this->mode_reglement_id : "null").",";
 		$sql .= " date_lim_reglement=".(strval($this->date_lim_reglement) != '' ? "'".$this->db->idate($this->date_lim_reglement)."'" : 'null').",";
-		$sql .= " note_private=".(isset($this->note_private) ? "'".$this->db->escape($this->note_private)."'" : "null").",";
-		$sql .= " note_public=".(isset($this->note_public) ? "'".$this->db->escape($this->note_public)."'" : "null").",";
-		$sql .= " model_pdf=".(isset($this->model_pdf) ? "'".$this->db->escape($this->model_pdf)."'" : "null").",";
-		$sql .= " import_key=".(isset($this->import_key) ? "'".$this->db->escape($this->import_key)."'" : "null").",";
-		$sql .= " situation_cycle_ref=".(empty($this->situation_cycle_ref) ? "null" : (int) $this->situation_cycle_ref).",";
-		$sql .= " situation_counter=".(empty($this->situation_counter) ? "null" : (int) $this->situation_counter).",";
-		$sql .= " situation_final=".(empty($this->situation_final) ? "0" : (int) $this->situation_final).",";
-		$sql .= " retained_warranty=".(empty($this->retained_warranty) ? "0" : (float) $this->retained_warranty).",";
-		$sql .= " retained_warranty_date_limit=".(strval($this->retained_warranty_date_limit) != '' ? "'".$this->db->idate($this->retained_warranty_date_limit)."'" : 'null').",";
-		$sql .= " retained_warranty_fk_cond_reglement=".(isset($this->retained_warranty_fk_cond_reglement) ? (int) $this->retained_warranty_fk_cond_reglement : "null");
-		$sql .= " WHERE rowid=".((int) $this->id);
+		$sql .= " note_private = ".(isset($this->note_private) ? "'".$this->db->escape($this->note_private)."'" : "null").",";
+		$sql .= " note_public = ".(isset($this->note_public) ? "'".$this->db->escape($this->note_public)."'" : "null").",";
+		$sql .= " model_pdf = ".(isset($this->model_pdf) ? "'".$this->db->escape($this->model_pdf)."'" : "null").",";
+		$sql .= " import_key = ".(isset($this->import_key) ? "'".$this->db->escape($this->import_key)."'" : "null").",";
+		$sql .= " module_source = ".(isset($this->module_source) ? "'".$this->db->escape($this->module_source)."'" : "null").",";
+		$sql .= " pos_source = ".(isset($this->pos_source) ? "'".$this->db->escape($this->pos_source)."'" : "null").",";
+		$sql .= " situation_cycle_ref = ".(empty($this->situation_cycle_ref) ? "null" : (int) $this->situation_cycle_ref).",";
+		$sql .= " situation_counter = ".(empty($this->situation_counter) ? "null" : (int) $this->situation_counter).",";
+		$sql .= " situation_final = ".(empty($this->situation_final) ? "0" : (int) $this->situation_final).",";
+		$sql .= " retained_warranty = ".(empty($this->retained_warranty) ? "0" : (float) $this->retained_warranty).",";
+		$sql .= " retained_warranty_date_limit = ".(strval($this->retained_warranty_date_limit) != '' ? "'".$this->db->idate($this->retained_warranty_date_limit)."'" : 'null').",";
+		$sql .= " retained_warranty_fk_cond_reglement = ".(isset($this->retained_warranty_fk_cond_reglement) ? (int) $this->retained_warranty_fk_cond_reglement : "null");
+		$sql .= " WHERE rowid = ".((int) $this->id);
 
 		$this->db->begin();
 
@@ -2947,11 +2947,11 @@ class Facture extends CommonInvoice
 
 		$this->db->begin();
 
-		$sql = 'UPDATE '.MAIN_DB_PREFIX.'facture';
+		$sql = "UPDATE ".MAIN_DB_PREFIX."facture";
 		if (empty($ref_client)) {
-			$sql .= ' SET ref_client = NULL';
+			$sql .= " SET ref_client = NULL";
 		} else {
-			$sql .= ' SET ref_client = \''.$this->db->escape($ref_client).'\'';
+			$sql .= " SET ref_client = '".$this->db->escape($ref_client)."'";
 		}
 		$sql .= " WHERE rowid = ".((int) $this->id);
 
