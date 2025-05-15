@@ -105,6 +105,8 @@ We suppose the branch x.y has already been created during the beta (see previous
 
 - Check there is no pending issue with flag "Priority High/Blocking". List can be found here: https://github.com/Dolibarr/dolibarr/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Priority%20-%20High%20%2F%20Blocking%22
 
+- Check there is no pending open security issu: List can be found here: https://github.com/Dolibarr/dolibarr/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Priority%20-%20Critical%20or%20Security%22
+
 - Check all files are committed.
 
 - Update version/info in ChangeLog, for this:
