@@ -102,7 +102,7 @@ if ($action == "getKnowledgeRecord") {
 		$response = array();
 		while ($i < $num) {
 			$obj = $db->fetch_object($resql);
-			$response[] = array('title'=>$obj->question,'ref'=>$obj->ref,'answer'=>dol_escape_htmltag(preg_replace('/\\r|\\r\\n|\\n/', "", $obj->answer)),'url'=>$obj->url);
+			$response[] = array('title' => dol_escape_htmltag($obj->question), 'ref' => dol_escape_htmltag($obj->ref), 'answer' => dol_escape_htmltag(preg_replace('/\\r|\\r\\n|\\n/', "", $obj->answer)), 'url' => $obj->url);
 			$i++;
 		}
 	} else {

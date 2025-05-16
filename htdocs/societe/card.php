@@ -2790,11 +2790,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					            dataType: \'json\',
 					            success: function (data) {
 					                var $select = $(\'#'.dol_escape_js($htmlname).'\');
+									var selectedValues = $select.val(); // This is an array of selected values
+									console.log(selectedValues);
 					                $select.empty();
-
 					                $.each(data, function (index, item) {
-					                    $select.append(\'<option value="\' + item.id + \'" data-html="aaa">\' + item.label + \'</option>\');
+					                    $select.append(\'<option value="\' + item.id + \'" data-html="\' + item.htmlforattribute + \'">\' + item.htmlforoption + \'</option>\');
 					                });
+									$select.val(selectedValues);
 					            },
 					            error: function (xhr, status, error) {
 					                alert("Error when loading ajax page : " + error);
@@ -2966,7 +2968,7 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				)
 			);
 
-			$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$object->id, $langs->trans("MergeThirdparties"), $langs->trans("ConfirmMergeThirdparties"), "confirm_merge", $formquestion, 'no', 1, 250);
+			$formconfirm .= $form->formconfirm($_SERVER["PHP_SELF"]."?socid=".$object->id, $langs->trans("MergeThirdparties"), $langs->trans("ConfirmMergeThirdparties"), "confirm_merge", $formquestion, 'no', 1, 300);
 		}
 
 		// Clone confirmation

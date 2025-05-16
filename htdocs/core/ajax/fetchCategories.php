@@ -49,6 +49,7 @@ if (!defined('NOBROWSERNOTIF')) {
 	define('NOBROWSERNOTIF', '1');
 }
 include '../../main.inc.php';
+include_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
 
 /**
  * @var Conf $conf
@@ -80,10 +81,16 @@ if (!defined("NOLOGIN")) {	// No need of restrictedArea if not logged: Later the
  * View
  */
 
+$form = new Form($db);
+
 top_httphead('application/json');
 
 if ($action == "getCategories") {
-	$response = '';
+	$response = array();
+
+	$cate_arbo = $form->select_all_categories($type, '', '', 64, 0, 2);
+
+	/*
 	$sql = "SELECT c.rowid, c.label, c.color";
 	$sql .= " FROM ".MAIN_DB_PREFIX."categorie as c ";
 	$sql .= " WHERE c.type = '".$db->escape($type)."'";
@@ -95,11 +102,15 @@ if ($action == "getCategories") {
 		$response = array();
 		while ($i < $num) {
 			$obj = $db->fetch_object($resql);
-			$response[] = array('id' => $obj->rowid, 'label' => $obj->label, 'data-html' => 'TODO', 'color' => $obj->color);
+			$response[] = array('id' => $obj->rowid, 'label' => $obj->label, 'html' => img_picto('', 'tag', 'class="pictofixedwidth"'.($obj->color ? ' style="color: #'.$obj->color.'"' : '')).$obj->label, 'color' => $obj->color);
 			$i++;
 		}
 	} else {
 		dol_print_error($db);
+	}
+	*/
+	foreach ($cate_arbo as $categ) {
+		$response[] = array('id' => $categ['id'], 'label' => $categ['label'], 'fulllabel' => $categ['fulllabel'], 'htmlforoption' => dolPrintHTML($categ['fulllabel']), 'htmlforattribute' => dolPrintHTMLForAttribute($categ['data-html']), 'color' => $categ['color']);
 	}
 
 	$response =json_encode($response);
