@@ -16,8 +16,8 @@
  */
 
 /**
- *	\file       htdocs/core/ajax/fetchKnowledgeRecord.php
- *	\brief      File to fetch km record
+ *	\file       htdocs/core/ajax/fetchCategories.php
+ *	\brief      File to fetch categories
  */
 
 if (!defined('NOTOKENRENEWAL')) {
@@ -59,9 +59,9 @@ include '../../main.inc.php';
  */
 
 $action = GETPOST('action', 'aZ09');
-$idticketgroup = GETPOST('idticketgroup', 'aZ09');
-$idticketgroup = GETPOST('idticketgroup', 'aZ09');
 $lang = GETPOST('lang', 'aZ09');
+
+$type = GETPOST('type');
 
 // Security check
 if (!defined("NOLOGIN")) {	// No need of restrictedArea if not logged: Later the select will filter on public articles only if not logged.
@@ -82,18 +82,11 @@ if (!defined("NOLOGIN")) {	// No need of restrictedArea if not logged: Later the
 
 top_httphead('application/json');
 
-if ($action == "getKnowledgeRecord") {
+if ($action == "getCategories") {
 	$response = '';
-	$sql = "SELECT kr.rowid, kr.ref, kr.question, kr.answer, kr.url, ctc.code";
-	$sql .= " FROM ".MAIN_DB_PREFIX."knowledgemanagement_knowledgerecord as kr ";
-	$sql .= " JOIN ".MAIN_DB_PREFIX."c_ticket_category as ctc ON ctc.rowid = kr.fk_c_ticket_category";
-	$sql .= " WHERE ctc.code = '".$db->escape($idticketgroup)."'";
-	$sql .= " AND ctc.active = 1";
-	if (defined("NOLOGIN")) {
-		$sql .= " AND ctc.public = 1";
-	}
-	$sql .= " AND (kr.lang = '".$db->escape($lang)."' OR kr.lang = 0 OR kr.lang IS NULL)";
-	$sql .= " AND kr.status = 1 AND (kr.answer IS NOT NULL AND kr.answer <> '')";
+	$sql = "SELECT c.rowid, c.label, c.color";
+	$sql .= " FROM ".MAIN_DB_PREFIX."categorie as c ";
+	$sql .= " WHERE c.type = '".$db->escape($type)."'";
 
 	$resql = $db->query($sql);
 	if ($resql) {
@@ -102,7 +95,7 @@ if ($action == "getKnowledgeRecord") {
 		$response = array();
 		while ($i < $num) {
 			$obj = $db->fetch_object($resql);
-			$response[] = array('title'=>$obj->question,'ref'=>$obj->ref,'answer'=>dol_escape_htmltag(preg_replace('/\\r|\\r\\n|\\n/', "", $obj->answer)),'url'=>$obj->url);
+			$response[] = array('id' => $obj->rowid, 'label' => $obj->label, 'data-html' => 'TODO', 'color' => $obj->color);
 			$i++;
 		}
 	} else {
