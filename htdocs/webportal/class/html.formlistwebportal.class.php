@@ -694,7 +694,7 @@ class FormListWebPortal
 			}
 			// Remain to pay
 			if (array_key_exists('remain_to_pay', $arrayfields) && !empty($arrayfields['remain_to_pay']['checked'])) {
-				// @phan-suppress-next-line PhanTypeMismatchArgument
+				// @phan-suppress-next-line PhanTypeMismatchArgument PhanTypeInvalidDimOffset
 				$html .= $this->form->showOutputFieldForObject($object, $arrayfields['remain_to_pay'], 'remain_to_pay', $remaintopay, '');
 				//$html .= price($remaintopay);
 				$html .= '</td>';
