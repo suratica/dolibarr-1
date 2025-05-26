@@ -258,7 +258,8 @@ if ($ws && !defined('USEDOLIBARRSERVER') && !defined('USEDOLIBARREDITOR')) {	// 
 		$tmpwebsite = new Website($db);
 		$tmpwebsite->fetch(0, $ws);
 
-		if ($tmpwebsite->virtualhost == $lastproxy) {
+		if (preg_replace('/https?:\/\//i', '', $tmpwebsite->virtualhost) == $lastproxy) {
+			// If the newpayment.php page was called from a proxy with same domain than the website virtual host, we must use this one as the redirect domain url.
 			$urlok = $tmpwebsite->virtualhost.'/public/payment/paymentok.php?';
 			$urlko = $tmpwebsite->virtualhost.'/public/payment/paymentko.php?';
 		}
