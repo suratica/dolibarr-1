@@ -2501,10 +2501,9 @@ if ($id > 0) {
 								$titletoshow = $key;
 								$class = "tdoverflowmax150";
 							} elseif ($value == 'libelle' && $tabname[$id] == 'c_paiement') {
-								$transavailableforcode = $langs->tab_translate["PaymentType".strtoupper($obj->code)];
 								$key = $langs->trans("PaymentType".strtoupper($obj->code));
 								$valuetoshow = $obj->$value;
-								if ($obj->code && $transavailableforcode) {
+								if ($obj->code && array_key_exists("PaymentType".strtoupper($obj->code), $langs->tab_translate)) {
 									$htmltext = $form->textwithpicto($langs->trans("TranslationFound").': '.$key, $langs->trans("TheTranslationIsSearchedFromKey", "PaymentType".strtoupper($obj->code)));
 								} else {
 									$htmltext = $form->textwithpicto($langs->trans("TranslationFound").': '.$langs->trans("No"), $langs->trans("TheTranslationIsSearchedFromKey", "PaymentType".strtoupper($obj->code)));
