@@ -2509,7 +2509,7 @@ if ($id > 0) {
 									$htmltext = $form->textwithpicto($langs->trans("TranslationFound").': '.$langs->trans("No"), $langs->trans("TheTranslationIsSearchedFromKey", "PaymentType".strtoupper($obj->code)));
 								}
 								//$valuetoshow = $form->textwithpicto($valuetoshow, $htmltext);
-								$valuetoshow .= '<br><span class="opacitymedium">'.$htmltext.'</span>';
+								$valuetoshow .= '<br><span class="opacitymedium small">'.$htmltext.'</span>';
 							} elseif ($value == 'type' && $tabname[$id] == 'c_paiement') {
 								$payment_type_list = array(0 => $langs->trans('PaymentTypeCustomer'), 1 => $langs->trans('PaymentTypeSupplier'), 2 => $langs->trans('PaymentTypeBoth'));
 								$valuetoshow = $payment_type_list[$valuetoshow];
