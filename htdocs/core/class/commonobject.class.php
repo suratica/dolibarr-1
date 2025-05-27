@@ -5580,7 +5580,9 @@ abstract class CommonObject
 		}
 		print '<td class="linecoldiscount right">'.$langs->trans('ReductionShort').'</td>';
 		print '<td class="linecolht right">'.$langs->trans('TotalHT').'</td>';
-		print '<td class="center">'.$form->showCheckAddButtons('checkforselect', 1).'</td>';
+		print '<td class="center">';
+		print $form->showCheckAddButtons('checkforselect', 1);
+		print '</td>';
 		print '</tr>';
 		$i = 0;
 

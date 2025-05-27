@@ -3778,7 +3778,7 @@ if ($action == 'create') {
 		if (!getDolGlobalString('INVOICE_DISABLE_AUTOMATIC_RECURRING_INVOICE')) {
 			$text .= ' '.$langs->trans("ToCreateARecurringInvoiceGeneAuto", $langs->transnoentitiesnoconv('Module2300Name'));
 		}
-		print info_admin($text, 0, 0, '0', 'opacitymedium').'<br>';
+		print info_admin($text, 0, 0, 'info', '').'<br>';
 	}
 
 	print '<form name="add" action="'.$_SERVER["PHP_SELF"].'" method="POST" id="formtocreate" name="formtocreate">';
@@ -3826,8 +3826,8 @@ if ($action == 'create') {
 			// Outstanding Bill
 			$arrayoutstandingbills = $soc->getOutstandingBills();
 			$outstandingBills = $arrayoutstandingbills['opened'];
-			print ' - <span class="opacitymedium">'.$langs->trans('CurrentOutstandingBill').':</span> ';
-			print '<span class="amount">'.price($outstandingBills, 0, $langs, 0, 0, -1, $conf->currency).'</span>';
+			print ' - <span class="opacitymedium valignmiddle">'.$langs->trans('CurrentOutstandingBill').':</span> ';
+			print '<span class="amount valignmiddle">'.price($outstandingBills, 0, $langs, 0, 0, -1, $conf->currency).'</span>';
 			if ($soc->outstanding_limit != '') {
 				if ($outstandingBills > $soc->outstanding_limit) {
 					print img_warning($langs->trans("OutstandingBillReached"));
@@ -3864,7 +3864,7 @@ if ($action == 'create') {
 				</script>';
 			}
 			if (!GETPOSTINT('fac_rec')) {
-				print ' <a href="'.DOL_URL_ROOT.'/societe/card.php?action=create&client=3&fournisseur=0&backtopage='.urlencode($_SERVER["PHP_SELF"].'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
+				print ' <a class="valignmiddle" href="'.DOL_URL_ROOT.'/societe/card.php?action=create&client=3&fournisseur=0&backtopage='.urlencode($_SERVER["PHP_SELF"].'?action=create').'"><span class="fa fa-plus-circle valignmiddle paddingleft" title="'.$langs->trans("AddThirdParty").'"></span></a>';
 			}
 			print '</td>';
 			print '</tr>'."\n";
@@ -4272,7 +4272,7 @@ if ($action == 'create') {
 		print $desc;
 		print '</div></div>'."\n";
 
-		print '</div>';
+		print '</div><br>';
 
 
 		if (getDolGlobalString('INVOICE_USE_DEFAULT_DOCUMENT')) { // Hidden conf
