@@ -5715,7 +5715,7 @@ class Form
 			}</script>';
 		}
 
-		print $out;
+		return $out;
 	}
 
 
@@ -9880,7 +9880,7 @@ class Form
 			$arrayselected = array();
 			$cate_arbo = $this->select_all_categories($type, '', 'parent', 64, 0, 3);
 			foreach ($categories as $c) {
-				$arrayselected[] = $c->id;
+				$arrayselected[(string) $c->id] = (string) $c->id;
 			}
 
 			return $this->multiselectarray('categories', $cate_arbo, $arrayselected, 0, 0, '', 0, '100%', 'disabled', 'category');
