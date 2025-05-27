@@ -2198,7 +2198,7 @@ tr.nobottom td {
 .minheight30 { min-height: 30px; }
 .minheight40 { min-height: 40px; }
 .titlefieldcreate { width: 20%; }
-.titlefield       { /* width: 25%; */ min-width: 150px; width: 25%; }
+.titlefield       { width: 25%; min-width: 150px; }
 .titlefieldmiddle { width: 50%; }
 .titlefieldmax45 { max-width: 45%; min-width: 180px; }
 .imgmaxwidth100 { max-width: 100px; }

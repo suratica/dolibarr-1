@@ -2629,6 +2629,11 @@ div.fiche {
 		print 'margin-bottom: 12px;'."\n";
 	} ?>
 }
+.dol_openinpopup div.fiche {
+	margin-<?php print $left; ?>: <?php print(GETPOST('optioncss', 'aZ09') == 'print' ? 6 : (empty($conf->dol_optimize_smallscreen) ? '24' : '6')); ?>px;
+	margin-top: 0px;
+}
+
 .page-modulehelp div.fiche {
 	width: 100%;
 }
@@ -4541,7 +4546,7 @@ table.liste th, table.noborder th, table.noborder tr.liste_titre td, table.nobor
 td.linecoldescription {
 	padding: 6px 10px 6px 12px !important;			/* t r b l */
 }
-table.tableforfield td, .tagtr.table-border-row .tagtd {
+table.tableforfield td, .tagtr.table-border-row .tagtd, table.border.margintable .trforfield td {
 	padding: 2px 4px 2px 10px;			/* t r b l */
 }
 table.liste td, table.noborder td, div.noborder form div, table.tableforservicepart1 td, table.tableforservicepart2 td {
@@ -5287,7 +5292,7 @@ span.dashboardlineko {
 }
 
 
-.fichecenter .tableforfield tr td, .tagtr.table-border-row {
+.fichecenter .tableforfield:not(.margintable) tr td, .tagtr.table-border-row {
 	background-color: var(--colorbacklineimpair2);
 }
 table.liste tr.oddeven:nth-of-type(odd) {

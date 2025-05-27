@@ -5639,29 +5639,37 @@ class Form
 	 *
 	 * @param 	string			$categtype		Type of category ('customer', 'supplier', 'contact', 'product', 'member'). Old mode (0, 1, 2, ...) should be avoid and is keptfor internal use only.
 	 * @param 	string			$htmlname 		Html name
-	 * @param 	CommonObject	$object			Object
+	 * @param 	?CommonObject	$object			Object
 	 * @return	string							HTML component
+	 * @see getFilterBox()
 	 */
-	public function selectCategories($categtype, $htmlname, $object)
+	public function selectCategories($categtype, $htmlname, $object = null)
 	{
 		global $langs;
 
 		$out = '';
 
-		$cate_arbo = $this->select_all_categories($categtype, '', '', 64, 0, 3);		//
-		$c = new Categorie($this->db);
-		$cats = $c->containing($object->id, $categtype);
+		$cate_arbo = $this->select_all_categories($categtype, '', '', 64, 0, 3);
+
 		$arrayselected = array();
-		foreach ($cats as $cat) {
-			$arrayselected[] = $cat->id;
+		if (GETPOSTISARRAY($htmlname)) {
+			$arrayselected = GETPOST($htmlname, 'array:int');
+		} elseif (is_object($object)) {
+			$c = new Categorie($this->db);
+			$cats = $c->containing($object->id, $categtype);
+			$arrayselected = array();
+			foreach ($cats as $cat) {
+				$arrayselected[] = $cat->id;
+			}
 		}
+
 		$out .= img_picto('', 'category', 'class="pictofixedwidth"');
 		$out .= $this->multiselectarray($htmlname, $cate_arbo, $arrayselected, 0, 0, 'minwidth100 widthcentpercentminusxx', 0, 0);
 
 		if (getDolGlobalString('CATEGORY_EDIT_IN_POPUP_NOT_IN_MENU')) {
 			// Add html code to add the edit button and go back
 			$jsonclose = 'doJsCodeAfterPopupClose'.$htmlname.'()';
-			$urltoopen = '/categories/categorie_list.php?type='.$categtype;
+			$urltoopen = '/categories/categorie_list.php?type='.urlencode($categtype).'&nosearch=1';
 
 			$s = dolButtonToOpenUrlInDialogPopup($htmlname, $langs->transnoentitiesnoconv("Categories"), img_picto('', 'add', 'class="editfielda"'), $urltoopen, '', '', '', $jsonclose);
 			$out .= $s;
