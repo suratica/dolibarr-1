@@ -174,7 +174,7 @@ if (!$rowid) {
 				$label .= $langs->trans("Status").": ".$langs->trans((string) $charge->outcome->seller_message);
 				$status = $form->textwithpicto(img_picto($langs->trans((string) $charge->status), 'statut4'), $label, 1);
 			} else {
-				$label .= $langs->trans("ErrorMessage").": ".$charge->failure_message."<br>";
+				$label .= $langs->trans("Error").": ".$charge->failure_message."<br>";
 				$label .= $langs->trans("Network").": ".$charge->outcome->network_status."<br>";
 				$label .= $langs->trans("Status").": ".$langs->trans((string) $charge->outcome->seller_message);
 				$status = $form->textwithpicto(img_picto($langs->trans((string) $charge->status), 'statut8'), $label, 1);
