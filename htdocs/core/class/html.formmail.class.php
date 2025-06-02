@@ -1519,10 +1519,10 @@ class FormMail extends Form
 			$layoutname = preg_replace('/\.html$/i', '', $layouttemplatefile['name']);
 
 			// Exclude some layouts for some use cases
-			if ($layoutname == 'news' && !in_array($showlinktolayout, array('emailing', 'websitepage')) && !isModEnabled('website')) {
+			if ($layoutname == 'news' && (!in_array($showlinktolayout, array('emailing', 'websitepage')) || !isModEnabled('website'))) {
 				continue;
 			}
-			if ($layoutname == 'products' && !in_array($showlinktolayout, array('emailing', 'websitepage')) && !isModEnabled('product') && !isModEnabled('service')) {
+			if ($layoutname == 'products' && (!in_array($showlinktolayout, array('emailing', 'websitepage')) || (!isModEnabled('product') && !isModEnabled('service')))) {
 				continue;
 			}
 
