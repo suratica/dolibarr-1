@@ -148,6 +148,8 @@ if ($showlinktolayout) {
 	$out .= '<!-- No link to the layout feature, $formmail->withlayout must be set to a string use case, module WYSIWYG must be enabled and MAIN_EMAIL_USE_LAYOUT must be set -->';
 }
 
+/** @var ?FormAI $formai */
+
 if ($showlinktoai) {
 	if (empty($formai) || $formai instanceof FormAI) {
 		include_once DOL_DOCUMENT_ROOT.'/core/class/html.formai.class.php';
