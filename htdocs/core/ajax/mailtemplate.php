@@ -90,7 +90,10 @@ if (GETPOSTISSET('template')) {
 		'__GRAY_RECTANGLE__' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAIAAABM5OhcAAABGklEQVR4nO3SwQ3AIBDAsNLJb3SWIEJC9gR5ZM3MB6f9twN4k7FIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIuEsUgYi4SxSBiLhLFIGIvEBtxYAkgpLmAeAAAAAElFTkSuQmCC',
 		'__LAST_NEWS__'   => $langs->trans('LastNews'),
 		'__LIST_PRODUCTS___' => $langs->trans('ListProducts'),
-		'__SUBJECT__' => GETPOST('subject')
+		'__SUBJECT__' => GETPOST('subject'),
+		'__MYCOMPANY_SOCIAL_NETWORKS__' => 'TODO Generate list of enabled social network',
+		'__MYCOMPANY_ADDRESS__' => $mysoc->getFullAddress(0, '<br>', 1, $langs),
+		'__MYCOMPANY_EMAIL__' => $mysoc->email,
 	);
 
 	if (!empty($mysoc->logo) && dol_is_file($conf->mycompany->dir_output.'/logos/'.$mysoc->logo)) {
@@ -120,8 +123,9 @@ if (GETPOSTISSET('template')) {
 		$content = str_replace($key, $val, $content);
 	}
 
-	// Parse all strings __(...)__ to replace with the translated value.
+	// Parse all strings __(...)__ to replace with the translated value $langs->trans("...")
 	// TODO
+
 
 	$selectedPostsStr = GETPOST('selectedPosts', 'alpha');
 	$selectedPosts = explode(',', $selectedPostsStr);
