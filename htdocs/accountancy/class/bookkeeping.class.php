@@ -1114,7 +1114,7 @@ class BookKeeping extends CommonObject
 					$sqlwhere[] = natural_search($key, $value, 1, 1);
 				} elseif ($key == 't.code_journal' && !empty($value)) {
 					if (is_array($value)) {
-						$sqlwhere[] = natural_search("t.code_journal", join(',', $value), 3, 1);
+						$sqlwhere[] = natural_search("t.code_journal", (string) join(',', $value), 3, 1);
 					} else {
 						$sqlwhere[] = natural_search("t.code_journal", $value, 3, 1);
 					}
@@ -1460,6 +1460,7 @@ class BookKeeping extends CommonObject
 	 */
 	public function updateByMvt($piece_num = '', $field = '', $value = '', $mode = '')
 	{
+		global $conf;
 		$error = 0;
 
 		$sql_filter = $this->getCanModifyBookkeepingSQL();
@@ -1472,6 +1473,7 @@ class BookKeeping extends CommonObject
 		$sql = "UPDATE ".MAIN_DB_PREFIX.$this->table_element.$mode;
 		$sql .= " SET ".$field." = ".(is_numeric($value) ? ((float) $value) : "'".$this->db->escape($value)."'");
 		$sql .= " WHERE piece_num = ".((int) $piece_num);
+		$sql .= " AND entity = " . ((int) $conf->entity);
 		$sql .= $sql_filter;
 
 		$resql = $this->db->query($sql);
