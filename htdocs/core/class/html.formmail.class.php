@@ -1498,7 +1498,7 @@ class FormMail extends Form
 	 * @param	string		$showlinktolayout	Show link to layout
 	 * @return  string                      	HTML for model email boxes
 	 */
-	public function getModelEmailTemplate($htmlContent = 'message', $showlinktolayout = 'email')
+	public function getEmailLayoutSelector($htmlContent = 'message', $showlinktolayout = 'email')
 	{
 		global $websitepage, $langs;
 
@@ -1519,10 +1519,10 @@ class FormMail extends Form
 			$layoutname = preg_replace('/\.html$/i', '', $layouttemplatefile['name']);
 
 			// Exclude some layouts for some use cases
-			if ($layoutname == 'news' && !in_array($showlinktolayout, array('emailing', 'websitepage'))) {
+			if ($layoutname == 'news' && !in_array($showlinktolayout, array('emailing', 'websitepage')) && !isModEnabled('website')) {
 				continue;
 			}
-			if ($layoutname == 'products' && !in_array($showlinktolayout, array('emailing', 'websitepage'))) {
+			if ($layoutname == 'products' && !in_array($showlinktolayout, array('emailing', 'websitepage')) && !isModEnabled('product') && !isModEnabled('service')) {
 				continue;
 			}
 
