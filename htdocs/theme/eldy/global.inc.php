@@ -5705,7 +5705,7 @@ div.backgreypublicpayment {
 .poweredbypublicpayment {
 	float: right;
 	top: 8px;
-	right: 8px;
+	right: 12px;
 	position: absolute;
 	font-size: 0.8em;
 	color: #222;
