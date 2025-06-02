@@ -1500,10 +1500,11 @@ class FormMail extends Form
 	 */
 	public function getEmailLayoutSelector($htmlContent = 'message', $showlinktolayout = 'email')
 	{
-		global $websitepage, $langs;
+		global $conf, $db, $websitepage, $langs;
 
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/emaillayout.lib.php';
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+		require_once DOL_DOCUMENT_ROOT.'/website/class/website.class.php';
 		require_once DOL_DOCUMENT_ROOT.'/website/class/websitepage.class.php';
 
 		$out = '<div id="template-selector" class="template-selector email-layout-container hidden" style="display:none;">';
@@ -1544,19 +1545,39 @@ class FormMail extends Form
 		// Prepare the array for multiselect
 
 		// Fetch blogs
-		$websitepage = new WebsitePage($this->db);
-		$arrayofblogs = $websitepage->fetchAll('', 'DESC', 'date_creation', 0, 0, array('type_container' => 'blogpost'));
-
 		$blogArray = array();
-		if (!empty($arrayofblogs)) {
-			foreach ($arrayofblogs as $blog) {
-				$blogArray[$blog->id] = substr(htmlentities($blog->title), 0, 30);
+		if (isModEnabled('website')) {
+			$websitepage = new WebsitePage($this->db);
+			$arrayofblogs = $websitepage->fetchAll('', 'ASC,DESC', 'fk_website,date_creation', 0, 0, array('type_container' => 'blogpost'));
+
+			if (empty($conf->cache['websiteurl'])) {
+				$conf->cache['websiteurl'] = array();
+			}
+
+			if (!empty($arrayofblogs)) {
+				foreach ($arrayofblogs as $blog) {
+					if (!isset($conf->cache['websiteurl'][$blog->id])) {
+						$tmpwebsite = new Website($db);
+						$tmpwebsite->fetch($blog->fk_website);
+						$conf->cache['websiteurl'][$blog->fk_website] = (empty($tmpwebsite->virtualhost) ? $tmpwebsite->ref : $tmpwebsite->virtualhost);
+					}
+
+					$labelwebsite = $conf->cache['websiteurl'][$blog->fk_website];
+					//$blog->fk_website
+
+					$blogArray[$blog->id] = array(
+						'id' => $blog->id,
+						'label' => '['.$labelwebsite.' '.$blog->type_container.' '.$blog->id.'] '.dol_trunc($blog->title, 40),
+						'data-html' => '<span class="opacitymedium">['.$labelwebsite.' '.$blog->type_container.' '.$blog->id.']</span> '.dol_trunc($blog->title, 40),
+					);
+				}
 			}
 		}
 
 		// Use the multiselect array function to create the dropdown
 		$out .= '<div id="post-dropdown-container" class="email-layout-container hidden" style="display:none;">';
 		$out .= '<label for="blogpost-select">Select Posts: </label>';
+		$out .= '<!-- select component for selection of products -->'."\n";
 		$out .= self::multiselectarray('blogpost-select', $blogArray, array(), 0, 0, 'minwidth200');
 		$out .= '</div>';
 
