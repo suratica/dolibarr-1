@@ -36,6 +36,10 @@ require_once DOL_DOCUMENT_ROOT.'/stripe/class/stripe.class.php';
 
 $servicename = 'Stripe';
 $listofsupportedhooks = array('charge.dispute.closed', 'charge.dispute.created', 'charge.dispute.funds_withdrawn', 'payment_intent.payment_failed', 'payment_intent.succeeded');
+if (getDolGlobalString('STRIPE_AUTO_RECORD_PAYOUT')) {
+	$listofsupportedhooks[] = 'payout.create';
+	$listofsupportedhooks[] = 'payout.paid';
+}
 
 /**
  * @var Conf $conf
