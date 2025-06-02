@@ -2490,6 +2490,7 @@ class FactureFournisseur extends CommonInvoice
 
 		if ($res < 1) {
 			$this->errors[] = $line->error;
+			$this->errors = array_merge($this->errors, $line->errors);
 		} else {
 			// Update total price into invoice record
 			$res = $this->update_price('1', 'auto', 0, $this->thirdparty);
@@ -4478,8 +4479,18 @@ class SupplierInvoiceLine extends CommonObjectLine
 				// End call triggers
 			}
 
-			$this->db->commit();
-			return $this->id;
+			if (!$error) {
+				$this->db->commit();
+				return $this->id;
+			}
+
+			foreach ($this->errors as $errmsg) {
+				dol_syslog(get_class($this)."::insert ".$errmsg, LOG_ERR);
+				$this->error .= ($this->error ? ', '.$errmsg : $errmsg);
+			}
+
+			$this->db->rollback();
+			return -1 * $error;
 		} else {
 			$this->error = $this->db->error();
 			$this->db->rollback();
