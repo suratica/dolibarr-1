@@ -136,10 +136,17 @@ if (GETPOSTISSET('template')) {
 
 	// Parse all strings __(...)__ to replace with the translated value $langs->trans("...")
 	$langs->load("other");
-	$content = preg_replace_callback('/__\((.+)\)__/', function ($matches) {
-		global $langs;
-		return $langs->trans($matches[1]);
-	}, $content);
+	$content = preg_replace_callback(
+		'/__\((.+)\)__/',
+		/**
+		 * @param 	array<int,string> $matches	Array of matches
+		 * @return 	string 						Translated string for the key
+		 */
+		function ($matches) {
+			global $langs;
+			return $langs->trans($matches[1]);
+		},
+		$content);
 
 
 	$selectedPostsStr = GETPOST('selectedPosts', 'alpha');
