@@ -202,7 +202,7 @@ if ($action == 'updateMask') {
 	if (!empty($notification_email)) {
 		$res = dolibarr_set_const($db, 'TICKET_NOTIFICATION_EMAIL_FROM', $notification_email, 'chaine', 0, $notification_email_description, $conf->entity);
 	} else { // If an empty e-mail address is providen, use the global "FROM" since an empty field will cause other issues
-		$res = dolibarr_set_const($db, 'TICKET_NOTIFICATION_EMAIL_FROM', $conf->global->MAIN_MAIL_EMAIL_FROM, 'chaine', 0, $notification_email_description, $conf->entity);
+		$res = dolibarr_set_const($db, 'TICKET_NOTIFICATION_EMAIL_FROM', getDolGlobalString('MAIN_MAIL_EMAIL_FROM'), 'chaine', 0, $notification_email_description, $conf->entity);
 	}
 	if (!($res > 0)) {
 		$error++;
