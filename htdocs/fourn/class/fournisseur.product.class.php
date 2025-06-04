@@ -785,7 +785,7 @@ class ProductFournisseur extends Product
 					$this->supplier_barcode = $obj->barcode;
 					$this->supplier_fk_barcode_type = $obj->fk_barcode_type;
 				}
-				$this->packaging = $obj->packaging;
+				$this->packaging = (float) $obj->packaging;
 
 				if (isModEnabled('dynamicprices') && empty($ignore_expression) && !empty($this->fk_supplier_price_expression)) {
 					require_once DOL_DOCUMENT_ROOT.'/product/dynamic_price/class/price_parser.class.php';
@@ -891,7 +891,7 @@ class ProductFournisseur extends Product
 				$prodfourn->fourn_multicurrency_id          = $record["fk_multicurrency"];
 				$prodfourn->fourn_multicurrency_code        = $record["multicurrency_code"];
 
-				$prodfourn->packaging = $record["packaging"];
+				$prodfourn->packaging = (float) $record["packaging"];
 				$prodfourn->status = $record["pfstatus"];
 
 				if (isModEnabled('barcode')) {
