@@ -272,8 +272,10 @@ a.top-menu-dropdown-link {
 }
 
 .dropdown-menu > .user-header{
-	background: var(--colorbackhmenu1);
-	color: var(--colortextbackhmenu);
+	/*background: var(--colorbackhmenu1);
+	color: var(--colortextbackhmenu);*/
+	background: #f9f9f9;
+	color: #000;
 }
 
 

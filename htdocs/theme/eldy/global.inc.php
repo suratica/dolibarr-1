@@ -5884,7 +5884,7 @@ div.ui-tooltip {
 }
 div.ui-tooltip.mytooltip {
 	border: none !important;
-	padding: 25px 25px;
+	padding: 20px 20px;
 	border-radius: 4px;
 	margin: 2px;
 	font-stretch: condensed;

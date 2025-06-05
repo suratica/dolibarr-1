@@ -5832,7 +5832,7 @@ div.ui-tooltip {
 }
 
 div.ui-tooltip.mytooltip {
-	padding: 25px 25px;
+	padding: 20px 20px;
 	border-radius: 4px;
 	box-shadow: 0 0 4px #888;
 	margin: 2px;
