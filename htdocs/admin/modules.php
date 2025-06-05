@@ -87,13 +87,17 @@ $options['no_page']   		= ((int) GETPOSTINT('no_page') ? GETPOSTINT('no_page') :
 $options['categorie'] 		= ((int) (GETPOSTINT('categorie') ? GETPOSTINT('categorie') : 0));
 $options['search']    		= GETPOST('search_keyword', 'alpha');
 
+
+// MAIN_ENABLE_EXTERNALMODULES_DOLISTORE is 1 if we enabled the dolistore modules
 $options['search_source_dolistore']	= getDolGlobalInt('MAIN_ENABLE_EXTERNALMODULES_DOLISTORE');
+// MAIN_ENABLE_EXTERNALMODULES_COMMUNITY is 1 if we enabled the community modules
 $options['search_source_github']	= getDolGlobalInt('MAIN_ENABLE_EXTERNALMODULES_COMMUNITY');
 
 //$remotestore = new Dolistore(false);
 $remotestore = new ExternalModules();
-$remotestore->loadRemoteSources();
-
+if ($mode == 'marketplace') {
+	$remotestore->loadRemoteSources();
+}
 
 if (!$user->admin) {
 	accessforbidden();

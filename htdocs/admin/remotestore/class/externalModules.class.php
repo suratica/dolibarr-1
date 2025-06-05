@@ -134,13 +134,16 @@ class ExternalModules
 	{
 		global $langs;
 
-		$this->dolistore_api_url = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV', 'https://admin2.dolibarr.org/api/index.php/marketplace');
-		$this->dolistore_api_key = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_KEY', 'dolistorepublicapi');
-		$this->shop_url  = getDolGlobalString('MAIN_MODULE_DOLISTORE_SHOP_URL', 'https://www.dolistore.com');
-
 		$this->debug_api = $debug;
 
 		$this->url       = DOL_URL_ROOT.'/admin/modules.php?mode=marketplace';
+
+		// For dolistore modules
+		$this->dolistore_api_url = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_SRV', 'https://www.dolistore.com/api/');	// 'https://www.dolistore.com/api/', 'https://admin2.dolibarr.org/api/index.php/marketplace/'
+		$this->dolistore_api_key = getDolGlobalString('MAIN_MODULE_DOLISTORE_API_KEY', 'dolistorepublicapi');
+		$this->shop_url  = getDolGlobalString('MAIN_MODULE_DOLISTORE_SHOP_URL', 'https://www.dolistore.com');
+
+		// For community modules
 		$this->file_source_url = "https://raw.githubusercontent.com/Dolibarr/dolibarr-community-modules/refs/heads/main/index.yaml";
 		$this->cache_file = DOL_DATA_ROOT.'/admin/temp/remote_github_modules_file.yaml';
 
@@ -181,13 +184,12 @@ class ExternalModules
 	/**
 	 * Test if we can access to remote Dolistore market place.
 	 *
-	 * @param string 						$resource Resource name
-	 * @param array<string, mixed>|false 	$options Options for the request
+	 * @param string 						$resource 	Resource relative URL ('categories' or 'products')
+	 * @param array<string, mixed>|false 	$options 	Options for the request
 	 * @return array{status_code:int,response:null|string|array<string,mixed>}
 	 */
 	public function callApi($resource, $options = false)
 	{
-
 		// If no dolistore_api_key is set, we can't access the API
 		if (empty($this->dolistore_api_key) || empty($this->dolistore_api_url)) {
 			return array('status_code' => 0, 'response' => null);
@@ -438,7 +440,7 @@ class ExternalModules
 					$compatible = '';
 				} else {
 					// never compatible, module expired
-					$version = '<span class="notcompatible">'.$langs->trans(
+					$version = '<span class="warning">'.$langs->trans(
 						'NotCompatible',
 						$dolibarrversiontouse,
 						(float)	$product["dolibarr_min"],
@@ -449,7 +451,7 @@ class ExternalModules
 			} else {
 				if ($product["dolibarr_min"] == 'auto' || $product["dolibarr_min"] != 'unknown') {
 					// never compatible, module expired
-					$version = '<span class="notcompatible">'.$langs->trans(
+					$version = '<span class="warning">'.$langs->trans(
 						'NotCompatible',
 						$dolibarrversiontouse,
 						(float)	$product["dolibarr_min"],
@@ -768,7 +770,8 @@ class ExternalModules
 
 		if (!file_exists($cache_file) || filemtime($cache_file) < (dol_now() - $cache_time)) {
 			// We get remote url
-			$result = getURLContent($file_source_url);
+			$addheaders = array();
+			$result = getURLContent($file_source_url, 'GET', '', 1, $addheaders);	// TODO Force timeout to 5 s on both connect and response.
 			if (!empty($result) && $result['http_code'] == 200) {
 				$yaml = $result['content'];
 				file_put_contents($cache_file, $yaml);
