@@ -454,7 +454,7 @@ li.liinputsearch {
  */
 
 #topmenu-quickadd-dropdown .dropdown-menu {
-	width: <?php echo $WIDTHMENUDROPDOWN; ?>px !important;
+	width: <?php echo $WIDTHMENUDROPDOWN; ?>px;
 	color: #444;
 }
 
@@ -638,11 +638,7 @@ div.quickaddblock:focus {
 		right: 0;
 	}
 
-	#topmenu-quickadd-dropdown .dropdown-menu {
-		min-width: 220px;
-		max-width: 270px;
-	}
-	#topmenu-bookmark-dropdown .dropdown-menu {
+	#topmenu-bookmark-dropdown .dropdown-menu, #topmenu-quickadd-dropdown .dropdown-menu {
 		min-width: 220px;
 		max-width: 360px;
 	}
