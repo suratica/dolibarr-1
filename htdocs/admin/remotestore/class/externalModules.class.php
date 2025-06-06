@@ -383,12 +383,12 @@ class ExternalModules
 			// check new product ?
 			$newapp = '';
 			if ($last_month < strtotime($product['datec'])) {
-				$newapp .= '<span class="newApp">'.$langs->trans('New').'</span> ';
+				$newapp .= '<span class="newApp" title="'.$product['tms'].'">'.$langs->trans('New').'</span> ';
 			}
 
 			// check updated ?
 			if ($last_month < strtotime($product['tms']) && $newapp == '') {
-				$newapp .= '<span class="updatedApp">'.$langs->trans('Updated').'</span> ';
+				$newapp .= '<span class="updatedApp" title="'.$product['tms'].'">'.$langs->trans('UpdatedRecently').'</span> ';
 			}
 
 			// add image or default ?
@@ -434,8 +434,8 @@ class ExternalModules
 					$version = '<span class="compatible">'.$langs->trans(
 						'CompatibleUpTo',
 						$dolibarrversiontouse,
-						(float) $product["dolibarr_min"],
-						(float) $product["dolibarr_max"]
+						$product["dolibarr_min"],
+						$product["dolibarr_max"]
 					).'</span>';
 					$compatible = '';
 				} else {
@@ -443,8 +443,8 @@ class ExternalModules
 					$version = '<span class="warning">'.$langs->trans(
 						'NotCompatible',
 						$dolibarrversiontouse,
-						(float)	$product["dolibarr_min"],
-						(float) $product["dolibarr_max"]
+						$product["dolibarr_min"],
+						$product["dolibarr_max"]
 					).'</span>';
 					$compatible = 'NotCompatible';
 				}
@@ -454,8 +454,8 @@ class ExternalModules
 					$version = '<span class="warning">'.$langs->trans(
 						'NotCompatible',
 						$dolibarrversiontouse,
-						(float)	$product["dolibarr_min"],
-						(float) $product["dolibarr_max"]
+						$product["dolibarr_min"],
+						$product["dolibarr_max"]
 					).'</span>';
 					$compatible = 'NotCompatible';
 				} else {
@@ -929,6 +929,12 @@ class ExternalModules
 
 		if ($source === 'dolistore') {
 			foreach ($data as $package) {
+				$urlphoto = $this->shop_url.$package['cover_photo_url'];
+
+				if (preg_match('/^\/?wrapper\.php\?hashp=/', $package['cover_photo_url']) && !preg_match('/attachment=/', $package['cover_photo_url'])) {
+					$urlphoto .= '&attachment=0';
+				}
+
 				$adaptedPackage = [
 					'id' => $package['id'],
 					'ref' => $package['ref'],
@@ -942,7 +948,7 @@ class ExternalModules
 					'phpmin' => $package['phpmin'],
 					'phpmax' => $package['phpmax'],
 					'module_version' => $package['module_version'],
-					'cover_photo_url' => $this->shop_url.$package['cover_photo_url'],
+					'cover_photo_url' => $urlphoto,
 					'source' => 'dolistore'
 				];
 
