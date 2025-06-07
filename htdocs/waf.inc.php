@@ -28,9 +28,12 @@
 //define('NOSCANPHPSELFFORINJECTION', 1);
 //define('NOSCANGETFORINJECTION', 1);
 //define('NOSCANPOSTFORINJECTION', 1 or array('param1', 'param2'...));
+//define('NOSCANAUDIOFORINJECTION', 1);
+//define('NOSCANIFRAMEFORINJECTION', 1);
+//define('NOSCANOBJECTFORINJECTION', 1);
 
 
- /**
+/**
  * Return array of Emojis. We can't move this function inside a common lib because we need it for security before loading any file.
  *
  * @return 	array<string,array<string>>			Array of Emojis in hexadecimal
