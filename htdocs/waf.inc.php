@@ -178,12 +178,16 @@ function testSqlAndScriptInject($val, $type)
 	// When it found '<script', 'javascript:', '<style', 'onload\s=' on body tag, '="&' on a tag size with old browsers
 	// All examples on page: http://ha.ckers.org/xss.html#XSScalc
 	// More on https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
-	$inj += preg_match('/<audio/i', $val);
 	$inj += preg_match('/<embed/i', $val);
+	if (!defined('NOSCANAUDIOFORINJECTION')) {
+		$inj += preg_match('/<audio/i', $val);
+	}
 	if (!defined('NOSCANIFRAMEFORINJECTION')) {
 		$inj += preg_match('/<iframe/i', $val);
 	}
-	$inj += preg_match('/<object/i', $val);
+	if (!defined('NOSCANOBJECTFORINJECTION')) {
+		$inj += preg_match('/<object/i', $val);
+	}
 	$inj += preg_match('/<script/i', $val);
 	$inj += preg_match('/Set\.constructor/i', $val); // ECMA script 6
 	if (!defined('NOSTYLECHECK')) {
