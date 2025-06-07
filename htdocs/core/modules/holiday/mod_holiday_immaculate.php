@@ -68,6 +68,7 @@ class mod_holiday_immaculate extends ModelNumRefHolidays
 		$texte .= '<table class="nobordernopadding centpercent">';
 
 		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Holiday"), $langs->transnoentities("Holiday"));
+		$tooltip .= $langs->trans("GenericMaskCodes1");
 		$tooltip .= $langs->trans("GenericMaskCodes2");
 		$tooltip .= $langs->trans("GenericMaskCodes3");
 		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Holiday"), $langs->transnoentities("Holiday"));

@@ -77,6 +77,7 @@ class mod_takepos_ref_universal extends ModeleNumRefTakepos
 		$texte .= '<table class="nobordernopadding centpercent">';
 
 		$tooltip = $langs->trans('GenericMaskCodes', $langs->transnoentities('CashDesk'), $langs->transnoentities('CashDesk'));
+		$tooltip .= $langs->trans("GenericMaskCodes1");
 		$tooltip .= $langs->trans('GenericMaskCodes2');
 		$tooltip .= $langs->trans('GenericMaskCodes3');
 		$tooltip .= $langs->trans('GenericMaskCodes4a', $langs->transnoentities('CashDesk'), $langs->transnoentities('CashDesk'));

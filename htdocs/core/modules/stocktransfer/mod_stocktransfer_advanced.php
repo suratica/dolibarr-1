@@ -77,6 +77,7 @@ class mod_stocktransfer_advanced extends ModeleNumRefStockTransfer
 		$texte .= '<table class="nobordernopadding centpercent">';
 
 		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("StockTransfer"), $langs->transnoentities("StockTransfer"));
+		$tooltip .= $langs->trans("GenericMaskCodes1");
 		$tooltip .= $langs->trans("GenericMaskCodes2");
 		$tooltip .= $langs->trans("GenericMaskCodes3");
 		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("StockTransfer"), $langs->transnoentities("StockTransfer"));

@@ -74,6 +74,7 @@ class mod_knowledgerecord_advanced extends ModeleNumRefKnowledgeRecord
 		$texte .= '<table class="nobordernopadding" width="100%">';
 
 		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("KnowledgeRecord"), $langs->transnoentities("KnowledgeRecord"));
+		$tooltip .= $langs->trans("GenericMaskCodes1");
 		$tooltip .= $langs->trans("GenericMaskCodes2");
 		$tooltip .= $langs->trans("GenericMaskCodes3");
 		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("KnowledgeRecord"), $langs->transnoentities("KnowledgeRecord"));

@@ -70,6 +70,7 @@ class mod_chequereceipt_thyme extends ModeleNumRefChequeReceipts
 		$texte .= '<table class="nobordernopadding centpercent">';
 
 		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("CheckReceiptShort"), $langs->transnoentities("CheckReceiptShort"));
+		$tooltip .= $langs->trans("GenericMaskCodes1");
 		$tooltip .= $langs->trans("GenericMaskCodes2");
 		$tooltip .= $langs->trans("GenericMaskCodes3");
 		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("CheckReceiptShort"), $langs->transnoentities("CheckReceiptShort"));

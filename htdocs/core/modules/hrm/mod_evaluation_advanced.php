@@ -76,6 +76,7 @@ class mod_evaluation_advanced extends ModeleNumRefEvaluation
 		$texte .= '<table class="nobordernopadding centpercent">';
 
 		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Evaluation"), $langs->transnoentities("Evaluation"));
+		$tooltip .= $langs->trans("GenericMaskCodes1");
 		$tooltip .= $langs->trans("GenericMaskCodes2");
 		$tooltip .= $langs->trans("GenericMaskCodes3");
 		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("Evaluation"), $langs->transnoentities("Evaluation"));
