@@ -81,6 +81,7 @@ class mod_expensereport_sand extends ModeleNumRefExpenseReport
 
 		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("ExpenseReport"), $langs->transnoentities("ExpenseReport"));
 		$tooltip .= $langs->trans("GenericMaskCodes1");
+		$tooltip .= '<br>';
 		//$tooltip.=$langs->trans("GenericMaskCodes2");
 		$tooltip .= $langs->trans("GenericMaskCodes3");
 		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("ExpenseReport"), $langs->transnoentities("ExpenseReport"));
