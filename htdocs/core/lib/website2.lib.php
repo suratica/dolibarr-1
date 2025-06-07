@@ -184,13 +184,13 @@ function dolSavePageContent($filetpl, Website $object, WebsitePage $objectpage, 
 		$tplcontent .= '	$pathdepth = count(explode(\'/\', $_SERVER[\'SCRIPT_NAME\'])) - 2;'."\n";
 		$tplcontent .= '	require_once ($pathdepth ? str_repeat(\'../\', $pathdepth) : \'./\').\'master.inc.php\';'."\n";
 		if ($objectpage->disable_waf != 'all') {
-			if (strpos($objectpage->disable_waf, 'NOSCANAUDIOFORINJECTION') != false) {
+			if (strpos($objectpage->disable_waf, 'NOSCANAUDIOFORINJECTION') !== false) {
 				$tplcontent .= '	define(\'NOSCANAUDIOFORINJECTION\', 1);'."\n";
 			}
-			if (strpos($objectpage->disable_waf, 'NOSCANIFRAMEFORINJECTION') != false) {
+			if (strpos($objectpage->disable_waf, 'NOSCANIFRAMEFORINJECTION') !== false) {
 				$tplcontent .= '	define(\'NOSCANIFRAMEFORINJECTION\', 1);'."\n";
 			}
-			if (strpos($objectpage->disable_waf, 'NOSCANOBJECTFORINJECTION') != false) {
+			if (strpos($objectpage->disable_waf, 'NOSCANOBJECTFORINJECTION') !== false) {
 				$tplcontent .= '	define(\'NOSCANOBJECTFORINJECTION\', 1);'."\n";
 			}
 			$tplcontent .= '	require_once DOL_DOCUMENT_ROOT.\'/waf.inc.php\';'."\n";
@@ -450,13 +450,13 @@ function dolSavePageContent($filetpl, Website $object, WebsitePage $objectpage, 
 		$tplcontent .= '	$pathdepth = count(explode(\'/\', $_SERVER[\'SCRIPT_NAME\'])) - 2;'."\n";
 		$tplcontent .= '	require_once ($pathdepth ? str_repeat(\'../\', $pathdepth) : \'./\').\'master.inc.php\';'."\n";
 		if ($objectpage->disable_waf != 'all') {
-			if (strpos($objectpage->disable_waf, 'NOSCANAUDIOFORINJECTION') != false) {
+			if (strpos($objectpage->disable_waf, 'NOSCANAUDIOFORINJECTION') !== false) {
 				$tplcontent .= '	define(\'NOSCANAUDIOFORINJECTION\', 1);'."\n";
 			}
-			if (strpos($objectpage->disable_waf, 'NOSCANIFRAMEFORINJECTION') != false) {
+			if (strpos($objectpage->disable_waf, 'NOSCANIFRAMEFORINJECTION') !== false) {
 				$tplcontent .= '	define(\'NOSCANIFRAMEFORINJECTION\', 1);'."\n";
 			}
-			if (strpos($objectpage->disable_waf, 'NOSCANOBJECTFORINJECTION') != false) {
+			if (strpos($objectpage->disable_waf, 'NOSCANOBJECTFORINJECTION') !== false) {
 				$tplcontent .= '	define(\'NOSCANOBJECTFORINJECTION\', 1);'."\n";
 			}
 			$tplcontent .= '	require_once DOL_DOCUMENT_ROOT.\'/waf.inc.php\';'."\n";
