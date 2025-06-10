@@ -3075,7 +3075,6 @@ abstract class CommonObject
 				if (get_class($this) == 'Fournisseur') {
 					$this->cond_reglement_supplier_id = $id;
 				}
-				$this->cond_reglement = $id; // for compatibility
 				$this->deposit_percent = $deposit_percent;
 				return 1;
 			} else {
