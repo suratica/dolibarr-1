@@ -21,7 +21,7 @@ services:
 
 
 addons:
-  mariadb: '10.5'
+  mariadb: '10.6'
 
 
 env:
