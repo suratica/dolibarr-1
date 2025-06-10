@@ -136,7 +136,7 @@ install:
 
   #sudo apt install composer
   composer -V
-  composer -n config -g vendor-dir htdocs/includes
+  sudo composer -n config -g vendor-dir htdocs/includes
   echo
 
 - |
