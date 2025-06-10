@@ -2927,11 +2927,11 @@ img.hideonsmartphone.pictoactionview {
 
 .pictofixedwidth {
 	text-align: start;
-	width: 1.3em;
+	width: 20px;	/* do not use em unit here */
 	/* padding-right: 0; */
 }
 img.pictofixedwidth {
-	width: 1.2em;
+	width: 18px;	/* Do not use em unit here */
 	padding-right: 2px;
 }
 

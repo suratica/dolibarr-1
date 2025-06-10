@@ -2843,11 +2843,11 @@ span.widthpictotitle.pictotitle {
 }
 .pictofixedwidth {
 	text-align: start;
-	width: 1.35em;
+	width: 20px;	/* Do not use em unit here */
 	/* padding-right: 0; */
 }
 img.pictofixedwidth {
-	width: 1.2em;
+	width: 18px;	/* Do not use em unit here */
 	padding-right: 2px;
 }
 
