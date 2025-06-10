@@ -32,6 +32,7 @@ require '../main.inc.php';
  * @var HookManager $hookmanager
  * @var Translate $langs
  * @var User $user
+ * @var	Societe	$mysoc
  */
 
 // Load translation files required by the page
