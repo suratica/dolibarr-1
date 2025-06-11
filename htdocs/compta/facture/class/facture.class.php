@@ -148,31 +148,6 @@ class Facture extends CommonInvoice
 	public $ref_customer;
 
 	/**
-	 * @var float
-	 */
-	public $total_ht;
-	/**
-	 * @var float
-	 */
-	public $total_tva;
-	/**
-	 * @var float
-	 */
-	public $total_localtax1;
-	/**
-	 * @var float
-	 */
-	public $total_localtax2;
-	/**
-	 * @var float
-	 */
-	public $total_ttc;
-	/**
-	 * @var float
-	 */
-	public $revenuestamp;
-
-	/**
 	 * @var float|string
 	 */
 	public $resteapayer;
@@ -191,6 +166,7 @@ class Facture extends CommonInvoice
 	 * @var ?string key of POS terminal ('0', '1', ...)
 	 */
 	public $pos_source;
+
 	/**
 	 * @var int id of template invoice when generated from a template invoice
 	 */
@@ -466,6 +442,8 @@ class Facture extends CommonInvoice
 
 		$this->ismultientitymanaged = 1;
 		$this->isextrafieldmanaged = 1;
+
+		$this->fields['ref_ext']['visible'] = getDolGlobalInt('MAIN_LIST_SHOW_REF_EXT');
 	}
 
 	/**
