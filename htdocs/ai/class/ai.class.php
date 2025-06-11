@@ -160,11 +160,16 @@ class Ai
 					$postPrompt = $configurations[$function]['postPrompt'];
 				}
 			}
+
+			// Get the default value of prePrompt if not defined
 			if (empty($prePrompt) && $function == 'textgenerationemail') {
 				$prePrompt = self::AI_DEFAULT_PROMPT_FOR_EMAIL;
 			}
 			if (empty($prePrompt) && $function == 'textgenerationwebpage') {
 				$prePrompt = self::AI_DEFAULT_PROMPT_FOR_WEBPAGE;
+			}
+			if (empty($prePrompt) && $function == 'textgenerationextrafield') {
+				$prePrompt = self::AI_DEFAULT_PROMPT_FOR_EXTRAFIELD_FILLER;
 			}
 			if (empty($prePrompt) && $function == 'texttranslation') {
 				$prePrompt = self::AI_DEFAULT_PROMPT_FOR_TEXT_TRANSLATION;
