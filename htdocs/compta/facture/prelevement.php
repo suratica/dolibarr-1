@@ -799,7 +799,7 @@ if ($object->id > 0) {
 	}
 
 	// Add a transfer request
-	if ($object->status > $object::STATUS_DRAFT && $object->paid == 0 && $num == 0) {
+	if ($object->status > $object::STATUS_DRAFT && $object->paid == 0 && $numopen == 0) {
 		if ($resteapayer > 0) {
 			if ($user_perms) {
 				$remaintopaylesspendingdebit = $resteapayer - $pending;
