@@ -841,7 +841,7 @@ if ($object->id > 0) {
 					if ($res > 0 && !$companyBankAccount->verif()) {
 						print img_warning('Error on default bank number for IBAN : '.$langs->trans($companyBankAccount->error));
 					}
-				} elseif ($numopen || ($type != 'bank-transfer' && $object->mode_reglement_code == 'PRE') || ($type == 'bank-transfer' && $object->mode_reglement_code == 'VIR')) {
+				} elseif (($type != 'bank-transfer' && $object->mode_reglement_code == 'PRE') || ($type == 'bank-transfer' && $object->mode_reglement_code == 'VIR')) {
 					print img_warning($langs->trans("NoDefaultIBANFound"));
 				}
 
