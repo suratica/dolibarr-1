@@ -5782,7 +5782,7 @@ class Form
 						$select.val(selectedValues);
 		            },
 		            error: function (xhr, status, error) {
-		                alert("Error when loading ajax page : " + error);
+		                console.log("Error when loading ajax page : " + error);
 		            }
 		        });
 
