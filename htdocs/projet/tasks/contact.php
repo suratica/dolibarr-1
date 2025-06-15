@@ -412,12 +412,12 @@ if ($id > 0 || !empty($ref)) {
 			// Ligne ajout pour contact interne
 			print '<tr class="oddeven nohover">';
 
-			print '<td class="nowrap">';
+			print '<td class="nowraponall">';
 			print img_object('', 'user').' '.$langs->trans("Users");
 			print '</td>';
 
 			print '<td>';
-			print $conf->global->MAIN_INFO_SOCIETE_NOM;
+			print getDolGlobalString('MAIN_INFO_SOCIETE_NOM');
 			print '</td>';
 
 			print '<td>';
@@ -432,14 +432,14 @@ if ($id > 0 || !empty($ref)) {
 			print '<td>';
 			$formcompany->selectTypeContact($object, '', 'type', 'internal', 'position');
 			print '</td>';
-			print '<td class="right" colspan="3" ><input type="submit" class="button button-add small" value="'.$langs->trans("Add").'" name="addsourceinternal"></td>';
+			print '<td class="right" colspan="3"><input type="submit" class="button button-add small" value="'.$langs->trans("Add").'" name="addsourceinternal"></td>';
 			print '</tr>';
 
 			// Line to add an external contact. Only if project linked to a third party.
 			if ($projectstatic->socid) {
 				print '<tr class="oddeven">';
 
-				print '<td class="nowrap">';
+				print '<td class="nowraponall">';
 				print img_object('', 'contact').' '.$langs->trans("ThirdPartyContacts");
 				print '</td>';
 
@@ -505,7 +505,7 @@ if ($id > 0 || !empty($ref)) {
 					print $companystatic->getNomUrl(1);
 				}
 				if ($tab[$i]['socid'] < 0) {
-					print $conf->global->MAIN_INFO_SOCIETE_NOM;
+					print getDolGlobalString('MAIN_INFO_SOCIETE_NOM');
 				}
 				if (!$tab[$i]['socid']) {
 					print '&nbsp;';
