@@ -513,7 +513,7 @@ if ($id > 0 || !empty($ref)) {
 				print '</td>';
 
 				// Contact
-				print '<td>';
+				print '<td class="tdoverflowmax150">';
 				if ($tab[$i]['source'] == 'internal') {
 					$userstatic->id = $tab[$i]['id'];
 					$userstatic->lastname = $tab[$i]['lastname'];
