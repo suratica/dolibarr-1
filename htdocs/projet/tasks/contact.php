@@ -409,7 +409,7 @@ if ($id > 0 || !empty($ref)) {
 			print '<td colspan="3">&nbsp;</td>';
 			print "</tr>\n";
 
-			// Ligne ajout pour contact interne
+			// Line to add an internal contact
 			print '<tr class="oddeven nohover">';
 
 			print '<td class="nowraponall">';
@@ -427,10 +427,10 @@ if ($id > 0 || !empty($ref)) {
 			} else {
 				$contactsofproject = $projectstatic->getListContactId('internal');
 			}
-			print $form->select_dolusers((GETPOSTISSET('userid') ? GETPOSTINT('userid') : $user->id), 'userid', 0, null, 0, '', $contactsofproject, '0', 0, 0, '', 1, $langs->trans("ResourceNotAssignedToProject"));
+			print $form->select_dolusers((GETPOSTISSET('userid') ? GETPOSTINT('userid') : $user->id), 'userid', 0, null, 0, '', $contactsofproject, '0', 0, 0, '', 1, $langs->trans("ResourceNotAssignedToProject"), 'minwidth200imp maxwidth300');
 			print '</td>';
 			print '<td>';
-			$formcompany->selectTypeContact($object, '', 'type', 'internal', 'position');
+			print $formcompany->selectTypeContact($object, '', 'type', 'internal', 'position', 0, 'minwidth200imp maxwidth300', 0);
 			print '</td>';
 			print '<td class="right" colspan="3"><input type="submit" class="button button-add small" value="'.$langs->trans("Add").'" name="addsourceinternal"></td>';
 			print '</tr>';
@@ -446,17 +446,17 @@ if ($id > 0 || !empty($ref)) {
 				print '<td>';
 				$thirdpartyofproject = $projectstatic->getListContactId('thirdparty');
 				$selectedCompany = GETPOSTISSET("newcompany") ? GETPOST("newcompany") : $projectstatic->socid;
-				$selectedCompany = $formcompany->selectCompaniesForNewContact($object, 'id', $selectedCompany, 'newcompany', $thirdpartyofproject, 0, '&withproject='.$withproject);
+				$selectedCompany = $formcompany->selectCompaniesForNewContact($object, 'id', $selectedCompany, 'newcompany', $thirdpartyofproject, 0, '&withproject='.$withproject, 'minwidth200imp maxwidth300');
 				print '</td>';
 
 				print '<td>';
 				$contactofproject = $projectstatic->getListContactId('external');
 				//print $form->selectcontacts($selectedCompany, '', 'contactid', 0, '', $contactofproject, 0, '', false, 0, 0);
-				print $form->select_contact($selectedCompany, '', 'contactid', 0, '', ''/* arg not used - $contactofproject */, 0, 'maxwidth300 widthcentpercentminusx', true);
+				print $form->select_contact($selectedCompany, '', 'contactid', 0, '', ''/* arg not used - $contactofproject */, 0, 'minwidth200imp maxwidth300', true);
 				$nbofcontacts = $form->num;
 				print '</td>';
 				print '<td>';
-				$formcompany->selectTypeContact($object, '', 'typecontact', 'external', 'position');
+				print $formcompany->selectTypeContact($object, '', 'typecontact', 'external', 'position', 0, 'minwidth200imp maxwidth300', 0);
 				print '</td>';
 				print '<td class="right" colspan="3" ><input type="submit" class="button button-add small" id="add-customer-contact" name="addsourceexternal" value="'.$langs->trans("Add").'"';
 				if (!$nbofcontacts) {
