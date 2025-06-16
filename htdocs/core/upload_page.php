@@ -25,28 +25,10 @@
  *       \brief      Page to show a generic upload file feature
  */
 
-//if (! defined('NOREQUIREUSER'))   define('NOREQUIREUSER','1');	// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIREDB'))   define('NOREQUIREDB','1');		// Not disabled cause need to load personalized language
-//if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC','1');
-//if (! defined('NOREQUIRETRAN')) define('NOREQUIRETRAN','1');		// Not disabled cause need to do translations
-/*
-if (!defined('NOCSRFCHECK')) {
-	define('NOCSRFCHECK', 1);
-}
-if (!defined('NOTOKENRENEWAL')) {
-	define('NOTOKENRENEWAL', 1);
-}
-*/
-//if (! defined('NOLOGIN')) define('NOLOGIN',1);					// Not disabled cause need to load personalized language
-/*
-if (!defined('NOREQUIREMENU')) {
-	define('NOREQUIREMENU', 1);
-}
-*/
-//if (! defined('NOREQUIREHTML'))  define('NOREQUIREHTML',1);
-
 require_once '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
+require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+
 /**
  * @var Conf $conf
  * @var DoliDB $db
@@ -63,6 +45,11 @@ $langs->loadLangs(array("main", "other"));
 
 $action = GETPOST('action', 'aZ09');
 $modulepart = GETPOST('modulepart', 'aZ09');
+
+$upload_dir = $conf->admin->dir_temp.'/import';
+
+// Delete the temporary files that are used when uploading files
+dol_delete_file($upload_dir.'/upload_page-by'.$user->id.'-*');
 
 
 /*
@@ -86,16 +73,15 @@ if ($action == 'uploadfile') {	// Test on permission not required here. Done lat
 
 	$permlevel1 = 'read';
 	$permlevel2 = '';
-
 	$fileprefix = 'unknown';
-	if ($module == 'fournisseur') {
+	if (in_array($modulepart, array('fournisseur', 'invoice_supplier'))) {
 		$permlevel1 = 'facture';
 		$permlevel2 = 'read';
-		$fileprefix = 'upload_page-by'.$user->id.'-'.$module.'-'.GETPOSTINT('socid').'-'.GETPOSTINT('ee');
-	} elseif ($module == 'expensereport') {
-		$fileprefix = 'upload_page-by'.$user->id.'-'.$module.'-'.GETPOSTINT('userexpensereportid');
-	} elseif ($module == 'salaries') {
-		$fileprefix = 'upload_page-by'.$user->id.'-'.$module.'-'.GETPOSTINT('usersalaryid');
+		$fileprefix = 'upload_page-by'.$user->id.'-'.$modulepart.'-'.(GETPOSTINT('socid') > 0 ? GETPOSTINT('socid') : 0).'-'.(GETPOSTINT('search_prodid') > 0 ? GETPOSTINT('search_prodid') : 0);
+	} elseif ($modulepart == 'expensereport') {
+		$fileprefix = 'upload_page-by'.$user->id.'-'.$modulepart.'-'.(GETPOSTINT('userexpensereportid') > 0 ? GETPOSTINT('userexpensereportid') : 0);
+	} elseif ($modulepart == 'salaries') {
+		$fileprefix = 'upload_page-by'.$user->id.'-'.$modulepart.'-'.(GETPOSTINT('usersalaryid') > 0 ? GETPOSTINT('usersalaryid') : 0);
 	}
 
 	if ($permlevel2) {
@@ -103,7 +89,6 @@ if ($action == 'uploadfile') {	// Test on permission not required here. Done lat
 	} else {
 		$permissiontoadd = $user->hasRight($module, $permlevel1);
 	}
-	$upload_dir = $dir_temp.'/import';
 	$forceFullTextIndexation = '1';
 
 	$_FILES['userfile']['name'] = $fileprefix.'-'.$_FILES['userfile']['name'];
@@ -300,11 +285,20 @@ $(document).ready(function() {
 		}
 	});
 
+	jQuery('#userexpensereport:not(.disableautoopen)').on('click', function(event) {
+		console.log('Click on link userexpensereport to open input file');
+		console.log(event);
+		if (!event.target.closest('.disableautoopen')) {
+			$('#modulepart').val('expensereport');
+			$('#fileInput').click();
+		}
+	});
+
 	jQuery('#userpayroll:not(.disableautoopen)').on('click', function(event) {
 		console.log('Click on link userpayroll to open input file');
 		console.log(event);
 		if (!event.target.closest('.disableautoopen')) {
-			$('#modulepart').val('salary');
+			$('#modulepart').val('salaries');
 			$('#fileInput').click();
 		}
 	});
