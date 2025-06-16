@@ -84,19 +84,33 @@ if ($action == 'uploadfile') {	// Test on permission not required here. Done lat
 	$dir_output = $arrayobject['dir_output'];
 	$dir_temp = $arrayobject['dir_temp'];
 
-	$permlevel1 = $element;
+	$permlevel1 = 'read';
+	$permlevel2 = '';
+
+	$fileprefix = 'unknown';
 	if ($module == 'fournisseur') {
 		$permlevel1 = 'facture';
+		$permlevel2 = 'read';
+		$fileprefix = 'upload_page-by'.$user->id.'-'.$module.'-'.GETPOSTINT('socid').'-'.GETPOSTINT('ee');
+	} elseif ($module == 'expensereport') {
+		$fileprefix = 'upload_page-by'.$user->id.'-'.$module.'-'.GETPOSTINT('userexpensereportid');
+	} elseif ($module == 'salaries') {
+		$fileprefix = 'upload_page-by'.$user->id.'-'.$module.'-'.GETPOSTINT('usersalaryid');
 	}
 
-	$permissiontoadd = $user->hasRight($module, $permlevel1, 'read');
+	if ($permlevel2) {
+		$permissiontoadd = $user->hasRight($module, $permlevel1, $permlevel2);
+	} else {
+		$permissiontoadd = $user->hasRight($module, $permlevel1);
+	}
 	$upload_dir = $dir_temp.'/import';
 	$forceFullTextIndexation = '1';
 
-	// Set $object so entry file will be linked to object.
-	// TODO
+	$_FILES['userfile']['name'] = $fileprefix.'-'.$_FILES['userfile']['name'];
 
 	include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
+
+	// Then ...
 }
 
 
@@ -141,6 +155,7 @@ $uploadform = '';
 
 $uploadform = '<div class="display-flex">';
 
+// Form to upload a supplier invoice
 if (isModEnabled('supplier_invoice')) {
 	$langs->load("bills");
 	$uploadform .= '
@@ -156,28 +171,64 @@ if (isModEnabled('supplier_invoice')) {
 
 	$uploadform .= img_picto('', 'product', 'class="pictofixedwidth"');
 	$prodid = GETPOSTINT('prodid');
-	$prodtext = '';
+	$prodtext = $langs->trans("RefOrLabel");
 
 	//$uploadform .= '<span class="disableautoopen">';
-	$uploadform .= $form->select_produits($prodid, 'prodid', '', 0, 0, 1, 2, $prodtext, 0, array(), GETPOSTINT('socid'), '1', 0, 'maxwidth200 disableautoopen', 0, '', null, 1);
+	//$uploadform .= $form->select_produits_fournisseurs(0, $prodid, 'prodid', '', 0, 0, 1, 2, $prodtext, 0, array(), GETPOSTINT('socid'), '1', 0, 'maxwidth200 disableautoopen', 0, '', null, 1);
+	$uploadform .= $form->select_produits_fournisseurs(0, $prodid, 'prodid', '', '', array(), 1, 1, 'maxwidth200 disableautoopen', $prodtext, 1);
 	//$uploadform .= '</span>';
 
 	$uploadform .= '<br>';
 
-	$uploadform .= '<small>('.$langs->trans("OrClickToSelectAFile").')</small>
-	</div>
-	</div>';
-}
-
-if (isModEnabled('salaries')) {
-	$langs->load("salaries");
-	$uploadform .= '
-	<div id="userpayroll" class="flex-item flex-item-uploadfile">'.img_picto('', 'salary', 'class="fa-2x"').'<br>
-	<div>'.$langs->trans("UserPaySlip").'<br>
+	$uploadform .= '<br>
 	<small>('.$langs->trans("OrClickToSelectAFile").')</small>
 	</div>
 	</div>';
 }
+
+// Form to upload an expense report
+if (isModEnabled('expensereport')) {
+	$langs->load("expensereport");
+	$uploadform .= '
+	<div id="userexpensereport" class="flex-item flex-item-uploadfile">'.img_picto('', 'expensereport', 'class="fa-2x"').'<br>
+	<div>'.$langs->trans("ExpenseReport").'<br><br>';
+
+	$uploadform .= img_picto('', 'user', 'class="pictofixedwidth"');
+	//$uploadform .= '<span class="disableautoopen">';
+	$uploadform .= $form->select_dolusers(GETPOSTINT('userexpensereportid') > 0 ? GETPOSTINT('userexpensereportid') : $user->id, 'userexpensereportid', $langs->transnoentitiesnoconv("User"), null, 0, 'hierarchyme', '', '', 0, 0, '', 0, '', 'maxwidth200 disableautoopen', 1);
+	//$uploadform .= '</span>';
+
+	$uploadform .= '<br>';
+
+	$uploadform .= '<br>
+	<small>('.$langs->trans("OrClickToSelectAFile").')</small>
+	</div>
+	</div>';
+}
+
+
+// Form to upload a salary document
+if (isModEnabled('salaries')) {
+	$langs->load("salaries");
+	$uploadform .= '
+	<div id="userpayroll" class="flex-item flex-item-uploadfile">'.img_picto('', 'salary', 'class="fa-2x"').'<br>
+	<div>'.$langs->trans("UserPaySlip").'<br><br>';
+
+
+	$uploadform .= img_picto('', 'user', 'class="pictofixedwidth"');
+	//$uploadform .= '<span class="disableautoopen">';
+	$uploadform .= $form->select_dolusers(GETPOSTINT('usersalaryid') > 0 ? GETPOSTINT('usersalaryid') : $user->id, 'usersalaryid', $langs->transnoentitiesnoconv("Employee"), null, 0, 'hierarchyme', '', '', 0, 0, '', 0, '', 'maxwidth200 disableautoopen', 1);
+	//$uploadform .= '</span>';
+
+	$uploadform .= '<br>';
+
+	$uploadform .= '<br>
+	<small>('.$langs->trans("OrClickToSelectAFile").')</small>
+	</div>
+	</div>';
+}
+
+
 
 $uploadform .= '</div>';
 
