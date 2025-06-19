@@ -3607,24 +3607,27 @@ abstract class CommonObject
 	 */
 	public function updateLineUp($rowid, $rang)
 	{
-		if ($rang > 1) {
-			$fieldposition = 'rang';
-			if (in_array($this->table_element_line, array('ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
-				$fieldposition = 'position';
-			}
+		if ($rang <= 1) {
+			return;
+		}
 
-			$sql = "UPDATE ".$this->db->prefix().$this->table_element_line." SET ".$fieldposition." = ".((int) $rang);
-			$sql .= " WHERE ".$this->fk_element." = ".((int) $this->id);
-			$sql .= " AND " . $fieldposition . " = " . ((int) ($rang - 1));
-			if ($this->db->query($sql)) {
-				$sql = "UPDATE ".$this->db->prefix().$this->table_element_line." SET ".$fieldposition." = ".((int) ($rang - 1));
-				$sql .= ' WHERE rowid = '.((int) $rowid);
-				if (!$this->db->query($sql)) {
-					dol_print_error($this->db);
-				}
-			} else {
-				dol_print_error($this->db);
-			}
+		$fieldposition = 'rang';
+		if (in_array($this->table_element_line, array('ecm_files', 'emailcollector_emailcollectoraction', 'product_attribute_value'))) {
+			$fieldposition = 'position';
+		}
+
+		$sql = "UPDATE ".$this->db->prefix().$this->table_element_line." SET ".$fieldposition." = ".((int) $rang);
+		$sql .= " WHERE ".$this->fk_element." = ".((int) $this->id);
+		$sql .= " AND " . $fieldposition . " = " . ((int) ($rang - 1));
+		if (!$this->db->query($sql)) {
+			dol_print_error($this->db);
+			return;
+		}
+
+		$sql = "UPDATE ".$this->db->prefix().$this->table_element_line." SET ".$fieldposition." = ".((int) ($rang - 1));
+		$sql .= ' WHERE rowid = '.((int) $rowid);
+		if (!$this->db->query($sql)) {
+			dol_print_error($this->db);
 		}
 	}
 
