@@ -102,7 +102,7 @@ if (! -d $ENV{"DESTIBETARC"} || ! -d $ENV{"DESTISTABLE"})
 
 if (! $ENV{"GITREMOTENAME"})
 {
-	print "Error: environment variable  GITREMOTENAME does not exist.\n";
+	print "Error: environment variable GITREMOTENAME does not exist. You can set it to 'origin' or any other git remote name.\n";
 	print "$PROG.$Extension aborted.\n";
 	sleep 2;
 	exit 1;
