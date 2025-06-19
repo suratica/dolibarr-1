@@ -657,10 +657,10 @@ class MultiCurrency extends CommonObject
 	/**
 	 * Sync rates from API
 	 *
-	 * @param 	string  $key                No more used
-	 * @param   int     $addifnotfound      Add if not found
-	 * @param   string  $mode				"" for standard use, "cron" to use it in a cronjob
-	 * @return  int							Return integer <0 if KO, >0 if OK, if mode = "cron" OK is 0
+	 * @param 	int|string  $key                No more used
+	 * @param   int 	    $addifnotfound      Add if not found
+	 * @param   string  	$mode				"" for standard use, "cron" to use it in a cronjob
+	 * @return  int								Return integer <0 if KO, >0 if OK, if mode = "cron" OK is 0
 	 */
 	public function syncRates($key = '', $addifnotfound = 0, $mode = "")
 	{
