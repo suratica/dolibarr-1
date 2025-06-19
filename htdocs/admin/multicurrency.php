@@ -149,8 +149,8 @@ if ($action == 'add_currency') {			// Manual insertion of a rate
 
 		setEventMessages($langs->trans("SetupSaved"), null);
 	} else {
-		// Run the update
-		$result = $multicurrency->syncRates();
+		// Run the update o currency rate (this may updates database)
+		$result = $multicurrency->syncRates(0, 0, '');
 		if ($result > 0) {
 			setEventMessages($langs->trans("CurrencyRateSyncSucceed"), null, "mesgs");
 		} else {

@@ -627,10 +627,10 @@ class MultiCurrency extends CommonObject
 	}
 
 	/**
-	 * With free account we can't set source then recalcul all rates to force another source.
+	 * With free account we can't set source to something else than US, to we recalculate all rates to force another source.
 	 * This modify the array &$TRate.
 	 *
-	 * @param   stdClass	$TRate	Object containing all currencies rates
+	 * @param   stdClass	$TRate	Object containing all currencies rates to recalculate
 	 * @return	int					-1 if KO, 0 if nothing, 1 if OK
 	 */
 	public function recalculRates(&$TRate)
@@ -657,12 +657,12 @@ class MultiCurrency extends CommonObject
 	/**
 	 * Sync rates from API
 	 *
-	 * @param 	int|string  $key                No more used
+	 * @param 	int			$nu	                No more used
 	 * @param   int 	    $addifnotfound      Add if not found
 	 * @param   string  	$mode				"" for standard use, "cron" to use it in a cronjob
 	 * @return  int								Return integer <0 if KO, >0 if OK, if mode = "cron" OK is 0
 	 */
-	public function syncRates($key = '', $addifnotfound = 0, $mode = "")
+	public function syncRates($nu = 0, $addifnotfound = 0, $mode = "")
 	{
 		global $db, $langs;
 
@@ -698,6 +698,7 @@ class MultiCurrency extends CommonObject
 				$TRate = $response->quotes;
 				//$timestamp = $response->timestamp;
 
+				// Recalculate rate and update it (or add it) into database
 				if ($this->recalculRates($TRate) >= 0) {
 					foreach ($TRate as $currency_code => $rate) {
 						$code = substr($currency_code, 3, 3);
