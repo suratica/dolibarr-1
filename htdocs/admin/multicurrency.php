@@ -224,7 +224,8 @@ print '</td></tr>';
 
 
 print '<tr class="oddeven">';
-print '<td>'.$langs->transnoentitiesnoconv("multicurrency_useOriginTx").'</td>';
+$tooltip = $langs->trans("multicurrency_useOriginTxHelp");
+print '<td>'.$form->textwithpicto($langs->transnoentitiesnoconv("multicurrency_useOriginTx"), $tooltip).'</td>';
 print '<td class="center">';
 if ($conf->use_javascript_ajax) {
 	print ajax_constantonoff('MULTICURRENCY_USE_ORIGIN_TX', array(), null, 0, 0, 0, 2, 0, 1);

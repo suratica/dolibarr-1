@@ -629,6 +629,7 @@ class MultiCurrency extends CommonObject
 	/**
 	 * With free account we can't set source to something else than US, to we recalculate all rates to force another source.
 	 * This modify the array &$TRate.
+	 * It is called by the syncRates() method.
 	 *
 	 * @param   stdClass	$TRate	Object containing all currencies rates to recalculate
 	 * @return	int					-1 if KO, 0 if nothing, 1 if OK
@@ -655,7 +656,8 @@ class MultiCurrency extends CommonObject
 	}
 
 	/**
-	 * Sync rates from API
+	 * Sync rates from API.
+	 * This is called by the admin page and by the autoupdate cron job.
 	 *
 	 * @param 	int			$nu	                No more used
 	 * @param   int 	    $addifnotfound      Add if not found
