@@ -718,7 +718,7 @@ if ($event->type == 'payout.created' && getDolGlobalString('STRIPE_AUTO_RECORD_P
 			$actioncomm->percentage = -1;
 
 			$actioncomm->type_code = 'AC_OTH_AUTO'; // Type of event ('AC_OTH', 'AC_OTH_AUTO', 'AC_XXX'...)
-			$actioncomm->code = 'AC_PAYMENT_STRIPE_KO_IPN_SEPA';
+			$actioncomm->code = 'AC_PAYMENT_STRIPE_IPN_SEPA_KO';
 
 			$actioncomm->datep = $now;
 			$actioncomm->datef = $now;
