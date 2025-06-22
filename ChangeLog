@@ -1199,7 +1199,6 @@ FIX: #26250 fatal error on kit
 FIX: #32339 Delete a loan settlement is partial
 FIX: #33038 drag and drop files are not prefixed with object reference
 FIX: #33117 accountancy export Quadratus when doc ref is less than 10 char
-FIX: #33145 wrong label status buy on prodcut tooltip
 FIX: #33145 wrong label status buy on product tooltip
 FIX: accountancy export Quadratus when doc ref is less than 10 char
 FIX: bad dispatched quantities for batches on shipment card
