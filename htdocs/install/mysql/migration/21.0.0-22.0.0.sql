@@ -294,3 +294,5 @@ INSERT INTO llx_c_type_container (code, label, active, module, position, typecon
 ALTER TABLE llx_mrp_mo ADD COLUMN extraparams varchar(255) DEFAULT NULL;
 
 UPDATE llx_actioncomm set code = 'AC_PAYMENT_STRIPE_IPN_SEPA_KO' where code = 'AC_IPN' and label like 'Payment error (SEPA%';
+
+ALTER TABLE llx_blockedlog ADD COLUMN debuginfo mediumtext;
