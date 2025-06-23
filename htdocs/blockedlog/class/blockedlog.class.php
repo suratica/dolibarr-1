@@ -162,19 +162,19 @@ class BlockedLog
 	 */
 	public function loadTrackedEvents()
 	{
-		global $conf;
+		global $langs;
 
 		$this->trackedevents = array();
 
 		// Customer Invoice/Facture / Payment
 		if (isModEnabled('invoice')) {
-			$this->trackedevents['BILL_VALIDATE'] = 'logBILL_VALIDATE';
-			//$this->trackedevents['BILL_UPDATE'] = 'logBILL_UPDATE';
-			$this->trackedevents['BILL_SENTBYMAIL'] = 'logBILL_SENTBYMAIL';
-			$this->trackedevents['DOC_DOWNLOAD'] = 'BlockedLogBillDownload';
-			$this->trackedevents['DOC_PREVIEW'] = 'BlockedLogBillPreview';
-			$this->trackedevents['PAYMENT_CUSTOMER_CREATE'] = 'logPAYMENT_CUSTOMER_CREATE';
-			$this->trackedevents['PAYMENT_CUSTOMER_DELETE'] = 'logPAYMENT_CUSTOMER_DELETE';
+			$this->trackedevents['BILL_VALIDATE'] = array('id' => 'BILL_VALIDATE', 'label' => 'logBILL_VALIDATE', 'labelhtml' => img_picto('', 'bill', 'class="pictofixedwidth").').$langs->trans('logBILL_VALIDATE'));
+			//$this->trackedevents['BILL_UPDATE'] = array('id' => 'BILL_VALIDATE', 'label' => 'logBILL_UPDATE', 'labelhtml' => img_picto('', 'bill', 'class="pictofixedwidth").').$langs->trans('logBILL_UPDATE'));
+			$this->trackedevents['BILL_SENTBYMAIL'] = array('id' => 'BILL_SENTBYMAIL', 'label' => 'logBILL_SENTBYMAIL', 'labelhtml' => img_picto('', 'bill', 'class="pictofixedwidth").').$langs->trans('logBILL_SENTBYMAIL'));
+			$this->trackedevents['DOC_DOWNLOAD'] = array('id' => 'DOC_DOWNLOAD', 'label' => 'BlockedLogBillDownload', 'labelhtml' => img_picto('', 'bill', 'class="pictofixedwidth").').$langs->trans('BlockedLogBillDownload'));
+			$this->trackedevents['DOC_PREVIEW'] = array('id' => 'DOC_PREVIEW', 'label' => 'BlockedLogBillPreview', 'labelhtml' => img_picto('', 'bill', 'class="pictofixedwidth").').$langs->trans('BlockedLogBillPreview'));
+			$this->trackedevents['PAYMENT_CUSTOMER_CREATE'] = array('id' => 'PAYMENT_CUSTOMER_CREATE', 'label' => 'logPAYMENT_CUSTOMER_CREATE', 'labelhtml' => img_picto('', 'bill', 'class="pictofixedwidth").').$langs->trans('logPAYMENT_CUSTOMER_CREATE'));
+			$this->trackedevents['PAYMENT_CUSTOMER_DELETE'] = array('id' => 'PAYMENT_CUSTOMER_DELETE', 'label' => 'logPAYMENT_CUSTOMER_DELETE', 'labelhtml' => img_picto('', 'bill', 'class="pictofixedwidth").').$langs->trans('logPAYMENT_CUSTOMER_DELETE'));
 		}
 
 		/* Supplier
@@ -237,6 +237,8 @@ class BlockedLog
 				$this->trackedevents[$val] = 'log'.$val;
 			}
 		}
+
+		$this->trackedevents['BLOCKEDLOG_EXPORT'] = 'logBLOCKEDLOG_EXPORT';
 
 		return 1;
 	}

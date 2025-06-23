@@ -504,7 +504,6 @@ print '</td>';
 
 // Actions code
 print '<td class="liste_titre">';
-//print $form->selectarray('search_code', $block_static->trackedevents, $search_code, 1, 0, 0, '', 1, 0, 0, 'ASC', 'maxwidth150', 1);
 print $form->multiselectarray('search_code', $block_static->trackedevents, $search_code, 0, 0, 'maxwidth150', 1);
 print '</td>';
 
