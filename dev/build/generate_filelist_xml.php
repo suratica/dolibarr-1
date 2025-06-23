@@ -276,29 +276,37 @@ if ($needtoclose) {
 	fputs($fp, '  </dir>'."\n");
 }
 // Add the SQL file
+$regextoinclude = 'llx_blockedlog.*(\.php|\.sql)$';
+$regextoexclude = '';  // Exclude dirs
+$files = dol_dir_list(dirname(__FILE__).'/../../htdocs/install/mysql/tables', 'files', 0, $regextoinclude, $regextoexclude, 'fullname');
 $needtoclose = 0;
-$file = dirname(__FILE__).'/../../htdocs/install/mysql/llx_blockedlog.sql';
-$newdir = str_replace(DOL_DOCUMENT_ROOT, '', dirname($file));
-$newdir = str_replace(dirname(__FILE__).'/../../htdocs', '', dirname($file));
-if ($newdir != $dir) {
+foreach ($files as $filetmp) {
+	$file = $filetmp['fullname'];
+	$newdir = str_replace(DOL_DOCUMENT_ROOT, '', dirname($file));
+	$newdir = str_replace(dirname(__FILE__).'/../../htdocs', '', dirname($file));
+	if ($newdir != $dir) {
+		if ($needtoclose) {
+			fputs($fp, '  </dir>'."\n");
+		}
+		fputs($fp, '  <dir name="'.$newdir.'">'."\n");
+		$dir = $newdir;
+		$needtoclose = 1;
+	}
+	if (filetype($file) == "file") {
+		$md5 = md5_file($file);
+		$checksumconcat[] = $md5;
+		fputs($fp, '    <md5file name="'.basename($file).'" size="'.filesize($file).'">'.$md5.'</md5file>'."\n");
+	}
 	if ($needtoclose) {
 		fputs($fp, '  </dir>'."\n");
 	}
-	fputs($fp, '  <dir name="'.$newdir.'">'."\n");
-	$dir = $newdir;
-	$needtoclose = 1;
-}
-if (filetype($file) == "file") {
-	$md5 = md5_file($file);
-	$checksumconcat[] = $md5;
-	fputs($fp, '    <md5file name="'.basename($file).'" size="'.filesize($file).'">'.$md5.'</md5file>'."\n");
 }
 if ($needtoclose) {
 	fputs($fp, '  </dir>'."\n");
 }
 // Add the trigger file
-$needtoclose = 0;
 $file = dirname(__FILE__).'/../../htdocs/core/triggers/interface_50_modBlockedlog_ActionsBlockedLog.class.php';
+$needtoclose = 0;
 $newdir = str_replace(DOL_DOCUMENT_ROOT, '', dirname($file));
 $newdir = str_replace(dirname(__FILE__).'/../../htdocs', '', dirname($file));
 if ($newdir != $dir) {
