@@ -137,6 +137,11 @@ class BlockedLog
 	public $user_fullname = '';
 
 	/**
+	 * @var string
+	 */
+	public $debuginfo;
+
+	/**
 	 * Array of tracked event codes
 	 * @var string[]
 	 */
