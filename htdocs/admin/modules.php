@@ -165,6 +165,8 @@ if ($mode == 'marketplace') {
 	$remotestore->loadRemoteSources();
 }
 
+$object = new stdClass();
+
 
 /*
  * Actions
