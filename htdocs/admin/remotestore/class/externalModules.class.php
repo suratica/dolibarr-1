@@ -429,14 +429,14 @@ class ExternalModules
 						if (preg_match('/https:.*\?id=(\d+)$/', $urldownload, $reg)) {
 							$urldownload = 'https://www.dolistore.com/_service_download.php?t=free&p='.$reg[1];
 						}
-						$download_link .= '<a class="paddingleft paddingright" target="_blank" href="'.$urldownload.'" rel="noopener noreferrer"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/Download-128.png" /></a>';
+						$download_link .= '<a class="paddingleft paddingright" target="_blank" href="'.$urldownload.'" rel="noopener noreferrer"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/download.png" /></a>';
 					}
 				}
 
 				if ($product['source'] === 'dolistore') {
 					$urldownload = 'https://www.dolistore.com/_service_download.php?t=free&p=' . $product['id'];
 					$download_link = '<a class="paddingleft paddingright" target="_blank" href="'.$this->shop_url.'/product.php?id='.((int) $product["id"]).'"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/follow.png" /></a>';
-					$download_link .= '<a class="paddingleft paddingright" target="_blank" href="'.$urldownload.'" rel="noopener noreferrer"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/Download-128.png" /></a>';
+					$download_link .= '<a class="paddingleft paddingright" target="_blank" href="'.$urldownload.'" rel="noopener noreferrer"><img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/download.png" /></a>';
 				}
 			}
 
