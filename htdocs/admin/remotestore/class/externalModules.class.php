@@ -213,7 +213,7 @@ class ExternalModules
 		}
 
 		$url .= (preg_match('/\?/', $url) ? '&' : '?').'apikey='.$this->dolistore_api_key;
-		$response = getURLContent($url, 'GET', '', 1, $httpheader);
+		$response = getURLContent($url, 'GET', '', 1, $httpheader, array('https'), 0, -1, 5, 5);
 
 		$status_code = $response['http_code'];
 		$body = 'Error';
@@ -221,9 +221,24 @@ class ExternalModules
 		if ($status_code == 200) {
 			$body = $response['content'];
 			$body = json_decode($body, true);
+			$returnarray = array(
+				'status_code' => $status_code,
+				'response' => $body
+			);
+		} else {
+			$returnarray = array(
+				'status_code' => $status_code,
+				'response' => $body
+			);
+			if (!empty($response['curl_error_no'])) {
+				$returnarray['curl_error_no'] = $response['curl_error_no'];
+			}
+			if (!empty($response['curl_error_msg'])) {
+				$returnarray['curl_error_msg'] = $response['curl_error_msg'];
+			}
 		}
 
-		return array('status_code' => $status_code, 'response' => $body);
+		return $returnarray;
 	}
 
 	/**
@@ -746,6 +761,10 @@ class ExternalModules
 			}
 		}
 
+		if (!empty($request['response']['curl_error_msg'])) {
+			$error_message .= ' - ' . $request['response']['curl_error_msg'];
+		}
+
 		// Return the formatted error message
 		return sprintf('This call to the API failed and returned an HTTP status of %d. That means: %s.', $request['status_code'], $error_message);
 	}
@@ -1034,6 +1053,7 @@ class ExternalModules
 	 */
 	public function checkApiStatus()
 	{
+		// Call remote API
 		$testRequest = $this->callApi('categories');
 
 		if (!isset($testRequest['response']) || !is_array($testRequest['response']) || ($testRequest['status_code'] != 200 && $testRequest['status_code'] != 201)) {
