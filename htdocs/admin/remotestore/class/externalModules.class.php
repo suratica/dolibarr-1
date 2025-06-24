@@ -416,7 +416,8 @@ class ExternalModules
 			// free or pay ?
 			if ($product["price_ttc"] > 0) {
 				$price = '<h3>'.price(price2num($product["price_ttc"], 'MT'), 0, $langs, 1, -1, -1, 'EUR').' '.$langs->trans("TTC").'</h3>';
-				$download_link = '<a target="_blank" href="'.$this->shop_url.'/product.php?id='.((int) $product['id']).'" title="'.$langs->trans("View").'">';
+
+				$download_link = '<a class="paddingleft paddingright" target="_blank" title="'.$langs->trans("View").'" href="'.$this->shop_url.'/product.php?id='.((int) $product['id']).'">';
 				$download_link .= img_picto('', 'url', 'class="size2x paddingright"');
 				$download_link .= '</a>';
 			} else {
@@ -447,10 +448,10 @@ class ExternalModules
 					}
 				} elseif ($product['source'] === 'dolistore') {
 					$urldownload = 'https://www.dolistore.com/_service_download.php?t=free&p=' . $product['id'];
-					$download_link = '<a class="paddingleft paddingright" target="_blank" href="'.$this->shop_url.'/product.php?id='.((int) $product["id"]).'">';
+					$download_link = '<a class="paddingleft paddingright" target="_blank" title="'.$langs->trans("View").'" href="'.$this->shop_url.'/product.php?id='.((int) $product["id"]).'">';
 					$download_link .= img_picto('', 'url', 'class="size2x"');
 					$download_link .= '</a>';
-					$download_link .= '<a class="paddingleft paddingright" target="_blank" href="'.$urldownload.'" rel="noopener noreferrer">';
+					$download_link .= '<a class="paddingleft paddingright" target="_blank" title="'.$langs->trans("Download").'" href="'.$urldownload.'" rel="noopener noreferrer">';
 					$download_link .= img_picto('', 'download', 'class="size2x paddingright"');
 					//$download_link .= '<img width="32" src="'.DOL_URL_ROOT.'/admin/remotestore/img/download.png" />';
 					$download_link .= '</a>';
