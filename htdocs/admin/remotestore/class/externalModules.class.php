@@ -172,7 +172,7 @@ class ExternalModules
 			$this->githubFileStatus = dol_is_file($this->cache_file) ? 1 : 0;
 		}
 
-		// Check access to Dolistore API
+		// Check access to Dolistore API /api/categories -> /api/index.php/marketplace/categories
 		if (getDolGlobalString('MAIN_ENABLE_EXTERNALMODULES_DOLISTORE')) {
 			$this->dolistoreApiStatus = $this->checkApiStatus();
 		}
@@ -212,7 +212,6 @@ class ExternalModules
 			$url .= '?' . http_build_query($options);
 		}
 
-		$url .= (preg_match('/\?/', $url) ? '&' : '?').'apikey='.$this->dolistore_api_key;
 		$response = getURLContent($url, 'GET', '', 1, $httpheader, array('https'), 0, -1, 5, 5);
 
 		$status_code = $response['http_code'];
