@@ -489,141 +489,141 @@ $i = 0; // is a sequencer of modules found
 $j = 0; // j is module number. Automatically affected if module number not defined.
 $modNameLoaded = array();
 
-if ($mode == 'common' || $mode == 'commonkanban') {
-	foreach ($modulesdir as $dir) {
-		// Load modules attributes in arrays (name, numero, orders) from dir directory
-		//print $dir."\n<br>";
-		dol_syslog("Scan directory ".$dir." for module descriptor files (modXXX.class.php)");
-		$handle = @opendir($dir);
-		if (is_resource($handle)) {
-			while (($file = readdir($handle)) !== false) {
-				//print "$i ".$file."\n<br>";
-				if (is_readable($dir.$file) && substr($file, 0, 3) == 'mod' && substr($file, dol_strlen($file) - 10) == '.class.php') {
-					$modName = substr($file, 0, dol_strlen($file) - 10);
+//if ($mode == 'common' || $mode == 'commonkanban') {
+// Load $modules (required for the badge count)
+foreach ($modulesdir as $dir) {
+	// Load modules attributes in arrays (name, numero, orders) from dir directory
+	//print $dir."\n<br>";
+	dol_syslog("Scan directory ".$dir." for module descriptor files (modXXX.class.php)");
+	$handle = @opendir($dir);
+	if (is_resource($handle)) {
+		while (($file = readdir($handle)) !== false) {
+			//print "$i ".$file."\n<br>";
+			if (is_readable($dir.$file) && substr($file, 0, 3) == 'mod' && substr($file, dol_strlen($file) - 10) == '.class.php') {
+				$modName = substr($file, 0, dol_strlen($file) - 10);
 
-					if ($modName) {
-						if (!empty($modNameLoaded[$modName])) {   // In cache of already loaded modules ?
-							$mesg = "Error: Module ".$modName." was found twice: Into ".$modNameLoaded[$modName]." and ".$dir.". You probably have an old file on your disk.<br>";
-							setEventMessages($mesg, null, 'warnings');
-							dol_syslog($mesg, LOG_ERR);
-							continue;
-						}
+				if ($modName) {
+					if (!empty($modNameLoaded[$modName])) {   // In cache of already loaded modules ?
+						$mesg = "Error: Module ".$modName." was found twice: Into ".$modNameLoaded[$modName]." and ".$dir.". You probably have an old file on your disk.<br>";
+						setEventMessages($mesg, null, 'warnings');
+						dol_syslog($mesg, LOG_ERR);
+						continue;
+					}
 
-						try {
-							$res = include_once $dir.$file; // A class already exists in a different file will send a non catchable fatal error.
-							if (class_exists($modName)) {
-								$objMod = new $modName($db);
-								'@phan-var-force DolibarrModules $objMod';
-								$modNameLoaded[$modName] = $dir;
-								if (!$objMod->numero > 0 && $modName != 'modUser') {
-									dol_syslog('The module descriptor '.$modName.' must have a numero property', LOG_ERR);
-								}
-								$j = $objMod->numero;
-
-								$modulequalified = 1;
-
-								// We discard modules according to features level (PS: if module is activated we always show it)
-								$const_name = 'MAIN_MODULE_'.strtoupper(preg_replace('/^mod/i', '', get_class($objMod)));
-								if ($objMod->version == 'development' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2))) {
-									$modulequalified = 0;
-								}
-								if ($objMod->version == 'experimental' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 1))) {
-									$modulequalified = 0;
-								}
-								if (preg_match('/deprecated/', $objMod->version) && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 0))) {
-									$modulequalified = 0;
-								}
-
-								// We discard modules according to property ->hidden
-								if (!empty($objMod->hidden)) {
-									$modulequalified = 0;
-								}
-
-								if ($modulequalified > 0) {
-									$publisher = dol_escape_htmltag($objMod->getPublisher());
-									$external = ($objMod->isCoreOrExternalModule() == 'external');
-									if ($external) {
-										if ($publisher) {
-											// Check if there is a logo forpublisher
-											/* Do not show the company logo in combo. Make combo list dirty.
-											if (!empty($objMod->editor_squarred_logo)) {
-												$publisherlogoarray['external_'.$publisher] = img_picto('', $objMod->editor_squarred_logo, 'class="publisherlogoinline"');
-											}
-											$publisherlogo = empty($publisherlogoarray['external_'.$publisher]) ? '' : $publisherlogoarray['external_'.$publisher];
-											*/
-											$arrayofnatures['external_'.$publisher] = array('label' => $langs->trans("External").' - '.$publisher, 'data-html' => $langs->trans("External").' - <span class="opacitymedium inine-block valignmiddle">'.$publisher.'</span>');
-										} else {
-											$arrayofnatures['external_'] = array('label' => $langs->trans("External").' - ['.$langs->trans("UnknownPublishers").']');
-										}
-									}
-									ksort($arrayofnatures);
-
-									// Define an array $categ with categ with at least one qualified module
-									$filename[$i] = $modName;
-									$modules[$modName] = $objMod;
-
-									// Gives the possibility to the module, to provide his own family info and position of this family
-									if (is_array($objMod->familyinfo) && !empty($objMod->familyinfo)) {
-										$familyinfo = array_merge($familyinfo, $objMod->familyinfo);
-										$familykey = key($objMod->familyinfo);
-									} else {
-										$familykey = $objMod->family;
-									}
-									'@phan-var-force string $familykey';  // if not, phan considers $familykey may be null
-
-									$moduleposition = ($objMod->module_position ? $objMod->module_position : '50');
-									if ($objMod->isCoreOrExternalModule() == 'external' && $moduleposition < 100000) {
-										// an external module should never return a value lower than '80'.
-										$moduleposition = '80'; // External modules at end by default
-									}
-
-									// Add list of warnings to show into arrayofwarnings and arrayofwarningsext
-									if (!empty($objMod->warnings_activation)) {
-										$arrayofwarnings[$modName] = $objMod->warnings_activation;
-									}
-									if (!empty($objMod->warnings_activation_ext)) {
-										$arrayofwarningsext[$modName] = $objMod->warnings_activation_ext;
-									}
-
-									$familyposition = (empty($familyinfo[$familykey]['position']) ? '0' : $familyinfo[$familykey]['position']);
-									$listOfOfficialModuleGroups = array('hr', 'technic', 'interface', 'technic', 'portal', 'financial', 'crm', 'base', 'products', 'srm', 'ecm', 'projects', 'other');
-									if ($external && !in_array($familykey, $listOfOfficialModuleGroups)) {
-										// If module is extern and into a custom group (not into an official predefined one), it must appear at end (custom groups should not be before official groups).
-										if (is_numeric($familyposition)) {
-											$familyposition = sprintf("%03d", (int) $familyposition + 100);
-										}
-									}
-
-									$orders[$i] = $familyposition."_".$familykey."_".$moduleposition."_".$j; // Sort by family, then by module position then number
-
-									// Set categ[$i]
-									$specialstring = 'unknown';
-									if ($objMod->version == 'development' || $objMod->version == 'experimental') {
-										$specialstring = 'expdev';
-									}
-									if (isset($categ[$specialstring])) {
-										$categ[$specialstring]++; // Array of all different modules categories
-									} else {
-										$categ[$specialstring] = 1;
-									}
-									$j++;
-									$i++;
-								} else {
-									dol_syslog("Module ".get_class($objMod)." not qualified");
-								}
-							} else {
-								print info_admin("admin/modules.php Warning bad descriptor file : ".$dir.$file." (Class ".$modName." not found into file)", 0, 0, '1', 'warning');
+					try {
+						$res = include_once $dir.$file; // A class already exists in a different file will send a non catchable fatal error.
+						if (class_exists($modName)) {
+							$objMod = new $modName($db);
+							'@phan-var-force DolibarrModules $objMod';
+							$modNameLoaded[$modName] = $dir;
+							if (!$objMod->numero > 0 && $modName != 'modUser') {
+								dol_syslog('The module descriptor '.$modName.' must have a numero property', LOG_ERR);
 							}
-						} catch (Exception $e) {
-							dol_syslog("Failed to load ".$dir.$file." ".$e->getMessage(), LOG_ERR);
+							$j = $objMod->numero;
+
+							$modulequalified = 1;
+
+							// We discard modules according to features level (PS: if module is activated we always show it)
+							$const_name = 'MAIN_MODULE_'.strtoupper(preg_replace('/^mod/i', '', get_class($objMod)));
+							if ($objMod->version == 'development' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 2))) {
+								$modulequalified = 0;
+							}
+							if ($objMod->version == 'experimental' && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') < 1))) {
+								$modulequalified = 0;
+							}
+							if (preg_match('/deprecated/', $objMod->version) && (!getDolGlobalString($const_name) && (getDolGlobalInt('MAIN_FEATURES_LEVEL') >= 0))) {
+								$modulequalified = 0;
+							}
+
+							// We discard modules according to property ->hidden
+							if (!empty($objMod->hidden)) {
+								$modulequalified = 0;
+							}
+
+							if ($modulequalified > 0) {
+								$publisher = dol_escape_htmltag($objMod->getPublisher());
+								$external = ($objMod->isCoreOrExternalModule() == 'external');
+								if ($external) {
+									if ($publisher) {
+										// Check if there is a logo forpublisher
+										/* Do not show the company logo in combo. Make combo list dirty.
+										if (!empty($objMod->editor_squarred_logo)) {
+											$publisherlogoarray['external_'.$publisher] = img_picto('', $objMod->editor_squarred_logo, 'class="publisherlogoinline"');
+										}
+										$publisherlogo = empty($publisherlogoarray['external_'.$publisher]) ? '' : $publisherlogoarray['external_'.$publisher];
+										*/
+										$arrayofnatures['external_'.$publisher] = array('label' => $langs->trans("External").' - '.$publisher, 'data-html' => $langs->trans("External").' - <span class="opacitymedium inine-block valignmiddle">'.$publisher.'</span>');
+									} else {
+										$arrayofnatures['external_'] = array('label' => $langs->trans("External").' - ['.$langs->trans("UnknownPublishers").']');
+									}
+								}
+								ksort($arrayofnatures);
+
+								// Define an array $categ with categ with at least one qualified module
+								$filename[$i] = $modName;
+								$modules[$modName] = $objMod;
+
+								// Gives the possibility to the module, to provide his own family info and position of this family
+								if (is_array($objMod->familyinfo) && !empty($objMod->familyinfo)) {
+									$familyinfo = array_merge($familyinfo, $objMod->familyinfo);
+									$familykey = key($objMod->familyinfo);
+								} else {
+									$familykey = $objMod->family;
+								}
+								'@phan-var-force string $familykey';  // if not, phan considers $familykey may be null
+
+								$moduleposition = ($objMod->module_position ? $objMod->module_position : '50');
+								if ($objMod->isCoreOrExternalModule() == 'external' && $moduleposition < 100000) {
+									// an external module should never return a value lower than '80'.
+									$moduleposition = '80'; // External modules at end by default
+								}
+
+								// Add list of warnings to show into arrayofwarnings and arrayofwarningsext
+								if (!empty($objMod->warnings_activation)) {
+									$arrayofwarnings[$modName] = $objMod->warnings_activation;
+								}
+								if (!empty($objMod->warnings_activation_ext)) {
+									$arrayofwarningsext[$modName] = $objMod->warnings_activation_ext;
+								}
+
+								$familyposition = (empty($familyinfo[$familykey]['position']) ? '0' : $familyinfo[$familykey]['position']);
+								$listOfOfficialModuleGroups = array('hr', 'technic', 'interface', 'technic', 'portal', 'financial', 'crm', 'base', 'products', 'srm', 'ecm', 'projects', 'other');
+								if ($external && !in_array($familykey, $listOfOfficialModuleGroups)) {
+									// If module is extern and into a custom group (not into an official predefined one), it must appear at end (custom groups should not be before official groups).
+									if (is_numeric($familyposition)) {
+										$familyposition = sprintf("%03d", (int) $familyposition + 100);
+									}
+								}
+
+								$orders[$i] = $familyposition."_".$familykey."_".$moduleposition."_".$j; // Sort by family, then by module position then number
+
+								// Set categ[$i]
+								$specialstring = 'unknown';
+								if ($objMod->version == 'development' || $objMod->version == 'experimental') {
+									$specialstring = 'expdev';
+								}
+								if (isset($categ[$specialstring])) {
+									$categ[$specialstring]++; // Array of all different modules categories
+								} else {
+									$categ[$specialstring] = 1;
+								}
+								$j++;
+								$i++;
+							} else {
+								dol_syslog("Module ".get_class($objMod)." not qualified");
+							}
+						} else {
+							print info_admin("admin/modules.php Warning bad descriptor file : ".$dir.$file." (Class ".$modName." not found into file)", 0, 0, '1', 'warning');
 						}
+					} catch (Exception $e) {
+						dol_syslog("Failed to load ".$dir.$file." ".$e->getMessage(), LOG_ERR);
 					}
 				}
 			}
-			closedir($handle);
-		} else {
-			dol_syslog("htdocs/admin/modules.php: Failed to open directory ".$dir.". See permission and open_basedir option.", LOG_WARNING);
 		}
+		closedir($handle);
+	} else {
+		dol_syslog("htdocs/admin/modules.php: Failed to open directory ".$dir.". See permission and open_basedir option.", LOG_WARNING);
 	}
 }
 
