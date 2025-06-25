@@ -2818,7 +2818,7 @@ class AccountLine extends CommonObjectLine
 			$result .= yn($this->rappro);
 		}
 		if (isModEnabled('accounting') && ($option == 'showall' || $option == 'showconciliatedandaccounted')) {
-			$sql = "SELECT COUNT(rowid) as nb, MAX(t.piece_num) as banktransactionid FROM ".MAIN_DB_PREFIX."accounting_bookkeeping";
+			$sql = "SELECT COUNT(rowid) as nb, MAX(piece_num) as banktransactionid FROM ".MAIN_DB_PREFIX."accounting_bookkeeping";
 			$sql .= " WHERE doc_type = 'bank' AND fk_doc = ".((int) $this->id);
 			$resql = $this->db->query($sql);
 			if ($resql) {
