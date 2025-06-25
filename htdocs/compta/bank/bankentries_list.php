@@ -1942,7 +1942,7 @@ if ($resql) {
 				}
 			}
 			if ($user->hasRight('banque', 'modifier')) {
-				print '<a href="'.$_SERVER["PHP_SELF"].'?action=delete&token='.newToken().'&rowid='.$objp->rowid.'&page='.$page.$param.($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : '').'">';
+				print '<a href="'.$_SERVER["PHP_SELF"].'?action='.($action == 'reconcile' ? 'deleteonreconcile' : 'delete').'&token='.newToken().'&rowid='.$objp->rowid.'&page='.$page.$param.($sortfield ? '&sortfield='.$sortfield : '').($sortorder ? '&sortorder='.$sortorder : '').'">';
 				print img_delete('', 'class="marginleftonly"');
 				print '</a>';
 			}
