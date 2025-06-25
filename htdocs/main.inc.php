@@ -2294,7 +2294,7 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 {
 	global $langs, $conf, $db, $hookmanager, $user, $mysoc;
 	global $dolibarr_main_authentication, $dolibarr_main_demo;
-	global $menumanager;
+	global $menumanager, $form;
 
 	// Return empty in some case
 	if ($conf->browser->name == 'textbrowser') {
@@ -2392,12 +2392,13 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 
 	$tz = (int) $_SESSION['dol_tz'] + (int) $_SESSION['dol_dst'];
 	$dropdownBody .= '<br><b>'.$langs->trans("ClientTZ").':</b> '.($tz ? ($tz >= 0 ? '+' : '').$tz : '');
-	$dropdownBody .= ' ('.$_SESSION['dol_tz_string'].')';
+	$dropdownBody .= ' <span class="opacitymedium">('.$_SESSION['dol_tz_string'].')</span>';
 	//$dropdownBody .= ' &nbsp; &nbsp; &nbsp; '.$langs->trans("DaylingSavingTime").': ';
 	//if ($_SESSION['dol_dst'] > 0) $dropdownBody .= yn(1);
 	//else $dropdownBody .= yn(0);
 
-	$dropdownBody .= '<br><b>'.$langs->trans("Browser").':</b> '.$conf->browser->name.($conf->browser->version ? ' '.$conf->browser->version : '').' <small class="opacitymedium">('.dol_escape_htmltag($_SERVER['HTTP_USER_AGENT']).')</small>';
+	$dropdownBody .= '<br><b>'.$langs->trans("Browser").':</b> '.ucfirst($conf->browser->name).($conf->browser->version ? ' '.$conf->browser->version : '');
+	$dropdownBody .= $form->textwithpicto('', dol_escape_htmltag($_SERVER['HTTP_USER_AGENT']), 1, 'help', 'valignmiddle', 0, 3, 'useragent');
 	$dropdownBody .= '<br><b>'.$langs->trans("Layout").':</b> '.$conf->browser->layout;
 	$dropdownBody .= '<br><b>'.$langs->trans("Screen").':</b> '.$_SESSION['dol_screenwidth'].' x '.$_SESSION['dol_screenheight'];
 	if ($conf->browser->layout == 'phone') {
@@ -2537,7 +2538,6 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 		';
 
 
-		//if ($conf->theme != 'md') {
 		$btnUser .= '
 	            jQuery("#topmenu-login-dropdown .dropdown-toggle").on("click", function(event) {
 					console.log("Click on #topmenu-login-dropdown .dropdown-toggle");
@@ -2547,14 +2547,19 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
 
 	            jQuery("#topmenulogincompanyinfo-btn").on("click", function() {
 					console.log("Click on #topmenulogincompanyinfo-btn");
+					if (!jQuery("#topmenuloginmoreinfo").is(\':hidden\')) {
+	                	jQuery("#topmenuloginmoreinfo").slideToggle();
+					}
 	                jQuery("#topmenulogincompanyinfo").slideToggle();
 	            });
 
 	            jQuery("#topmenuloginmoreinfo-btn").on("click", function() {
 					console.log("Click on #topmenuloginmoreinfo-btn");
+					if (!jQuery("#topmenulogincompanyinfo").is(\':hidden\')) {
+		                jQuery("#topmenulogincompanyinfo").slideToggle();
+					}
 	                jQuery("#topmenuloginmoreinfo").slideToggle();
 	            });';
-		//}
 
 		$btnUser .= '
         });
