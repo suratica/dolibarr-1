@@ -147,10 +147,10 @@ git log x.y.(z-1)..   | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u
 
 - Check content of built packages.
 
-- Commit the created file filelist-x.y.z.xml
+- Commit and push the created file filelist-x.y.z.xml (Note: No PR must be validated except this one between the previous launch of makepack-dolibarr and the next one to publish files)
 
-- Run makepack-dolibarr.pl again with option to publish files on dolibarr foundation server (Dir /home/dolibarr/wwwroot/files/stable on www.dolibarr.org).
+- Run makepack-dolibarr.pl again with option 98 to publish files on dolibarr foundation server (Dir /home/dolibarr/wwwroot/files/stable on www.dolibarr.org).
 
-- Run makepack-dolibarr.pl again with option to publish files on sourceforge. This will also add the official tag x.y.z.
+- Run makepack-dolibarr.pl again with option 99 to publish files on sourceforge. This will also add the official tag x.y.z.
 
 - Post a news message in dolibarr.org web site by cloning a past news + relay the news url on social networks
