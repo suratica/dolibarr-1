@@ -86,9 +86,12 @@ cd ~/git/dolibarr_x.y
 git log x.y.z-1.. --no-merges --pretty=short --oneline | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u | sed 's/FIXED:/FIX:/g' | sed 's/FIXED :/FIX:/g' | sed 's/FIX :/FIX:/g' | sed 's/FIX /FIX: /g' | sed 's/NEW :/NEW:/g' | sed 's/NEW /NEW: /g' > /tmp/changelogtocopy
 ```
 
-Recopy the content of the output file into the file ChangeLog.
-- Note: To know number of lines changes: git diff --shortstat A B
+- Recopy the content of the output file into the file ChangeLog.
+  
+  Note: To know number of lines changes: git diff --shortstat A B
+  
 - Update version number with x.y.z-w in file htdocs/filefunc.inc.php
+
 - Commit all changes.
 
 - Run `makepack-dolibarr.pl` to check the generation of all packages. No need to publish them.
@@ -140,9 +143,11 @@ git log x.y.(z-1)..   | sed -e "s/^[0-9a-z]* //" | grep -e '^FIX\|NEW' | sort -u
 
 - Commit all changes and push the changes (direct commit or PR) and check that CI is green after the push.
 
-- Run makepack-dolibarr.pl to generate all packages.
+- Run makepack-dolibarr.pl with option 0 to generate the signature file and all packages (or run with option 1, then option of packages you want to build).
 
 - Check content of built packages.
+
+- Commit the created file filelist-x.y.z.xml
 
 - Run makepack-dolibarr.pl again with option to publish files on dolibarr foundation server (Dir /home/dolibarr/wwwroot/files/stable on www.dolibarr.org).
 
