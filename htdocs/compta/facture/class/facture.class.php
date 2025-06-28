@@ -6365,7 +6365,6 @@ class Facture extends CommonInvoice
 
 								$actioncomm->elementtype = 'invoice';
 								$actioncomm->elementid = $tmpinvoice->id;
-								$actioncomm->fk_element = $tmpinvoice->id;
 
 								//$actioncomm->extraparams = $extraparams;
 
@@ -6402,6 +6401,9 @@ class Facture extends CommonInvoice
 								//$actioncomm->email_tobcc = $sendtobcc;
 								//$actioncomm->email_subject = $subject;
 								$actioncomm->errors_to = $errors_to;
+
+								$actioncomm->elementtype = 'invoice';
+								$actioncomm->elementid = $tmpinvoice->id;
 
 								//$actioncomm->extraparams = $extraparams;
 
