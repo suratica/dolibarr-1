@@ -6293,8 +6293,6 @@ class Facture extends CommonInvoice
 						}
 
 						if (!$error && !empty($to)) {
-							$this->db->begin();
-
 							$to = implode(',', $to);
 							if (!empty($arraymessage->email_to)) {	// If a recipient is defined into template, we add it
 								$to = $to.','.$arraymessage->email_to;
@@ -6329,8 +6327,12 @@ class Facture extends CommonInvoice
 							// Mail Creation
 							$cMailFile = new CMailFile($sendTopic, $to, $from, $sendContent, $joinFile, $joinFileMime, $joinFileName, $email_tocc, $email_tobcc, 0, 1, $errors_to, '', $trackid, '', $sendcontext, '');
 
+							$resultsendmail = $cMailFile->sendfile();
+
+							$this->db->begin();
+
 							// Sending Mail
-							if ($cMailFile->sendfile()) {
+							if ($resultsendmail) {
 								$nbMailSend++;
 
 								// Add a line into event table
