@@ -6188,8 +6188,8 @@ class Form
 
 			$formconfirm .= '
                     resizable: false,
-                    height: \'' . ((int) $height) . '\',
-                    width: \'' . ((int) $width) . '\',
+					height: \'' . dol_escape_js($height) . '\',
+                    width: \'' . dol_escape_js($width) . '\',
                     modal: true,
                     closeOnEscape: false,
                     buttons: {
