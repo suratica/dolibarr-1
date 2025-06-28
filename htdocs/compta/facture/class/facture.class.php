@@ -5118,7 +5118,7 @@ class Facture extends CommonInvoice
 			while ($obj = $this->db->fetch_object($resql)) {
 				// Create a loopError that is reset at each loop, this counter is added to the global counter at the end of loop
 				$loopError = 0;
-				
+
 				// Load event
 				$res = $tmpinvoice->fetch($obj->id);
 				if ($res > 0) {
@@ -5213,7 +5213,7 @@ class Facture extends CommonInvoice
 					$errorsMsg[] = 'Failed to fetch record invoice with ID = '.$obj->id;
 					$loopError++;
 				}
-				
+
 				$error += $loopError;
 			}
 		} else {
