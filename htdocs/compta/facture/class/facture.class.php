@@ -5762,7 +5762,7 @@ class Facture extends CommonInvoice
 					} else {
 						$outputlangs = $langs;
 					}
-					
+
 					// Select email template according to language of recipient
 					$arraymessage = $formmail->getEMailTemplate($this->db, 'facture_send', $user, $outputlangs, (is_numeric($template) ? $template : 0), 1, (is_numeric($template) ? '' : $template));
 					if (is_numeric($arraymessage) && $arraymessage <= 0) {
