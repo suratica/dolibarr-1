@@ -6189,7 +6189,7 @@ class Facture extends CommonInvoice
 		} else {
 			$sql .= " AND f.date_lim_reglement = '".$this->db->idate($tmpidate, 'gmt')."'";
 		}
-		$sql .= " AND f.entity IN (".getEntity('facture', 0).")";	// One batch process only one company (no sharing)
+		$sql .= " AND f.entity IN (".getEntity('facture', 0).")";	// One batch processes only one company (no sharing)
 		if (!empty($paymentmode) && $paymentmode != 'all') {
 			$sql .= " AND f.fk_mode_reglement = cp.id AND cp.code = '".$this->db->escape($paymentmode)."'";
 		}
@@ -6199,6 +6199,7 @@ class Facture extends CommonInvoice
 		} else {
 			$sql .= $this->db->order("date_lim_reglement", "ASC");
 		}
+		// TODO Add a date date_last_remind_email in select. We can update date after the result of sendfile() later. To avoid to send it twiceif we rerun the batch.
 
 		$resql = $this->db->query($sql);
 
