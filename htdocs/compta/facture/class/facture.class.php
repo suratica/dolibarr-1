@@ -5602,7 +5602,7 @@ class Facture extends CommonInvoice
 						// Sending Mail
 						if ($cMailFile->sendfile()) {
 							$nbMailSend++;
-							
+
 							// Add a line into event table
 							require_once DOL_DOCUMENT_ROOT.'/comm/action/class/actioncomm.class.php';
 
@@ -5634,11 +5634,11 @@ class Facture extends CommonInvoice
 
 							//$actioncomm->extraparams = $extraparams;
 
-							$actioncomm->create($user);							
+							$actioncomm->create($user);
 						} else {
 							$errormesg = $cMailFile->error.' : '.$to;
 							$loopError++;
-							
+
 							// Add a line into event table
 							require_once DOL_DOCUMENT_ROOT.'/comm/action/class/actioncomm.class.php';
 
@@ -5670,7 +5670,7 @@ class Facture extends CommonInvoice
 
 							//$actioncomm->extraparams = $extraparams;
 
-							$actioncomm->create($user);							
+							$actioncomm->create($user);
 						}
 
 						$this->db->commit();	// We always commit
