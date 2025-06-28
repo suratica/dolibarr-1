@@ -528,7 +528,7 @@ class Product extends CommonObject
 	 *
 	 * @var array
 	 */
-	public $sousprods;
+	public $sousprods = array();
 
 	/**
 	 * @var array Path of subproducts. Build from ->sousprods with get_arbo_each_prod()
