@@ -2074,19 +2074,22 @@ if ($action == 'create') {
 				$remaintopay = price2num($object->total_ttc - (float) $totalpaid);
 				$resteapayeraffiche = $remaintopay;
 
-				$cssforamountpaymentcomplete = 'amountpaymentcomplete';
+				if ($remaintopay > 0) {
+					$cssforamountpaymentcomplete = 'amountremaintopay';
+				} else {
+					$cssforamountpaymentcomplete = 'amountpaymentcomplete';
+				}
 
 				if ($object->status == ExpenseReport::STATUS_REFUSED) {
-					$cssforamountpaymentcomplete = 'amountpaymentneutral';
-					$resteapayeraffiche = 0;
-				} elseif ($object->paid == 0) {
-					$cssforamountpaymentcomplete = 'amountpaymentneutral';
+					$cssforamountpaymentcomplete = 'amountpaymentneutral strikefordisabled';
+				} elseif ($object->paid == 1 && $remaintopay > 0) {
+					$cssforamountpaymentcomplete = 'amountpaymentneutral strikefordisabled';
 				}
 				print '<tr><td colspan="'.$nbcols.'" class="right">'.$langs->trans("AlreadyPaid").':</td><td class="right">'.price($totalpaid).'</td><td></td></tr>';
 				print '<tr><td colspan="'.$nbcols.'" class="right">'.$langs->trans("AmountExpected").':</td><td class="right">'.price($object->total_ttc).'</td><td></td></tr>';
 
 				print '<tr><td colspan="'.$nbcols.'" class="right">'.$langs->trans("RemainderToPay").':</td>';
-				print '<td class="right'.($resteapayeraffiche ? ' amountremaintopay' : (' '.$cssforamountpaymentcomplete)).'">'.price($resteapayeraffiche).'</td><td></td></tr>';
+				print '<td class="right'.(($resteapayeraffiche && empty($cssforamountpaymentcomplete)) ? ' amountremaintopay' : (' '.$cssforamountpaymentcomplete)).'">'.price($resteapayeraffiche).'</td><td></td></tr>';
 
 				$db->free($resql);
 			} else {
