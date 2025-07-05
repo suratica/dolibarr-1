@@ -6514,7 +6514,7 @@ function print_liste_field_titre($name, $file = "", $field = "", $begin = "", $m
  *	@param	int<0,2>	$thead	 		0=To use with standard table format, 1=To use inside <thead><tr>, 2=To use with <div>
  *	@param	string		$file			Url used when we click on sort picto
  *	@param	string		$field			Field to use for new sorting. Empty if this field is not sortable. Example "t.abc" or "t.abc,t.def"
- *	@param	string		$begin       		("" by default)
+ *	@param	string		$begin       	("" by default)
  *	@param	string		$moreparam		Add more parameters on sort url links ("" by default)
  *	@param  string		$moreattrib		Add more attributes on th ("" by default). To add more css class, use param $prefix.
  *	@param  ?string		$sortfield	 	Current field used to sort (Ex: 'd.datep,d.id')
@@ -6588,8 +6588,8 @@ function getTitleFieldOfList($name, $thead = 0, $file = "", $field = "", $begin 
 			}
 		}
 		$sortordertouseinlink = preg_replace('/,$/', '', $sortordertouseinlink);
-		$out .= '<a class="reposition" href="'.$file.'?sortfield='.$field.'&sortorder='.$sortordertouseinlink.'&begin='.$begin.$options.'"';
-		//$out .= (empty($conf->global->MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE) ? ' title="'.dol_escape_htmltag($langs->trans($name)).'"' : '');
+		$out .= '<a class="reposition" href="'.$file.'?sortfield='.urlencode($field).'&sortorder='.urlencode($sortordertouseinlink).'&begin='.urlencode($begin).$options.'"';
+		//$out .= (getDolGlobalString('MAIN_DISABLE_WRAPPING_ON_COLUMN_TITLE') ? '' : ' title="'.dol_escape_htmltag($langs->trans($name)).'"');
 		$out .= '>';
 	}
 	if ($tooltip) {
@@ -6617,17 +6617,12 @@ function getTitleFieldOfList($name, $thead = 0, $file = "", $field = "", $begin 
 		}
 
 		if (!$sortorder || ($field1 != $sortfield1)) {
-			//$out.= '<a href="'.$file.'?sortfield='.$field.'&sortorder=asc&begin='.$begin.$options.'">'.img_down("A-Z",0).'</a>';
-			//$out.= '<a href="'.$file.'?sortfield='.$field.'&sortorder=desc&begin='.$begin.$options.'">'.img_up("Z-A",0).'</a>';
+			// Nothing
 		} else {
 			if (preg_match('/^DESC/', $sortorder)) {
-				//$out.= '<a href="'.$file.'?sortfield='.$field.'&sortorder=asc&begin='.$begin.$options.'">'.img_down("A-Z",0).'</a>';
-				//$out.= '<a href="'.$file.'?sortfield='.$field.'&sortorder=desc&begin='.$begin.$options.'">'.img_up("Z-A",1).'</a>';
 				$sortimg .= '<span class="nowrap">'.img_up("Z-A", 0, 'paddingright').'</span>';
 			}
 			if (preg_match('/^ASC/', $sortorder)) {
-				//$out.= '<a href="'.$file.'?sortfield='.$field.'&sortorder=asc&begin='.$begin.$options.'">'.img_down("A-Z",1).'</a>';
-				//$out.= '<a href="'.$file.'?sortfield='.$field.'&sortorder=desc&begin='.$begin.$options.'">'.img_up("Z-A",0).'</a>';
 				$sortimg .= '<span class="nowrap">'.img_down("A-Z", 0, 'paddingright').'</span>';
 			}
 		}
