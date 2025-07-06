@@ -46,9 +46,11 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 $langs->loadLangs(array('resource', 'companies', 'other', 'main'));
 
 // Get parameters
-$id						= GETPOSTINT('id');
 $action					= GETPOST('action', 'aZ09');
 $cancel					= GETPOST('cancel', 'alpha');
+$backtopage				= GETPOST('backtopage', 'alpha');
+
+$id						= GETPOSTINT('id');
 $ref					= GETPOST('ref', 'alpha');
 $address				= GETPOST('address', 'alpha');
 $zip					= GETPOST('zipcode', 'alpha');
@@ -347,7 +349,7 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 		print '</tr>';
 
 		// Max users
-		print '<tr><td>'.$form->editfieldkey('MaxUsers', 'max_users', '', $object, 0).'</td>';
+		print '<tr><td>'.$form->editfieldkey('MaxUsers', 'max_users', '', $object, 0, 'string', '', 0, 0, 'id', $langs->trans('MaxUsersResourceDesc')).'</td>';
 		print '<td>';
 		print img_picto('', 'object_user', 'class="pictofixedwidth"');
 		print '<input type="text" class="width75 right" name="max_users" id="max_users" value="'.(GETPOSTISSET('max_users') ? GETPOST('max_users', 'int') : $object->max_users).'"></td>';
@@ -357,7 +359,7 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 		print '<tr><td>'.$form->editfieldkey('URL', 'url', '', $object, 0).'</td>';
 		print '<td>';
 		print img_picto('', 'object_url', 'class="pictofixedwidth"');
-		print '<input type="url" name="url" id="url" value="'.(GETPOSTISSET('url') ? GETPOST('url', 'alpha') : $object->url).'"></td>';
+		print '<input type="url" class="minwidth300" name="url" id="url" value="'.(GETPOSTISSET('url') ? GETPOST('url', 'alpha') : $object->url).'"></td>';
 		print '</tr>';
 
 		// Other attributes
