@@ -60,7 +60,7 @@ $state_id				= GETPOSTINT('state_id');
 $description			= GETPOST('description', 'restricthtml');
 $phone					= GETPOST('phone', 'alpha');
 $email					= GETPOST('email', 'alpha');
-$max_users				= GETPOSTINT('max_users');
+$max_users				= GETPOSTINT('max_users');		// Can be an int or ''
 $url					= GETPOST('url', 'alpha');
 $confirm				= GETPOST('confirm', 'aZ09');
 $fk_code_type_resource	= GETPOST('fk_code_type_resource', 'aZ09');
@@ -166,6 +166,8 @@ if (empty($reshook)) {
 		if (!$error) {
 			$res = $object->fetch($id);
 			if ($res > 0) {
+				$oldref = $object->ref;
+
 				$object->ref          			= $ref;
 				$object->address				= $address;
 				$object->zip					= $zip;
@@ -187,6 +189,14 @@ if (empty($reshook)) {
 
 				$result = $object->update($user);
 				if ($result > 0) {
+					if ($oldref != $ref) {
+						// We renamed the ref so we must change the directory too
+						include_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
+						$srcdir = $conf->resource->dir_output.'/'.dol_sanitizeFileName($oldref);
+						$destdir = $conf->resource->dir_output.'/'.dol_sanitizeFileName($ref);
+						dol_move_dir($srcdir, $destdir);
+					}
+
 					header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
 				} else {
@@ -271,7 +281,7 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 
 		// Ref
 		print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans("ResourceFormLabel_ref").'</td>';
-		print '<td><input class="minwidth200" name="ref" value="'.($ref ?: $object->ref).'" autofocus="autofocus"></td></tr>';
+		print '<td><input class="minwidth200" name="ref" value="'.($ref ?: $object->ref).'" autofocus="autofocus" spellcheck="false"></td></tr>';
 
 		// Type
 		print '<tr><td>'.$langs->trans("ResourceType").'</td>';
@@ -345,21 +355,21 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 		print '<tr><td>'.$form->editfieldkey('EMail', 'email', '', $object, 0).'</td>';
 		print '<td>';
 		print img_picto('', 'object_email', 'class="pictofixedwidth"');
-		print '<input type="email" name="email" id="email" value="'.(GETPOSTISSET('email') ? GETPOST('email', 'alpha') : $object->email).'"></td>';
+		print '<input type="email" name="email" id="email" value="'.(GETPOSTISSET('email') ? GETPOST('email', 'alpha') : $object->email).'" spellcheck="false"></td>';
 		print '</tr>';
 
 		// Max users
 		print '<tr><td>'.$form->editfieldkey('MaxUsers', 'max_users', '', $object, 0, 'string', '', 0, 0, 'id', $langs->trans('MaxUsersResourceDesc')).'</td>';
 		print '<td>';
 		print img_picto('', 'object_user', 'class="pictofixedwidth"');
-		print '<input type="text" class="width75 right" name="max_users" id="max_users" value="'.(GETPOSTISSET('max_users') ? GETPOST('max_users', 'int') : $object->max_users).'"></td>';
+		print '<input type="text" class="width75 right" name="max_users" id="max_users" value="'.(GETPOSTISSET('max_users') ? GETPOST('max_users', 'int') : ($object->max_users > 0 ? $object->max_users : '')).'"></td>';
 		print '</tr>';
 
 		// URL
 		print '<tr><td>'.$form->editfieldkey('URL', 'url', '', $object, 0).'</td>';
 		print '<td>';
 		print img_picto('', 'object_url', 'class="pictofixedwidth"');
-		print '<input type="url" class="minwidth300" name="url" id="url" value="'.(GETPOSTISSET('url') ? GETPOST('url', 'alpha') : $object->url).'"></td>';
+		print '<input type="url" class="minwidth300" name="url" id="url" value="'.(GETPOSTISSET('url') ? GETPOST('url', 'alpha') : $object->url).'" spellcheck="false"></td>';
 		print '</tr>';
 
 		// Other attributes
@@ -422,7 +432,7 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 		print '<tr>';
 		print '<td>'.$langs->trans("MaxUsers").'</td>';
 		print '<td>';
-		print $object->max_users;
+		print $object->max_users > 0 ? $object->max_users : '';
 		print '</td>';
 		print '</tr>';
 
