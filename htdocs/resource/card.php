@@ -60,7 +60,7 @@ $state_id				= GETPOSTINT('state_id');
 $description			= GETPOST('description', 'restricthtml');
 $phone					= GETPOST('phone', 'alpha');
 $email					= GETPOST('email', 'alpha');
-$max_users				= GETPOSTINT('max_users');		// Can be an int or ''
+$max_users				= GETPOSTINT('max_users');
 $url					= GETPOST('url', 'alpha');
 $confirm				= GETPOST('confirm', 'aZ09');
 $fk_code_type_resource	= GETPOST('fk_code_type_resource', 'aZ09');
@@ -402,7 +402,7 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0) {
 		print $formconfirm;
 
 
-		$linkback = '<a href="'.DOL_URL_ROOT.'/resource/list.php?restore_lastsearch_values=1'.(!empty($socid) ? '&id='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+		$linkback = '<a href="'.DOL_URL_ROOT.'/resource/list.php?restore_lastsearch_values=1">'.$langs->trans("BackToList").'</a>';
 
 		dol_banner_tab($object, 'ref', $linkback, 1, 'ref');
 
