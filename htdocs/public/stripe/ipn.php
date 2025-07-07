@@ -360,14 +360,14 @@ if ($event->type == 'payout.created' && getDolGlobalString('STRIPE_AUTO_RECORD_P
 	global $stripearrayofkeysbyenv;
 	$error = 0;
 	$object = $event->data->object;
-	$TRANSACTIONID = $object->id;	// Example pi_123456789...
+	$TRANSACTIONID = $object->id;	// Example 'pi_123456789...'
 	$ipaddress = $object->metadata->ipaddress;
 	$now = dol_now();
 	$currencyCodeType = strtoupper($object->currency);
 	$paymentmethodstripeid = $object->payment_method;
 	$customer_id = $object->customer;
 	$invoice_id = "";
-	$paymentTypeCode = "";			// payment type according to Stripe
+	$paymentTypeCode = "";				// payment type according to Stripe
 	$paymentTypeCodeInDolibarr = "";	// payment type according to Dolibarr
 	$payment_amount = 0;
 	$payment_amountInDolibarr = 0;
@@ -449,7 +449,9 @@ if ($event->type == 'payout.created' && getDolGlobalString('STRIPE_AUTO_RECORD_P
 		}
 
 		$payment_amount = $payment_amountInDolibarr;
-		// TODO Check payment_amount in Stripe (received) is same than the one in Dolibarr
+		// TODO Add this checks ? May not be required because the message is already decoded with $event = \Stripe\Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
+		// - Check payment_amount in Stripe (received) is same than the one in Dolibarr
+		// - Check that payment intent is succeed (to avoid forged json webhook sent by malicious users)
 
 		$postactionmessages = array();
 
