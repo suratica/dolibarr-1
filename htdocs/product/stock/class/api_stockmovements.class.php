@@ -48,7 +48,7 @@ class StockMovements extends DolibarrApi
 	 */
 	public function __construct()
 	{
-		global $db, $conf;
+		global $db;
 		$this->db = $db;
 		$this->stockmovement = new MouvementStock($this->db);
 	}
@@ -99,8 +99,6 @@ class StockMovements extends DolibarrApi
 	 */
 	public function index($sortfield = "t.rowid", $sortorder = 'ASC', $limit = 100, $page = 0, $sqlfilters = '', $properties = '')
 	{
-		global $conf;
-
 		$obj_ret = array();
 
 		if (!DolibarrApiAccess::$user->hasRight('stock', 'lire')) {
@@ -172,8 +170,8 @@ class StockMovements extends DolibarrApi
 	 * @param string $dluo Sell-by date. {@from body} {@type date}
 	 * @param string $origin_type   Origin type (Element of source object, like 'project', 'inventory', ...)
 	 * @param int $origin_id     Origin id (Id of source object)
-	 *
 	 * @return  int                         ID of stock movement
+	 *
 	 * @throws RestException
 	 */
 	public function post($product_id, $warehouse_id, $qty, $type = 2, $lot = '', $movementcode = '', $movementlabel = '', $price = '', $datem = '', $dlc = '', $dluo = '', $origin_type = '', $origin_id = 0)
