@@ -129,7 +129,7 @@ if (!isset($search_graph)) {
 if (!empty($object)) {
 	$objecttype = $object->element.($object->module ? '@'.$object->module : '');
 }
-if ((!is_string($objecttype) || empty($objecttype)) && isModEnabled('company')) {
+if ((!is_string($objecttype) || empty($objecttype)) && isModEnabled('societe')) {
 	$objecttype = 'thirdparty';
 }
 '@phan-var-force string $objecttype';  // Help phan that suggests $objecttype can be null
