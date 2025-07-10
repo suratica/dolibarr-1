@@ -834,6 +834,7 @@ if ($action == 'addcontainer' && $usercanedit) {
 		}
 
 		if (!$error) {
+			// Download URL to grab
 			$tmp = getURLContent($urltograb, 'GET', '', 1, array(), array('http', 'https'), 0);
 
 			// Test charset of result and convert it into UTF-8 if not in this encoding charset
@@ -922,7 +923,7 @@ if ($action == 'addcontainer' && $usercanedit) {
 				}
 				if (preg_match('/<html\s+lang="([^"]+)"/ims', $tmp['content'], $regtmp)) {
 					$tmplang = explode('-', $regtmp[1]);
-					$objectpage->lang = $tmplang[0].($tmplang[1] ? '_'.strtoupper($tmplang[1]) : '');
+					$objectpage->lang = $tmplang[0].(empty($tmplang[1]) ? '' : '_'.strtoupper($tmplang[1]));
 				}
 
 				$tmp['content'] = preg_replace('/\s*<meta name="generator"[^"]+content="([^"]+)"\s*\/?>/ims', '', $tmp['content']);
@@ -1081,7 +1082,7 @@ if ($action == 'addcontainer' && $usercanedit) {
 						//dolChmod($file);
 
 						//	$filename = 'image/'.$object->ref.'/'.$objectpage->pageurl.(preg_match('/^\//', $linkwithoutdomain)?'':'/').$linkwithoutdomain;
-						$pagecsscontent .= '/* Content of file '.$urltograbbis.' */'."\n";
+						$pagecsscontent .= "\n".'/* Content of file '.$urltograbbis.' */'."\n";
 
 						getAllImages($object, $objectpage, $urltograbbis, $tmpgeturl['content'], $action, 1, $grabimages, $grabimagesinto);
 
