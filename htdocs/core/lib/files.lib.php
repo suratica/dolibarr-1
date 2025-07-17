@@ -66,6 +66,8 @@ function dol_dir_list($utf8_path, $types = "all", $recursive = 0, $filter = "", 
 	global $object;
 
 	if ($recursive <= 1) {	// Avoid too verbose log
+		$error_info = "";
+
 		// Verify filters (only on the first call of the function)
 		$filter_ok = true;
 		if (!is_array($filter)) {
@@ -82,9 +84,8 @@ function dol_dir_list($utf8_path, $types = "all", $recursive = 0, $filter = "", 
 			}
 		}
 
-		$excludefilter_ok = true;
-		$error_info = "";
 		// Ensure we have an array for the exclusions
+		$excludefilter_ok = true;
 		$exclude_array = ($excludefilter === null || $excludefilter === '') ? array() : (is_array($excludefilter) ? $excludefilter : array($excludefilter));
 		foreach ($exclude_array as $f) {
 			// Check that all '/' are escaped.
