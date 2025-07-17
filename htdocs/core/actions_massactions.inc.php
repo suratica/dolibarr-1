@@ -846,7 +846,8 @@ if (!$error && $massaction == "builddoc" && $permissiontoread && !GETPOST('butto
 	foreach ($listofobjectref as $tmppdf) {
 		$arrayofinclusion[] = '^'.preg_quote(dol_sanitizeFileName($tmppdf), '/').'_[a-zA-Z0-9\-\_\'\&\.]+\.pdf$'; // To include PDF generated from ODX files
 	}
-	$listoffiles = dol_dir_list($uploaddir, 'all', 1, implode('|', $arrayofinclusion), '\.meta$|\.png', 'date', SORT_DESC, 0, 1);
+
+	$listoffiles = dol_dir_list($uploaddir, 'all', 1, $arrayofinclusion, '\.meta$|\.png$', 'date', SORT_DESC, 0, 1);
 
 	dol_syslog("Found ".count($listoffiles)." files");
 
