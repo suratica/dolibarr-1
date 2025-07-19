@@ -138,7 +138,7 @@ class Ai
 			}
 		}
 
-		dol_syslog("Call API for apiKey=".substr($this->apiKey, 0, 3).'***********, apiEndpoint='.$this->apiEndpoint.", model=".$model);
+		dol_syslog("Call API for apiKey=".substr($this->apiKey, 0, 5).'***********, apiEndpoint='.$this->apiEndpoint.", model=".$model);
 
 		try {
 			if (empty($this->apiEndpoint)) {
