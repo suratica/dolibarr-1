@@ -181,11 +181,11 @@ class ActionsTicket extends CommonHookActions
 		} elseif ($action == 'edit') {
 			return $langs->trans("EditTicket");
 		} elseif ($action == 'view') {
-			return $langs->trans("TicketCard");
+			return $langs->trans("Ticket");
 		} elseif ($action == 'add_message') {
 			return $langs->trans("TicketAddMessage");
 		} else {
-			return $langs->trans("TicketsManagement");
+			return $langs->trans("Ticket");
 		}
 	}
 
