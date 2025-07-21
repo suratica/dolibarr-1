@@ -841,8 +841,7 @@ if ($search_categ_cus != -1) {
 }
 // Sort on date
 $sql .= $db->order("fk_user_action, datep");
-
-print $sql;
+//print $sql;
 
 dol_syslog("comm/action/peruser.php", LOG_DEBUG);
 $resql = $db->query($sql);
