@@ -3034,7 +3034,8 @@ class Ticket extends CommonObject
 										$sql .= " email_subject = '".$this->db->escape($subject)."',";
 										$sql .= " email_from = '".$this->db->escape($from)."',";
 										$sql .= " email_to = '".$this->db->escape(implode(',', $sendto))."',";
-										$sql .= " email_tocc = '".$this->db->escape(implode(',', $sendtocc))."'";
+										$sql .= " email_tocc = '".$this->db->escape(implode(',', $sendtocc))."',";
+										$sql .= " reply_to = '".$this->db->escape($replyto)."'";
 										$sql .= " WHERE id = ".((int) $id);
 
 										$resql = $this->db->query($sql);

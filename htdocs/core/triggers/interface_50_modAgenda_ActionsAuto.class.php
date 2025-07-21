@@ -1619,7 +1619,7 @@ class InterfaceActionsAuto extends DolibarrTriggers
 
 		// Fields defined when action is an email (content should be into object->actionmsg to be added into event note, subject should be into object->actionmsg2 to be added into event label)
 		if (!property_exists($object, 'email_fields_no_propagate_in_actioncomm') || empty($object->email_fields_no_propagate_in_actioncomm)) {
-			'@phan-var-force ActionComm $object';  // TODO: Non of the dolibarr classes has all the fields, check class type or properties (email_date)
+			'@phan-var-force ActionComm $object';  // TODO: None of the dolibarr classes has all the fields, check class type or properties (email_date)
 			// If event is to record a message after an email received, we use the date of email as date of event.
 			if (!empty($object->email_date) && $actioncomm->type_code === 'AC_TICKET_CREATE') {
 				$actioncomm->datep         = $object->email_date;
@@ -1627,7 +1627,8 @@ class InterfaceActionsAuto extends DolibarrTriggers
 			}
 			$actioncomm->email_msgid   = empty($object->email_msgid) ? null : $object->email_msgid;
 			$actioncomm->email_from    = empty($object->email_from) ? null : $object->email_from;
-			$actioncomm->email_sender  = empty($object->email_sender) ? null : $object->email_sender;
+			$actioncomm->email_reply_to = empty($object->email_reply_to) ? null : $object->email_reply_to;
+			$actioncomm->email_subject = empty($object->email_subject) ? null : $object->email_subject;
 			$actioncomm->email_to      = empty($object->email_to) ? null : $object->email_to;
 			$actioncomm->email_tocc    = empty($object->email_tocc) ? null : $object->email_tocc;
 			$actioncomm->email_tobcc   = empty($object->email_tobcc) ? null : $object->email_tobcc;
