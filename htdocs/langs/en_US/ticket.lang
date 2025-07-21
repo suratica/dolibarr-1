@@ -57,7 +57,7 @@ Assigned=Assigned
 NeedMoreInformation=Waiting for reporter feedback
 NeedMoreInformationShort=Waiting for feedback
 Waiting=Waiting
-SolvedClosed=Solved
+SolvedClosed=Closed
 Deleted=Deleted
 # Dict
 Severity=Severity

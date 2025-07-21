@@ -1942,7 +1942,8 @@ class EmailCollector extends CommonObject
 
 
 				if (getDolGlobalString('MAIN_IMAP_USE_PHPIMAP')) {
-					dol_syslog("msgid=".$overview['message_id']." date=".dol_print_date($overview['date'], 'dayrfc', 'gmt')." from=".$overview['from']." to=".$overview['to']." subject=".$overview['subject']);
+					$dateformated = dol_print_date($overview['date'], 'dayrfc', 'gmt');		// May generate a warning "dol_print_date($overview['date'], 'dayrfc', 'gmt')" in log
+					dol_syslog("msgid=".$overview['message_id']." date=".$dateformated." from=".$overview['from']." to=".$overview['to']." subject=".$overview['subject']);
 
 					// Removed emojis
 					$overview['subject'] = removeEmoji($overview['subject'], getDolGlobalInt('MAIN_EMAIL_COLLECTOR_ACCEPT_EMOJIS', 1));
