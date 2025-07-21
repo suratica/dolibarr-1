@@ -513,8 +513,6 @@ class EmailCollector extends CommonObject
 	 */
 	public function fetchAll(User $user, $activeOnly = 0, $sortfield = 's.rowid', $sortorder = 'ASC', $limit = 100, $page = 0)
 	{
-		global $langs;
-
 		$obj_ret = array();
 
 		$sql = "SELECT s.rowid";
@@ -548,7 +546,6 @@ class EmailCollector extends CommonObject
 		} else {
 			$this->errors[] = 'EmailCollector::fetchAll Error when retrieve emailcollector list';
 			dol_syslog('EmailCollector::fetchAll Error when retrieve emailcollector list', LOG_ERR);
-			$ret = -1;
 		}
 		if (!count($obj_ret)) {
 			dol_syslog('EmailCollector::fetchAll No emailcollector found', LOG_DEBUG);
