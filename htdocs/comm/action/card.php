@@ -1768,7 +1768,7 @@ if ($action == 'create') {
 		if (empty($projectsListId)) {
 			print '<select class="valignmiddle flat maxwidth500 widthcentpercentminusxx minwidth150imp" id="taskid" name="taskid">';
 			print '<option class="opacitymedium">&nbsp;</option>';
-			print '<option class="opacitymedium" data-html="'.dolPrintHTMLForAttribute('<span class="opacitymedium">'.$langs->trans("SelectAProjectFirst").'</span>').'">'.$langs->trans("SelectAProjectFirst").'</option>';
+			print '<option class="opacitymedium" disabled data-html="'.dolPrintHTMLForAttribute($langs->trans("SelectAProjectFirst")).'">'.$langs->trans("SelectAProjectFirst").'</option>';
 			print '</select>';
 			print ajax_combobox('taskid');
 		} else {
