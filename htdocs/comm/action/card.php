@@ -1744,7 +1744,7 @@ if ($action == 'create') {
 		print '$(document).ready(function () {
 	               $("#projectid").change(function () {
                         var url = "'.DOL_URL_ROOT.'/projet/ajax/projects.php?mode=gettasks&socid="+$("#search_socid").val()+"&projectid="+$("#projectid").val();
-						console.log("Call url to get new list of tasks: "+url);
+						console.log("Call url to get the new list of tasks: "+url);
                         $.get(url, function(data) {
                             console.log(data);
                             if (data) $("#taskid").html(data).select2();
@@ -1765,7 +1765,15 @@ if ($action == 'create') {
 
 		$tid = GETPOSTISSET("projecttaskid") ? GETPOSTINT("projecttaskid") : (GETPOSTISSET("taskid") ? GETPOSTINT("taskid") : '');
 
-		print $formproject->selectTasks((!empty($societe->id) ? $societe->id : -1), $tid, 'taskid', 24, 0, '1', 1, 0, 0, 'maxwidth500 widthcentpercentminusxx', (string) $projectsListId, 'all', null, 1);
+		if (empty($projectsListId)) {
+			print '<select class="valignmiddle flat maxwidth500 widthcentpercentminusxx minwidth150imp" id="taskid" name="taskid">';
+			print '<option class="opacitymedium">&nbsp;</option>';
+			print '<option class="opacitymedium" data-html="'.dolPrintHTMLForAttribute('<span class="opacitymedium">'.$langs->trans("SelectAProjectFirst").'</span>').'">'.$langs->trans("SelectAProjectFirst").'</option>';
+			print '</select>';
+			print ajax_combobox('taskid');
+		} else {
+			print $formproject->selectTasks((!empty($societe->id) ? $societe->id : -1), $tid, 'taskid', 32, 0, '1', 1, 0, 0, 'maxwidth500 widthcentpercentminusxx', (string) $projectsListId, 'all', null, 1);
+		}
 		print '</td></tr>';
 	}
 
