@@ -653,6 +653,8 @@ class CMailFile
 
 			$this->msgid = time().'.'.mt_rand(100, 999).'.SMTPs-dolibarr-'.$this->trackid.'@'.$host;
 
+			$smtps->setMessageID($this->msgid);
+
 			$this->smtps = $smtps;
 		} elseif ($this->sendmode == 'swiftmailer') {
 			// Use Swift Mailer library
