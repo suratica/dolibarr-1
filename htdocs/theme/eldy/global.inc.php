@@ -542,6 +542,9 @@ input.buttonpayment, button.buttonpayment, div.buttonpayment {
 input.short {
 	width: 40px;
 }
+input.shortbis {
+	width: 48px;
+}
 .nofocusvisible:focus-visible {
 	outline: none;
 }

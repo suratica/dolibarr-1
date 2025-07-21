@@ -91,7 +91,7 @@ if ($socid < 0) {
 	$socid = '';
 }
 
-$canedit = 1;
+$canedit = 1;	// can read events of others
 if (!$user->hasRight('agenda', 'myactions', 'read')) {
 	accessforbidden();
 }
@@ -1499,6 +1499,7 @@ $link = '';
 // Show div with list of calendars
 print $s;
 
+// Top filters
 print '<div class="liste_titre liste_titre_bydiv centpercent">';
 print_actions_filter($form, $canedit, $search_status, $year, $month, $day, $showbirthday, '', (string) $filtert, '', $pid, $socid, $action, -1, $actioncode, $usergroup, '', $resourceid, $search_categ_cus);
 print '</div>';
@@ -1543,13 +1544,13 @@ while ($currentdaytoshow < $lastdaytoshow) {
 		print $langs->trans("DaysOfWeek").'</span>';
 		print "\n";
 		print '<div class="ui-grid-a  inline-block"><div class="ui-block-a nowraponall">';
-		print '<input type="number" class="short" name="begin_d" value="'.$begin_d.'" min="1" max="7">';
+		print '<input type="number" class="shortbis" name="begin_d" value="'.$begin_d.'" min="1" max="7">';
 		if (empty($conf->dol_use_jmobile)) {
 			print ' - ';
 		} else {
 			print '</div><div class="ui-block-b">';
 		}
-		print '<input type="number" class="short" name="end_d" value="'.$end_d.'" min="1" max="7">';
+		print '<input type="number" class="shortbis" name="end_d" value="'.$end_d.'" min="1" max="7">';
 		print '</div></div>';
 	}
 
@@ -1582,13 +1583,13 @@ while ($currentdaytoshow < $lastdaytoshow) {
 	print $langs->trans("Hours").'</span>';
 	print "\n";
 	print '<div class="ui-grid-a inline-block"><div class="ui-block-a nowraponall">';
-	print '<input type="number" class="short" name="begin_h" value="'.$begin_h.'" min="0" max="23">';
+	print '<input type="number" class="shortbis" name="begin_h" value="'.$begin_h.'" min="0" max="23">';
 	if (empty($conf->dol_use_jmobile)) {
 		print ' - ';
 	} else {
 		print '</div><div class="ui-block-b">';
 	}
-	print '<input type="number" class="short" name="end_h" value="'.$end_h.'" min="1" max="24">';
+	print '<input type="number" class="shortbis" name="end_h" value="'.$end_h.'" min="1" max="24">';
 	if (empty($conf->dol_use_jmobile)) {
 		print ' '.$langs->trans("HourShort");
 	}
