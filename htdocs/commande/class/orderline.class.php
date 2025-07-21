@@ -166,7 +166,7 @@ class OrderLine extends CommonOrderLine
 		'datec' => array('type' => 'datetime', 'label' => 'DateCreation', 'enabled' => 1, 'visible' => -1, 'position' => 40),
 		'fk_commande' => array('type' => 'integer:Commande:commande/class/commande.class.php', 'label' => 'Order', 'enabled' => 'isModEnabled("societe")', 'visible' => -1, 'notnull' => 1, 'position' => 70),
 		'fk_projet' => array('type' => 'integer:Project:projet/class/project.class.php:1:(fk_statut:=:1)', 'label' => 'Project', 'enabled' => "isModEnabled('project')", 'visible' => -1, 'position' => 75),
-		'fk_product' => array('type' => 'integer:Product:product/class/product.class.php:1', 'label' => 'ProductOrService', 'enabled' => "isModEnabled('product') || isModEnabled('sercice')", 'visible' => -1, 'position' => 76),
+		'fk_product' => array('type' => 'integer:Product:product/class/product.class.php:1', 'label' => 'ProductOrService', 'enabled' => "isModEnabled('product') || isModEnabled('service')", 'visible' => -1, 'position' => 76),
 		//'fk_commercial_signature' => array('type' => 'integer:User:user/class/user.class.php', 'label' => 'SaleRepresentative Signature', 'enabled' => 1, 'visible' => -1, 'position' => 80),
 		//'fk_commercial_suivi' => array('type' => 'integer:User:user/class/user.class.php', 'label' => 'SaleRepresentative follower', 'enabled' => 1, 'visible' => -1, 'position' => 85),
 		'fk_user_author' => array('type' => 'integer:User:user/class/user.class.php', 'label' => 'UserAuthor', 'enabled' => 1, 'visible' => -1, 'notnull' => 1, 'position' => 90),
