@@ -1243,7 +1243,7 @@ if (empty($reshook)) {
 						$newlang = $user->lang;
 					}
 					if (empty($newlang)) {
-						$newlang = $langs;
+						$newlang = $langs->defaultlang;
 					}
 					if (!empty($newlang)) {
 						$outputlangs = new Translate("", $conf);
