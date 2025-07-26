@@ -2104,7 +2104,7 @@ class pdf_sponge extends ModelePDFFactures
 					$pdf->SetXY($col1x, $tab2_top + $tab2_hl * $index);
 					$pdf->SetTextColor(0, 0, 60);
 					$pdf->SetFillColor(224, 224, 224);
-					$pdf->MultiCell($col2x - $col1x, $tab2_hl, $outputlangs->transnoentities("TotalTTC").(is_object($outputlangsbis) ? ' / '.$outputlangsbis->transnoentities("TotalTTC") : '').' '.$outputlangs->getCurrencySymbol($mysoc->currency_code), $useborder, 'L', true);
+					$pdf->MultiCell($col2x - $col1x, $tab2_hl, $outputlangs->transnoentities("TotalTTC").(is_object($outputlangsbis) ? ' / '.$outputlangsbis->transnoentities("TotalTTC") : '').' ('.$outputlangs->getCurrencySymbol($mysoc->currency_code).')', $useborder, 'L', true);
 
 					$pdf->SetXY($col2x, $tab2_top + $tab2_hl * $index);
 					$pdf->MultiCell($largcol2, $tab2_hl, price($sign * $total_ttc_origin, 0, $outputlangs, 1, -1, -1, $mysoc->currency_code), $useborder, 'L', true);
