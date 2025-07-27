@@ -4,7 +4,7 @@ English Dolibarr ChangeLog
 
 
 ***** ChangeLog for 21.0.3 compared to 21.0.2 *****
-Sec: Remove functions accepting callable params - Reported by phdwg1410
+SEC: Remove functions accepting callable params - Reported by phdwg1410
 TODO...
 
 
