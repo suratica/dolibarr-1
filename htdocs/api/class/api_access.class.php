@@ -191,14 +191,6 @@ class DolibarrApiAccess implements iAuthenticate
 				throw new RestException(401, $genericmessageerroruser);
 			}
 
-			// TODO
-			// Increase counter of API access
-			if (getDolGlobalString('API_COUNTER_ENABLED')) {
-				include DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-				dolibarr_set_const($this->db, 'API_COUNTER_COUNT', getDolGlobalInt('API_COUNTER_COUNT') + 1);
-				//var_dump('eeee');exit;
-			}
-
 			// User seems valid
 			$fuser->getrights();
 
