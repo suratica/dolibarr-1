@@ -310,7 +310,7 @@ if (!empty($reg[1]) && ($reg[1] != 'explorer' || ($reg[2] != '/swagger.json' && 
 		// Increase counter of API access
 		if (getDolGlobalString('API_COUNTER_ENABLED')) {
 			include DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-			dolibarr_set_const($db, 'API_COUNTER_COUNT', getDolGlobalInt('API_COUNTER_COUNT') + 1);
+			dolibarr_set_const($db, 'API_COUNTER_COUNT', getDolGlobalInt('API_COUNTER_COUNT') + 1, 'chaine', 1);
 			//var_dump('eeee');exit;
 		}
 	}
