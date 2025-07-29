@@ -1672,7 +1672,7 @@ if ($resql) {
 			if (empty($arrayfields['b.num_chq']['checked'])) {
 				$labeltype .= ($objp->num_chq ? ' <span class="opacitymedium">- '.$objp->num_chq.'</span>' : '');
 			}
-			print '<td class="tdoverflowmax100 classfortooltip" title="'.dolPrintHTMLForAttribute($labeltype).'">';
+			print '<td class="tdoverflowmax100" title="'.dolPrintLabel($labeltype).'">';
 			if ($labeltype == 'SOLD') {
 				print '&nbsp;'; //$langs->trans("InitialBankBalance");
 			} else {
