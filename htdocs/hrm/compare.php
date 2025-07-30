@@ -319,7 +319,7 @@ function diff(&$TMergedSkills)
 			$class .= ' sad';
 		}
 
-		$out .= '<li fk_skill="' . $id . '" class="' . $class . '" style="text-align:center;">
+		$out .= '<li data-fk_skill="' . $id . '" class="center ' . $class . '">
 	      <span class="' . $class . '">&nbsp;</span>
 	    </li>';
 	}
