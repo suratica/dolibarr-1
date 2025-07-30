@@ -732,7 +732,7 @@ if ($action != 'edit' && $action != 'create') {		// If not bank account yet, $ac
 			$db->free($resql);
 
 			if ($num <= 0) {
-				print '<td colspan="5"><span class="opacitymedium">'.$langs->trans("None").'</span></a>';
+				print '<td colspan="5"><span class="opacitymedium">'.$langs->trans("None").'</span></td>';
 			}
 			print "</table>";
 			print "</div>";
