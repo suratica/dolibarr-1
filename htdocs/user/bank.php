@@ -218,8 +218,8 @@ if ($action == 'delete_confirmed' && !$cancel && $permissiontoaddbankaccount) {
 	$action = '';
 }
 
-// update birth
-if ($action == 'setbirth' && $usercanadd && !$cancel) {
+// update birth (pure personal information)
+if ($action == 'setbirth' && $permissiontowritehr && !$cancel) {
 	$object->birth = dol_mktime(0, 0, 0, GETPOSTINT('birthmonth'), GETPOSTINT('birthday'), GETPOSTINT('birthyear'));
 	$result = $object->update($user);
 	if ($result < 0) {
@@ -273,8 +273,8 @@ if ($action == 'setref_employee' && $usercanadd && !$cancel) {
 	}
 }
 
-// update national_registration_number
-if ($action == 'setnational_registration_number' && $usercanadd && !$cancel) {
+// update national_registration_number (pure personal information)
+if ($action == 'setnational_registration_number' && $permissiontowritehr && !$cancel) {
 	$object->national_registration_number = (string) GETPOST('national_registration_number', 'alphanohtml');
 	$result = $object->update($user);
 	if ($result < 0) {
