@@ -1225,10 +1225,10 @@ if ($dirins && $action == 'initobject' && $module && $objectname && $user->hasRi
 				if ($fieldname == 'fk_soc') {
 					$label = 'ThirdParty';
 				}
-				if ($fieldname == 'tms') {
+				if (in_array($fieldname, array('tms', 'date_modification'))) {
 					$label = 'DateModification';
 				}
-				if ($fieldname == 'datec') {
+				if (in_array($fieldname, array('datec', 'date_creation'))) {
 					$label = 'DateCreation';
 				}
 				if ($fieldname == 'date_valid') {
@@ -1321,14 +1321,26 @@ if ($dirins && $action == 'initobject' && $module && $objectname && $user->hasRi
 				}
 
 				// type
-				if (isset($obj->Picto)) {
+				$picto = '';
+				if (isset($obj->Picto)) {	// This should never exists
 					$picto = $obj->Picto;
 				}
-				if ($obj->Field == 'fk_soc') {
+				if (preg_match('/^fk_soc/', $obj->Field)) {
 					$picto = 'company';
-				}
-				if (preg_match('/^fk_proj/', $obj->Field)) {
+				} elseif (preg_match('/^fk_contact/', $obj->Field)) {
+					$picto = 'contact';
+				} elseif (preg_match('/^fk_bank/', $obj->Field)) {
+					$picto = 'bank';
+				} elseif (preg_match('/^fk_user/', $obj->Field)) {
+					$picto = 'user';
+				} elseif (preg_match('/^fk_warehouse/', $obj->Field)) {
+					$picto = 'warehouse';
+				} elseif (preg_match('/^fk_prod/', $obj->Field)) {
+					$picto = 'product';
+				} elseif (preg_match('/^fk_proj/', $obj->Field)) {
 					$picto = 'project';
+				} elseif (preg_match('/^fk_task/', $obj->Field)) {
+					$picto = 'task';
 				}
 
 				// lang
