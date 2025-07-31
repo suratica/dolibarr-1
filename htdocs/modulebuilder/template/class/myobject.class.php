@@ -34,29 +34,40 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 class MyObject extends CommonObject
 {
 	/**
-	 * @var string 	ID of module.
+	 * @var string 		ID of module.
 	 */
 	public $module = 'mymodule';
 
 	/**
-	 * @var string 	ID to identify managed object.
+	 * @var string 		ID to identify managed object.
 	 */
 	public $element = 'myobject';
 
 	/**
-	 * @var string 	Name of table without prefix where object is stored. This is also the key used for extrafields management (so extrafields know the link to the parent table).
+	 * @var string 		Name of table without prefix where object is stored. This is also the key used for extrafields management (so extrafields know the link to the parent table).
 	 */
 	public $table_element = 'mymodule_myobject';
 
 	/**
-	 * @var string 	If permission must be checkec with hasRight('mymodule', 'read') and not hasright('mymodyle', 'myobject', 'read'), you can uncomment this line
+	 * @var string 		If permission must be checkec with hasRight('mymodule', 'read') and not hasright('mymodyle', 'myobject', 'read'), you can uncomment this line
 	 */
 	//public $element_for_permission = 'mymodule';
 
 	/**
-	 * @var string 	String with name of icon for myobject. Must be a 'fa-xxx' fontawesome code (or 'fa-xxx_fa_color_size') or 'myobject@mymodule' if picto is file 'img/object_myobject.png'.
+	 * @var string 		String with name of icon for myobject. Must be a 'fa-xxx' fontawesome code (or 'fa-xxx_fa_color_size') or 'myobject@mymodule' if picto is file 'img/object_myobject.png'.
 	 */
 	public $picto = 'fa-file';
+
+	/**
+	 * @var int<0,1>	Does object support extrafields ? 0=No, 1=Yes
+	 */
+	public $isextrafieldmanaged = 0;
+
+	/**
+	 * @var int<0,1>|string  	Does this object support multicompany module ?
+	 * 							0=No test on entity, 1=Test with field entity in local table, 'field@table'=Test entity into the field@table (example 'fk_soc@societe')
+	 */
+	public $ismultientitymanaged = 0;
 
 
 	const STATUS_DRAFT = 0;
@@ -240,8 +251,6 @@ class MyObject extends CommonObject
 		global $langs;
 
 		$this->db = $db;
-		$this->ismultientitymanaged = 0;
-		$this->isextrafieldmanaged = 1;
 
 		if (!getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID') && isset($this->fields['rowid']) && !empty($this->fields['ref'])) {
 			$this->fields['rowid']['visible'] = 0;
