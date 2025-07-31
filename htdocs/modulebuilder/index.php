@@ -1330,6 +1330,9 @@ if ($dirins && $action == 'initobject' && $module && $objectname && $user->hasRi
 					$picto = 'project';
 				}
 
+				// lang
+				$lang = $module.'@'.$module;
+
 				// Build the property string
 				$stringforproperties .= "'".$obj->Field."' => array('type' => '".$type."', 'label' => '".$label."',";
 				if ($default != '') {
@@ -1361,6 +1364,9 @@ if ($dirins && $action == 'initobject' && $module && $objectname && $user->hasRi
 				}
 				if ($csslist) {
 					$stringforproperties .= ", 'csslist' => '".$csslist."'";
+				}
+				if ($lang) {
+					$stringforproperties .= ", 'lang' => '".$lang."'";
 				}
 				$stringforproperties .= "),\n";
 				$i += 5;
