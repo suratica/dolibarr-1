@@ -600,6 +600,7 @@ if ($dirins && $action == 'initsqlextrafields' && !empty($module) && $user->hasR
 	// Now we update the object file to set $this->isextrafieldmanaged to 1
 	$srcfile = $dirins.'/'.strtolower($module).'/class/'.strtolower($objectname).'.class.php';
 	$arrayreplacement = array('/\$this->isextrafieldmanaged = 0;/' => '$this->isextrafieldmanaged = 1;');
+	$arrayreplacement = array('/\$isextrafieldmanaged = 0;/' => '$isextrafieldmanaged = 1;');
 	dolReplaceInFile($srcfile, $arrayreplacement, '', '0', 0, 1);
 }
 
