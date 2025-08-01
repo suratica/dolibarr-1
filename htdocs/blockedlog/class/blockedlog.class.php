@@ -1312,7 +1312,7 @@ class BlockedLog
 		$result = false;
 
 		$sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."blockedlog";
-		$sql .= " WHERE entity = ".$conf->entity;
+		$sql .= " WHERE entity = ".((int) $conf->entity);
 		if ($ignoresystem) {
 			$sql .= " AND action not in ('MODULE_SET','MODULE_RESET')";
 		}
