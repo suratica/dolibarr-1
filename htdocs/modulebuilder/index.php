@@ -1130,7 +1130,7 @@ if ($dirins && $action == 'initobject' && $module && $objectname && $user->hasRi
 			setEventMessages($langs->trans("ErrorTableNotFound", $tablename), null, 'errors');
 		} else {
 			/**
-			 *  'type' field format ('integer', 'integer:ObjectClass:PathToClass[:AddCreateButtonOrNot[:Filter[:Sortfield]]]', 'sellist:TableName:LabelFieldName[:KeyFieldName[:KeyFieldParent[:Filter[:Sortfield]]]]', 'varchar(x)', 'double(24,8)', 'real', 'price', 'text', 'text:none', 'html', 'date', 'datetime', 'timestamp', 'duration', 'mail', 'phone', 'ip', 'url', 'password')
+			 *  'type' field format ('integer', 'integer:ObjectClass:PathToClass[:AddCreateButtonOrNot[:Filter[:Sortfield]]]', 'sellist:TableName:LabelFieldName[:KeyFieldName[:KeyFieldParent[:Filter[:Sortfield]]]]', 'varchar(x)', 'double(24,8)', 'real', 'price', 'text', 'text:none', 'html', 'date', 'datetime', 'timestamp', 'duration', 'email', 'phone', 'ip', 'url', 'password')
 			 *         Note: Filter can be a string like "(t.ref:like:'SO-%') or (t.date_creation:<:'20160101') or (t.nature:is:NULL)"
 			 *  'label' the translation key.
 			 *  'picto' is code of a picto to show before value in forms
@@ -4636,7 +4636,34 @@ if ($module == 'initmodule') {
 										print '<input name="proplabel" class="maxwidth125" value="'.dol_escape_htmltag($proplabel).'">';
 										print '</td>';
 										print '<td class="tdoverflowmax150">';
-										print '<input name="proptype" class="maxwidth125" value="'.dol_escape_htmltag($proptype).'"></input>';
+										print '<input name="proptype" class="maxwidth125" value="'.dol_escape_htmltag($proptype).'" list="datalist'.$key.'"></input>';
+										// Use the samedatalist than for create
+										print '<datalist id="datalist'.$key.'">';
+										print '<option>varchar(128)</option>';
+										print '<option>email</option>';
+										print '<option>phone</option>';
+										print '<option>ip</option>';
+										print '<option>url</option>';
+										print '<option>password</option>';
+										print '<option>text</option>';
+										print '<option>html</option>';
+										print '<option>date</option>';
+										print '<option>datetime</option>';
+										print '<option>integer</option>';
+										print '<option>stars(5)</option>';
+										print '<option>double(28,4)</option>';
+										print '<option>real</option>';
+										print '<option>integer:ClassName:RelativePath/To/ClassFile.class.php[:1[:FILTER]]</option>';
+										// Combo with list of fields
+										/*
+										if (empty($formadmin)) {
+											include_once DOL_DOCUMENT_ROOT.'/core/class/html.formadmin.class.php';
+											$formadmin = new FormAdmin($db);
+										}
+										print $formadmin->selectTypeOfFields($key, GETPOST($key, 'alpha'));
+										*/
+										print '</datalist>';
+
 										print '</td>';
 										print '<td class="tdoverflowmax200">';
 										print '<textarea name="proparrayofkeyval">';
