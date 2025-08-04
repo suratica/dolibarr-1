@@ -1186,26 +1186,21 @@ if ($dirins && $action == 'initobject' && $module && $objectname && $user->hasRi
 				$type = $obj->Type;
 				if ($type == 'int(11)') {
 					$type = 'integer';
-				}
-				if ($type == 'float') {
+				} elseif ($type == 'float') {
 					$type = 'real';
-				}
-				if (strstr($type, 'tinyint')) {
+				} elseif (strstr($type, 'tinyint')) {
 					$type = 'integer';
-				}
-				if ($obj->Field == 'fk_soc') {
+				} elseif (strstr($type, 'url')) {
+					$type = 'varchar(255)';
+				} elseif ($obj->Field == 'fk_soc') {
 					$type = 'integer:Societe:societe/class/societe.class.php';
-				}
-				if (preg_match('/^fk_proj/', $obj->Field)) {
+				} elseif (preg_match('/^fk_proj/', $obj->Field)) {
 					$type = 'integer:Project:projet/class/project.class.php:1:fk_statut=1';
-				}
-				if (preg_match('/^fk_prod/', $obj->Field)) {
+				} elseif (preg_match('/^fk_prod/', $obj->Field)) {
 					$type = 'integer:Product:product/class/product.class.php:1';
-				}
-				if ($obj->Field == 'fk_warehouse') {
+				} elseif ($obj->Field == 'fk_warehouse') {
 					$type = 'integer:Entrepot:product/stock/class/entrepot.class.php';
-				}
-				if (preg_match('/^(fk_user|fk_commercial)/', $obj->Field)) {
+				} elseif (preg_match('/^(fk_user|fk_commercial)/', $obj->Field)) {
 					$type = 'integer:User:user/class/user.class.php';
 				}
 
