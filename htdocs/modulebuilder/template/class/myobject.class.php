@@ -1277,6 +1277,18 @@ class MyObjectLine extends CommonObjectLine
 	public $fk_parent_attribute = '';	// Example: '' or 'fk_myobject'
 
 	/**
+	 * @var int<0,1>	Does object support extrafields ? 0=No, 1=Yes
+	 */
+	public $isextrafieldmanaged = 0;
+
+	/**
+	 * @var int<0,1>|string|null  	Does this object support multicompany module ?
+	 * 								0=No test on entity, 1=Test with field entity in local table, 'field@table'=Test entity into the field@table (example 'fk_soc@societe')
+	 */
+	public $ismultientitymanaged = 0;
+
+
+	/**
 	 * Constructor
 	 *
 	 * @param	DoliDB $db Database handler
@@ -1284,7 +1296,5 @@ class MyObjectLine extends CommonObjectLine
 	public function __construct(DoliDB $db)
 	{
 		$this->db = $db;
-
-		$this->isextrafieldmanaged = 0;
 	}
 }

@@ -8109,7 +8109,7 @@ function get_default_localtax($thirdparty_seller, $thirdparty_buyer, $local, $id
  *	Return yes or no in current language
  *
  *	@param	int<0, 1>|'yes'|'true'|'no'|'false'	$yesno	Value to test (1, 'yes', 'true' or 0, 'no', 'false')
- *	@param	integer|string	$format						1=Yes/No, 0=yes/no, 2=Disabled checkbox, 3=Disabled checkbox + Yes/No, 4 or Text=Use picto
+ *	@param	integer|string	$format						1=Yes/No, 0=yes/no, 2=Disabled/enabled checkbox, 3=Disabled/enabled checkbox + Yes/No, 4 or Text=Use picto
  *	@param	int				$color						0=texte only, 1=Text is formatted with a color font style ('ok' or 'error'), 2=Text is formatted with 'ok' color.
  *	@return	string										HTML string
  */
