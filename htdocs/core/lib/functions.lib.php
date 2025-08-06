@@ -8541,7 +8541,8 @@ function dol_string_onlythesehtmlattributes($stringtoclean, $allowed_attributes 
 	}
 
 	if (class_exists('DOMDocument') && !empty($stringtoclean)) {
-		$stringtoclean = '<?xml encoding="UTF-8"><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>'.$stringtoclean.'</body></html>';
+		//$stringtoclean = '<?xml encoding="UTF-8"><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>'.$stringtoclean.'</body></html>';
+		$stringtoclean = '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>'.$stringtoclean.'</body></html>';
 
 		// Warning: loadHTML does not support HTML5 on old libxml versions.
 		$dom = new DOMDocument('', 'UTF-8');
@@ -8597,7 +8598,7 @@ function dol_string_onlythesehtmlattributes($stringtoclean, $allowed_attributes 
 		$return = $dom->saveHTML();	// This may add a LF at end of lines, so we will trim later
 		//$return = '<html><body>aaaa</p>bb<p>ssdd</p>'."\n<p>aaa</p>aa<p>bb</p>";
 
-		$return = preg_replace('/^'.preg_quote('<?xml encoding="UTF-8">', '/').'/', '', $return);
+		//$return = preg_replace('/^'.preg_quote('<?xml encoding="UTF-8">', '/').'/', '', $return);
 		$return = preg_replace('/^'.preg_quote('<html><head><', '/').'[^<>]*'.preg_quote('></head><body>', '/').'/', '', $return);
 		$return = preg_replace('/'.preg_quote('</body></html>', '/').'$/', '', trim($return));
 
@@ -8767,14 +8768,19 @@ function dol_htmlwithnojs($stringtoencode, $nouseofiframesandbox = 0, $check = '
 					}
 
 					$dom = new DOMDocument();
-					// Add a trick to solve pb with text without parent tag
-					// like '<h1>Foo</h1><p>bar</p>' that wrongly ends up, without the trick, with '<h1>Foo<p>bar</p></h1>'
-					// like 'abc' that wrongly ends up, without the trick, with '<p>abc</p>'
-
+					// Add a trick '<div class="tricktoremove">' to solve pb with text without parent tag
+					//  like '<h1>Foo</h1><p>bar</p>' that wrongly ends up, without the trick, with '<h1>Foo<p>bar</p></h1>'
+					//  like 'abc' that wrongly ends up, without the trick, with '<p>abc</p>'
+					// Add also a trick <html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> to solve utf8 lost.
+					// I don't know what the xml encoding is the trick for
 					if (dol_textishtml($out)) {
-						$out = '<?xml encoding="UTF-8"><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body><div class="tricktoremove">'.$out.'</div></body></html>';
+						//$out = '<?xml encoding="UTF-8"><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body><div class="tricktoremove">'.$out.'</div></body></html>';
+						$out = '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body><div class="tricktoremove">'.$out.'</div></body></html>';
+						//$out = '<html><head><meta charset="utf-8"></head><body><div class="tricktoremove">'.$out.'</div></body></html>';
 					} else {
-						$out = '<?xml encoding="UTF-8"><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body><div class="tricktoremove">'.dol_nl2br($out).'</div></body></html>';
+						//$out = '<?xml encoding="UTF-8"><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body><div class="tricktoremove">'.dol_nl2br($out).'</div></body></html>';
+						$out = '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body><div class="tricktoremove">'.dol_nl2br($out).'</div></body></html>';
+						//$out = '<html><head><meta charset="utf-8"></head><body><div class="tricktoremove">'.dol_nl2br($out).'</div></body></html>';
 					}
 
 					$dom->loadHTML($out, LIBXML_HTML_NODEFDTD | LIBXML_ERR_NONE | LIBXML_HTML_NOIMPLIED | LIBXML_NONET | LIBXML_NOWARNING | LIBXML_NOERROR | LIBXML_NOXMLDECL);
@@ -8784,7 +8790,7 @@ function dol_htmlwithnojs($stringtoencode, $nouseofiframesandbox = 0, $check = '
 					$out = trim($dom->saveHTML());
 
 					// Remove the trick added to solve pb with text in utf8 and text without parent tag
-					$out = preg_replace('/^'.preg_quote('<?xml encoding="UTF-8">', '/').'/', '', $out);
+					//$out = preg_replace('/^'.preg_quote('<?xml encoding="UTF-8">', '/').'/', '', $out);
 					$out = preg_replace('/^'.preg_quote('<html><head><', '/').'[^<>]+'.preg_quote('></head><body><div class="tricktoremove">', '/').'/', '', $out);
 					$out = preg_replace('/'.preg_quote('</div></body></html>', '/').'$/', '', trim($out));
 					//                  $out = preg_replace('/^<\?xml encoding="UTF-8"><div class="tricktoremove">/', '', $out);
