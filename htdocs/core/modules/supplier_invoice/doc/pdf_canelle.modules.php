@@ -4,8 +4,6 @@
  * Copyright (C) 2015       Marcos García        <marcosgdf@gmail.com>
  * Copyright (C) 2018-2024  Frédéric France      <frederic.france@free.fr>
  * Copyright (C) 2024		MDW					 <mdeweerd@users.noreply.github.com>
- * Copyright (C) 2018-2024  Frédéric France      <frederic.france@netlogic.fr>
- * Copyright (C) 2024		MDW					 <mdeweerd@users.noreply.github.com>
  * Copyright (C) 2024	    Nick Fragoulis
  * Copyright (C) 2025       Joachim Küter        <git-jk@bloxera.com>
  *
