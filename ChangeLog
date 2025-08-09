@@ -50,7 +50,7 @@ NEW: Add Shared links on links in attachments (#33459)
 NEW: Add tags / category on supplier invoice (#33490)
 NEW: Add the possibility to merge PDF from the product list (#33723)
 NEW: allow stock management by product (#32326)
-NEW: attendee status Used - to ensure that only one attendee gets in on a ticket (#33987)
+NEW: attendee status "Showed up" - to ensure that only one attendee gets in on a ticket (#33987)
 NEW: auto-detect country from code in creation	(follow-up)
 NEW: autofix mysqldump command for backup when path is wrong
 NEW: Better presentation of list of user approver.
