@@ -178,8 +178,7 @@ class BankAccounts extends DolibarrApi
 		}
 		// courant and type are the same thing but the one used when
 		// creating an account is courant
-		$account->courant = $account->type; // deprecated
-		$account->type = $account->type;
+		$account->courant = $account->type; // deprecated, kept for backward compatibility
 
 		if ($account->create(DolibarrApiAccess::$user) < 0) {
 			throw new RestException(500, 'Error creating bank account', array_merge(array($account->error), $account->errors));
