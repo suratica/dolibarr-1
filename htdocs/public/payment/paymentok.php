@@ -2103,15 +2103,15 @@ if ($ispaymentok) {
 		$content = "";
 		if (array_key_exists('MEM', $tmptag)) {
 			$url = $urlwithroot."/adherents/subscription.php?rowid=".((int) $tmptag['MEM']);
-			$content .= '<strong>'.$companylangs->trans("PaymentSubscription")."</strong><br><br>\n";
-			$content .= $companylangs->trans("MemberId").': <strong>'.$tmptag['MEM']."</strong><br>\n";
-			$content .= $companylangs->trans("Link").': <a href="'.$url.'">'.$url.'</a>'."<br>\n";
+			$content .= '<strong>'.$companylangs->transnoentitiesnoconv("PaymentSubscription")."</strong><br><br>\n";
+			$content .= $companylangs->transnoentitiesnoconv("MemberId").': <strong>'.$tmptag['MEM']."</strong><br>\n";
+			$content .= $companylangs->transnoentitiesnoconv("Link").': <a href="'.$url.'">'.$url.'</a>'."<br>\n";
 		} elseif (array_key_exists('INV', $tmptag)) {
 			$url = $urlwithroot."/compta/facture/card.php?id=".((int) $tmptag['INV']);
-			$content .= '<strong>'.$companylangs->trans("Payment")."</strong><br><br>\n";
-			$content .= $companylangs->trans("InvoiceId").': <strong>'.$tmptag['INV']."</strong><br>\n";
+			$content .= '<strong>'.$companylangs->transnoentitiesnoconv("Payment")."</strong><br><br>\n";
+			$content .= $companylangs->transnoentitiesnoconv("InvoiceId").': <strong>'.$tmptag['INV']."</strong><br>\n";
 			//$content.=$companylangs->trans("ThirdPartyId").': '.$tmptag['CUS']."<br>\n";
-			$content .= $companylangs->trans("Link").': <a href="'.$url.'">'.$url.'</a>'."<br>\n";
+			$content .= $companylangs->transnoentitiesnoconv("Link").': <a href="'.$url.'">'.$url.'</a>'."<br>\n";
 		} else {
 			$content .= $companylangs->transnoentitiesnoconv("NewOnlinePaymentReceived")."<br>\n";
 		}
@@ -2199,7 +2199,7 @@ if ($ispaymentok) {
 		$companylangs->loadLangs(array('main', 'members', 'bills', 'paypal', 'paybox', 'stripe'));
 
 		$sendto = $sendemail;
-		$from = getDolGlobalString('MAILING_EMAIL_FROM') ? $conf->global->MAILING_EMAIL_FROM : getDolGlobalString("MAIN_MAIL_EMAIL_FROM");
+		$from = getDolGlobalString('MAILING_EMAIL_FROM', getDolGlobalString("MAIN_MAIL_EMAIL_FROM"));
 		// Define $urlwithroot
 		$urlwithouturlroot = preg_replace('/'.preg_quote(DOL_URL_ROOT, '/').'$/i', '', trim($dolibarr_main_url_root));
 		$urlwithroot = $urlwithouturlroot.DOL_URL_ROOT; // This is to use external domain name found into config file
