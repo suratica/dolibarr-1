@@ -472,7 +472,22 @@ if ($step == 1 || !$datatoexport) {
 
 	print '<div class="opacitymedium">'.$langs->trans("SelectExportDataSet").'</div>';
 
-	if ($user->admin) {
+
+	// Define $nbmodulesnotautoenabled - TODO This code is at different places
+	$nbmodulesnotautoenabled = count($conf->modules);
+	$listofmodulesautoenabled = array('agenda', 'fckeditor', 'export', 'import');
+	foreach ($listofmodulesautoenabled as $moduleautoenable) {
+		if (in_array($moduleautoenable, $conf->modules)) {
+			$nbmodulesnotautoenabled--;
+		}
+	}
+
+	// Show info setup module
+	print img_picto('', 'cog', 'class="paddingright valignmiddle double"');
+	print ' ';
+	print '<a class="nounderlineimp" href="'.DOL_URL_ROOT.'/admin/modules.php?mainmenu=home">'.$langs->transnoentities("Setup").' - '.$langs->transnoentities("Modules").'</a>';
+	print '<br><br>'.$langs->trans("SetupDescription4b");
+	if ($user->admin && $nbmodulesnotautoenabled <= getDolGlobalInt('MAIN_MIN_NB_ENABLED_MODULE_FOR_WARNING', 1)) {	// If only minimal initial modules enabled
 		print info_admin($langs->trans("WarningOnlyProfilesOfActivatedModules").' '.$langs->trans("YouCanEnableModulesFrom"));
 	}
 
