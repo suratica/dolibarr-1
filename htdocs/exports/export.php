@@ -482,11 +482,6 @@ if ($step == 1 || !$datatoexport) {
 		}
 	}
 
-	// Show info setup module
-	print img_picto('', 'cog', 'class="paddingright valignmiddle double"');
-	print ' ';
-	print '<a class="nounderlineimp" href="'.DOL_URL_ROOT.'/admin/modules.php?mainmenu=home">'.$langs->transnoentities("Setup").' - '.$langs->transnoentities("Modules").'</a>';
-	print '<br><br>'.$langs->trans("SetupDescription4b");
 	if ($user->admin && $nbmodulesnotautoenabled <= getDolGlobalInt('MAIN_MIN_NB_ENABLED_MODULE_FOR_WARNING', 1)) {	// If only minimal initial modules enabled
 		print info_admin($langs->trans("WarningOnlyProfilesOfActivatedModules").' '.$langs->trans("YouCanEnableModulesFrom"));
 	}
