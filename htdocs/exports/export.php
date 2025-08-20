@@ -470,9 +470,15 @@ if ($step == 1 || !$datatoexport) {
 
 	print dol_get_fiche_head($head, $hselected, 'Export', -1, 'download');
 
-	print '<div class="opacitymedium">'.$langs->trans("SelectExportDataSet").'</div><br>';
+	print '<div class="opacitymedium">'.$langs->trans("SelectExportDataSet").'</div>';
 
-	// Affiche les modules d'exports
+	if ($user->admin) {
+		print info_admin($langs->trans("WarningOnlyProfilesOfActivatedModules").' '.$langs->trans("YouCanEnableModulesFrom"));
+	}
+
+	print '<br>';
+
+	// Show profiles for export
 	print '<div class="div-table-responsive-no-min">'; // You can use div-table-responsive-no-min if you don't need reserved height for your table
 	print '<table class="noborder centpercent nomarginbottom">';
 	print '<tr class="liste_titre">';
