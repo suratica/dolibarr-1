@@ -607,7 +607,7 @@ $html .= '<th class="right">Lines</th>';
 $html .= '<th></th>';
 $html .= '<th class="right">Blanks</th>';
 $html .= '<th class="right">Comments</th>';
-$html .= '<th class="right">Code</th>';
+$html .= '<th class="right nowrap">Code (SLOC)</th>';
 //$html .= '<td class="right">'.$val['Complexity'].'</td>';
 $html .= '</tr>';
 foreach (array('proj', 'dep') as $source) {
