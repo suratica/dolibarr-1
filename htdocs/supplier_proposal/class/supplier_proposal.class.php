@@ -1755,7 +1755,7 @@ class SupplierProposal extends CommonObject
 		$this->db->begin();
 
 		$sql = "UPDATE ".MAIN_DB_PREFIX."supplier_proposal";
-		$sql .= " SET fk_statut = ".((int) $status).", note_private = '".$this->db->escape($note)."', date_cloture='".$this->db->idate($now)."', fk_user_cloture=".$user->id;
+		$sql .= " SET fk_statut = ".((int) $status).", note_private = '".$this->db->escape($note)."', date_cloture='".$this->db->idate($now)."', fk_user_cloture=".((int) $user->id);
 		$sql .= " WHERE rowid = ".((int) $this->id);
 
 		$resql = $this->db->query($sql);
@@ -2761,19 +2761,23 @@ class SupplierProposal extends CommonObject
 	 */
 	public function generateDocument($modele, $outputlangs, $hidedetails = 0, $hidedesc = 0, $hideref = 0, $moreparams = null)
 	{
-		global $conf, $langs;
+		global $langs;
 
 		$langs->load("supplier_proposal");
 		$outputlangs->load("products");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'aurore';
+			$modele = '';	// On supplier documents, template can be empty( no doc generated in this case)
 
 			if ($this->model_pdf) {
 				$modele = $this->model_pdf;
 			} elseif (getDolGlobalString('SUPPLIER_PROPOSAL_ADDON_PDF')) {
 				$modele = getDolGlobalString('SUPPLIER_PROPOSAL_ADDON_PDF');
 			}
+		}
+
+		if (empty($modele)) {
+			return 1;
 		}
 
 		$modelpath = "core/modules/supplier_proposal/doc/";
