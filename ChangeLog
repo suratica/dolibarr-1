@@ -2,12 +2,6 @@
 English Dolibarr ChangeLog
 --------------------------------------------------------------
 
-***** ChangeLog for 21.0.4 compared to 21.0.3 *****
-FIX: #35147 SQL Error on Beluga Export when ExpenseReport is enabled (#35149)
-FIX: error when using a code too large in dictionary
-FIX: Security when using feature Advanced Target of emailing (hidden in v21, default in v22+). Possible
-     SQL injection by users with permission to make and send mass emailing.
-
 
 ***** ChangeLog for 22.0.1 compared to 22.0.0 *****
 
@@ -191,6 +185,12 @@ The following changes may create regressions for some external modules, but were
   into TICKET_INCLUDE_LINK_TO_PUBLIC_INTERFACE_IN_MESSAGE. It also avoid often emails marked as SPAM due to suspicious link.
 * The property ->price_ht of an object line that was a duplicate of ->subprice has been standardized. Use ->subprice everywhere now.
 
+
+***** ChangeLog for 21.0.4 compared to 21.0.3 *****
+FIX: #35147 SQL Error on Beluga Export when ExpenseReport is enabled (#35149)
+FIX: error when using a code too large in dictionary
+FIX: Security when using feature Advanced Target of emailing (hidden in v21, default in v22+). Possible
+     SQL injection by users with permission to make and send mass emailing.
 
 
 ***** ChangeLog for 21.0.3 compared to 21.0.2 *****
