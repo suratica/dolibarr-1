@@ -767,9 +767,6 @@ if (empty($reshook)) {
 
 			$price_ht =  price2num(GETPOST('elprice'), 'MU');
 			$remise_percent = price2num(GETPOST('elremise_percent'), '', 2);
-			if ($remise_percent > 0) {
-				$remise = round(($price_ht * $remise_percent / 100), 2);
-			}
 
 			$objectline->fk_product = GETPOST('idprod', 'int');
 			$objectline->description = GETPOST('product_desc', 'restricthtml');
