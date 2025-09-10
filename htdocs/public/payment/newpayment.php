@@ -1191,7 +1191,9 @@ if ($source == 'order') {
 
 	// Creditor
 	print '<tr class="CTableRow2"><td class="CTableRow2">'.$langs->trans("Creditor");
-	print '</td><td class="CTableRow2">';
+	print '</td><td class="CTableRow2"';
+	print ' title="'.dolPrintHTMLForAttribute($langs->transnoentitiesnoconv("Country").'='.$mysoc->country_code.' - '.$langs->transnoentitiesnoconv("VATIntra").'='.$mysoc->tva_intra).'"';
+	print '>';
 	print img_picto('', 'company', 'class="pictofixedwidth"');
 	print '<b>'.$creditor.'</b>';
 	print '<input type="hidden" name="creditor" value="'.$creditor.'">';
@@ -1200,7 +1202,7 @@ if ($source == 'order') {
 	// Debitor
 	print '<tr class="CTableRow2"><td class="CTableRow2">'.$langs->trans("ThirdParty");
 	print '</td><td class="CTableRow2"';
-	print ' title="'.dolPrintHTMLForAttribute($langs->transnoentitiesnoconv("Country").'='.$invoice->thirdparty->country_code.' - '.$langs->transnoentitiesnoconv("VATIntra").'='.$invoice->thirdparty->tva_intra).'"';
+	print ' title="'.dolPrintHTMLForAttribute($langs->transnoentitiesnoconv("Country").'='.$order->thirdparty->country_code.' - '.$langs->transnoentitiesnoconv("VATIntra").'='.$order->thirdparty->tva_intra).'"';
 	print '>';
 	print img_picto('', 'company', 'class="pictofixedwidth"');
 	print '<b>'.$order->thirdparty->name.'</b>';
@@ -1323,7 +1325,9 @@ if ($source == 'invoice') {
 
 	// Creditor (seller)
 	print '<tr class="CTableRow2"><td class="CTableRow2">'.$langs->trans("Creditor");
-	print '</td><td class="CTableRow2">';
+	print '</td><td class="CTableRow2"';
+	print ' title="'.dolPrintHTMLForAttribute($langs->transnoentitiesnoconv("Country").'='.$mysoc->country_code.' - '.$langs->transnoentitiesnoconv("VATIntra").'='.$mysoc->tva_intra).'"';
+	print '>';
 	print img_picto('', 'company', 'class="pictofixedwidth"');
 	print '<b>'.$creditor.'</b>';
 	print '<input type="hidden" name="creditor" value="'.dol_escape_htmltag((string) $creditor).'">';
