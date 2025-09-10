@@ -1199,7 +1199,9 @@ if ($source == 'order') {
 
 	// Debitor
 	print '<tr class="CTableRow2"><td class="CTableRow2">'.$langs->trans("ThirdParty");
-	print '</td><td class="CTableRow2">';
+	print '</td><td class="CTableRow2"';
+	print ' title="'.dolPrintHTMLForAttribute($langs->transnoentitiesnoconv("Country").'='.$invoice->thirdparty->country_code.' - '.$langs->transnoentitiesnoconv("VATIntra").'='.$invoice->thirdparty->tva_intra).'"';
+	print '>';
 	print img_picto('', 'company', 'class="pictofixedwidth"');
 	print '<b>'.$order->thirdparty->name.'</b>';
 	print '</td></tr>'."\n";
