@@ -90,7 +90,7 @@ $object = new Societe($db);
  * Actions
  */
 
-$parameters = array('id' => $socid);
+$parameters = array('id' => $id);
 $reshook = $hookmanager->executeHooks('doActions', $parameters, $object, $action); // Note that $action and $object may have been modified by some hooks
 if ($reshook < 0) {
 	setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
@@ -142,15 +142,18 @@ if (empty($reshook)) {
  * View
  */
 
-$help_url = 'EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
-llxHeader('', $langs->trans("ThirdParty"), $help_url);
-
-
 $form = new Form($db);
 $formcompany = new FormCompany($db);
 $formother = new FormOther($db);
 $contactstatic = new Contact($db);
 $userstatic = new User($db);
+
+$title = $langs->trans("ContactAddress", $object->name);
+if (getDolGlobalString('MAIN_HTML_TITLE') && preg_match('/thirdpartynameonly/', getDolGlobalString('MAIN_HTML_TITLE')) && $object->name) {
+	$title = $object->name." - ".$title;
+}
+$help_url = 'EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
+llxHeader('', $title, $help_url);
 
 
 // View and edit
