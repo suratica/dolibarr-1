@@ -56,7 +56,7 @@ if ($user->socid) {
 }
 
 // Initialize a technical object to manage hooks of page. Note that conf->hooks_modules contains an array of hook context
-$hookmanager->initHooks(array('consumptionthirdparty', 'globalcard'));
+$hookmanager->initHooks(array('thirdpartyconsumption', 'consumptionthirdparty', 'globalcard'));
 
 $result = restrictedArea($user, 'societe', $socid, '&societe');
 $object = new Societe($db);
