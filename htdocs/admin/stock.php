@@ -610,14 +610,6 @@ if (empty($conf->use_javascript_ajax)) {
 print '</form>';
 
 
-
-print '<form>';
-
-print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
-print '<input type="hidden" name="token" value="'.newToken().'">';
-print '<input type="hidden" name="action" value="update">';
-print '<input type="hidden" name="page_y" value="">';
-
 /*
  * Document templates generators
  */
@@ -763,8 +755,6 @@ foreach ($dirmodels as $reldir) {
 
 print '</table>';
 print '</div>';
-
-print '</form>';
 
 
 // Other
