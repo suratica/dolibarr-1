@@ -232,9 +232,11 @@ if (getDolGlobalInt('PRODUIT_SOUSPRODUITS')) {
 	$langs->load('products');
 	$disableStockCalculateOn[] = 'BILL';
 	$disableStockCalculateOn[] = 'VALIDATE_ORDER';
+	$disableStockCalculateOn[] = 'SHIPMENT_CLOSE';
+
 	$disableStockCalculateOn[] = 'SUPPLIER_BILL';
 	$disableStockCalculateOn[] = 'SUPPLIER_VALIDATE_ORDER';
-	$disableStockCalculateOn[] = 'SHIPMENT_CLOSE';
+
 	print info_admin($langs->trans('WhenProductVirtualOnOptionAreForced'));
 }
 if (isModEnabled('productbatch')) {
@@ -242,6 +244,9 @@ if (isModEnabled('productbatch')) {
 	$langs->load("productbatch");
 	$disableStockCalculateOn[] = 'BILL';
 	$disableStockCalculateOn[] = 'VALIDATE_ORDER';
+	// STOCK_CALCULATE_ON_SHIPMENT is ok so not disable
+	// STOCK_CALCULATE_ON_SHIPMENT_CLOSE is ok so not disabled
+
 	$disableStockCalculateOn[] = 'SUPPLIER_BILL';
 	$disableStockCalculateOn[] = 'SUPPLIER_VALIDATE_ORDER';
 
