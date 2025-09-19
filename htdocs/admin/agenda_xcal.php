@@ -140,13 +140,13 @@ print "</tr>";
 
 print '<tr class="oddeven">';
 print "<td>".$langs->trans("PastDelayVCalExport")."</td>";
-print '<td><input type="text" class="flat width50 right" name="MAIN_AGENDA_EXPORT_PAST_DELAY" value="'.$MAIN_AGENDA_EXPORT_PAST_DELAY.'"> '.$langs->trans("days")."</td>";
+print '<td><input type="text" class="flat width50 right" name="MAIN_AGENDA_EXPORT_PAST_DELAY" value="'.$MAIN_AGENDA_EXPORT_PAST_DELAY.'"> <span class="opacitymedium">'.$langs->trans("days")."</span></td>";
 print "<td>&nbsp;</td>";
 print "</tr>";
 
 print '<tr class="oddeven">';
 print "<td>".$langs->trans("UseACacheDelay")."</td>";
-print '<td><input type="text" class="flat width50 right" name="MAIN_AGENDA_EXPORT_CACHE" value="'.$MAIN_AGENDA_EXPORT_CACHE.'"></td>';
+print '<td><input type="text" class="flat width50 right" name="MAIN_AGENDA_EXPORT_CACHE" value="'.$MAIN_AGENDA_EXPORT_CACHE.'"> <span class="opacitymedium">'.$langs->trans("seconds").'</span></td>';
 print "<td>&nbsp;</td>";
 print "</tr>";
 
@@ -241,7 +241,7 @@ $message .= $langs->trans("AgendaUrlOptionsType", 'systemauto|system').'<br>';
 $message .= $langs->trans("AgendaUrlOptionsCode", 'AC_COMPANY_CREATE,AC_PROPAL_VALIDATE,AC_CODE...').'<br>';
 $message .= $langs->trans("AgendaUrlOptionsIncludeHolidays", '1', '1').'<br>';
 //$defaultnotolderthan = getDolGlobalString('MAIN_AGENDA_EXPORT_PAST_DELAY', 100);
-//$message .= $langs->trans("AgendaUrlOptionsLimitDays", $defaultnotolderthan, $defaultnotolderthan, $defaultnotolderthan).'<br>';
+//$message .= $langs->trans("AgendaUrlOptionsLimitDays", 'X', 'X', $defaultnotolderthan).'<br>';	// This option is hidden because already set and defined into previous options
 $message .= $langs->trans("AgendaUrlOptionsLimit", '1000').'<br>';
 
 print info_admin($message);
