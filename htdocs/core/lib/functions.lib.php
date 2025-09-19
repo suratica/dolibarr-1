@@ -8086,6 +8086,9 @@ function get_default_localtax($thirdparty_seller, $thirdparty_buyer, $local, $id
 	//$seller_in_cee = isInEEC($thirdparty_seller);
 
 	$buyer_country_code = $thirdparty_buyer->country_code;
+	if (empty($buyer_country_code)) {
+		$buyer_country_code = $seller_country_code;
+	}
 	//$buyer_in_cee = isInEEC($thirdparty_buyer);
 
 	if ($local == 1) { // Localtax 1
