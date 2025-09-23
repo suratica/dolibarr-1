@@ -618,7 +618,7 @@ if (empty($reshook)) {
 	}
 
 	// Approve leave request
-	if ($action == 'confirm_valid') {
+	if ($action == 'confirm_valid' && $permissiontoapprove) {	// Test on permission done later
 		$object->fetch($id);
 
 		// If status is waiting approval and approver is also user
@@ -726,7 +726,7 @@ if (empty($reshook)) {
 		}
 	}
 
-	if ($action == 'confirm_refuse' && GETPOST('confirm', 'alpha') == 'yes') {
+	if ($action == 'confirm_refuse' && GETPOST('confirm', 'alpha') == 'yes' && $permissiontoapprove) {	// Test on permission done later
 		if (GETPOST('detail_refuse')) {
 			$object->fetch($id);
 
@@ -819,7 +819,7 @@ if (empty($reshook)) {
 
 
 	// If the request is validated
-	if ($action == 'confirm_draft' && GETPOST('confirm') == 'yes') {
+	if ($action == 'confirm_draft' && GETPOST('confirm') == 'yes' && $permissiontoadd) {	// Test on permission done later
 		$error = 0;
 
 		$object->fetch($id);
@@ -845,7 +845,7 @@ if (empty($reshook)) {
 	}
 
 	// If confirmation of cancellation
-	if ($action == 'confirm_cancel' && GETPOST('confirm') == 'yes') {
+	if ($action == 'confirm_cancel' && GETPOST('confirm') == 'yes') {	// Test on permission done later
 		$error = 0;
 
 		$object->fetch($id);
