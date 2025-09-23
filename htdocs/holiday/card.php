@@ -1618,7 +1618,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 								if (($object->date_fin > dol_now()) || !empty($user->admin)) {
 									print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=cancel&token='.newToken().'" class="butAction">'.$langs->trans("ActionCancelCP").'</a>';
 								} else {
-									print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("HolidayStarted").'-'.$langs->trans("NotAllowed").'">'.$langs->trans("ActionCancelCP").'</a>';
+									print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("HolidayStarted").' - '.$langs->trans("NotAllowed").'">'.$langs->trans("ActionCancelCP").'</a>';
 								}
 							}
 						}
@@ -1628,7 +1628,7 @@ if ((empty($id) && empty($ref)) || $action == 'create' || $action == 'add') {
 							if (($object->date_fin > dol_now()) || !empty($user->admin) || $user->id == $object->fk_user_approve) {
 								print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&action=cancel&token='.newToken().'" class="butAction">'.$langs->trans("ActionCancelCP").'</a>';
 							} else {
-								print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("HolidayStarted").'-'.$langs->trans("NotAllowed").'">'.$langs->trans("ActionCancelCP").'</a>';
+								print '<a href="#" class="butActionRefused classfortooltip" title="'.$langs->trans("HolidayStarted").' - '.$langs->trans("NotAllowed").'">'.$langs->trans("ActionCancelCP").'</a>';
 							}
 						} else { // I have no rights on the user of the holiday.
 							if (!empty($user->admin)) {	// If current approver can't cancel an approved leave, we allow admin user
