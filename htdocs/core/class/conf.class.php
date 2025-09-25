@@ -305,6 +305,8 @@ class Conf extends stdClass
 	 * @var stdClass
 	 */
 	public $productbatch;
+	public $api;
+
 	/**
 	 * @deprecated Use project
 	 */
@@ -470,6 +472,7 @@ class Conf extends stdClass
 		$this->notification = new stdClass();
 		$this->expensereport = new stdClass();
 		$this->productbatch = new stdClass();
+		$this->api = new stdClass();
 
 		// Common arrays
 		$this->cache = array();
@@ -737,6 +740,10 @@ class Conf extends stdClass
 			// For admin storage
 			$this->admin->dir_output = $rootfordata.'/admin';
 			$this->admin->dir_temp = $rootfortemp.'/admin/temp';
+
+			// For api storage
+			$this->api->dir_output = $rootfordata.'/api';
+			$this->api->dir_temp = $rootfortemp.'/api/temp';
 
 			// For user storage
 			$this->user->multidir_output = array($this->entity => $rootfordata."/users");
