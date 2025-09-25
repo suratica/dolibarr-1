@@ -1182,7 +1182,7 @@ class Commande extends CommonOrder
 				}
 			}
 		} else {
-			dol_print_error($this->db);
+			$this->error = $this->db->lasterror();
 			$this->db->rollback();
 			return -1;
 		}
