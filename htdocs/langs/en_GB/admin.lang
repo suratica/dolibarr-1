@@ -21,7 +21,6 @@ CommandsToDisableForeignKeysForImportWarning=This is mandatory if you want to re
 ModulesMarketPlaceDesc=You can find more modules to download from external websites on the Internet...
 ModulesMarketPlaces=Find external applications and modules
 AvailableOnlyIfJavascriptAndAjaxNotDisabled=Available only if JavaScript is enabled
-InstrucToEncodePass=To have password encoded into the <b>conf.php</b> file, replace the line <br><b>$dolibarr_main_db_pass="...";</b><br>with<br><b>$dolibarr_main_db_pass="crypted:%s";</b>
 InstrucToClearPass=To have password decoded (clear) into the <b>conf.php</b> file, replace the line <br><b>$dolibarr_main_db_pass="crypted:...";</b><br>with<br><b>$dolibarr_main_db_pass="%s";</b>
 ProtectAndEncryptPdfFilesDesc=Protection of a PDF document keeps it available to read and print with any PDF browser. However, editing and copying the document is no longer possible. Note: Using this feature disables your ability to build global merged PDFs.
 MeasuringUnit=Measurement unit
@@ -39,5 +38,4 @@ Module50200Name=PayPal
 DictionaryAccountancyJournal=Finance journals
 CompanyZip=Postcode
 LDAPFieldZip=Postcode
-GenbarcodeLocation=Barcode generation command line tool (used by internal engine for some bar code types). Must be compatible with "genbarcode".<br>For example: /usr/local/bin/genbarcode
 FormatZip=Postcode
